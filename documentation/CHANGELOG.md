@@ -3,6 +3,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [7.3.1] - 2021-02-12
+
+### Added
+- Added support for pause, resume, mute and unmute vast events
+- Added video support in OMSDK plugin
+- Added *EmptyAd* module event that will be sent when a missed no-ad opportunity appears
+- Added *ReadyForPlay* module event that will be sent when the adManager is empty and *prepare()* is called
+- Added *AdBaseManagerAdapter* to *AdBaseManager* to be used to fire additional urls for impressions, tracking events and errors
+- Added *preferredResourceType* to *AdCompanionOptions* to be used to selected the desired companion resource type
+- Url firing retry mechanism extended for timeout and drop connection situations
+- Added new flags to the permissions field used to decorate the urls. These are for: motion activity, foreground service and foreground service of type microphone
+- Added *aw_0_req.appState* param during decoration of urls
+
+### Removed
+- From *AdRequestConnection.requestAds()* the (adManager, error) response scenario used for no-ads vast response was removed
+
 ## [7.3.0] - 2020-12-22
 
 ### Added
