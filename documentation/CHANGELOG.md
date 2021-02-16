@@ -6,28 +6,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.3.1] - 2021-02-12
 
 ### Added
-- Added support for pause, resume, mute and unmute VAST events
+- Added support for `pause`, `resume`, `mute` and `unmute` VAST events
 - Added support for viewability (video) measurement via OMSDK
-- Added *EmptyAd* module event that will be sent when a missed no-ad opportunity appears
-- Added *ReadyForPlay* module event that will be sent when the adManager is empty and *prepare()* is called
-- Added *AdBaseManagerAdapter* to *AdBaseManager* to be used to fire additional urls for impressions, tracking events and errors
-- Added *preferredResourceType* to *AdCompanionOptions* to be used to selected the desired companion resource type
+- Two new properties on the `AdManager` object: `adCount` and `totalAdsDuration`
+- Added `AdEvent.Type.Other.EmptyAd` module event that will be triggered when a missed no-ad opportunity appears
+- Added a new `AdBaseManagerAdapter` interface to `AdBaseManager` to be used to fire additional urls for impressions, tracking events and errors
+- Added `preferredResourceType` to `AdCompanionOptions` to be used to selected the desired companion resource type
 - Url firing retry mechanism extended for timeout and drop connection situations
 - Added new flags to the permissions field used to decorate the urls. These are for: motion activity, foreground service and foreground service of type microphone
-- Added *aw_0_req.appState* param during decoration of urls
+- Added`aw_0_req.appState` param during decoration of urls
 
 ### Removed
-- The (adManager, error) response scenario used for no-ads VAST response was removed from *AdRequestConnection.requestAds()* 
+- For the no-ads VAST response (known as the EmtpyAds scenario) the error returned by `AdRequestConnection.requestAds()` is now null. The `AdResponseCompletionHandler` will return a valid `adManager` instance (without an error object).
 
 ### Changed
-- *resize_mode* was replaced with *video_resize_mode* to remove a dependency on ExoPlayer
-- When *ExoPlaybackException* is thrown in the *InternalAdPlayer*, the error description contains the stack trace
-- Continuous Play measurement has changed. On pausing/resuming the player will not reset the continous play duration.
-- Set location required was changed to false to be able to publish on other app stores (e.g. Amazon Appstore)
+- The `AdEvent.Type.State.ReadyForPlay` module event is now triggered when the `adManager` instance contains an empty ad and the `prepare()` method has been called
+- `resize_mode` was replaced with `video_resize_mode` in order to remove an ExoPlayer dependency
+- When `ExoPlaybackException` is thrown in the `InternalAdPlayer` the error description contains now the stack trace
+- Continuous Play measurement has been changed. While pausing and resuming the SDK will not reset the continuous play duration anymore.
+- Location required flag was changed to `false` in order to be able to publish on other app stores (e.g. Amazon Appstore)
 
 ### Fixed
-- An issue related to companion click through on Android 6 (api level 23)
-- HTML sizmek banners compatibility
+- An issue related to companion click through on Android 6 (API level 23)
+- Improved compatibility for the `HTMLResource` banners from VAST
 
 
 ## [7.3.0] - 2020-12-22

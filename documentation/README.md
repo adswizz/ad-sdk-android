@@ -588,7 +588,7 @@ Once presented with an AdManager, one could call different actions on the AdMana
 ## AdManager interface
 ### prepare
 
-You call this method to begin to cycle through the ads in the AdManager. This method ensures that the player is starting to buffer enough data so that ad playing starts smoothly. Upon calling this method the ads start loading. The SDK will trigger **_PreparingForPlay_** event informing your app that buffering has begun for a specific ad. Once buffering is done, **_ReadyForPlay_** event for the ad will be triggered. In case the AdManager has no ad, an **_ReadyForPlay_** event with null instead of add will be triggered.
+You call this method to begin to cycle through the ads in the AdManager. This method ensures that the player is starting to buffer enough data so that ad playing starts smoothly. Upon calling this method the ads start loading. The SDK will trigger **_PreparingForPlay_** event informing your app that buffering has begun for a specific ad. Once buffering is done, **_ReadyForPlay_** event for the ad will be triggered. In case the `adManager` instance has no ad (EmptyAds scenario), a **_ReadyForPlay_** event with `null` instead of an `AdEvent` instance will be triggered.
 
 ### play
 
@@ -620,11 +620,11 @@ Looping through the ad again will need a call to **_prepare_** function.</br>
 
 ### adCount
 
-Get the current number of ads. This is not a constant since ads can be added or removed at any time.
+Get the current number of ads. This is not a constant since ads can be added or removed at any time. A zero value means the Ad Manager will not play any ad.
 
 ### totalAdsDuration
 
-Returns the current sum of all ad durations using the information available in the vast response.
+Returns the total number of seconds for all playable ads currently stored by the `AdManager` object.
 
 Below is a descriptive graph with all this information:
 
