@@ -1002,7 +1002,8 @@ adCompanionOptions.preferredResourceType = AdCompanionResourceType.IMAGE
 AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
 ```
 
-The default value is first resource available.
+If not set, the default value is first resource available.
+If the preferred resource type is not found, it will default back to first resource available.
 
 # Video ads
 
