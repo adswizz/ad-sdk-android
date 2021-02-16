@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `preferredResourceType` to `AdCompanionOptions` to be used to selected the desired companion resource type
 - Url firing retry mechanism extended for timeout and drop connection situations
 - Added new flags to the permissions field used to decorate the urls. These are for: motion activity, foreground service and foreground service of type microphone
-- Added`aw_0_req.appState` param during decoration of urls
+- Added `aw_0_req.appState` param during decoration of urls
 
 ### Removed
 - For the no-ads VAST response (known as the EmtpyAds scenario) the error returned by `AdRequestConnection.requestAds()` is now null. The `AdResponseCompletionHandler` will return a valid `adManager` instance (without an error object).
