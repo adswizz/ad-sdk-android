@@ -6,8 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.3.1] - 2021-02-12
 
 ### Added
-- Added support for pause, resume, mute and unmute vast events
-- Added video support in OMSDK plugin
+- Added support for pause, resume, mute and unmute VAST events
+- Added support for viewability (video) measurement via OMSDK
 - Added *EmptyAd* module event that will be sent when a missed no-ad opportunity appears
 - Added *ReadyForPlay* module event that will be sent when the adManager is empty and *prepare()* is called
 - Added *AdBaseManagerAdapter* to *AdBaseManager* to be used to fire additional urls for impressions, tracking events and errors
@@ -17,17 +17,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added *aw_0_req.appState* param during decoration of urls
 
 ### Removed
-- From *AdRequestConnection.requestAds()* the (adManager, error) response scenario used for no-ads vast response was removed
+- The (adManager, error) response scenario used for no-ads VAST response was removed from *AdRequestConnection.requestAds()* 
 
 ### Changed
-- *resize_mode* was replaced with *video_resize_mode* to remove a dependency on exoPlayer
-- When *ExoPlaybackException* is thrown in the *InternalAdPlayer* the error description contains the stack trace
-- Countinous Play measurement has changed. Now pausing/resuming the player will not reset the continous play duration.
+- *resize_mode* was replaced with *video_resize_mode* to remove a dependency on ExoPlayer
+- When *ExoPlaybackException* is thrown in the *InternalAdPlayer*, the error description contains the stack trace
+- Continuous Play measurement has changed. On pausing/resuming the player will not reset the continous play duration.
 - Set location required was changed to false to be able to publish on other app stores (e.g. Amazon Appstore)
 
 ### Fixed
 - An issue related to companion click through on Android 6 (api level 23)
-- HTML sizmek banners
+- HTML sizmek banners compatibility
 
 
 ## [7.3.0] - 2020-12-22
