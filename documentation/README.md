@@ -57,7 +57,7 @@
       * [AFR config](#afr-config)
       * [Integrator Context](#integrator-context)
       * [Extra exposure time for an AdCompanionView](#extra-exposure-time-for-an-adcompanionview)
-      * [Prefered resource type](#prefered-resource-type)
+      * [Preferred resource type](#preferred-resource-type)
  * [<strong>Open Measurement in AdswizzSDK</strong>](#open-measurement-in-adswizzsdk)
       * [Video controls obstructions](#video-controls-obstructions)
  * [<strong>(Optional) Prepare your application for advanced targetability capabilities</strong>](#optional-prepare-your-application-for-advanced-targetability-capabilities)
@@ -618,6 +618,14 @@ If you decide to skip all ads in the AdManager from the current one you can call
 your app will trigger **_DidSkip_** or **_NotUsed_** and for the rest **_NotUsed_**. A **_AllAdsCompleted_** event will be sent at the end.
 Looping through the ad again will need a call to **_prepare_** function.</br>
 
+### adCount
+
+Get the current number of ads. This is not a constant since ads can be added or removed at any time.
+
+### totalAdsDuration
+
+Returns the current sum of all ad durations using the information available in the vast response.
+
 Below is a descriptive graph with all this information:
 
 </br></br>
@@ -984,15 +992,17 @@ adCompanionOptions.extraExposureTime = 1.2// these are seconds.
 AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
 ```
 
-## Prefered resource type
+## Preferred resource type
 
-You can select the prefered resource type from a list of 4 options: image, html, iframe and first available. Below is a snippet:
+You can select the preferred resource type from a list of 4 options: image, html, iframe and first resource available. Below is a snippet:
 
 ```kotlin
 val adCompanionOptions = AdCompanionOptions()
 adCompanionOptions.preferredResourceType = AdCompanionResourceType.IMAGE
 AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
 ```
+
+The default value is first resource available.
 
 # Video ads
 
