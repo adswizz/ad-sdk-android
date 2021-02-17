@@ -3,6 +3,34 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [7.3.1] - 2021-02-12
+
+### Added
+- Added support for `pause`, `resume`, `mute` and `unmute` VAST events
+- Added support for viewability (video) measurement via OMSDK
+- Two new properties on the `AdManager` object: `adCount` and `totalAdsDuration`
+- Added `AdEvent.Type.Other.EmptyAd` module event that will be triggered when a missed no-ad opportunity appears
+- Added a new `AdBaseManagerAdapter` interface to `AdBaseManager` to be used to fire additional urls for impressions, tracking events and errors
+- Added `preferredResourceType` to `AdCompanionOptions` to be used to selected the desired companion resource type
+- Url firing retry mechanism extended for timeout and drop connection situations
+- Added new flags to the permissions field used to decorate the urls. These are for: motion activity, foreground service and foreground service of type microphone
+- Added `aw_0_req.appState` param during decoration of urls
+
+### Removed
+- For the no-ads VAST response (known as the EmtpyAds scenario) the error returned by `AdRequestConnection.requestAds()` is now null. The `AdResponseCompletionHandler` will return a valid `adManager` instance (without an error object).
+
+### Changed
+- The `AdEvent.Type.State.ReadyForPlay` module event is now triggered when the `adManager` instance contains an empty ad and the `prepare()` method has been called
+- `resize_mode` was replaced with `video_resize_mode` in order to remove an ExoPlayer dependency
+- When `ExoPlaybackException` is thrown in the `InternalAdPlayer` the error description contains now the stack trace
+- Continuous Play measurement has been changed. While pausing and resuming the SDK will not reset the continuous play duration anymore.
+- Location required flag was changed to `false` in order to be able to publish on other app stores (e.g. Amazon Appstore)
+
+### Fixed
+- An issue related to companion click through on Android 6 (API level 23)
+- Improved compatibility for the `HTMLResource` banners from VAST
+
+
 ## [7.3.0] - 2020-12-22
 
 ### Added

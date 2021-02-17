@@ -22,6 +22,8 @@
          * [pause](#pause)
          * [skipAd](#skipad)
          * [reset](#reset)
+         * [adCount](#adCount)
+         * [totalAdsDuration](#totalAdsDuration)
       * [AdManager life cycle](#admanager-life-cycle)         
  * [<strong>Server-Side Insertion</strong>](#server-side-insertion)
       * [Your first stream manager](#your-first-stream-manager)
@@ -37,6 +39,7 @@
       * [Setting up](#setting-up)
       * [Companion events](#companion-events)
       * [Extra exposure time](#extra-exposure-time)
+      * [Preferred resource type](#preferred-resource-type)
  * [<strong>Video ads</strong>](#video-ads)
       * [Adding an AdVideoView](#adding-an-advideoview)
       * [Setup video support](#setup-video-support)
@@ -57,6 +60,7 @@
       * [AFR config](#afr-config)
       * [Integrator Context](#integrator-context)
       * [Extra exposure time for an AdCompanionView](#extra-exposure-time-for-an-adcompanionview)
+      * [Preferred resource type](#preferred-resource-type)
  * [<strong>Open Measurement in AdswizzSDK</strong>](#open-measurement-in-adswizzsdk)
       * [Video controls obstructions](#video-controls-obstructions)
  * [<strong>(Optional) Prepare your application for advanced targetability capabilities</strong>](#optional-prepare-your-application-for-advanced-targetability-capabilities)
@@ -65,6 +69,7 @@
  * [<strong>Multiprocess Host App Guide</strong>](#multiprocess-host-app-guide)
       * [Companion Support](#companion-support)
       * [Limitations](#limitations)
+ * [<strong>Ad Base Manager adapters</strong>](#ad-base-manager-adapters)
  * [<strong>AdswizzSDK Analytics</strong>](#adswizzsdk-analytics)
  * [<strong>Sample projects</strong>](#sample-projects)
       * [BasicSample](#basicsample)
@@ -488,7 +493,7 @@ val adRequest: AdswizzAdRequest = AdswizzAdRequest.Builder() //Build the Ad Requ
 ```
 The ad server and the zoneId(s) will be provided to you by an AdsWizz PIM.
 
-After this point you need create an AdRequestConnection object and call requestAds with the ad request object.
+After this point you need to create an AdRequestConnection object and call requestAds with the ad request object.
 
 ```kotlin            
 val adRequestConnection = AdRequestConnection(adRequest) // Create the AdRequestConnection using the above adRequest
@@ -586,8 +591,7 @@ Once presented with an AdManager, one could call different actions on the AdMana
 ## AdManager interface
 ### prepare
 
-You call this method to begin to cycle through the ads in the AdManager. This method ensures that the player is starting to buffer enough data so that ad playing starts smoothly. Upon calling this method the ads start loading. The SDK will trigger **_PreparingForPlay_** event informing your app that buffering has begun for a specific ad. Once buffering is done, **_ReadyForPlay_** event for the ad will be triggered.
-
+You call this method to begin to cycle through the ads in the AdManager. This method ensures that the player is starting to buffer enough data so that ad playing starts smoothly. Upon calling this method the ads start loading. The SDK will trigger **_PreparingForPlay_** event informing your app that buffering has begun for a specific ad. Once buffering is done, **_ReadyForPlay_** event for the ad will be triggered. In case the `adManager` instance has no ad (EmptyAds scenario), a **_ReadyForPlay_** event with `null` instead of an `AdEvent` instance will be triggered.
 
 ### play
 
@@ -616,6 +620,14 @@ signalling that all ads got processed in the AdManager.
 If you decide to skip all ads in the AdManager from the current one you can call this method. For the current ad skipped
 your app will trigger **_DidSkip_** or **_NotUsed_** and for the rest **_NotUsed_**. A **_AllAdsCompleted_** event will be sent at the end.
 Looping through the ad again will need a call to **_prepare_** function.</br>
+
+### adCount
+
+Get the current number of ads. This is not a constant since ads can be added or removed at any time. A zero value means the Ad Manager will not play any ad.
+
+### totalAdsDuration
+
+Returns the total number of seconds for all playable ads currently stored by the `AdManager` object.
 
 Below is a descriptive graph with all this information:
 
@@ -982,6 +994,19 @@ val adCompanionOptions = AdCompanionOptions()
 adCompanionOptions.extraExposureTime = 1.2// these are seconds.
 AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
 ```
+
+## Preferred resource type
+
+You can select the preferred resource type from a list of 4 options: image, html, iframe and first resource available. Below is a snippet:
+
+```kotlin
+val adCompanionOptions = AdCompanionOptions()
+adCompanionOptions.preferredResourceType = AdCompanionResourceType.IMAGE
+AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
+```
+
+If not set, the default value is first resource available.
+If the preferred resource type is not found, it will default back to first resource available.
 
 # Video ads
 
@@ -1812,6 +1837,44 @@ The following features don't have support in multiprocess applications:
 - In-app notification detector: in a multiprocess application it will not appear on screen. So the actions can't be triggered because the user will be unable to press the buttons.
 - Permissions action: the action will not appear on-screen, although it can be triggered.
 - Analytics logs: the logs will come only from the playback process.
+
+# Ad Base Manager adapters
+
+The developer can use the **_AdBaseManager_** **_setAdapter(adBaseManagerAdapter)_** function to provide additional urls to be fired when impression, quartiles or errors are fired. This works for both client side and server side insertion.
+
+```kotlin
+var adBaseManagerAdapter = object : AdBaseManagerAdapter {
+    override fun urlsForTracking(event: Tracking.EventType, adBaseManager: AdBaseManager, adData: AdData): List<String> {
+        return listOf(
+                "http://adswizz.com/1",
+                "http://adswizz.com/2"
+        )
+    }
+
+    override fun urlsForImpression(adBaseManager: AdBaseManager, adData: AdData): List<String> {
+        return listOf(
+            "http://adswizz.com/3",
+            "http://adswizz.com/4"
+        )
+    }
+
+    override fun urlsForError(errorCode: VASTErrorCode, adBaseManager: AdBaseManager, adData: AdData): List<String> {
+        return listOf(
+            "http://adswizz.com/5",
+            "http://adswizz.com/6"
+        )
+    }
+
+    override fun urlsForNoAd(adBaseManager: AdBaseManager, noAdUrlString: String): List<String> {
+        return listOf(
+            "http://adswizz.com/7",
+            "http://adswizz.com/8"
+        )
+    }
+}
+adBaseManager.setAdapter(adBaseManagerAdapter)
+```
+
 
 # AdswizzSDK analytics
 
