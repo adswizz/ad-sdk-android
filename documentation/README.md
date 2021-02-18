@@ -61,6 +61,7 @@
       * [Integrator Context](#integrator-context)
       * [Extra exposure time for an AdCompanionView](#extra-exposure-time-for-an-adcompanionview)
       * [Preferred resource type](#preferred-resource-type)
+      * [Asset Quality](#asset-quality)
  * [<strong>Open Measurement in AdswizzSDK</strong>](#open-measurement-in-adswizzsdk)
       * [Video controls obstructions](#video-controls-obstructions)
  * [<strong>(Optional) Prepare your application for advanced targetability capabilities</strong>](#optional-prepare-your-application-for-advanced-targetability-capabilities)
@@ -544,7 +545,7 @@ class MainActivity : AppCompatActivity(), AdManagerListener {
                 adManager.adManagerSettings = AdManagerSettings.Builder() // optional
                     .adPlayerInstance(YOUR_AD_PLAYER_GOES_HERE) // optional
                     .addCachePolicy(CachePolicy.ASSETS)         // optional
-                    .assetQuality(AssetQuality.MEDIUM)          // optional, other possible values AssetQuality.LOW, AssetQuality.HIGH
+                    .assetQuality(AssetQuality.MEDIUM)          // optional, other possible values AssetQuality.LOW, AssetQuality.HIGH, AssetQuality.AUTO
                     .enqueueEnabled(false)                      // optional
                     .videoViewId(1)                             // optional
                     .build()                                    // optional
@@ -1007,6 +1008,23 @@ AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
 
 If not set, the default value is first resource available.
 If the preferred resource type is not found, it will default back to first resource available.
+
+## Asset Quality
+
+The asset quality can be set in the _AdManagerSettings_. Below is a code snippet:
+
+```kotlin
+adManager.adManagerSettings = AdManagerSettings.Builder()
+    .assetQuality(AssetQuality.MEDIUM)
+    .build()
+```
+Possible values are:
+- .LOW: it will try to select a media file with a bitrate up to 179199 bps
+- .MEDIUM: will try to select a media file with a bitrate between 179200 bps and 665599 bps
+- .HIGH: will try to select a media file with a bitrate at least 665600 bps
+- .AUTO: it will try to select a media file based on the internet connection that the device has: the better the connection the higher the bitrate. In case of video resources first the frame size is taken into account, the better the connection the higher the frame size. Internet connections is categories in the following buckets: 2g, 2.5g, 2.75g, 3g, 3.5g, "3.55g", "3.6g", 3.75g, 4g, 5g and wifi.
+
+Default value for asset quality is .HIGH.
 
 # Video ads
 
