@@ -57,6 +57,7 @@
  * [<strong>AdswizzSDK general settings</strong>](#adswizzsdk-general-settings)
       * [GDPR consent](#gdpr-consent)
       * [CCPA config](#ccpa-config)
+      * [Disable data collection](#disable-data-collection)
       * [AFR config](#afr-config)
       * [Integrator Context](#integrator-context)
       * [Extra exposure time for an AdCompanionView](#extra-exposure-time-for-an-adcompanionview)
@@ -116,6 +117,7 @@ In order to successfully do the ‘Client-Side Insertion’ you will need to set
 The following can be set as general AdswizzSDK parameters:
 *  (optional) GDPR consent value
 *  (optional) CCPA (U.S. privacy string) consent value
+*  (optional) enable/disable data collection
 *  (optional) integrator context. This contain information that the integrator should provide and will be used by the SDK (for example for VAST macro expansion)
 
 For the client-side scenario, you may use any streaming server provided by your AdsWizz Integration Manager.
@@ -132,6 +134,7 @@ In order to successfully integrate the ‘Server-Side Insertion’, you will nee
 The following can be set as general AdswizzSDK parameters:
 *  (optional) GDPR consent value
 *  (optional) CCPA (U.S. privacy string) consent value
+*  (optional) enable/disable data collection
 *  (optional) integrator context. This contain information that the integrator should provide and will be used by the SDK (for example for VAST macro expansion)
 
 
@@ -1708,6 +1711,20 @@ With the introduction of CCPA in US, **_AdswizzSDK_** gives you the possibility 
 ```
 
 The first value represents the explicit notice for collecting consent. The next value is the opt-out of the sale of his personal information. The last one is the limitation of scope to the Limited Service Provider Agreement. For all tree, possible values are: **_NOT_APPLICABLE_**, **_YES_**, **_NO_**. The default value for all of them is **_NOT_APPLICABLE_**.
+
+## Disable data collection
+
+Adswizz SDK supports enabling or disabling anonymous data collection at device level. By default the data is collected. If you want to disable data collection at any time you can call:
+
+```kotlin
+    AdswizzSDK.disableDataCollection = true
+```
+
+If you want to re-enable it simply add the following line:
+
+```kotlin
+    AdswizzSDK.disableDataCollection = false
+```
 
 ## AFR config
 
