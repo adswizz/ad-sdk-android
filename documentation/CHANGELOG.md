@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.5] - 2021-03-15
+
+### Changed
+- Server-Side Insertion scenarios update: added `companionZone` member in the `AfrConfig` class. The zone id provided via this member will be used in companion banner requests when the streaming server (AIS) does not provide a valid companion zone id via metadata.  
+
 ## [7.3.4] - 2021-03-11
 
 ### Changed
