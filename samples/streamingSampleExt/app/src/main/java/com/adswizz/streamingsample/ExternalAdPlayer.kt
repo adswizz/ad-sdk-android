@@ -32,8 +32,10 @@ import java.lang.ref.WeakReference
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.CopyOnWriteArrayList
 
-
-class ExternalExoPlayer(val context: Context) : AdPlayer, Player.EventListener, AnalyticsListener, CacheManager.Listener, AudioListener, MetadataOutput, VideoListener {
+/**
+ * Based on exoplayer
+ */
+class ExternalAdPlayer(val context: Context) : AdPlayer, Player.EventListener, AnalyticsListener, CacheManager.Listener, AudioListener, MetadataOutput, VideoListener {
 
     private enum class AssetState {
         INITIALIZED,
@@ -105,7 +107,7 @@ class ExternalExoPlayer(val context: Context) : AdPlayer, Player.EventListener, 
         player.addVideoListener(this)
     }
 
-    //eionut: cleanup should be used by AdManagers when they do cleanup
+    // cleanup should be used by AdManagers when they do cleanup
     fun cleanup() {
         player.removeVideoListener(this)
         player.removeAnalyticsListener(this)

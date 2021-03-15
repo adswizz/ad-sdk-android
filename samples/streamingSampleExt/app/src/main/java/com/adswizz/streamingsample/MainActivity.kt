@@ -1,6 +1,7 @@
 package com.adswizz.streamingsample
 
 import android.content.pm.ActivityInfo
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.ad.core.adBaseManager.AdBaseManager
 import com.ad.core.adBaseManager.AdPlayer
+import com.ad.core.companion.AdCompanionView
 import com.ad.core.streaming.AdManagerStreamingSettings
 import com.ad.core.streaming.AdStreamManager
 import com.adswizz.core.adFetcher.AdswizzAdRequest
@@ -28,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private var streamManager: AdswizzAdStreamManager? = null
-    private var externalExoPlayer: ExternalExoPlayer? = null
+    private var externalAdPlayer: ExternalAdPlayer? = null
 
     private val listener = object : AdStreamManager.Listener {
         override fun willStartPlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
@@ -86,6 +88,9 @@ class MainActivity : AppCompatActivity() {
         val scroll = ScrollingMovementMethod()
         appLogs.movementMethod = scroll
 
+        val companion = findViewById<AdCompanionView>(R.id.companionView)
+        companion.setBackgroundColor(Color.parseColor("#00000000"))
+
         AdswizzSDK.initialize(this)
         AdswizzSDK.afrConfig = AfrConfig(
             protocol = AdswizzAdRequest.HttpProtocol.HTTP,
@@ -94,9 +99,9 @@ class MainActivity : AppCompatActivity() {
             companionZone = "12193"
         )
 
-        externalExoPlayer = ExternalExoPlayer(this)
+        externalAdPlayer = ExternalAdPlayer(this)
         val adManagerStreamingSettingsBuilder = AdManagerStreamingSettings.Builder()
-        externalExoPlayer?.let {
+        externalAdPlayer?.let {
             adManagerStreamingSettingsBuilder.adPlayerInstance(it)
         }
         streamManager = AdswizzAdStreamManager(adManagerStreamingSettingsBuilder.build())
@@ -117,8 +122,8 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         streamManager?.cleanup()
         streamManager = null
-        externalExoPlayer?.cleanup()
-        externalExoPlayer = null
+        externalAdPlayer?.cleanup()
+        externalAdPlayer = null
         AdswizzSDK.cleanup()
         super.onDestroy()
     }
