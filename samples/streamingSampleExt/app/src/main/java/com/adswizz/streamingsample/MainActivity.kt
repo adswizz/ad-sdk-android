@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.ad.core.adBaseManager.AdBaseManager
 import com.ad.core.adBaseManager.AdPlayer
+import com.ad.core.streaming.AdManagerStreamingSettings
 import com.ad.core.streaming.AdStreamManager
 import com.adswizz.core.streaming.AdswizzAdStreamManager
 import com.adswizz.sdk.AdswizzSDK
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private var streamManager: AdswizzAdStreamManager? = null
+    private var externalExoPlayer: ExternalExoPlayer? = null
 
     private val listener = object : AdStreamManager.Listener {
         override fun willStartPlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
@@ -84,7 +86,12 @@ class MainActivity : AppCompatActivity() {
 
         AdswizzSDK.initialize(this)
 
-        streamManager = AdswizzAdStreamManager(null)
+        externalExoPlayer = ExternalExoPlayer(this)
+        val adManagerStreamingSettingsBuilder = AdManagerStreamingSettings.Builder()
+        externalExoPlayer?.let {
+            adManagerStreamingSettingsBuilder.adPlayerInstance(it)
+        }
+        streamManager = AdswizzAdStreamManager(adManagerStreamingSettingsBuilder.build())
         streamManager?.addListener(listener)
         streamManager?.play(SERVER_URL)
 
@@ -101,6 +108,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         streamManager?.cleanup()
+        streamManager = null
+        externalExoPlayer?.cleanup()
+        externalExoPlayer = null
         AdswizzSDK.cleanup()
         super.onDestroy()
     }
