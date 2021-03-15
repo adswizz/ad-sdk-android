@@ -90,7 +90,8 @@ class MainActivity : AppCompatActivity() {
         AdswizzSDK.afrConfig = AfrConfig(
             protocol = AdswizzAdRequest.HttpProtocol.HTTP,
             server = "demo.deliveryengine.adswizz.com/",
-            endpoint = "www/delivery/afr.php"
+            endpoint = "www/delivery/afr.php",
+            companionZone = "12193"
         )
 
         externalExoPlayer = ExternalExoPlayer(this)
