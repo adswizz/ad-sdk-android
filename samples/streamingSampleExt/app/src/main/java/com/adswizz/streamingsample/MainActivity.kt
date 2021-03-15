@@ -13,7 +13,9 @@ import com.ad.core.adBaseManager.AdBaseManager
 import com.ad.core.adBaseManager.AdPlayer
 import com.ad.core.streaming.AdManagerStreamingSettings
 import com.ad.core.streaming.AdStreamManager
+import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.streaming.AdswizzAdStreamManager
+import com.adswizz.core.streaming.AfrConfig
 import com.adswizz.sdk.AdswizzSDK
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -85,6 +87,11 @@ class MainActivity : AppCompatActivity() {
         appLogs.movementMethod = scroll
 
         AdswizzSDK.initialize(this)
+        AdswizzSDK.afrConfig = AfrConfig(
+            protocol = AdswizzAdRequest.HttpProtocol.HTTP,
+            server = "demo.deliveryengine.adswizz.com/",
+            endpoint = "www/delivery/afr.php"
+        )
 
         externalExoPlayer = ExternalExoPlayer(this)
         val adManagerStreamingSettingsBuilder = AdManagerStreamingSettings.Builder()

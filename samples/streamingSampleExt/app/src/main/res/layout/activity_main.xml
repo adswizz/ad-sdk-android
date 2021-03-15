@@ -18,7 +18,7 @@
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/replayButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -30,6 +30,32 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/titleTextView" />
 
+    <FrameLayout
+        android:id="@+id/companionContainer"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_margin="10dp"
+        app:layout_constraintBottom_toTopOf="@id/appLogsLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/rounded_corners"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView">
+
+        <TextView
+            android:gravity="center"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+            android:text="Companion Placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.ad.core.companion.AdCompanionView
+            android:id="@+id/companionView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+
     <TextView
         android:id="@+id/appLogsLabel"
         android:layout_width="wrap_content"
@@ -39,7 +65,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+        app:layout_constraintTop_toBottomOf="@id/companionContainer" />
 
     <TextView
         android:id="@+id/appLogs"
