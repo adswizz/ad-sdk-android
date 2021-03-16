@@ -1,4 +1,5 @@
 <resources>
-    <string name="streaming_sample_app_ext">Streaming Sample External Player</string>
+    <string name="streaming_sample_app_ext">Streaming Sample\nExternal Player - exoplayer</string>
     <string name="app_logs">App Logs:</string>
+    <string name="adswizz_version_prefix">AdsWizz SDK v</string>
 </resources>

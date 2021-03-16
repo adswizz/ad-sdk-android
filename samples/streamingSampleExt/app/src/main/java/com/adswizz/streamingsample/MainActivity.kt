@@ -4,7 +4,11 @@ import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.text.method.ScrollingMovementMethod
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
+import android.text.style.TypefaceSpan
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
@@ -20,6 +24,8 @@ import com.adswizz.core.streaming.AdswizzAdStreamManager
 import com.adswizz.core.streaming.AfrConfig
 import com.adswizz.sdk.AdswizzSDK
 import kotlinx.android.synthetic.main.activity_main.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 // Streaming app shows minimal server side functionality
 
@@ -88,6 +94,8 @@ class MainActivity : AppCompatActivity() {
         val scroll = ScrollingMovementMethod()
         appLogs.movementMethod = scroll
 
+        sdkVersion.text = "${getString(R.string.adswizz_version_prefix)}${com.adswizz.sdk.BuildConfig.VERSION_NAME}"
+
         val companion = findViewById<AdCompanionView>(R.id.companionView)
         companion.setBackgroundColor(Color.parseColor("#00000000"))
 
@@ -129,9 +137,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun TextView.addEntry(entry: String) {
-        val strBuilder = StringBuilder(this.text)
-        strBuilder.append(entry)
-        strBuilder.append("\n")
-        this.text = strBuilder.toString()
+        val ssBuilder = SpannableStringBuilder(this.text)
+
+        val timeStamp: String = SimpleDateFormat("HH:mm:ss.SSS").format(Date())
+        val entryLine = "$timeStamp $entry\n"
+
+        ssBuilder.append(entryLine)
+
+        val spanStart = ssBuilder.length - entryLine.length
+        val spanEnd = spanStart + timeStamp.length
+        ssBuilder.setSpan(RelativeSizeSpan(0.7f), spanStart, spanEnd, 0)
+        ssBuilder.setSpan(ForegroundColorSpan(Color.DKGRAY), spanStart, spanEnd, 0)
+        ssBuilder.setSpan(TypefaceSpan("sans-serif-condensed"), spanStart, spanEnd, 0)
+
+        this.text = ssBuilder
     }
 }
