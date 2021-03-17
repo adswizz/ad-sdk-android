@@ -1179,10 +1179,11 @@ For client side insertion, to use the external player you have to provide an **_
     adManager.adManagerSettings = AdManagerSettings.Builder().adPlayerInstance(externalPlayer).build()
 ```
 
-For server side insertion, to use the external player you have to provide an **_AdManagerStreamingSettings_** object with an instance of your player before calling ```streamManager.play(AIS_STREAM_URL)```. See below:
+For server side insertion, to use the external player you have to provide an **_AdManagerStreamingSettings_** object with an instance of your player during initialization of ```AdswizzAdStreamManager```. See below:
 
 ```kotlin
-    streamManager.adManagerStreamingSettings = AdManagerStreamingSettings.Builder().adPlayerInstance(externalPlayer).build()
+    val adStreamManagerSettings = AdManagerStreamingSettings.Builder().adPlayerInstance(externalPlayer).build()
+    adStreamManager = AdswizzAdStreamManager(adStreamManagerSettings)
 ```
 
 The provided player (externalPlayer in the examples above) must implement the **_AdPlayer_** interface.
