@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.6] - 2021-04-01
+
+### Fixed
+- An issue related to the OMSDK config file.
+- An issue related to `companionZone` member in the `AfrConfig` class.
+
 ## [7.3.5] - 2021-03-15
 
 ### Changed
@@ -15,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - AdCompanionView content will scale down to fit its container and will be centered in the view
 
 ### Fixed
-- A bug related to omsdk not working on server side
+- A bug related to OMSDK not working on server side
 
 ## [7.3.3] - 2021-03-04
 
