@@ -7,8 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.4.0] - 2021-TBD
 
 ### Added
-- Added `AUTO` value to `AssetQuality` enum
-- Added `disableDataCollection` boolean in `AdswizzSDK` to enable/disable data collection at device level
+- Added `AUTO` value to `AssetQuality` enum.
+- Added `disableDataCollection` boolean in `AdswizzSDK` to enable/disable data collection at device level.
+- Added `AdswizzSDKConfig` to `AdswissSDK.initialize` method to be able to pass installationId and playerId at runtime.
 
 
 ## [7.3.1] - 2021-02-12

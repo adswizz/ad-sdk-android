@@ -12,6 +12,7 @@
       * [Package visibility](#package-visibility)
       * [Adding the SDK to your AndroidStudioProject project](#adding-the-sdk-to-your-android-studio-project)
       * [SDK initialization and cleanup](#sdk-initialization-and-cleanup)
+      * [SDK initialization when installationId and playerId are unknown at compile time](#sdk-initialization-when-installationid-and-playerid-are-unknown-at-compile-time)
  * [<strong>Client-Side Insertion</strong>](#client-side-insertion)
       * [Your first ad request](#your-first-ad-request)
       * [Working with AdManager object](#working-with-admanager-object)
@@ -441,6 +442,9 @@ Second, you need to add the playerId to your manifest. This is also obtained fro
     ....
 </application>
 ```
+
+If adding the installation id and player id at compile time is not an option then read [SDK initialization when installationId and playerId are unknown at compile time](#sdk-initialization-when-installationid-and-playerid-are-unknown-at-compile-time).
+
 Next, you need to initialize the AdswizzSDK. The recommended way to do this is in the onCreate of your application. If you already extended
 the application class just add the following line inside the onCreate method:
 
@@ -482,6 +486,17 @@ AdswizzSDK.cleanup()
 ```
 
 Call it when you will no longer need the SDK.
+
+## SDK initialization when installationId and playerId are unknown at compile time
+
+If the installationId or playerId are not known at compile time and you want to set them at runtime you can construct an `AdswizzSDKConfig` data class and pass it to `AdswizzSDK.initialize` method. See below:
+
+```kotlin
+val installationId = ...
+val playerId = ...
+AdswizzSDK.initialize(context, AdswizzSDKConfig(installationId, playerId))
+```
+
 
 # Client-Side Insertion
 
