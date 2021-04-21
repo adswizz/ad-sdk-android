@@ -4,12 +4,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.4.0] - 2021-TBD
+## [7.4.0] - 2021-04-23
 
 ### Added
 - Added `AUTO` value to `AssetQuality` enum.
 - Added `disableDataCollection` boolean in `AdswizzSDK` to enable/disable data collection at device level.
-- Added `AdswizzSDKConfig` to `AdswissSDK.initialize` method to be able to pass installationId and playerId at runtime.
+- Added `AdswizzSDKConfig` to `AdswizzSDK.initialize` method to be able to pass installationId and playerId at runtime.
+- Added `ads` to `AdBaseManager`. It contains the list of ads obtained after fetching.
+- In `AdData` added `width` and `height` that contains the width and height from the currently selected vast media file
+- In `AdData` added `extensions` that contains a list with all `<Extension>` tag info from inline and wrappers
+- In `AdData` added `adParameters` that contains the `<AdParameters>` tag info, if exists, from the currently selected creative
+- In `AdData` added `creativeExtensions` that contains a list with all `<CreativeExtension>` tag info, from the currently selected creative
+- Added `xmlString` member in all vast parsed data classes. It contains the string that was used for generating the data class during parsing.
+- Added `AdswizzSDK.xpaid` that contains the latest xpaid (aw_0_awz.xpaid) header value
+- Support for custom params in `AnalyticsEvent` through `AnalyticsCustomData` data class
+- New member in `AnalyticsEvent` called `customParams` for plugins to access the custom attributes
+- New data class `AnalyticsCustomData` that contains the analytics event's custom params
+- New member in `AdBaseManager` called `analyticsCustomData` to dynamically set/update Analytics events's custom params
+- New member in `AdRequest.Builder` called `analyticsCustomData` to set Analytics events's custom params
+- New member in `AdswizzAdRequest.Builder` called `analyticsCustomData` to set Analytics events's custom params
+- For `AnalyticsEvent` added the following attributes, when available: `appState`, `adCount`, `volume`, `transactionId`, `skipOffset`, `adType`, `adSystem`, `adSequence`, `creativeId`, `width` and `height`.
+- More analytics events logged during the ads lifecyle
+
+### Removed
+- Removed the properties on the `AdManager` object: `adCount` and `totalAdsDuration`
+
+### Changed
+- All `SDKErrorCode` values defined within the AdswizzSDK are now incremented with 2000 i.e `201` became `2201`
+- `com.adswizz.core.installationId` and `com.adswizz.core.playerId` attributes are no longer mandatory in manifest unless they were set through `AdswizzSDKConfig` when AdswizzSDK is initialized
+
+### Fixed
+- `AdCompanionView` will fire creativeView event only when it is visible to the user (`View.isShown` is true and `View.alpha` > 0 and `View.width` > 0 and `View.height` > 0 and the activity is in resume state)
 
 
 ## [7.3.1] - 2021-02-12
