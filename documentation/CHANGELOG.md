@@ -40,6 +40,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `AdCompanionView` will fire creativeView event only when it is visible to the user (`View.isShown` is true and `View.alpha` > 0 and `View.width` > 0 and `View.height` > 0 and the activity is in resume state)
 
 
+## [7.3.6] - 2021-04-01
+
+### Fixed
+- An issue related to the OMSDK config file.
+- An issue related to `companionZone` member in the `AfrConfig` class.
+
+## [7.3.5] - 2021-03-15
+
+### Changed
+- Server-Side Insertion scenarios update: added `companionZone` member in the `AfrConfig` class. The zone id provided via this member will be used in companion banner requests when the streaming server (AIS) does not provide a valid companion zone id via metadata.  
+
+## [7.3.4] - 2021-03-11
+
+### Changed
+- AdCompanionView content will scale down to fit its container and will be centered in the view
+
+### Fixed
+- A bug related to OMSDK not working on server side
+
+## [7.3.3] - 2021-03-04
+
+### Added
+- Added concatenated metadata support for server side insertion
+
+### Changed
+- AdCompanionView content will scale up or down to fit its container and will be centered in the view
+
+## [7.3.2] - 2021-02-25
+
+### Changed
+- AdCompanionView content alignment changed from top-left to center.
+
 ## [7.3.1] - 2021-02-12
 
 ### Added

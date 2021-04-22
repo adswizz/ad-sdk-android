@@ -83,6 +83,7 @@
  * [<strong>Sample projects</strong>](#sample-projects)
       * [BasicSample](#basicsample)
       * [StreamingSample](#streamingsample)
+      * [StreamingSample with External Player](#streamingsample-with-external-player)
       * [Precache Sample](#precache-sample)
       * [Video Ads Sample](#video-ads-sample)
 
@@ -1235,10 +1236,11 @@ For client side insertion, to use the external player you have to provide an **_
     adManager.adManagerSettings = AdManagerSettings.Builder().adPlayerInstance(externalPlayer).build()
 ```
 
-For server side insertion, to use the external player you have to provide an **_AdManagerStreamingSettings_** object with an instance of your player before calling ```streamManager.play(AIS_STREAM_URL)```. See below:
+For server side insertion, to use the external player you have to provide an **_AdManagerStreamingSettings_** object with an instance of your player during initialization of ```AdswizzAdStreamManager```. See below:
 
 ```kotlin
-    streamManager.adManagerStreamingSettings = AdManagerStreamingSettings.Builder().adPlayerInstance(externalPlayer).build()
+    val adStreamManagerSettings = AdManagerStreamingSettings.Builder().adPlayerInstance(externalPlayer).build()
+    adStreamManager = AdswizzAdStreamManager(adStreamManagerSettings)
 ```
 
 The provided player (externalPlayer in the examples above) must implement the **_AdPlayer_** interface.
@@ -2092,6 +2094,9 @@ This sample demonstrates a basic client-side insertion scenario by showing how t
 This sample demonstrates a basic server-side insertion scenario by showing how to create and customize an _**AdswizzAdStreamManager**_.
 If the ad that comes from the stream is interactive, you can observe the interactivity on both the **Phone** and the **Smartwatch**
 
+## StreamingSample with External Player
+
+This sample demonstrates a basic server-side insertion scenario same as the above sample, with the only difference being the external player that has been used in this case.
 
 ## PreCache Sample
 
