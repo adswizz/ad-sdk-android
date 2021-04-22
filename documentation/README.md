@@ -59,6 +59,7 @@
       * [GDPR consent](#gdpr-consent)
       * [CCPA config](#ccpa-config)
       * [Disable data collection](#disable-data-collection)
+      * [XPAID header](#xpaid-header)
       * [AFR config](#afr-config)
       * [Integrator Context](#integrator-context)
       * [Extra exposure time for an AdCompanionView](#extra-exposure-time-for-an-adcompanionview)
@@ -71,7 +72,9 @@
  * [<strong>Vast Macros</strong>](#vast-macros)
  * [<strong>Multiprocess Host App Guide</strong>](#multiprocess-host-app-guide)
       * [Companion Support](#companion-support)
+      * [Video Support](#video-support)
       * [Limitations](#limitations)
+ * [<strong>AdData interface</strong>](#addata-interface)
  * [<strong>Ad Base Manager adapters</strong>](#ad-base-manager-adapters)
  * [<strong>AdswizzSDK Analytics</strong>](#adswizzsdk-analytics)
       * [Customize AnalyticsEvent](#customize-analyticsevent)
@@ -238,37 +241,15 @@ If you are excluding any tested dependency version and use another version inste
 
 ## Permissions
 
-With the addition of the SDK to your project, there will be some permissions that will appear in your merged manifest file.
-You don't need to do anything.
+With the addition of the SDK to your project, there will be only a couple of permissions that will appear in your merged manifest file. These are the bare minimum in order for the sdk to function.
 
-The AdswizzAdSDK uses the following permissions:
+The AdswizzSDK uses the following permissions:
 
 ```xml
 <manifest>
 ....
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
-
-    <!-- Required for 28 and below. -->
-    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
-    <!-- Required for 29+. -->
-    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
 ....
 </manifest>
 ```
@@ -281,18 +262,62 @@ AdswizzWearSDK uses the following permissions:
 <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.VIBRATE" />
-<uses-permission android:name="android.permission.RECORD_AUDIO" />
 ....
 </manifest>
 ```
 
-If you don't want some of the permissions to show in your app you  can use the following line of code to remove it.
-For example if you don't want the **CAMERA** permission in your final application, you just remove it in your own manifest file like this:
+In order to take full advantage of everything that the SDK has to offer additional permissions will be needed.
+
+The AdswizzSDK additional permissions are:
 
 ```xml
-<uses-permission android:name="android.permission.CAMERA" tools:node="remove"/>
+<manifest>
+....
+    <!-- used in sonar tracking endpoint for the gps location. Used in analytics when sending the batch to the server -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- used for polling and profile sonar endpoints to get the microphone status. Used for speech recognition during voice ads -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- used in interactivity for the download file and download pass file actions -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- used in interactivity call action -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <!-- used during creative selection based on network conditions. Used in interactivity call action -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- used during creative selection based on network conditions -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- used for sonar profile and polling endpoints when it populates the wifi info -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!-- used in sonar tracking endpoint for the gps location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- used for profile and polling sonar endpoints -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <!-- we use it in sonar to add the list of installed apps and bundleVersion to the profile endpoint -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+
+    <!-- used for sonar polling endpoint where it sends the list of user activities -->
+    <!-- Required for 28 and below. -->
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
+    <!-- Required for 29+. -->
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+....
+</manifest>
 ```
-Keep in mind that if you remove permissions, some of the features from our SDK might not work. We handle the case of permissions missing so you don't have to worry about crashes.
+
+For AdswizzWearSDK there is only one additional permission:
+
+```xml
+<manifest>
+....
+    <!-- Used for speech recognition during voice ads -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+....
+</manifest>
+```
+
+These additional permissions will have to be manually added in the host app manifest. Keep in mind that for missing permissions, some of the features from our SDK might not work. We handle the case of permissions missing so you don't have to worry about crashes.
+
+If you want to keep some permissions only for the host app to use then the following function `AdswizzSDK.setPermissionStatus` will help with denying the unwanted permission to the Adswizz SDK. By default the Adswizz SDK will use all permissions that the host app will use. If you need to know if a permission is allowed to be used by the Adswizz SDK then you can call `AdswizzSDK.getPermissionStatus`.
+
 
 ## Package visibility
 
@@ -834,32 +859,24 @@ Below is a diagram of the AdStreamManager states:
 
 An interactive ad is an ad that has at least one detector and at least one action associated with it.
 
-AdsWizz interactive ads require some permissions on your app.
+AdsWizz interactive ads require some permissions on your app. On the phone it requires:
 
 ```xml
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- used for speech recognition on voice ads-->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- used in interactivity for the download file and download pass file actions -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- used in interactivity call action -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <!-- used in interactivity call action -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
-    <uses-permission android:name="android.permission.CAMERA" />
+```
 
-    <uses-feature android:name="android.hardware.location.gps" />
-    <!-- Required for 28 and below. -->
-    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
-    <!-- Required for 29+. -->
-    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+On wearable it requires:
+
+```xml
+    <!-- used for speech recognition on voice ads-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 ```
 
 Also it requires the following package visibility queries:
@@ -896,9 +913,9 @@ Also it requires the following package visibility queries:
     </queries>
 ```
 
-Both, permissions and queries are included in the AdswizzSDK.
+The permissions have to be manually added by the host app. The queries are included in the AdswizzSDK.
 
-There are four types of detectors as follows: ShakeDetector, VoiceDetector, InAppNotification, TapTapDetector
+There are four types of detectors as follows: ShakeDetector, VoiceDetector, InAppNotification, TapTapDetector.
 
 ## Shake enabled interactive ads
 These ads, as the name suggests, detect the **shake** of the of phone or Wear OS smartwatch and execute the selected action.
@@ -1745,6 +1762,10 @@ If you want to re-enable it simply add the following line:
     AdswizzSDK.disableDataCollection = false
 ```
 
+## XPAID header
+
+For each call Adswizz SDK checks the response and updates the xpaid header (aw_0_awz.xpaid) value. The host app can obtain it by calling **_AdswizzSDK.xpaid_**.
+
 ## AFR config
 
 In order to have the companion displayed during 'Server-Side Insertion' an AFR Config object should be provided to the SDK. With the information obtained from AdsWizz this object can be configured like in the code snippet below:
@@ -1868,12 +1889,25 @@ The Adswizz SDK is able to work within a multiprocess host application. If your 
 In your manifest add the following lines:
 ```xml
     <service
+        android:name="com.ad.core.multiprocess.ipc.ProcessIpcService"
+        android:enabled="true"
+        android:exported="false"
+        android:process="NAME_OF_THE_UI_PROCESS" />
+
+    <service
         android:name="com.ad.core.companion.ipc.AdCompanionService"
         android:enabled="true"
         android:exported="false"
         android:process="NAME_OF_THE_PLAYBACK_PROCESS" />
+
+    <service
+        android:name="com.ad.core.video.ipc.AdVideoService"
+        android:enabled="true"
+        android:exported="false"
+        android:process="NAME_OF_THE_PLAYBACK_PROCESS" />
+
 ```
-where `NAME_OF_THE_PLAYBACK_PROCESS` is the name of the process in which `AdswizzSDK.initialize(context: Context)` function is called.
+where `NAME_OF_THE_PLAYBACK_PROCESS` is the name of the process in which `AdswizzSDK.initialize(context: Context)` function is called, and `NAME_OF_THE_UI_PROCESS` is the name of the process where the UI logic is handled. For single process applications `NAME_OF_THE_PLAYBACK_PROCESS` and `NAME_OF_THE_UI_PROCESS` will be the same.
 
 ## Companion Support
 
@@ -1885,12 +1919,39 @@ In case the playback process is killed the `AdCompanionView` class has 2 methods
 
  In case the UI process is killed, the Adswizz SDK will detect that the registered `AdCompanionView` is no longer available and it will gracefully unregistered it.
 
+## Video Support
+
+ Having the app split in 2 separate processes means that the user may encounter the situation where one process is dead and the other active.
+
+ In case the playback process is killed the `AdVideoView` class has 2 methods that can be used:
+  - `fun clearContent()`. When called cleans the visual content of the video view. By default when the playback process dies the content remains unchanged.
+  - `fun reconnect()`. The app should call this method after the playback process was restored and the Adswizz SDK reinitialized and ready to use. Calling `reconnect` will register the `AdVideoView` into Adswizz SDK.
+
+  In case the UI process is killed, the Adswizz SDK will detect that the registered `AdVideoView` is no longer available and it will gracefully unregistered it.
+
 ## Limitations
 
 The following features don't have support in multiprocess applications:
 - In-app notification detector: in a multiprocess application it will not appear on screen. So the actions can't be triggered because the user will be unable to press the buttons.
 - Permissions action: the action will not appear on-screen, although it can be triggered.
-- Analytics logs: the logs will come only from the playback process.
+- Analytics logs: the logs will not be sent.
+- OMSDK plugin: it will not measure anything.
+
+# AdData interface
+
+This interface exposes to the host app the following informations:
+
+- id: the ad id from the VAST response
+- duration: the duration of the ad taken from VAST response
+- mediaUrlString: the media file that was chosen be used for the ad
+- adFormat: the ad format: normal, extension or silence extension
+- skipOffset: the minimum time that has to pass until we can skip an ad. If null the ad can be skipped immediately
+- extensions: ad extensions from VAST response
+- adParameters: ad parameters from VAST response
+- creativeExtensions: creative extensions from VAST response
+- width: the media file width field value from VAST response
+- height: the media file height field value from VAST response
+- getAllCompanions(): the list of all companions from the VAST response
 
 # Ad Base Manager adapters
 
