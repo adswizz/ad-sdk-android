@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New member in `AdswizzAdRequest.Builder` called `analyticsCustomData` to set Analytics events's custom params
 - For `AnalyticsEvent` added the following attributes, when available: `appState`, `adCount`, `volume`, `transactionId`, `skipOffset`, `adType`, `adSystem`, `adSequence`, `creativeId`, `width` and `height`.
 - More analytics events logged during the ads lifecyle
+- Added IPC support for video
+- New service class `AdVideoService` that is used for video inter process communication
 
 ### Removed
 - Removed the properties on the `AdManager` object: `adCount` and `totalAdsDuration`
@@ -32,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - All `SDKErrorCode` values defined within the AdswizzSDK are now incremented with 2000 i.e `201` became `2201`
 - `com.adswizz.core.installationId` and `com.adswizz.core.playerId` attributes are no longer mandatory in manifest unless they were set through `AdswizzSDKConfig` when AdswizzSDK is initialized
+- Changed the android permission model. Now the sdk will ask for the bare minimum amount of permission in order to work. For most permissions that were removed the functionality will not be present if they will not be added by the host app.
 
 ### Fixed
 - `AdCompanionView` will fire creativeView event only when it is visible to the user (`View.isShown` is true and `View.alpha` > 0 and `View.width` > 0 and `View.height` > 0 and the activity is in resume state)

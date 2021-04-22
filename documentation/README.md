@@ -23,8 +23,8 @@
          * [pause](#pause)
          * [skipAd](#skipad)
          * [reset](#reset)
-         * [adCount](#adCount)
-         * [totalAdsDuration](#totalAdsDuration)
+         * [ads](#ads)
+         * [analyticsCustomData](#analyticsCustomData)
       * [AdManager life cycle](#admanager-life-cycle)         
  * [<strong>Server-Side Insertion</strong>](#server-side-insertion)
       * [Your first stream manager](#your-first-stream-manager)
@@ -74,6 +74,9 @@
       * [Limitations](#limitations)
  * [<strong>Ad Base Manager adapters</strong>](#ad-base-manager-adapters)
  * [<strong>AdswizzSDK Analytics</strong>](#adswizzsdk-analytics)
+      * [Customize AnalyticsEvent](#customize-analyticsevent)
+          * [Custom analytics data through AdRequest](#custom-analytics-data-through-adrequest)
+          * [Custom analytics data through Ad Manager](#custom-analytics-data-through-ad-manager)
  * [<strong>Sample projects</strong>](#sample-projects)
       * [BasicSample](#basicsample)
       * [StreamingSample](#streamingsample)
@@ -640,13 +643,13 @@ If you decide to skip all ads in the AdManager from the current one you can call
 your app will trigger **_DidSkip_** or **_NotUsed_** and for the rest **_NotUsed_**. A **_AllAdsCompleted_** event will be sent at the end.
 Looping through the ad again will need a call to **_prepare_** function.</br>
 
-### adCount
+### ads
 
-Get the current number of ads. This is not a constant since ads can be added or removed at any time. A zero value means the Ad Manager will not play any ad.
+Get the normal ads in the ad manager. A zero value means the Ad Manager will not play any ad.
 
-### totalAdsDuration
+### analyticsCustomData
 
-Returns the total number of seconds for all playable ads currently stored by the `AdManager` object.
+Set an **_AnalyticsCustomData_** data class to provide key-value custom attributes to all **_AnalyticsEvent_** instances triggered by the AdswizzSDK for Analytics purposes. Read more at [AdswizzSDK Analytics](#adswizzsdk-analytics).
 
 Below is a descriptive graph with all this information:
 
@@ -963,7 +966,8 @@ AdswizzSDK lets you configure companion banner(s) if you are provided by the Ads
 
 The easiest way to add a companion view is from XML. You could also add the view programmatically.
 Once created, the SDK will keep track of all of your companion views and fill them with ad related content as the
-ad is playing.
+ad is playing. By default an **_AdCompanionView_** instance is inactive, meaning that as long as it's not visible on screen it won't load the content (during the ad break) or fire tracking events. You can "deactivate" companion view at any time temporarily by either hiding it, resizing it so that the frame width or height is zero, making it transparent or removing it from the view tree. The SDK will automatically keep track of your companion state and stop or resume rendering.
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -1961,6 +1965,51 @@ AdswizzSDK.analytics?.add(myAnalyticsConnector)
 **NOTE**
 
 `AdswizzSDK` keeps a weak reference to the `AnalyticsConnector`, so it's host app responsibility to keep a strong reference to the `AnalyticsConnector` instance while listening for analytics events.
+
+
+## Customize AnalyticsEvent
+
+Additionally to being able to intercept and process Analytics events logged by AdswizzSDK through an **_AnalyticsConnector_** implementation, you can also add your own attributes associated with the **_AnalyticsEvent_** objects.
+AdswizzSDK is able to pass down your key-value collection of custom attributes/properties for all events generated from the moment a request is build, through requesting ads and during ads playback.
+The exposed **_AnalyticsCustomData_** data class encapsulates any additional data you wish to pass to the **_AnalyticsEvent_**. The params you provide into `AnalyticsCustomData.params` will be reflected in the **_customParams_** property of the **_AnalyticsEvent_** objects.
+To inject your `AnalyticsCustomData` you need to pass it to AdswizzSDK using one of the approaches detailed below.
+
+### Custom analytics data through AdRequest
+
+You can instruct AdswizzSDK to track your custom analytics data by passing your **_AnalyticsCustomData_** object to your **_AdRequest.Builder_** implementation or **_AdswizzAdRequest.Builder_** whichever you are using. Note that AdswizzSDK will keep a strong reference to your **_AnalyticsCustomData_** object.
+
+Here is an example using an **_AdRequest_**:
+
+```kotlin
+val analyticsCustomData = AnalyticsCustomData(mutableMapOf("a" to "b", "c" to 7))
+
+val adRequest: adRequest = AdRequest.Builder()
+            .withUrlString("SERVER_URL_PROVIDED_BY_PIM")
+            .withAnalyticsCustomData(analyticsCustomData)
+            .build()
+```
+
+Here is an example using the **_AdswizzAdRequest_**:
+
+```kotlin
+val analyticsCustomData = AnalyticsCustomData(mutableMapOf("a" to "b", "c" to 7))
+
+val adRequest: AdswizzAdRequest = AdswizzAdRequest.Builder()
+            .withServer("SERVER_PROVIDED_BY_PIM")
+            .withZones(setOf(AdswizzAdZone("ZONEID_1_PROVIDED_BY_PIM"), ... AdswizzAdZone("ZONEID_n_PROVIDED_BY_PIM")))
+            .withAnalyticsCustomData(analyticsCustomData)
+            .build()
+```
+
+### Custom analytics data through Ad Manager
+
+Another approach to pass `AnalyticsCustomData` object is by using the **_analyticsCustomData_** property of the **_AdBaseManager_** instance. Here you can update either the entire reference of the `AnalyticsCustomData` or alter only the `params` property. The AdswizzSDK will use the (updated) `params` to populate `customParams` property of any subsequent **_AnalyticsEvent_** triggered after your update.
+
+```kotlin
+val analyticsCustomData = AnalyticsCustomData(mutableMapOf("a" to "b", "c" to 7))
+
+adBaseManager.analyticsCustomData = analyticsCustomData
+```
 
 ---
 
