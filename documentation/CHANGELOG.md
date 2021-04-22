@@ -27,6 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - More analytics events logged during the ads lifecyle
 - Added IPC support for video
 - New service class `AdVideoService` that is used for video inter process communication
+- Added functionality to support denying host app permissions to the Adswizz SDK
+- New functions in `AdswizzSDK`: `getPermissionStatus` and `setPermissionStatus` to control the permissions that may be used by the Adswizz SDK
 
 ### Removed
 - Removed the properties on the `AdManager` object: `adCount` and `totalAdsDuration`
