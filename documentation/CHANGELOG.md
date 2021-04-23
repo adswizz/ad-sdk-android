@@ -4,6 +4,51 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.0] - 2021-04-23
+
+### Added
+- New public members in **_AdswizzSDK_**:
+    - `disableDataCollection` boolean to enable/disable data collection at device level
+    - `AdswizzSDKConfig` param to `AdswizzSDK.initialize` method to be able to pass installationId and playerId at runtime
+    - `xpaid` that contains the AudioGraph ID value corresponding to the active listener
+    - `getPermissionStatus` and `setPermissionStatus` to control the permissions that may be used by the Adswizz SDK
+- New public members in **_AdBaseManager_**:
+    - `ads` that contains the list of ads obtained after fetching
+    - `analyticsCustomData` to dynamically set/update Analytics events's custom params
+- New public members in **_AdData_**:
+    - `width` and `height` that contains the width and height from the currently selected vast media file
+    - `extensions` that contains a list with all `<Extension>` tag info from inline and wrappers
+    - `adParameters` that contains the `<AdParameters>` tag info, if exists, from the currently selected creative
+    - `creativeExtensions` that contains a list with all `<CreativeExtension>` tag info, from the currently selected creative
+- New public members in **_AssetQuality_** enum:
+    - `AUTO` value for the sdk to select the asset quality based on network connection
+- New members in **_AnalyticsEvent_**:
+    - `customParams` for plugins to access the custom attributes
+- New member in **_AdRequest.Builder_**:
+    - `analyticsCustomData` to set Analytics events's custom params
+- New member in **_AdswizzAdRequest.Builder_**:
+    - `analyticsCustomData` to set Analytics events's custom params
+- Added `xmlString` member in all vast parsed data classes. It contains the string that was used for generating the data class during parsing.
+- Support for custom params in `AnalyticsEvent` through `AnalyticsCustomData` data class
+- New data class `AnalyticsCustomData` that contains the analytics event's custom params
+- For `AnalyticsEvent` added the following attributes, when available: `appState`, `adCount`, `volume`, `transactionId`, `skipOffset`, `adType`, `adSystem`, `adSequence`, `creativeId`, `width` and `height`.
+- More analytics events logged during the ads lifecyle
+- Added IPC support for video ads playback
+- New service class `AdVideoService` that is used for video inter process communication
+- Added functionality to support denying host app permissions to the Adswizz SDK
+
+### Removed
+- Removed the properties on the `AdManager` object: `adCount` and `totalAdsDuration`
+
+### Changed
+- All `SDKErrorCode` values defined within the AdswizzSDK are now incremented with 2000 i.e `201` became `2201`
+- `com.adswizz.core.installationId` and `com.adswizz.core.playerId` attributes are no longer mandatory in manifest unless they were set through `AdswizzSDKConfig` when AdswizzSDK is initialized
+- Changed the android permission model. Now the sdk will ask for the bare minimum amount of permission in order to work. For most permissions that were removed the functionality will not be present if they will not be added by the host app.
+
+### Fixed
+- `AdCompanionView` will fire creativeView event only when it is visible to the user (`View.isShown` is true and `View.alpha` > 0 and `View.width` > 0 and `View.height` > 0 and the activity is in resume state)
+
+
 ## [7.3.6] - 2021-04-01
 
 ### Fixed
@@ -35,7 +80,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - AdCompanionView content alignment changed from top-left to center.
-
 
 ## [7.3.1] - 2021-02-12
 

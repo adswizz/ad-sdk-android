@@ -12,6 +12,7 @@
       * [Package visibility](#package-visibility)
       * [Adding the SDK to your AndroidStudioProject project](#adding-the-sdk-to-your-android-studio-project)
       * [SDK initialization and cleanup](#sdk-initialization-and-cleanup)
+      * [SDK initialization when installationId and playerId are unknown at compile time](#sdk-initialization-when-installationid-and-playerid-are-unknown-at-compile-time)
  * [<strong>Client-Side Insertion</strong>](#client-side-insertion)
       * [Your first ad request](#your-first-ad-request)
       * [Working with AdManager object](#working-with-admanager-object)
@@ -22,8 +23,8 @@
          * [pause](#pause)
          * [skipAd](#skipad)
          * [reset](#reset)
-         * [adCount](#adCount)
-         * [totalAdsDuration](#totalAdsDuration)
+         * [ads](#ads)
+         * [analyticsCustomData](#analyticsCustomData)
       * [AdManager life cycle](#admanager-life-cycle)         
  * [<strong>Server-Side Insertion</strong>](#server-side-insertion)
       * [Your first stream manager](#your-first-stream-manager)
@@ -57,10 +58,13 @@
  * [<strong>AdswizzSDK general settings</strong>](#adswizzsdk-general-settings)
       * [GDPR consent](#gdpr-consent)
       * [CCPA config](#ccpa-config)
+      * [Disable data collection](#disable-data-collection)
+      * [XPAID header](#xpaid-header)
       * [AFR config](#afr-config)
       * [Integrator Context](#integrator-context)
       * [Extra exposure time for an AdCompanionView](#extra-exposure-time-for-an-adcompanionview)
       * [Preferred resource type](#preferred-resource-type)
+      * [Asset Quality](#asset-quality)
  * [<strong>Open Measurement in AdswizzSDK</strong>](#open-measurement-in-adswizzsdk)
       * [Video controls obstructions](#video-controls-obstructions)
  * [<strong>(Optional) Prepare your application for advanced targetability capabilities</strong>](#optional-prepare-your-application-for-advanced-targetability-capabilities)
@@ -68,9 +72,14 @@
  * [<strong>Vast Macros</strong>](#vast-macros)
  * [<strong>Multiprocess Host App Guide</strong>](#multiprocess-host-app-guide)
       * [Companion Support](#companion-support)
+      * [Video Support](#video-support)
       * [Limitations](#limitations)
+ * [<strong>AdData interface</strong>](#addata-interface)
  * [<strong>Ad Base Manager adapters</strong>](#ad-base-manager-adapters)
  * [<strong>AdswizzSDK Analytics</strong>](#adswizzsdk-analytics)
+      * [Customize AnalyticsEvent](#customize-analyticsevent)
+          * [Custom analytics data through AdRequest](#custom-analytics-data-through-adrequest)
+          * [Custom analytics data through Ad Manager](#custom-analytics-data-through-ad-manager)
  * [<strong>Sample projects</strong>](#sample-projects)
       * [BasicSample](#basicsample)
       * [StreamingSample](#streamingsample)
@@ -116,6 +125,7 @@ In order to successfully do the ‘Client-Side Insertion’ you will need to set
 The following can be set as general AdswizzSDK parameters:
 *  (optional) GDPR consent value
 *  (optional) CCPA (U.S. privacy string) consent value
+*  (optional) enable/disable data collection
 *  (optional) integrator context. This contain information that the integrator should provide and will be used by the SDK (for example for VAST macro expansion)
 
 For the client-side scenario, you may use any streaming server provided by your AdsWizz Integration Manager.
@@ -132,6 +142,7 @@ In order to successfully integrate the ‘Server-Side Insertion’, you will nee
 The following can be set as general AdswizzSDK parameters:
 *  (optional) GDPR consent value
 *  (optional) CCPA (U.S. privacy string) consent value
+*  (optional) enable/disable data collection
 *  (optional) integrator context. This contain information that the integrator should provide and will be used by the SDK (for example for VAST macro expansion)
 
 
@@ -231,37 +242,15 @@ If you are excluding any tested dependency version and use another version inste
 
 ## Permissions
 
-With the addition of the SDK to your project, there will be some permissions that will appear in your merged manifest file.
-You don't need to do anything.
+With the addition of the SDK to your project, there will be only a couple of permissions that will appear in your merged manifest file. These are the bare minimum in order for the sdk to function.
 
-The AdswizzAdSDK uses the following permissions:
+The AdswizzSDK uses the following permissions:
 
 ```xml
 <manifest>
 ....
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
-
-    <!-- Required for 28 and below. -->
-    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
-    <!-- Required for 29+. -->
-    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
 ....
 </manifest>
 ```
@@ -274,18 +263,62 @@ AdswizzWearSDK uses the following permissions:
 <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.VIBRATE" />
-<uses-permission android:name="android.permission.RECORD_AUDIO" />
 ....
 </manifest>
 ```
 
-If you don't want some of the permissions to show in your app you  can use the following line of code to remove it.
-For example if you don't want the **CAMERA** permission in your final application, you just remove it in your own manifest file like this:
+In order to take full advantage of everything that the SDK has to offer additional permissions will be needed.
+
+The AdswizzSDK additional permissions are:
 
 ```xml
-<uses-permission android:name="android.permission.CAMERA" tools:node="remove"/>
+<manifest>
+....
+    <!-- used in sonar tracking endpoint for the gps location. Used in analytics when sending the batch to the server -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- used for polling and profile sonar endpoints to get the microphone status. Used for speech recognition during voice ads -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- used in interactivity for the download file and download pass file actions -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- used in interactivity call action -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <!-- used during creative selection based on network conditions. Used in interactivity call action -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- used during creative selection based on network conditions -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- used for sonar profile and polling endpoints when it populates the wifi info -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!-- used in sonar tracking endpoint for the gps location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- used for profile and polling sonar endpoints -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <!-- we use it in sonar to add the list of installed apps and bundleVersion to the profile endpoint -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+
+    <!-- used for sonar polling endpoint where it sends the list of user activities -->
+    <!-- Required for 28 and below. -->
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
+    <!-- Required for 29+. -->
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+....
+</manifest>
 ```
-Keep in mind that if you remove permissions, some of the features from our SDK might not work. We handle the case of permissions missing so you don't have to worry about crashes.
+
+For AdswizzWearSDK there is only one additional permission:
+
+```xml
+<manifest>
+....
+    <!-- Used for speech recognition during voice ads -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+....
+</manifest>
+```
+
+These additional permissions will have to be manually added in the host app manifest. Keep in mind that for missing permissions, some of the features from our SDK might not work. We handle the case of permissions missing so you don't have to worry about crashes.
+
+If you want to keep some permissions only for the host app to use then the following function `AdswizzSDK.setPermissionStatus` will help with denying the unwanted permission to the Adswizz SDK. By default the Adswizz SDK will use all permissions that the host app will use. If you need to know if a permission is allowed to be used by the Adswizz SDK then you can call `AdswizzSDK.getPermissionStatus`.
+
 
 ## Package visibility
 
@@ -438,6 +471,9 @@ Second, you need to add the playerId to your manifest. This is also obtained fro
     ....
 </application>
 ```
+
+If adding the installation id and player id at compile time is not an option then read [SDK initialization when installationId and playerId are unknown at compile time](#sdk-initialization-when-installationid-and-playerid-are-unknown-at-compile-time).
+
 Next, you need to initialize the AdswizzSDK. The recommended way to do this is in the onCreate of your application. If you already extended
 the application class just add the following line inside the onCreate method:
 
@@ -479,6 +515,17 @@ AdswizzSDK.cleanup()
 ```
 
 Call it when you will no longer need the SDK.
+
+## SDK initialization when installationId and playerId are unknown at compile time
+
+If the installationId or playerId are not known at compile time and you want to set them at runtime you can construct an `AdswizzSDKConfig` data class and pass it to `AdswizzSDK.initialize` method. See below:
+
+```kotlin
+val installationId = ...
+val playerId = ...
+AdswizzSDK.initialize(context, AdswizzSDKConfig(installationId, playerId))
+```
+
 
 # Client-Side Insertion
 
@@ -545,7 +592,7 @@ class MainActivity : AppCompatActivity(), AdManagerListener {
                 adManager.adManagerSettings = AdManagerSettings.Builder() // optional
                     .adPlayerInstance(YOUR_AD_PLAYER_GOES_HERE) // optional
                     .addCachePolicy(CachePolicy.ASSETS)         // optional
-                    .assetQuality(AssetQuality.MEDIUM)          // optional, other possible values AssetQuality.LOW, AssetQuality.HIGH
+                    .assetQuality(AssetQuality.MEDIUM)          // optional, other possible values AssetQuality.LOW, AssetQuality.HIGH, AssetQuality.AUTO
                     .enqueueEnabled(false)                      // optional
                     .videoViewId(1)                             // optional
                     .build()                                    // optional
@@ -622,13 +669,13 @@ If you decide to skip all ads in the AdManager from the current one you can call
 your app will trigger **_DidSkip_** or **_NotUsed_** and for the rest **_NotUsed_**. A **_AllAdsCompleted_** event will be sent at the end.
 Looping through the ad again will need a call to **_prepare_** function.</br>
 
-### adCount
+### ads
 
-Get the current number of ads. This is not a constant since ads can be added or removed at any time. A zero value means the Ad Manager will not play any ad.
+Get the normal ads in the ad manager. A zero value means the Ad Manager will not play any ad.
 
-### totalAdsDuration
+### analyticsCustomData
 
-Returns the total number of seconds for all playable ads currently stored by the `AdManager` object.
+Set an **_AnalyticsCustomData_** data class to provide key-value custom attributes to all **_AnalyticsEvent_** instances triggered by the AdswizzSDK for Analytics purposes. Read more at [AdswizzSDK Analytics](#adswizzsdk-analytics).
 
 Below is a descriptive graph with all this information:
 
@@ -813,32 +860,24 @@ Below is a diagram of the AdStreamManager states:
 
 An interactive ad is an ad that has at least one detector and at least one action associated with it.
 
-AdsWizz interactive ads require some permissions on your app.
+AdsWizz interactive ads require some permissions on your app. On the phone it requires:
 
 ```xml
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- used for speech recognition on voice ads-->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- used in interactivity for the download file and download pass file actions -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- used in interactivity call action -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <!-- used in interactivity call action -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
-    <uses-permission android:name="android.permission.CAMERA" />
+```
 
-    <uses-feature android:name="android.hardware.location.gps" />
-    <!-- Required for 28 and below. -->
-    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
-    <!-- Required for 29+. -->
-    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+On wearable it requires:
+
+```xml
+    <!-- used for speech recognition on voice ads-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 ```
 
 Also it requires the following package visibility queries:
@@ -875,9 +914,9 @@ Also it requires the following package visibility queries:
     </queries>
 ```
 
-Both, permissions and queries are included in the AdswizzSDK.
+The permissions have to be manually added by the host app. The queries are included in the AdswizzSDK.
 
-There are four types of detectors as follows: ShakeDetector, VoiceDetector, InAppNotification, TapTapDetector
+There are four types of detectors as follows: ShakeDetector, VoiceDetector, InAppNotification, TapTapDetector.
 
 ## Shake enabled interactive ads
 These ads, as the name suggests, detect the **shake** of the of phone or Wear OS smartwatch and execute the selected action.
@@ -945,7 +984,8 @@ AdswizzSDK lets you configure companion banner(s) if you are provided by the Ads
 
 The easiest way to add a companion view is from XML. You could also add the view programmatically.
 Once created, the SDK will keep track of all of your companion views and fill them with ad related content as the
-ad is playing.
+ad is playing. By default an **_AdCompanionView_** instance is inactive, meaning that as long as it's not visible on screen it won't load the content (during the ad break) or fire tracking events. You can "deactivate" companion view at any time temporarily by either hiding it, resizing it so that the frame width or height is zero, making it transparent or removing it from the view tree. The SDK will automatically keep track of your companion state and stop or resume rendering.
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -1008,6 +1048,23 @@ AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
 
 If not set, the default value is first resource available.
 If the preferred resource type is not found, it will default back to first resource available.
+
+## Asset Quality
+
+The asset quality can be set in the _AdManagerSettings_. Below is a code snippet:
+
+```kotlin
+adManager.adManagerSettings = AdManagerSettings.Builder()
+    .assetQuality(AssetQuality.MEDIUM)
+    .build()
+```
+Possible values are:
+- .LOW: it will try to select a media file with a bitrate up to 179199 bps
+- .MEDIUM: will try to select a media file with a bitrate between 179200 bps and 665599 bps
+- .HIGH: will try to select a media file with a bitrate at least 665600 bps
+- .AUTO: it will try to select a media file based on the internet connection that the device has: the better the connection the higher the bitrate. In case of video resources first the frame size is taken into account, the better the connection the higher the frame size. Internet connections is categories in the following buckets: 2g, 2.5g, 2.75g, 3g, 3.5g, "3.55g", "3.6g", 3.75g, 4g, 5g and wifi.
+
+Default value for asset quality is .HIGH.
 
 # Video ads
 
@@ -1693,6 +1750,24 @@ With the introduction of CCPA in US, **_AdswizzSDK_** gives you the possibility 
 
 The first value represents the explicit notice for collecting consent. The next value is the opt-out of the sale of his personal information. The last one is the limitation of scope to the Limited Service Provider Agreement. For all tree, possible values are: **_NOT_APPLICABLE_**, **_YES_**, **_NO_**. The default value for all of them is **_NOT_APPLICABLE_**.
 
+## Disable data collection
+
+Adswizz SDK supports enabling or disabling anonymous data collection at device level. By default the data is collected. If you want to disable data collection at any time you can call:
+
+```kotlin
+    AdswizzSDK.disableDataCollection = true
+```
+
+If you want to re-enable it simply add the following line:
+
+```kotlin
+    AdswizzSDK.disableDataCollection = false
+```
+
+## XPAID header
+
+For each call Adswizz SDK checks the response and updates the xpaid header (aw_0_awz.xpaid) value. The host app can obtain it by calling **_AdswizzSDK.xpaid_**.
+
 ## AFR config
 
 In order to have the companion displayed during 'Server-Side Insertion' an AFR Config object should be provided to the SDK. With the information obtained from AdsWizz this object can be configured like in the code snippet below:
@@ -1816,12 +1891,25 @@ The Adswizz SDK is able to work within a multiprocess host application. If your 
 In your manifest add the following lines:
 ```xml
     <service
+        android:name="com.ad.core.multiprocess.ipc.ProcessIpcService"
+        android:enabled="true"
+        android:exported="false"
+        android:process="NAME_OF_THE_UI_PROCESS" />
+
+    <service
         android:name="com.ad.core.companion.ipc.AdCompanionService"
         android:enabled="true"
         android:exported="false"
         android:process="NAME_OF_THE_PLAYBACK_PROCESS" />
+
+    <service
+        android:name="com.ad.core.video.ipc.AdVideoService"
+        android:enabled="true"
+        android:exported="false"
+        android:process="NAME_OF_THE_PLAYBACK_PROCESS" />
+
 ```
-where `NAME_OF_THE_PLAYBACK_PROCESS` is the name of the process in which `AdswizzSDK.initialize(context: Context)` function is called.
+where `NAME_OF_THE_PLAYBACK_PROCESS` is the name of the process in which `AdswizzSDK.initialize(context: Context)` function is called, and `NAME_OF_THE_UI_PROCESS` is the name of the process where the UI logic is handled. For single process applications `NAME_OF_THE_PLAYBACK_PROCESS` and `NAME_OF_THE_UI_PROCESS` will be the same.
 
 ## Companion Support
 
@@ -1833,12 +1921,39 @@ In case the playback process is killed the `AdCompanionView` class has 2 methods
 
  In case the UI process is killed, the Adswizz SDK will detect that the registered `AdCompanionView` is no longer available and it will gracefully unregistered it.
 
+## Video Support
+
+ Having the app split in 2 separate processes means that the user may encounter the situation where one process is dead and the other active.
+
+ In case the playback process is killed the `AdVideoView` class has 2 methods that can be used:
+  - `fun clearContent()`. When called cleans the visual content of the video view. By default when the playback process dies the content remains unchanged.
+  - `fun reconnect()`. The app should call this method after the playback process was restored and the Adswizz SDK reinitialized and ready to use. Calling `reconnect` will register the `AdVideoView` into Adswizz SDK.
+
+  In case the UI process is killed, the Adswizz SDK will detect that the registered `AdVideoView` is no longer available and it will gracefully unregistered it.
+
 ## Limitations
 
 The following features don't have support in multiprocess applications:
 - In-app notification detector: in a multiprocess application it will not appear on screen. So the actions can't be triggered because the user will be unable to press the buttons.
 - Permissions action: the action will not appear on-screen, although it can be triggered.
-- Analytics logs: the logs will come only from the playback process.
+- Analytics logs: the logs will not be sent.
+- OMSDK plugin: it will not measure anything.
+
+# AdData interface
+
+This interface exposes to the host app the following informations:
+
+- id: the ad id from the VAST response
+- duration: the duration of the ad taken from VAST response
+- mediaUrlString: the media file that was chosen be used for the ad
+- adFormat: the ad format: normal, extension or silence extension
+- skipOffset: the minimum time that has to pass until we can skip an ad. If null the ad can be skipped immediately
+- extensions: ad extensions from VAST response
+- adParameters: ad parameters from VAST response
+- creativeExtensions: creative extensions from VAST response
+- width: the media file width field value from VAST response
+- height: the media file height field value from VAST response
+- getAllCompanions(): the list of all companions from the VAST response
 
 # Ad Base Manager adapters
 
@@ -1913,6 +2028,51 @@ AdswizzSDK.analytics?.add(myAnalyticsConnector)
 **NOTE**
 
 `AdswizzSDK` keeps a weak reference to the `AnalyticsConnector`, so it's host app responsibility to keep a strong reference to the `AnalyticsConnector` instance while listening for analytics events.
+
+
+## Customize AnalyticsEvent
+
+Additionally to being able to intercept and process Analytics events logged by AdswizzSDK through an **_AnalyticsConnector_** implementation, you can also add your own attributes associated with the **_AnalyticsEvent_** objects.
+AdswizzSDK is able to pass down your key-value collection of custom attributes/properties for all events generated from the moment a request is build, through requesting ads and during ads playback.
+The exposed **_AnalyticsCustomData_** data class encapsulates any additional data you wish to pass to the **_AnalyticsEvent_**. The params you provide into `AnalyticsCustomData.params` will be reflected in the **_customParams_** property of the **_AnalyticsEvent_** objects.
+To inject your `AnalyticsCustomData` you need to pass it to AdswizzSDK using one of the approaches detailed below.
+
+### Custom analytics data through AdRequest
+
+You can instruct AdswizzSDK to track your custom analytics data by passing your **_AnalyticsCustomData_** object to your **_AdRequest.Builder_** implementation or **_AdswizzAdRequest.Builder_** whichever you are using. Note that AdswizzSDK will keep a strong reference to your **_AnalyticsCustomData_** object.
+
+Here is an example using an **_AdRequest_**:
+
+```kotlin
+val analyticsCustomData = AnalyticsCustomData(mutableMapOf("a" to "b", "c" to 7))
+
+val adRequest: adRequest = AdRequest.Builder()
+            .withUrlString("SERVER_URL_PROVIDED_BY_PIM")
+            .withAnalyticsCustomData(analyticsCustomData)
+            .build()
+```
+
+Here is an example using the **_AdswizzAdRequest_**:
+
+```kotlin
+val analyticsCustomData = AnalyticsCustomData(mutableMapOf("a" to "b", "c" to 7))
+
+val adRequest: AdswizzAdRequest = AdswizzAdRequest.Builder()
+            .withServer("SERVER_PROVIDED_BY_PIM")
+            .withZones(setOf(AdswizzAdZone("ZONEID_1_PROVIDED_BY_PIM"), ... AdswizzAdZone("ZONEID_n_PROVIDED_BY_PIM")))
+            .withAnalyticsCustomData(analyticsCustomData)
+            .build()
+```
+
+### Custom analytics data through Ad Manager
+
+Another approach to pass `AnalyticsCustomData` object is by using the **_analyticsCustomData_** property of the **_AdBaseManager_** instance. Here you can update either the entire reference of the `AnalyticsCustomData` or alter only the `params` property. The AdswizzSDK will use the (updated) `params` to populate `customParams` property of any subsequent **_AnalyticsEvent_** triggered after your update.
+
+```kotlin
+val analyticsCustomData = AnalyticsCustomData(mutableMapOf("a" to "b", "c" to 7))
+
+adBaseManager.analyticsCustomData = analyticsCustomData
+```
 
 ---
 
