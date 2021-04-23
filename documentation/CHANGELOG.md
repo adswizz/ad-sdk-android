@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New public members in **_AdswizzSDK_**:
     - `disableDataCollection` boolean to enable/disable data collection at device level
     - `AdswizzSDKConfig` param to `AdswizzSDK.initialize` method to be able to pass installationId and playerId at runtime
-    - `xpaid` that contains the latest xpaid (aw_0_awz.xpaid) header value
+    - `xpaid` that contains the AudioGraph ID value corresponding to the active listener
     - `getPermissionStatus` and `setPermissionStatus` to control the permissions that may be used by the Adswizz SDK
 - New public members in **_AdBaseManager_**:
     - `ads` that contains the list of ads obtained after fetching
@@ -33,7 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New data class `AnalyticsCustomData` that contains the analytics event's custom params
 - For `AnalyticsEvent` added the following attributes, when available: `appState`, `adCount`, `volume`, `transactionId`, `skipOffset`, `adType`, `adSystem`, `adSequence`, `creativeId`, `width` and `height`.
 - More analytics events logged during the ads lifecyle
-- Added IPC support for video
+- Added IPC support for video ads playback
 - New service class `AdVideoService` that is used for video inter process communication
 - Added functionality to support denying host app permissions to the Adswizz SDK
 
