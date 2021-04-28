@@ -1,3 +1,4 @@
+[![AdsWizz](img/adswizz_logo.png)](https://www.adswizz.com) 
 # **AdswizzSDK - Integration guide**
  * [<strong>Before you start</strong>](#before-you-start)
       * [What is ‘Client-Side Insertion’](#what-is-client-side-insertion)

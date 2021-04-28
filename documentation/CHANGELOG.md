@@ -1,3 +1,4 @@
+[![AdsWizz](img/adswizz_logo.png)](https://www.adswizz.com)
 # Changelog
 All notable changes to this project will be documented in this file.
 
