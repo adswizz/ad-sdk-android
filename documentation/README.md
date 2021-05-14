@@ -71,6 +71,7 @@
       * [Privacy implications](#privacy-implications)
  * [<strong>Vast Macros</strong>](#vast-macros)
  * [<strong>Multiprocess Host App Guide</strong>](#multiprocess-host-app-guide)
+      * [Work Manager Configuration](#work-manager-configuration)
       * [Companion Support](#companion-support)
       * [Video Support](#video-support)
       * [Limitations](#limitations)
@@ -1894,22 +1895,90 @@ In your manifest add the following lines:
         android:name="com.ad.core.multiprocess.ipc.ProcessIpcService"
         android:enabled="true"
         android:exported="false"
-        android:process="NAME_OF_THE_UI_PROCESS" />
+        android:process=":NAME_OF_THE_UI_PROCESS" />
 
     <service
         android:name="com.ad.core.companion.ipc.AdCompanionService"
         android:enabled="true"
         android:exported="false"
-        android:process="NAME_OF_THE_PLAYBACK_PROCESS" />
+        android:process=":NAME_OF_THE_PLAYBACK_PROCESS" />
 
     <service
         android:name="com.ad.core.video.ipc.AdVideoService"
         android:enabled="true"
         android:exported="false"
-        android:process="NAME_OF_THE_PLAYBACK_PROCESS" />
+        android:process=":NAME_OF_THE_PLAYBACK_PROCESS" />
 
 ```
 where `NAME_OF_THE_PLAYBACK_PROCESS` is the name of the process in which `AdswizzSDK.initialize(context: Context)` function is called, and `NAME_OF_THE_UI_PROCESS` is the name of the process where the UI logic is handled. For single process applications `NAME_OF_THE_PLAYBACK_PROCESS` and `NAME_OF_THE_UI_PROCESS` will be the same.
+
+## Work Manager Configuration
+
+The work manager can be configured to run in either the ui process or the playback process.
+
+To make it work in the ui process add the following lines in your manifest:
+
+```xml
+    <provider
+        android:name="androidx.work.impl.WorkManagerInitializer"
+        android:authorities="${applicationId}.workmanager-init"
+        tools:node="remove" />
+
+    <service
+        android:name="androidx.work.multiprocess.RemoteWorkManagerService"
+        tools:replace="android:process"
+        android:process=":NAME_OF_THE_UI_PROCESS"/>
+
+    <service
+        android:name="androidx.work.impl.background.systemjob.SystemJobService"
+        tools:replace="android:process"
+        android:process=":NAME_OF_THE_UI_PROCESS"/>
+```
+
+and then add the following in your custom `Application` class:
+
+```kotlin
+class NameOfYourApplicationClass : Application(), Configuration.Provider {
+    override fun getWorkManagerConfiguration() =
+            Configuration.Builder()
+                    .setDefaultProcessName("APPLICATION_PACKAGE_NAME:NAME_OF_THE_UI_PROCESS")
+                    .build()
+
+}
+```
+
+To make it work in the playback process add the following lines in your manifest:
+
+```xml
+    <provider
+        android:name="androidx.work.impl.WorkManagerInitializer"
+        android:authorities="${applicationId}.workmanager-init"
+        tools:node="remove" />
+
+    <service
+        android:name="androidx.work.multiprocess.RemoteWorkManagerService"
+        tools:replace="android:process"
+        android:process=":NAME_OF_THE_PLAYBACK_PROCESS"/>
+
+    <service
+        android:name="androidx.work.impl.background.systemjob.SystemJobService"
+        tools:replace="android:process"
+        android:process=":NAME_OF_THE_PLAYBACK_PROCESS"/>
+```
+
+and then add the following in your Application class:
+
+```kotlin
+class NameOfYourApplicationClass : Application(), Configuration.Provider {
+    override fun getWorkManagerConfiguration() =
+            Configuration.Builder()
+                    .setDefaultProcessName("APPLICATION_PACKAGE_NAME:NAME_OF_THE_PLAYBACK_PROCESS")
+                    .build()
+
+}
+```
+
+As above, `NAME_OF_THE_PLAYBACK_PROCESS` is the name of the process in which `AdswizzSDK.initialize(context: Context)` function is called, and `NAME_OF_THE_UI_PROCESS` is the name of the process where the UI logic is handled. For single process applications `NAME_OF_THE_PLAYBACK_PROCESS` and `NAME_OF_THE_UI_PROCESS` will be the same.
 
 ## Companion Support
 
