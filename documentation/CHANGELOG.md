@@ -4,10 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.5.0] - 2021-TBD
+## [7.5.0] - 2021-06-28
 ### Added
+- Advanced Analytics System
 - New public members in **_AdswizzSDK_**:
     - `hasAProcessInForeground()` - returns true if one of the processes has a component in foreground
+- Added new listener in **_AdVideoView_** that can be used to get information about the video playback states. E.g.: buffering start/end, video playback start/end.
+
+### Fixed
+- An issue that may cause `clickThrough` not being fired for the `AdCompanionView` created after the ad playback starts
+- An issue that may prevent `AdCompanionView` being rendered in Android Emulators.
 
 ## [7.4.0] - 2021-04-23
 
