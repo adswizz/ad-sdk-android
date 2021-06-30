@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - New public members in **_AdswizzSDK_**:
     - `hasAProcessInForeground()` - returns true if one of the processes has a component in foreground
+- New _optional_ (they have a default implementation in the interface for kotlin) events in **_AdVideoView.Listener_** that match the lifecycle of a video:
+    - `onVideoStarted` - triggered when the video ad starts playing
+    - `onVideoEnded` - triggered when the video ad finished playing
+    - `onVideoBufferingStart` - triggered when buffering for a video will start
+    - `onVideoBufferingEnd` - triggered when buffering for a video ended
+- New separate sdk artifact that is compiled against the protobuf full Java library instead of the lite version the current artifact uses. Choose one that suits your implementation:
+    - `implementation "com.adswizz:adswizz-sdk:7.5.0"` for the protobuf Lite version (recommended for mobile applications)
+    - `implementation "com.adswizz:adswizz-sdk-protobufJava:7.5.0"` for the protobuf Java artifact
 
 ## [7.4.0] - 2021-04-23
 
