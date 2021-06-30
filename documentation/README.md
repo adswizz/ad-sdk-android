@@ -432,10 +432,16 @@ allprojects {
 implementation 'com.adswizz:adswizz-sdk:version'
 ```
 
-Where <strong>version</strong> is the latest version of the phone and tablet SDK provided by AdsWizz (i.e. 7.1.0 - the latest version). Please notice the below example:
+Where <strong>version</strong> is the latest version of the phone and tablet SDK provided by AdsWizz (i.e. 7.5.0 - the latest version). Please notice the below example:
 
 ```groovy
-implementation 'com.adswizz:adswizz-sdk:7.1.0'
+implementation 'com.adswizz:adswizz-sdk:7.5.0'
+```
+
+_Note_: This artifact is using __protobuf java lite__ internally. In case your application is using the full protobuf java library you'll have to use another sdk artifact as following:
+
+```groovy
+implementation 'com.adswizz:adswizz-sdk-protobufJava:7.5.0'
 ```
 
 ## SDK initialization and cleanup
