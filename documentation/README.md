@@ -72,6 +72,7 @@
       * [Privacy implications](#privacy-implications)
  * [<strong>Vast Macros</strong>](#vast-macros)
  * [<strong>Multiprocess Host App Guide</strong>](#multiprocess-host-app-guide)
+      * [Work Manager Configuration](#work-manager-configuration)
       * [Companion Support](#companion-support)
       * [Video Support](#video-support)
       * [Limitations](#limitations)
@@ -81,6 +82,8 @@
       * [Customize AnalyticsEvent](#customize-analyticsevent)
           * [Custom analytics data through AdRequest](#custom-analytics-data-through-adrequest)
           * [Custom analytics data through Ad Manager](#custom-analytics-data-through-ad-manager)
+ * [<strong>(Optional) Interoperability with PAL SDK</strong>](#optional-interoperability-with-pal-sdk)
+   * [What you need to do](#what-you-need-to-do)
  * [<strong>Sample projects</strong>](#sample-projects)
       * [BasicSample](#basicsample)
       * [StreamingSample](#streamingsample)
@@ -430,10 +433,16 @@ allprojects {
 implementation 'com.adswizz:adswizz-sdk:version'
 ```
 
-Where <strong>version</strong> is the latest version of the phone and tablet SDK provided by AdsWizz (i.e. 7.1.0 - the latest version). Please notice the below example:
+Where <strong>version</strong> is the latest version of the phone and tablet SDK provided by AdsWizz (i.e. 7.5.0 - the latest version). Please notice the below example:
 
 ```groovy
-implementation 'com.adswizz:adswizz-sdk:7.1.0'
+implementation 'com.adswizz:adswizz-sdk:7.5.0'
+```
+
+_Note_: This artifact is using __protobuf java lite__ internally. In case your application is using the full protobuf java library you'll have to use another sdk artifact as following:
+
+```groovy
+implementation 'com.adswizz:adswizz-sdk-protobufJava:7.5.0'
 ```
 
 ## SDK initialization and cleanup
@@ -1895,22 +1904,90 @@ In your manifest add the following lines:
         android:name="com.ad.core.multiprocess.ipc.ProcessIpcService"
         android:enabled="true"
         android:exported="false"
-        android:process="NAME_OF_THE_UI_PROCESS" />
+        android:process=":NAME_OF_THE_UI_PROCESS" />
 
     <service
         android:name="com.ad.core.companion.ipc.AdCompanionService"
         android:enabled="true"
         android:exported="false"
-        android:process="NAME_OF_THE_PLAYBACK_PROCESS" />
+        android:process=":NAME_OF_THE_PLAYBACK_PROCESS" />
 
     <service
         android:name="com.ad.core.video.ipc.AdVideoService"
         android:enabled="true"
         android:exported="false"
-        android:process="NAME_OF_THE_PLAYBACK_PROCESS" />
+        android:process=":NAME_OF_THE_PLAYBACK_PROCESS" />
 
 ```
 where `NAME_OF_THE_PLAYBACK_PROCESS` is the name of the process in which `AdswizzSDK.initialize(context: Context)` function is called, and `NAME_OF_THE_UI_PROCESS` is the name of the process where the UI logic is handled. For single process applications `NAME_OF_THE_PLAYBACK_PROCESS` and `NAME_OF_THE_UI_PROCESS` will be the same.
+
+## Work Manager Configuration
+
+The work manager can be configured to run in either the ui process or the playback process.
+
+To make it work in the ui process add the following lines in your manifest:
+
+```xml
+    <provider
+        android:name="androidx.work.impl.WorkManagerInitializer"
+        android:authorities="${applicationId}.workmanager-init"
+        tools:node="remove" />
+
+    <service
+        android:name="androidx.work.multiprocess.RemoteWorkManagerService"
+        tools:replace="android:process"
+        android:process=":NAME_OF_THE_UI_PROCESS"/>
+
+    <service
+        android:name="androidx.work.impl.background.systemjob.SystemJobService"
+        tools:replace="android:process"
+        android:process=":NAME_OF_THE_UI_PROCESS"/>
+```
+
+and then add the following in your custom `Application` class:
+
+```kotlin
+class NameOfYourApplicationClass : Application(), Configuration.Provider {
+    override fun getWorkManagerConfiguration() =
+            Configuration.Builder()
+                    .setDefaultProcessName("APPLICATION_PACKAGE_NAME:NAME_OF_THE_UI_PROCESS")
+                    .build()
+
+}
+```
+
+To make it work in the playback process add the following lines in your manifest:
+
+```xml
+    <provider
+        android:name="androidx.work.impl.WorkManagerInitializer"
+        android:authorities="${applicationId}.workmanager-init"
+        tools:node="remove" />
+
+    <service
+        android:name="androidx.work.multiprocess.RemoteWorkManagerService"
+        tools:replace="android:process"
+        android:process=":NAME_OF_THE_PLAYBACK_PROCESS"/>
+
+    <service
+        android:name="androidx.work.impl.background.systemjob.SystemJobService"
+        tools:replace="android:process"
+        android:process=":NAME_OF_THE_PLAYBACK_PROCESS"/>
+```
+
+and then add the following in your Application class:
+
+```kotlin
+class NameOfYourApplicationClass : Application(), Configuration.Provider {
+    override fun getWorkManagerConfiguration() =
+            Configuration.Builder()
+                    .setDefaultProcessName("APPLICATION_PACKAGE_NAME:NAME_OF_THE_PLAYBACK_PROCESS")
+                    .build()
+
+}
+```
+
+As above, `NAME_OF_THE_PLAYBACK_PROCESS` is the name of the process in which `AdswizzSDK.initialize(context: Context)` function is called, and `NAME_OF_THE_UI_PROCESS` is the name of the process where the UI logic is handled. For single process applications `NAME_OF_THE_PLAYBACK_PROCESS` and `NAME_OF_THE_UI_PROCESS` will be the same.
 
 ## Companion Support
 
@@ -2076,6 +2153,27 @@ adBaseManager.analyticsCustomData = analyticsCustomData
 ```
 
 ---
+
+# (Optional) Interoperability with PAL SDK
+
+AdswizzSDK can work with Google's PAL SDK to access video demand from DV360. AdswizzSDK is not directly linked to the PAL SDK but exposes a public API to facilitate the communication.
+
+## What you need to do
+Firstly you need to integrate PAL SDK into your app.
+
+Then you have to create a **_PalNonceHandlerInterface_** object that contains the `nonce` string of the PAL SDK's `NonceManager` object and provides the following events to the PAL SDK's `NonceManager` object: `sendAdClick()`, `sendAdImpression()` and `sendTouch(event: MotionEvent)`. A `NonceManager`object can be obtained using `NonceLoader`. More details how to operate with these objects can be found in 'Programmatic Access Library' (PAL) documentation provided by Google. We have used version 17.0.5.
+
+Once you get a **_PalNonceHandlerInterface_** there is a final step to do: link AdswizzSDK with the **_PalNonceHandlerInterface_** object. This can be done using `AdRequest.Builder`.
+
+```kotlin
+AdswizzAdRequest.Builder()
+    .withServer(SERVER_URL)
+    .withZones(setOf(AdswizzAdZone(ZONE_ID)))
+    ...
+    .withNonceHandler(palNonceHandler) //set here the palNonceHandler object previously created
+    .build()
+```
+
 
 # Sample projects
 

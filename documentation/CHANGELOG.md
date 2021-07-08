@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.0] - 2021-06-28
+### Added
+- Advanced Analytics System
+- New public members in **_AdswizzSDK_**:
+    - `hasAProcessInForeground()` - returns true if one of the processes has a component in foreground
+- New _optional_ (they have a default implementation in the interface for kotlin) events in **_AdVideoView.Listener_** that match the lifecycle of a video:
+    - `onVideoStarted` - triggered when the video ad starts playing
+    - `onVideoEnded` - triggered when the video ad finished playing
+    - `onVideoBufferingStart` - triggered when buffering for a video will start
+    - `onVideoBufferingEnd` - triggered when buffering for a video ended
+- New separate sdk artifact that is compiled against the protobuf full Java library instead of the lite version the current artifact uses. Choose one that suits your implementation:
+    - `implementation "com.adswizz:adswizz-sdk:7.5.0"` for the protobuf Lite version (recommended for mobile applications)
+    - `implementation "com.adswizz:adswizz-sdk-protobufJava:7.5.0"` for the protobuf Java artifact
+
+### Fixed
+- An issue that may cause `clickThrough` not being fired for the `AdCompanionView` created after the ad playback starts
+- An issue that may prevent `AdCompanionView` being rendered in Android Emulators.
+
 ## [7.4.0] - 2021-04-23
 
 ### Added
