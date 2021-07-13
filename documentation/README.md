@@ -551,6 +551,19 @@ val adRequest: AdswizzAdRequest = AdswizzAdRequest.Builder() //Build the Ad Requ
 ```
 The ad server and the zoneId(s) will be provided to you by an AdsWizz PIM.
 
+**Custom request parameters**
+
+You may use custom parameters (key-value pairs) in your requests, in order to send various information, such as the TCF v2 consent string, the publisher-specific ID, first-party targeting data etc.
+Here is an example:
+
+```kotlin
+	AdswizzAdRequest.Builder()
+		.withCustomParameter("key1=URLEncodedValue1&key2=URLEncodedValue2")
+		...
+```
+
+**AdRequestConnection**
+
 After this point you need to create an AdRequestConnection object and call requestAds with the ad request object.
 
 ```kotlin            
