@@ -87,6 +87,7 @@
       * [BasicSample](#basicsample)
       * [StreamingSample](#streamingsample)
       * [StreamingSample with External Player](#streamingsample-with-external-player)
+      * [DvrStreamingSample](#DvrStreamingSample)
       * [Precache Sample](#precache-sample)
       * [Video Ads Sample](#video-ads-sample)
 
@@ -762,6 +763,10 @@ class YourClass {
         override fun onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdPlayer.MetadataItem) {
             println("Metadata received - adStreamManager: $adStreamManager - metadata count: ${metadataItem.value.count()}")
         }
+
+        override fun onDvrMetadataReceived(adStreamManager: AdStreamManager, dvrBufferInfo: DvrBufferInfo?) {
+            println("DVR Metadata received - adStreamManager: $adStreamManager - hasDVRenabled=${dvrBufferInfo != null}")
+        }
     }
 
     fun createStreamManager() {
@@ -814,6 +819,48 @@ The stream can be paused and resumed:
 
 The SDK will respond with the callbacks `fun didPausePlayingUrl(adStreamManager: AdStreamManager, url: Uri)` and `fun didResumePlayingUrl(adStreamManager: AdStreamManager, url: Uri)` respectively. The url is the same as for `willStartPlayingUrl`.
 
+## DVR Timeshifting capability
+
+The SDK offers DVR timeshifting capability on HLS streams provided by AIS that have this feature enabled. To enable this feature on SDK side you have to specify this in the **_AdManagerStreamingSettings_** as follows:
+
+```kotlin
+    fun createStreamManager() {
+        val settings = AdManagerStreamingSettings.Builder()
+            .adPlayerInstance(externalPlayer)
+            .dvrEnabled(true)
+            .build()
+        streamManager = AdswizzAdStreamManager(settings)
+        ...
+    }
+```
+
+ Please note that enabling DVR in Stream Manager's settings will automatically disable enqueue capability to ensure the functionality works as intended.
+
+After enabling DVR start with normal play first
+
+```kotlin
+    streamManager?.play(AIS_STREAM_URL)
+```
+
+After the stream starts playing, if the stream server supports and has enabled the DVR feature for that particular stream it will provide more information through the **_AdStreamManager.Listener_** by calling
+
+```kotlin
+fun onDvrMetadataReceived(adStreamManager: AdStreamManager, dvrBufferInfo: DvrBufferInfo?)
+```
+
+When you get this callback called with a non-null **dvrBufferInfo** you know that you can now perform timeshift by using
+
+```kotlin
+    streamManager?.play(AIS_STREAM_URL, timestamp)
+```
+
+Do note that the timestamp is in epoch milliseconds format (milliseconds elapsed from 1st of January 1970) and it should be a value between **dvrBufferInfo.start** and **dvrBufferInfo.latest**.
+
+The fields of the **DvrBufferInfo** are:
+
+* start - represents the earliest moment that can be accessed with a timeshift play action (epoch milliseconds timestamp)
+* latest - represents the latest moment that can be accessed (it differs from now because the server works with the stream in chunks) (epoch milliseconds timestamp)
+* maxBufferSize - represents the largest buffer the server is capable to store (milliseconds value) and this gives the largest window the client can timeshift in the past. eg 36.000.000ms -> 10h window
 
 ## AdStreamManager Listener interface
 
@@ -2195,6 +2242,10 @@ If the ad that comes from the stream is interactive, you can observe the interac
 ## StreamingSample with External Player
 
 This sample demonstrates a basic server-side insertion scenario same as the above sample, with the only difference being the external player that has been used in this case.
+
+## DvrStreamingSample
+
+This sample demonstrates a basic server-side insertion scenario that also contains the DVR timeshifting capabilities of an AIS DVR enabled stream.
 
 ## PreCache Sample
 
