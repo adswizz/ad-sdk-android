@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.2] - 2021-07-20
+### Added
+- New **_AdBaseManagerAdapter_** methods to trigger custom URLs when tracking clicks in **_AdCompanionView_** and **_AdVideoView_**
+    - `urlsForCompanionClickTracking(adBaseManager: AdBaseManager, adData: AdData): List<String>`
+    - `urlsForVideoClickTracking(adBaseManager: AdBaseManager, adData: AdData): List<String>`
+- Support for `playerExpand` and `playerCollapse` VAST events for video ads using **_AdVideoView_**
+
+### Fixed
+- Find and parse `adwData` value metadata in the entire raw string rather than just at the start
+
+
+## [7.5.1] - 2021-07-07
+### Changed
+- Improved Analytics dimensions reported for audio/video ads with companion banners
+
+### Fixed
+- Fixed an issue where `clickThrough` functionality for some `HTML` type banner does not work as expected
+
+
 ## [7.5.0] - 2021-06-28
 ### Added
 - Advanced Analytics System
