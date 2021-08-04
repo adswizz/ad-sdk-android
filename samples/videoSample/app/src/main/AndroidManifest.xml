@@ -26,7 +26,7 @@
             android:name="com.google.android.gms.ads.AD_MANAGER_APP"
             android:value="true" />
         <meta-data android:name="com.adswizz.core.installationId" android:value="adswizz_android_exoPlayer_v2" />
-        <meta-data android:name="com.adswizz.core.playerId" android:value="basicAppPlayerId" />
+        <meta-data android:name="com.adswizz.core.playerId" android:value="PUT_HERE_YOUR_PLAYER_ID_OBTAINED_FROM_YOUR_AW_TAM" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

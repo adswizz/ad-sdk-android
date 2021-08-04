@@ -38,7 +38,7 @@
             android:value="adswizz_android_exoPlayer_v3" />
         <meta-data
             android:name="com.adswizz.core.playerId"
-            android:value="precacheBasicAppPlayerId" />
+            android:value="PUT_HERE_YOUR_PLAYER_ID_OBTAINED_FROM_YOUR_AW_TAM" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
