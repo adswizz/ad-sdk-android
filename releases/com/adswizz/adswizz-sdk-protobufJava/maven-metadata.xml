@@ -3,13 +3,14 @@
   <groupId>com.adswizz</groupId>
   <artifactId>adswizz-sdk-protobufJava</artifactId>
   <versioning>
-    <latest>7.5.2</latest>
-    <release>7.5.2</release>
+    <latest>7.5.3</latest>
+    <release>7.5.3</release>
     <versions>
       <version>7.5.0</version>
       <version>7.5.1</version>
       <version>7.5.2</version>
+      <version>7.5.3</version>
     </versions>
-    <lastUpdated>20210730154611</lastUpdated>
+    <lastUpdated>20210809161409</lastUpdated>
   </versioning>
 </metadata>
