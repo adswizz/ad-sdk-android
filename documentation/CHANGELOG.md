@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.3] - 2021-08-09
+### Fixed
+- AdCompanionView with `extraExposureTime` and multiple ads per pod work as intended
+- AdVideoView SurfaceView survives when the client app is backgrounded and returns to isInForeground
+- error events correctly collected even when multiple errors are triggered from VAST file
+
 ## [7.5.2] - 2021-07-20
 ### Added
 - New **_AdBaseManagerAdapter_** methods to trigger custom URLs when tracking clicks in **_AdCompanionView_** and **_AdVideoView_**
