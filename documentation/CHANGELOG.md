@@ -7,9 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.5.3] - 2021-08-09
 ### Fixed
-- AdCompanionView with `extraExposureTime` and multiple ads per pod work as intended
-- AdVideoView SurfaceView survives when the client app is backgrounded and returns to isInForeground
-- error events correctly collected even when multiple errors are triggered from VAST file
+- `AdCompanionView` with `extraExposureTime` and multiple ads per pod work as intended
+- `AdVideoView`’s `SurfaceView` survives when the client app is in background and then returns on foreground
+- The error events are correctly collected even when multiple errors are triggered from the VAST file
 
 ## [7.5.2] - 2021-07-20
 ### Added
