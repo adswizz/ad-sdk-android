@@ -431,19 +431,25 @@ allprojects {
 
 ```groovy
 implementation 'com.adswizz:adswizz-sdk:version'
+implementation 'com.adswizz:exoplayer2-10:version'
 ```
 
-Where <strong>version</strong> is the latest version of the phone and tablet SDK provided by AdsWizz (i.e. 7.5.0 - the latest version). Please notice the below example:
+_Note_: the sdk before 7.6.0 included the exoplayer dependency. now this dependency is separated and you must include it to function correctly. at this time there 3 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14)
+
+Where <strong>version</strong> is the latest version of the phone and tablet SDK provided by AdsWizz (i.e. 7.6.0 - the latest version). Please notice the below example:
 
 ```groovy
-implementation 'com.adswizz:adswizz-sdk:7.5.0'
+implementation 'com.adswizz:adswizz-sdk:7.6.0'
+implementation 'com.adswizz:exoplayer2-10:7.6.0'
 ```
 
 _Note_: This artifact is using __protobuf java lite__ internally. In case your application is using the full protobuf java library you'll have to use another sdk artifact as following:
 
 ```groovy
-implementation 'com.adswizz:adswizz-sdk-protobufJava:7.5.0'
+implementation 'com.adswizz:adswizz-sdk-protobufJava:7.6.0'
 ```
+
+
 
 ## SDK initialization and cleanup
 
