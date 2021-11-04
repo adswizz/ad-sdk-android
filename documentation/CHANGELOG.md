@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.0] - TBD
+### Added
+- Streaming playback with DVR capabilities (timeshift) for a HLS stream provided by the AIS playback server
+- New **_AdStreamManager.Listener_** event added:
+    - `onDvrMetadataReceived(adStreamManager: AdStreamManager, dvrBufferInfo: DvrBufferInfo?)` callback that is called when starting streaming on HLS stream provided by a DVR enabled AIS server and a `AdManagerStreamingSettings` with `dvrEnabled` set to `true`
+
 ## [7.5.6] - 2021-09-28
 ### Changed
 - Removed the usage of `getInstalledApplications` (`QUERY_ALL_PACKAGES`) API, in order to preserve the compliance with Google's [Package Visibility policy](https://support.google.com/googleplay/android-developer/answer/10158779) 

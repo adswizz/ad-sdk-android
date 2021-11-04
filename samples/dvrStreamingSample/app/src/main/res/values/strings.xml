@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">DVR Streaming Sample</string>
+
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="reset">Reset</string>
+</resources>

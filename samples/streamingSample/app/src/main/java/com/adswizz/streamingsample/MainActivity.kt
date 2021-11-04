@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         ) {
             appLogs.addEntry("Metadata received - adStreamManager: $adStreamManager - metadata count: ${metadataItem.value.count()}")
         }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
