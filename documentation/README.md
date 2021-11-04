@@ -10,6 +10,7 @@
       * [Changelog](#changelog)
       * [Dependencies](#dependencies)
       * [Permissions](#permissions)
+         * [Disclaimer](#disclaimer)
       * [Package visibility](#package-visibility)
       * [Adding the SDK to your AndroidStudioProject project](#adding-the-sdk-to-your-android-studio-project)
       * [SDK initialization and cleanup](#sdk-initialization-and-cleanup)
@@ -323,6 +324,11 @@ For AdswizzWearSDK there is only one additional permission:
 These additional permissions will have to be manually added in the host app manifest. Keep in mind that for missing permissions, some of the features from our SDK might not work. We handle the case of permissions missing so you don't have to worry about crashes.
 
 If you want to keep some permissions only for the host app to use then the following function `AdswizzSDK.setPermissionStatus` will help with denying the unwanted permission to the Adswizz SDK. By default the Adswizz SDK will use all permissions that the host app will use. If you need to know if a permission is allowed to be used by the Adswizz SDK then you can call `AdswizzSDK.getPermissionStatus`.
+
+### Disclaimer 
+- Please be advised that including AdsWizz SDK in your project might require your application to ask for specific permissions, in order to take full advantage of the special formats and/or enhance targeting capabilities.
+- A complete list with all the permissions we require and why may be found here: https://support.adswizz.com/hc/en-us/articles/360018903057
+- We highly encourage you to loop your product and legal teams in the process of agreeing which features to enable, and finding the best way to reflect this in your application’s Privacy Policy.
 
 
 ## Package visibility

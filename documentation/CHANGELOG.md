@@ -5,11 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.6.0] - TBD
+## [7.6.0] - 2021-11-04
 ### Added
-- Streaming playback with DVR capabilities (timeshift) for a HLS stream provided by the AIS playback server
-- New **_AdStreamManager.Listener_** event added:
-    - `onDvrMetadataReceived(adStreamManager: AdStreamManager, dvrBufferInfo: DvrBufferInfo?)` callback that is called when starting streaming on HLS stream provided by a DVR enabled AIS server and a `AdManagerStreamingSettings` with `dvrEnabled` set to `true`
+- Streaming playback with **DVR** capabilities (timeshift) for a HLS stream provided by the AIS playback server. Below all additions for **DVR**:
+    - New **_AdStreamManager.Listener_** event added:
+        - `onDvrMetadataReceived(adStreamManager: AdStreamManager, dvrBufferInfo: DvrBufferInfo?)` callback that is called when starting streaming on HLS stream provided by a DVR enabled AIS server and a `AdManagerStreamingSettings` with `dvrEnabled` set to `true`
+    - New public members in **_AdswizzAdStreamManager_**:
+        - **_play(url: String, timestamp: Long)_** method related to DVR
+    - New public members in **_AdStreamManagerSettings.Builder_**:
+        - **_dvrEnabled(dvrEnabled: Boolean)_** adds a capability for the stream manager (e.g `dvr`)
+    - New public class **_DvrBufferInfo_** with public members:
+        - **_start_** is the start UNIX timestamp for DVR stream
+        - **_latest_** is the latest UNIX timestamp for DVR stream
+        - **_maxBufferSize_** is the length of DVR buffer
+- The SDK has been separated into 2 modules: one contains our core functionalities, the other one contains logic related to internal `AdPlayer` that relies on **ExoPlayer**. This enables us to be compatible with multiple **ExoPlayer** versions. For more details consult our [Integration Guide](README.md). 
+- Generic intents (e.g generic skip action) specified at ZeroConfig level to be attached to voice ads interactivity
+
+### Changed
+- We've changed the host package for some classes:
+    - `import com.ad.core.adBaseManager.AdPlayer` has changed to `import com.adswizz.common.AdPlayer`
+    - `import com.ad.core.utils.phone.SDKError` has changed to `com.adswizz.common.SDKError`
 
 ## [7.5.6] - 2021-09-28
 ### Changed
