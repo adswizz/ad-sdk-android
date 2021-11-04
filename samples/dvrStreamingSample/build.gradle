@@ -4,7 +4,7 @@ Properties localProperties = new Properties()
 localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 buildscript {
-    ext.kotlin_version = "1.5.21"
+    ext.kotlin_version = "1.4.32"
     repositories {
         google()
         jcenter()
@@ -23,10 +23,10 @@ allprojects {
         google()
         jcenter()
         maven {
-            url "https://raw.githubusercontent.com/adswizz/ad-sdk-android-dev/master/releases"
+            url "https://raw.githubusercontent.com/adswizz/ad-sdk-android/master/releases"
             credentials(HttpHeaderCredentials) {
                 name = "Authorization"
-                value = localProperties["adswizzToken"]
+                value = localProperties["adswizzToken"] ?: System.getenv("ADSWIZZ_TOKEN")
             }
             authentication {
                 header(HttpHeaderAuthentication)
