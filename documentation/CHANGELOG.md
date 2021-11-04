@@ -1,3 +1,4 @@
+[![AdsWizz](img/adswizz_logo.png)](https://www.adswizz.com)
 # Changelog
 All notable changes to this project will be documented in this file.
 
@@ -9,6 +10,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Streaming playback with DVR capabilities (timeshift) for a HLS stream provided by the AIS playback server
 - New **_AdStreamManager.Listener_** event added:
     - `onDvrMetadataReceived(adStreamManager: AdStreamManager, dvrBufferInfo: DvrBufferInfo?)` callback that is called when starting streaming on HLS stream provided by a DVR enabled AIS server and a `AdManagerStreamingSettings` with `dvrEnabled` set to `true`
+
+## [7.5.6] - 2021-09-28
+### Changed
+- Removed the usage of `getInstalledApplications` (`QUERY_ALL_PACKAGES`) API, in order to preserve the compliance with Google's [Package Visibility policy](https://support.google.com/googleplay/android-developer/answer/10158779) 
+
+### Fixed
+- Fixed an issue with Analytics Event logging when the custom params data is modified by host app
+
+## [7.5.5] - 2021-09-10
+### Fixed
+- Fixed an issue for the server side insertion scenarios where during the ad break the host app couldn't detect if an ad has a banner attached or not (the SDK informed incorrectly every time that there was no companion banner) 
+
+## [7.5.4] - 2021-08-18
+### Fixed
+- Fixed the error scenarios when an ad fails to play from a pod of multiple ads (some tracking events were fired incorrectly)
+
+## [7.5.3] - 2021-08-09
+### Fixed
+- `AdCompanionView` with `extraExposureTime` and multiple ads per pod work as intended
+- `AdVideoView`’s `SurfaceView` survives when the client app is in background and then returns on foreground
+- The error events are correctly collected even when multiple errors are triggered from the VAST file
+
+## [7.5.2] - 2021-07-20
+### Added
+- New **_AdBaseManagerAdapter_** methods to trigger custom URLs when tracking clicks in **_AdCompanionView_** and **_AdVideoView_**
+    - `urlsForCompanionClickTracking(adBaseManager: AdBaseManager, adData: AdData): List<String>`
+    - `urlsForVideoClickTracking(adBaseManager: AdBaseManager, adData: AdData): List<String>`
+- Support for `playerExpand` and `playerCollapse` VAST events for video ads using **_AdVideoView_**
+
+### Fixed
+- Find and parse `adwData` value metadata in the entire raw string rather than just at the start
+
+
+## [7.5.1] - 2021-07-07
+### Changed
+- Improved Analytics dimensions reported for audio/video ads with companion banners
+
+### Fixed
+- Fixed an issue where `clickThrough` functionality for some `HTML` type banner does not work as expected
+
 
 ## [7.5.0] - 2021-06-28
 ### Added
