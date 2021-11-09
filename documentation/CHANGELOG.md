@@ -17,11 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - New public class **_DvrBufferInfo_** with public members:
         - **_start_** is the start UNIX timestamp for DVR stream
         - **_latest_** is the latest UNIX timestamp for DVR stream
-        - **_maxBufferSize_** is the length of DVR buffer
-- The SDK has been separated into 2 modules: one contains our core functionalities, the other one contains logic related to internal `AdPlayer` that relies on **ExoPlayer**. This enables us to be compatible with multiple **ExoPlayer** versions. For more details consult our [Integration Guide](README.md). 
+        - **_maxBufferSize_** is the length of DVR buffer 
 - Generic intents (e.g generic skip action) specified at ZeroConfig level to be attached to voice ads interactivity
 
 ### Changed
+- The Adswizz SDK has been separated into 2 modules: one contains our core functionalities, the other one contains logic related to internal `AdPlayer` that relies on **ExoPlayer**. This enables us to be compatible with multiple **ExoPlayer** versions. For more details consult our [Integration Guide](README.md).
 - We've changed the host package for some classes:
     - `import com.ad.core.adBaseManager.AdPlayer` has changed to `import com.adswizz.common.AdPlayer`
     - `import com.ad.core.utils.phone.SDKError` has changed to `com.adswizz.common.SDKError`
