@@ -26,6 +26,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `import com.ad.core.adBaseManager.AdPlayer` has changed to `import com.adswizz.common.AdPlayer`
     - `import com.ad.core.utils.phone.SDKError` has changed to `com.adswizz.common.SDKError`
 
+## [7.5.7] - 2021-11-11
+### Fixed
+- Fixes an issue where some old devices could get an ANR while initializing the SDK
+
 ## [7.5.6] - 2021-09-28
 ### Changed
 - Removed the usage of `getInstalledApplications` (`QUERY_ALL_PACKAGES`) API, in order to preserve the compliance with Google's [Package Visibility policy](https://support.google.com/googleplay/android-developer/answer/10158779) 
@@ -83,6 +87,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - An issue that may cause `clickThrough` not being fired for the `AdCompanionView` created after the ad playback starts
 - An issue that may prevent `AdCompanionView` being rendered in Android Emulators.
+
+## [7.4.1] - 2021-11-11
+### Fixed
+- Fixes an issue where some old devices could get an ANR while initializing the SDK
 
 ## [7.4.0] - 2021-04-23
 
