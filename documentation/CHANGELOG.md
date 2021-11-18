@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.1] - 2021-11-18
+### Added
+- New in **_AdVideoView_**:
+  - public field `playState` of type `AdVideoPlayState` that reflects the video play state
+  - **_PlayStateListener_** listener interface that exposes changes to the video play state as a callback
+  - public method `setPlayStateListener`
+- SDK now properly outputs error logs in case of invalid URL given to `AdswizzAdStreamManager` _play_ method
+
+### Fixed
+- Fixed potential ANR during SDK initialisation
+- Fixed some AdVideoView issues occurring during multiple video ads playback
+
+
 ## [7.6.0] - 2021-11-04
 ### Added
 - Streaming playback with **DVR** capabilities (timeshift) for a HLS stream provided by the AIS playback server. Below all additions for **DVR**:
@@ -17,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - New public class **_DvrBufferInfo_** with public members:
         - **_start_** is the start UNIX timestamp for DVR stream
         - **_latest_** is the latest UNIX timestamp for DVR stream
-        - **_maxBufferSize_** is the length of DVR buffer 
+        - **_maxBufferSize_** is the length of DVR buffer
 - Generic intents (e.g generic skip action) specified at ZeroConfig level to be attached to voice ads interactivity
 
 ### Changed
@@ -32,14 +45,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.5.6] - 2021-09-28
 ### Changed
-- Removed the usage of `getInstalledApplications` (`QUERY_ALL_PACKAGES`) API, in order to preserve the compliance with Google's [Package Visibility policy](https://support.google.com/googleplay/android-developer/answer/10158779) 
+- Removed the usage of `getInstalledApplications` (`QUERY_ALL_PACKAGES`) API, in order to preserve the compliance with Google's [Package Visibility policy](https://support.google.com/googleplay/android-developer/answer/10158779)
 
 ### Fixed
 - Fixed an issue with Analytics Event logging when the custom params data is modified by host app
 
 ## [7.5.5] - 2021-09-10
 ### Fixed
-- Fixed an issue for the server side insertion scenarios where during the ad break the host app couldn't detect if an ad has a banner attached or not (the SDK informed incorrectly every time that there was no companion banner) 
+- Fixed an issue for the server side insertion scenarios where during the ad break the host app couldn't detect if an ad has a banner attached or not (the SDK informed incorrectly every time that there was no companion banner)
 
 ## [7.5.4] - 2021-08-18
 ### Fixed
