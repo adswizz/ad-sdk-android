@@ -325,7 +325,7 @@ These additional permissions will have to be manually added in the host app mani
 
 If you want to keep some permissions only for the host app to use then the following function `AdswizzSDK.setPermissionStatus` will help with denying the unwanted permission to the Adswizz SDK. By default the Adswizz SDK will use all permissions that the host app will use. If you need to know if a permission is allowed to be used by the Adswizz SDK then you can call `AdswizzSDK.getPermissionStatus`.
 
-### Disclaimer 
+### Disclaimer
 - Please be advised that including AdsWizz SDK in your project might require your application to ask for specific permissions, in order to take full advantage of the special formats and/or enhance targeting capabilities.
 - A complete list with all the permissions we require and why may be found here: https://support.adswizz.com/hc/en-us/articles/360018903057
 - We highly encourage you to loop your product and legal teams in the process of agreeing which features to enable, and finding the best way to reflect this in your application’s Privacy Policy.
@@ -441,19 +441,19 @@ implementation 'com.adswizz:adswizz-sdk:version'
 implementation 'com.adswizz:exoplayer2-10:version'
 ```
 
-_Note_: the sdk before 7.6.0 included the exoplayer dependency. now this dependency is separated and you must include it to function correctly. at this time there 3 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14)
+_Note_: the sdk before 7.6.1 included the exoplayer dependency. now this dependency is separated and you must include it to function correctly. at this time there 3 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14)
 
-Where <strong>version</strong> is the latest version of the phone and tablet SDK provided by AdsWizz (i.e. 7.6.0 - the latest version). Please notice the below example:
+Where <strong>version</strong> is the latest version of the phone and tablet SDK provided by AdsWizz (i.e. 7.6.1 - the latest version). Please notice the below example:
 
 ```groovy
-implementation 'com.adswizz:adswizz-sdk:7.6.0'
-implementation 'com.adswizz:exoplayer2-10:7.6.0'
+implementation 'com.adswizz:adswizz-sdk:7.6.1'
+implementation 'com.adswizz:exoplayer2-10:7.6.1'
 ```
 
 _Note_: This artifact is using __protobuf java lite__ internally. In case your application is using the full protobuf java library you'll have to use another sdk artifact as following:
 
 ```groovy
-implementation 'com.adswizz:adswizz-sdk-protobufJava:7.6.0'
+implementation 'com.adswizz:adswizz-sdk-protobufJava:7.6.1'
 ```
 
 
@@ -1213,6 +1213,36 @@ There are no specific video events to respond to, however you can set a listener
 ```kotlin
 interface Listener {
     /**
+     * Called immediately when the video starts playing
+     * @param adVideoView The `AdVideoView` instance which hosts the playing video
+     */
+    fun onVideoStarted(adVideoView: AdVideoView) {}
+
+    /**
+     * Called immediately when the video ends playing
+     * @param adVideoView The `AdVideoView` instance which hosts the playing video
+     */
+    fun onVideoEnded(adVideoView: AdVideoView) {}
+
+    /**
+     * Called immediately when the video starts buffering
+     * @param adVideoView The `AdVideoView` instance which hosts the playing video
+     */
+    fun onVideoBufferingStart(adVideoView: AdVideoView) {}
+    /**
+     * Called immediately when the video ends buffering
+     * @param adVideoView The `AdVideoView` instance which hosts the playing video
+     */
+    fun onVideoBufferingEnd(adVideoView: AdVideoView) {}
+
+    /**
+     * Called when a clickThrough url is available on the AdVideoView
+     * @param adVideoView The `AdVideoView` instance which hosts the playing video
+     * @param clickThroughUrl the url for clickThrough action or null if it was unset
+     */
+    fun onVideoClickThroughChanged(adVideoView: AdVideoView, clickThroughUrl: String?) {}
+
+    /**
      * Called immediately when a touch event is detected over the ad video view.
      * Give the host application a chance to override the default behaviour when a video `clickThrough` event occurs.
      * @return true if the host application wants to handle itself the target url
@@ -1230,6 +1260,27 @@ interface Listener {
      */
     fun willLeaveApplication(adVideoView: AdVideoView)
 }
+```
+```kotlin
+fun setListener(l: Listener?) {}
+```
+
+In case you want to listen for video play state changes you can use this listener:
+
+```kotlin
+interface PlayStateListener {
+    /**
+     * Called whenever the video play state changes between
+     * [AdVideoPlayState.IDLE], [AdVideoPlayState.BUFFERING] & [AdVideoPlayState.PLAYING]
+     *
+     * @param adVideoView: The `AdVideoView` instance which triggers the event
+     * @param playState: the new play state value
+     */
+    fun onVideoPlayStateChanged(adVideoView: AdVideoView, playState: AdVideoPlayState)
+}
+```
+```kotlin
+fun setPlayStateListener(listener: PlayStateListener?) {}
 ```
 
 ## Viewability
