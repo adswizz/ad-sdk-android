@@ -1,0 +1,98 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "exoplayer2-16",
+    "version": "7.6.2",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "6.7.1",
+      "buildId": "rhqvc5iiojcjlbgeacmyaudnie"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "com.google.android.exoplayer",
+          "module": "exoplayer",
+          "version": {
+            "requires": "2.16.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.4.32"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "exoplayer2-16-7.6.2.aar",
+          "url": "exoplayer2-16-7.6.2.aar",
+          "size": 45098,
+          "sha512": "8bd3421fa03ceabe84b8f7e88cfe2423ad1ceba94d3ba31f9c9c4570658c7f3a6db17196f75e4c2fd65a3afecd12f48914538091cf8638e3ffa80dcbd18ff57f",
+          "sha256": "0b78fe76d19670e8c56adcd7a4d7e4e7e523500be501a0c4282c77a85f612dc6",
+          "sha1": "e2c32a33a5da79236fc59b3c8ebcd14862e19dd0",
+          "md5": "046419783241e8d572537940e85befb3"
+        }
+      ]
+    },
+    {
+      "name": "releaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.google.android.exoplayer",
+          "module": "exoplayer",
+          "version": {
+            "requires": "2.16.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.4.32"
+          }
+        },
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat",
+          "version": {
+            "requires": "1.3.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "exoplayer2-16-7.6.2.aar",
+          "url": "exoplayer2-16-7.6.2.aar",
+          "size": 45098,
+          "sha512": "8bd3421fa03ceabe84b8f7e88cfe2423ad1ceba94d3ba31f9c9c4570658c7f3a6db17196f75e4c2fd65a3afecd12f48914538091cf8638e3ffa80dcbd18ff57f",
+          "sha256": "0b78fe76d19670e8c56adcd7a4d7e4e7e523500be501a0c4282c77a85f612dc6",
+          "sha1": "e2c32a33a5da79236fc59b3c8ebcd14862e19dd0",
+          "md5": "046419783241e8d572537940e85befb3"
+        }
+      ]
+    }
+  ]
+}
