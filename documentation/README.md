@@ -457,6 +457,28 @@ implementation 'com.adswizz:adswizz-sdk-protobufJava:7.6.1'
 ```
 
 
+(optional) 3. The Adswizz Android SDK is using Google Play Services (`com.google.android.gms.ads.identifier.AdvertisingIdClient`) in order to get the Google Advertising ID (GAD). In order to do this your application may need to have following meta added in your `AndroidManifest.xml` file.
+```xml
+<meta-data
+    android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+    android:value="true" />
+```
+
+The above meta should be placed inside of the `application` tag like in the below example:
+ ```xml
+<application
+    android:allowBackup="true"
+    android:icon="@mipmap/ic_launcher"
+    ...
+    <meta-data
+        android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+        android:value="true" />
+    ...
+</application>
+ ```
+
+Note: If the above `meta` is not added in your `AndroidManifest.xml` file you may receive an error message in Logcat like this one `"The Google Mobile Ads SDK was initialized incorrectly."` and your application will crash during the initialization.
+ 
 
 ## SDK initialization and cleanup
 
