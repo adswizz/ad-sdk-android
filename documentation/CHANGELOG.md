@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fixed omsdk session still active after playback timeout error
-- Resetting the `AdManager` instance by calling `adManager?.reset()` will not trigger the VAST skip event
+- Resetting the **_AdManager_** instance by calling `adManager?.reset()` will not trigger the VAST skip event
 
 ## [7.6.2] - 2022-01-14
 ### Added
