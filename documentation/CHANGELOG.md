@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.3] - 2022-02-25
+### Added:
+- support for setting AdVideoView viewId programmatically after creation
+- detect mute/unmute events for internal player in sync with system volume
+- expose pricing node from VAST
+- added TCFV2 support
+- added Amazon IFA (aw_0_1st.ifa) to the ad request decoration
+### Fixed:
+- fixed omsdk session still active after playback timeout error
+- resetting ad manager will not trigger a skip event
+
 ## [7.6.2] - 2022-01-14
 ### Added
 - `play` and `pause` events are now marked in the Analytics API  

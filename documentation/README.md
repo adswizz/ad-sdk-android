@@ -478,7 +478,7 @@ The above meta should be placed inside of the `application` tag like in the belo
  ```
 
 Note: If the above `meta` is not added in your `AndroidManifest.xml` file you may receive an error message in Logcat like this one `"The Google Mobile Ads SDK was initialized incorrectly."` and your application will crash during the initialization.
- 
+
 
 ## SDK initialization and cleanup
 
@@ -1182,17 +1182,22 @@ Once created, you have ownership over this view and you can add it to your hiera
 
 The **_AdVideoView_** uses the following custom attributes:
 - **_video_view_id_**: is used to identify the video view. It should be a non-negative integer value and it should be unique among all ad video views used by the host app. If a negative value is put then an exception will be thrown. In case this attribute is omitted then an auto-generated id (of negative value) will be assigned by the SDK.
+
 - **_resize_mode_**: when a video is rendered, the SDK needs to know how to resize the video frame in comparison with the video view. This attribute can be changed at any time. The following options are available:
      * **_fit_**: either the width or height is decreased to obtain the desired aspect ratio.
      * **_fixed_width_**: the width is fixed and the height is increased or decreased to obtain the desired aspect ratio.
      * **_fixed_height_**: the height is fixed and the width is increased or decreased to obtain the desired aspect ratio.
      * **_fill_**: the specified aspect ratio is ignored.
      * **_zoom_**: either the width or height is increased to obtain the desired aspect ratio.
+
+
 - **_video_surface_type_**: the type of surface used to render the video
     * **_auto_select_**: the AdswizzSDK will choose the best option
     * **_none_**: the video will not be rendered in the view
     * **_surface_view_**: the AdswizzSDK will use **_SurfaceView_** to render the video.
     * **_texture_view_**: the AdswizzSDK will use **_TextureView_** to render the video.
+
+**NOTE** you can change the **_video_view_id_** assigned after creating the **AdVideoView** programmatically or through inflating a layout by using the `setVideoViewId()` function. Take care that the **_video_view_id_** you set follows the same rules (unique and it has to be the same as the one passed in **_AdManagerSettings_**).
 
 Example:
 ```kotlin
