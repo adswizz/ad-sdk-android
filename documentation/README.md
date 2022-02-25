@@ -27,6 +27,7 @@
          * [reset](#reset)
          * [ads](#ads)
          * [analyticsCustomData](#analyticsCustomData)
+      * [Handling AdManager with no ads](#handling-admanager-with-no-ads)
       * [AdManager life cycle](#admanager-life-cycle)         
  * [<strong>Server-Side Insertion</strong>](#server-side-insertion)
       * [Your first stream manager](#your-first-stream-manager)
@@ -738,6 +739,43 @@ Set an **_AnalyticsCustomData_** data class to provide key-value custom attribut
 Below is a descriptive graph with all this information:
 
 </br></br>
+
+## Handling AdManager with no ads
+
+In some cases the **_AdManager_** you'll receive won't have any playable ads. In this case inspecting the `ads` property on the **_AdManager_** will return a zero count. Read more about this property in the above section.
+A non playable ad is referred to as being an _empty ad_. The empty ads won't play any media, however your app still needs to instruct the **_AdManager_** to play them by calling the `play()` method.
+
+Nevertheless, here is a simplified setup that highlights handling an **_AdManager_** with no ads:
+
+```kotlin
+......
+
+override fun onEventReceived(adManager: AdManager, event: AdEvent) {
+    when (event.type) {
+         .....
+        AdEvent.Type.State.ReadyForPlay -> {
+            appLogs.addEntry("Ad ${event.ad?.id} - ready for play")
+            
+            //Start playing the next ad in the AdManager. 
+            //Notice that there is no need to check if the ad is empty or not.
+            //The SDK will handle it internally and send the appropriate AdEvent just like for a non empty ad.
+            adManager?.play()
+            
+            //Note: just to be sure that the ad playback will start immediately wait for the <<AdEvent.Type.State.ReadyForPlay>> event before calling adManager?.play()
+        }
+        .....
+        AdEvent.Type.State.AllAdsCompleted -> {
+            appLogs.addEntry("Ad - all ads completed")
+            
+            //All ads from the AdManager have finished.
+            //Here you can resume playing your content.
+        }
+    }
+}
+......
+}
+```
+Important: failing to call `play()` on an **_AdManager_** with no ads it will prevent AdswizzSDK to correctly track and fire opportunities for reporting purposes.
 
 ## AdManager life cycle
 
