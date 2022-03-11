@@ -32,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
         - New public method `adBreakStarted(adPodcastManager: AdPodcastManager, adBaseManager: AdBaseManager)`
         - New public method `adBreakEnded(adPodcastManager: AdPodcastManager, adBaseManager: AdBaseManager)`
         - New public method `onError(adPodcastManager: AdPodcastManager, error: Error)`
-        - New public method `nPlayHeadReport(adPodcastManager: AdPodcastManager, elapsedSec: Double, durationSec: Double)`
+        - New public method `onPlayHeadReport(adPodcastManager: AdPodcastManager, elapsedSec: Double, durationSec: Double)`
     - New public interface **_DownloadableAsset_**
         - New public member `url`
         - New public member `mimeType`
@@ -40,13 +40,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
         - New public member `state` of type **_DownloadableAssetState_**
         - New public member `location`
     - New public class **_AdswizzAdPodcastManager_**
-        - New public class `Builder` to help create an `AdswizzAdPodcastManager` instance
-        - New public member `delegate` of type **_AdPodcastManagerDownloadDelegate_**
-        - New public method `startDownloadPodcast(with url: URL, to location: URL)`
-        - New public method `stopDownloadPodcast(at location: URL)`
-        - New public method `removePodcast(at location: URL)`
+        - New public method `startDownloadPodcast(uri: Uri, location: Uri, completion: ((Boolean, Exception?) -> Unit)? = null)`
+        - New public method `stopDownloadPodcast(location: Uri)`
+        - New public method `removePodcast(location: Uri)`
     - New public interface **_AdPodcastManagerDownloadListener_**
-        - New public method `didDownload(adPodcastManager: AdPodcastManager, bytesDownloaded: Long, bytesExpected:Long, asset:DownloadableAsset)`
+        - New public method `didDownload(adPodcastManager: AdPodcastManager, bytesDownloaded: Long, bytesExpected: Long, asset: DownloadableAsset)`
         - New public method `didFinishDownload(adPodcastManager: AdPodcastManager,  asset: DownloadableAsset)`
         - New public method `didReceive(adPodcastManager: AdPodcastManager,  error:Error, asset: DownloadableAsset)`
 
