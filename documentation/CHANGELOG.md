@@ -5,6 +5,49 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.0] - 2022-03-11
+### Added
+- Podcasts support
+    - New public class **_AdPodcastManager_**
+        - New public member `addListener(listener: Listener)` of type **_AdPodcastManager.Listener_**
+        - New public member `removeListener(listener: Listener)` of type **_AdPodcastManager.Listener_**
+        - New public member `addDownloadListener(listener: AdPodcastManagerDownloadListener)` of type **_AdPodcastManagerDownloadListener_**
+        - New public member `removeDownloadListener(listener: AdPodcastManagerDownloadListener)` of type **_AdPodcastManagerDownloadListenerr_**
+        - New public member `adPodcastManagerSettings` of type **_AdPodcastManagerSettings_**
+        - New public method `play(uri: Uri)`
+        - New public method `stop()`
+        - New public method `pause()`
+        - New public method `resume()`
+        - New public method `seekTo(position: Double)`
+        - New public method `skipAd()`
+    - New public class **_AdPodcastManagerSettings.Builder__**
+        - New public member `adPlayerInstance(adsPlayerInstance: AdPlayer)`
+        - New public member `withDownloadConditions(conditions: Set<DownloadCondition>)`
+    - New public interface **_AdPodcastManager.Listener_**
+        - New public method `willStartPlayingUrl(adPodcastManager: AdPodcastManager, url: Uri, adBaseManager: AdBaseManager?)`
+        - New public method `didFinishPlayingUrl(adPodcastManager: AdPodcastManager, url: Uri)`
+        - New public method `didPausePlayingUrl(adPodcastManager: AdPodcastManager, url: Uri)`
+        - New public method `didResumePlayingUrl(adPodcastManager: AdPodcastManager, url: Uri)`
+        - New public method `adBreakStarted(adPodcastManager: AdPodcastManager, adBaseManager: AdBaseManager)`
+        - New public method `adBreakStarted(adPodcastManager: AdPodcastManager, adBaseManager: AdBaseManager)`
+        - New public method `adBreakEnded(adPodcastManager: AdPodcastManager, adBaseManager: AdBaseManager)`
+        - New public method `onError(adPodcastManager: AdPodcastManager, error: Error)`
+        - New public method `onPlayHeadReport(adPodcastManager: AdPodcastManager, elapsedSec: Double, durationSec: Double)`
+    - New public interface **_DownloadableAsset_**
+        - New public member `url`
+        - New public member `mimeType`
+        - New public member `expectedContentLength`
+        - New public member `state` of type **_DownloadableAssetState_**
+        - New public member `location`
+    - New public class **_AdswizzAdPodcastManager_**
+        - New public method `startDownloadPodcast(uri: Uri, location: Uri, completion: ((Boolean, Exception?) -> Unit)? = null)`
+        - New public method `stopDownloadPodcast(location: Uri)`
+        - New public method `removePodcast(location: Uri)`
+    - New public interface **_AdPodcastManagerDownloadListener_**
+        - New public method `didDownload(adPodcastManager: AdPodcastManager, bytesDownloaded: Long, bytesExpected: Long, asset: DownloadableAsset)`
+        - New public method `didFinishDownload(adPodcastManager: AdPodcastManager,  asset: DownloadableAsset)`
+        - New public method `didReceive(adPodcastManager: AdPodcastManager,  error:Error, asset: DownloadableAsset)`
+
 ## [7.6.3] - 2022-02-25
 ### Added
 - Support for setting the `viewId` of **_AdVideoView_** programmatically after creation
