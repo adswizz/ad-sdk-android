@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.3] - 2022-02-25
+### Added
+- Support for setting the `viewId` of **_AdVideoView_** programmatically after creation
+- SDK detects now the mute/unmute events for the internal player in sync with the system volume
+- Exposed the `pricing` node from VAST in the **_AdData_**'s `pricing` member
+- Added TCFV2 support via **_AdswizzAdRequest.Builder_**'s method named `withUserConsentV2(userConsentV2: String?)`
+- Added Amazon IFA (`aw_0_1st.ifa` query item) to the ad request decoration for FireOS devices
+
+### Fixed
+- Fixed omsdk session still active after playback timeout error
+- Resetting the **_AdManager_** instance by calling `adManager?.reset()` will not trigger the VAST skip event
+
 ## [7.6.2] - 2022-01-14
 ### Added
 - `play` and `pause` events are now marked in the Analytics API  

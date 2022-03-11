@@ -27,6 +27,7 @@
          * [reset](#reset)
          * [ads](#ads)
          * [analyticsCustomData](#analyticsCustomData)
+      * [Handling AdManager with no ads](#handling-admanager-with-no-ads)
       * [AdManager life cycle](#admanager-life-cycle)         
  * [<strong>Server-Side Insertion</strong>](#server-side-insertion)
       * [Your first stream manager](#your-first-stream-manager)
@@ -478,7 +479,7 @@ The above meta should be placed inside of the `application` tag like in the belo
  ```
 
 Note: If the above `meta` is not added in your `AndroidManifest.xml` file you may receive an error message in Logcat like this one `"The Google Mobile Ads SDK was initialized incorrectly."` and your application will crash during the initialization.
- 
+
 
 ## SDK initialization and cleanup
 
@@ -738,6 +739,43 @@ Set an **_AnalyticsCustomData_** data class to provide key-value custom attribut
 Below is a descriptive graph with all this information:
 
 </br></br>
+
+## Handling AdManager with no ads
+
+In some cases the **_AdManager_** you'll receive won't have any playable ads. In this case inspecting the `ads` property on the **_AdManager_** will return a zero count. Read more about this property in the above section.
+A non playable ad is referred to as being an _empty ad_. The empty ads won't play any media, however your app still needs to instruct the **_AdManager_** to play them by calling the `play()` method.
+
+Nevertheless, here is a simplified setup that highlights handling an **_AdManager_** with no ads:
+
+```kotlin
+......
+
+override fun onEventReceived(adManager: AdManager, event: AdEvent) {
+    when (event.type) {
+         .....
+        AdEvent.Type.State.ReadyForPlay -> {
+            appLogs.addEntry("Ad ${event.ad?.id} - ready for play")
+            
+            //Start playing the next ad in the AdManager. 
+            //Notice that there is no need to check if the ad is empty or not.
+            //The SDK will handle it internally and send the appropriate AdEvent just like for a non empty ad.
+            adManager?.play()
+            
+            //Note: just to be sure that the ad playback will start immediately wait for the <<AdEvent.Type.State.ReadyForPlay>> event before calling adManager?.play()
+        }
+        .....
+        AdEvent.Type.State.AllAdsCompleted -> {
+            appLogs.addEntry("Ad - all ads completed")
+            
+            //All ads from the AdManager have finished.
+            //Here you can resume playing your content.
+        }
+    }
+}
+......
+}
+```
+Important: failing to call `play()` on an **_AdManager_** with no ads it will prevent AdswizzSDK to correctly track and fire opportunities for reporting purposes.
 
 ## AdManager life cycle
 
@@ -1182,17 +1220,22 @@ Once created, you have ownership over this view and you can add it to your hiera
 
 The **_AdVideoView_** uses the following custom attributes:
 - **_video_view_id_**: is used to identify the video view. It should be a non-negative integer value and it should be unique among all ad video views used by the host app. If a negative value is put then an exception will be thrown. In case this attribute is omitted then an auto-generated id (of negative value) will be assigned by the SDK.
+
 - **_resize_mode_**: when a video is rendered, the SDK needs to know how to resize the video frame in comparison with the video view. This attribute can be changed at any time. The following options are available:
      * **_fit_**: either the width or height is decreased to obtain the desired aspect ratio.
      * **_fixed_width_**: the width is fixed and the height is increased or decreased to obtain the desired aspect ratio.
      * **_fixed_height_**: the height is fixed and the width is increased or decreased to obtain the desired aspect ratio.
      * **_fill_**: the specified aspect ratio is ignored.
      * **_zoom_**: either the width or height is increased to obtain the desired aspect ratio.
+
+
 - **_video_surface_type_**: the type of surface used to render the video
     * **_auto_select_**: the AdswizzSDK will choose the best option
     * **_none_**: the video will not be rendered in the view
     * **_surface_view_**: the AdswizzSDK will use **_SurfaceView_** to render the video.
     * **_texture_view_**: the AdswizzSDK will use **_TextureView_** to render the video.
+
+**NOTE** you can change the **_video_view_id_** assigned after creating the **AdVideoView** programmatically or through inflating a layout by using the `setVideoViewId()` function. Take care that the **_video_view_id_** you set follows the same rules (unique and it has to be the same as the one passed in **_AdManagerSettings_**).
 
 Example:
 ```kotlin
