@@ -1496,6 +1496,11 @@ interface AdPlayer {
 
     fun seekToTrackEnd()
 
+    /**
+     * @since 7.7.0
+     */
+    fun seekTo(position: Double)
+
     // endregion
 
 
