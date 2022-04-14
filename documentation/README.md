@@ -456,22 +456,30 @@ implementation 'com.adswizz:adswizz-sdk:version'
 implementation 'com.adswizz:exoplayer2-10:version'
 ```
 
-_Note_: the sdk before 7.6.1 included the exoplayer dependency. now this dependency is separated and you must include it to function correctly. at this time there 3 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14)
+_Note_: the sdk before 7.6.1 included the exoplayer dependency. now this dependency is separated and you must include it to function correctly. at this time there 3 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14, 2.15, 2.16)
 
-Where <strong>version</strong> is the latest version of the phone and tablet SDK provided by AdsWizz (i.e. 7.6.1 - the latest version). Please notice the below example:
+Where <strong>version</strong> is the latest version of the phone and tablet SDK provided by AdsWizz (i.e. 7.7.2 - the latest version). Please notice the below example:
 
 ```groovy
-implementation 'com.adswizz:adswizz-sdk:7.6.1'
-implementation 'com.adswizz:exoplayer2-10:7.6.1'
+implementation 'com.adswizz:adswizz-sdk:7.7.2'
+implementation 'com.adswizz:exoplayer2-10:7.7.2'
 ```
 
 _Note_: This artifact is using __protobuf java lite__ internally. In case your application is using the full protobuf java library you'll have to use another sdk artifact as following:
 
 ```groovy
-implementation 'com.adswizz:adswizz-sdk-protobufJava:7.6.1'
+implementation 'com.adswizz:adswizz-sdk-protobufJava:7.7.2'
 ```
 
+Note:
+if you are compiling with an API > 30 (*Android 11*) you must also include a newer version of Androidx WorkManager runtime as follows:
 
+```groovy
+implementation 'androidx.work:work-runtime-ktx:2.7.1'
+implementation 'androidx.work:work-multiprocess:2.7.1'
+```
+This is necessary since the included WorkManager version in the SDK doesn't implement the PendingIntent _*FLAG_IMMUTABLE*_ requirements introduced in Android 12
+    
 (optional) 3. The Adswizz Android SDK is using Google Play Services (`com.google.android.gms.ads.identifier.AdvertisingIdClient`) in order to get the Google Advertising ID (GAD). In order to do this your application may need to have following meta added in your `AndroidManifest.xml` file.
 ```xml
 <meta-data
