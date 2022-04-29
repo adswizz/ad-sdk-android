@@ -2445,6 +2445,7 @@ This interface exposes to the host app the following informations:
 - width: the media file width field value from VAST response
 - height: the media file height field value from VAST response
 - getAllCompanions(): the list of all companions from the VAST response
+- hasCompanion: expose if the ad has a companion banner information or not
 
 # Ad Base Manager adapters
 
