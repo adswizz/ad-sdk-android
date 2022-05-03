@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Podcast Sample</string>
+
+    <string name="play">Play</string>
+    <string name="resume">Resume</string>
+    <string name="pause">Pause</string>
+    <string name="reset">Reset</string>
+    <string name="download">Download</string>
+    <string name="stop_download">Stop Download</string>
+    <string name="remove">Remove Download</string>
+</resources>
