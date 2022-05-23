@@ -620,6 +620,18 @@ Here is an example:
 		...
 ```
 
+**Duration request parameters**
+
+An optional parameter is duration which sets the maximum total duration of ads to be selected, in seconds. It can be used to fine tune the ad(s) delivery and request a specific total duration.
+Duration parameter is set in milliseconds
+Here is an example that sets max duration to 90 seconds
+
+```kotlin
+	AdswizzAdRequest.Builder()
+		.withDuration(90000L)
+		...
+```
+
 **AdRequestConnection**
 
 After this point you need to create an AdRequestConnection object and call requestAds with the ad request object.
