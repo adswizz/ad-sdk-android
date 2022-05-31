@@ -8,10 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 class LogAdapter : RecyclerView.Adapter<LogAdapter.LogViewHolder>() {
 
-    init {
-        setHasStableIds(true)
-    }
-
     private val items = mutableListOf<String>()
 
     fun add(item: String) {
@@ -19,6 +15,11 @@ class LogAdapter : RecyclerView.Adapter<LogAdapter.LogViewHolder>() {
         notifyItemInserted(items.size - 1)
     }
 
+    fun clearAll() {
+        val previousSize = items.size
+        items.clear()
+        notifyItemRangeRemoved(0, previousSize)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LogViewHolder {
         return LogViewHolder(

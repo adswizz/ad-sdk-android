@@ -112,6 +112,8 @@ class MainActivity : AppCompatActivity() {
             streamManager?.stop()
             streamManager?.removeListener(listener)
 
+            logAdapter.clearAll()
+
             streamManager = AdswizzAdStreamManager(null)
             streamManager?.play(SERVER_URL)
             streamManager?.addListener(listener)
