@@ -7,8 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [7.7.5] - 2022-05-16
+### Fixed:
+- proguard rule that keeps a newly introduced `AdEvent.Type.State.PlaybackError` to signal when the player had playback issues
+
+## [7.7.4] - 2022-05-11
 ### Added:
-- Added function `withDuration(duration: Long?)` in class `AdswizzAdRequest` which sets the maximum total duration of ads to be selected. Value is in milliseconds
+- Improved support for `duration` and `maxDuration` in the multiple zones format for ads requests.
+  Added function `withDuration(duration: Long?)` in class `AdswizzAdRequest` which sets the maximum total duration of ads to be selected. Value is in milliseconds
+### Fixed
+- Fix for missing a browser app on the device when interactivity triggers a browse action
 
 ## [7.7.3] - 2022-04-29
 ### Added:
