@@ -66,6 +66,8 @@
         + [remove](#remove-download)
       * [AdPodcastManager.Listener interface](#adpodcastmanagerlistener-interface)
       * [AdPodcastManagerDownloadListener interface](#adpodcastmanagerdownloadlistener-interface)
+      * [Remote Audio Data](#remote-audio-data)
+      	+ [Handling RAD id3 metadata using your player](#handling-rad-id3-metadata-using-your-player)
  * [<strong>Playing ads using your player</strong>](#playing-ads-using-your-player)
       * [AdPlayer Interface](#adplayer-interface)
       * [CacheManager](#cache-manager)
@@ -82,6 +84,7 @@
       * [Extra exposure time for an AdCompanionView](#extra-exposure-time-for-an-adcompanionview)
       * [Preferred resource type](#preferred-resource-type)
       * [Asset Quality](#asset-quality)
+      * [Enable RAD](#enable-rad)
  * [<strong>Open Measurement in AdswizzSDK</strong>](#open-measurement-in-adswizzsdk)
       * [Video controls obstructions](#video-controls-obstructions)
  * [<strong>(Optional) Prepare your application for advanced targetability capabilities</strong>](#optional-prepare-your-application-for-advanced-targetability-capabilities)
@@ -1242,6 +1245,14 @@ Possible values are:
 
 Default value for asset quality is .HIGH.
 
+### Enable RAD
+
+You can enable or disable Remote Audio Data measurement for your podcasts based on your user's consent. It can be configured like this:
+
+```kotlin
+AdswizzSDK.disableRAD = false //or `true` if user opted out
+```
+
 # Video ads
 
 AdswizzSDK is capable of handling video content when an ad server delivers video ads. The ad lifecycle is the same as for audio ads. The additional steps needed to play video ads are described below.
@@ -1633,6 +1644,29 @@ Every time the current playhead changes, your app will get notified in this func
 ## **_AdPodcastManagerDownloadListener_** interface
 
 Download related notifications sent from **_AdswizzAdPodcastManager_** to your app are implemented in the **_AdPodcastManagerDownloadDelegate_** interface.
+
+## Remote Audio Data
+
+Podcasts come with _Remote Audio Data_ (RAD) support. Based on the industry standard by [NPR](https://rad.npr.org/), each podcast with RAD metadata will send events everytime its playhead crosses a certain point in time. 
+To enable RAD measurement for your podcasts, additional ZeroConfig configuration is needed. Contact your AdsWizz partner integration manager to setup your app's AdswizzSDK ZeroConfig instance.
+After this is in-place, as best practice you should present your users the option to opt-in or out for RAD measurement when playing podcasts. 
+
+This can be achieved with a single line of code:
+
+```kotlin
+AdswizzSDK.disableRAD = false //or `true` if user opted out
+```       
+By default, when `AdswizzSDK` is initialized, `disableRAD` property is set to `true`, so RAD measurement is **disabled** by default.
+ 
+The `disableRAD` property is applied to all podcasts and can be updated on the fly. When RAD measurement is disabled, all current event uploads are cancelled and the local database is emptied.
+
+Disabling RAD data collection at the ZeroConfig level takes precedence over disabling it from code. If RAD is disabled in ZeroConfig, setting a new value to `disableRAD` property will be the same as setting this value to `false` everytime.
+
+### Handling RAD id3 metadata using your player
+
+Remote Audio Data measurement is based on reading specific `id3` metadata formats from the podcast being played. The SDK is able to read these specific metadata formats when playing with the internal player.
+However, when playing podcasts using your own player you are responsable for passing the metadata items to the SDK. You can find more details at [AdPlayer.Listener interface](#adplayer-interface) and [MetadataItem](#adplayer-interface) sections.
+
 
 ### fun didDownload(adPodcastManager: AdPodcastManager, bytesDownloaded: Long, bytesExpected:Long, asset: DownloadableAsset)
 
@@ -2077,7 +2111,10 @@ Also, for macro expansion purposes it is recommended to implement the ```setVide
 The AdPlayer functions ```fun addListener(listener: Listener)``` and ```fun removeListener(listener: Listener)``` should be used to add and remove a listener.
 From the ```Listener``` interface there are only a couple of callbacks that were not explained yet.
 Whenever an error occurs the ```fun onError(error: String)``` callback should be called.
-When doing server side insertion (streams) the ```fun onMetadata(metadataList: List<MetadataItem>)``` function should be called whenever there is metadata in the stream. This is very important for streams. For client side insertion this callback is not used.
+When doing server side insertion (streams) the ```fun onMetadata(metadataList: List<MetadataItem>)``` function should be called whenever there is metadata in the stream. This is very important for streams. 
+It is also required if your player is used in a podcast context for reporting any id3 metadata formats to enable [Remote Audio Data](#remote-audio-data) measurement. The MetadataItem should have a "RAD" key
+and the corresponding RAD json string as value.
+For client side insertion this callback is not used.
 Whenever the player volume changes the ```fun onVolumeChanged(volume: Float)``` callback should be called.
 
 
