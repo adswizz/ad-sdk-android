@@ -41,6 +41,7 @@
  * [<strong>Companion Banner</strong>](#companion-banner)
       * [Adding an AdCompanionView](#adding-an-adcompanionview)
       * [Setting up](#setting-up)
+      * [Server side & Podcasts setup](#server-side--podcasts-setup)
       * [Companion events](#companion-events)
       * [Extra exposure time](#extra-exposure-time)
       * [Preferred resource type](#preferred-resource-type)
@@ -79,7 +80,6 @@
       * [CCPA config](#ccpa-config)
       * [Disable data collection](#disable-data-collection)
       * [XPAID header](#xpaid-header)
-      * [AFR config](#afr-config)
       * [Integrator Context](#integrator-context)
       * [Extra exposure time for an AdCompanionView](#extra-exposure-time-for-an-adcompanionview)
       * [Preferred resource type](#preferred-resource-type)
@@ -90,11 +90,6 @@
  * [<strong>(Optional) Prepare your application for advanced targetability capabilities</strong>](#optional-prepare-your-application-for-advanced-targetability-capabilities)
       * [Privacy implications](#privacy-implications)
  * [<strong>Vast Macros</strong>](#vast-macros)
- * [<strong>Multiprocess Host App Guide</strong>](#multiprocess-host-app-guide)
-      * [Work Manager Configuration](#work-manager-configuration)
-      * [Companion Support](#companion-support)
-      * [Video Support](#video-support)
-      * [Limitations](#limitations)
  * [<strong>AdData interface</strong>](#addata-interface)
  * [<strong>Ad Base Manager adapters</strong>](#ad-base-manager-adapters)
  * [<strong>AdswizzSDK Analytics</strong>](#adswizzsdk-analytics)
@@ -1197,6 +1192,20 @@ val adRequest = AdswizzAdRequest.Builder() //Build the Ad Request with the neede
 
 Once the request is made, if there is a companion associated with the ad it will be loaded into your **_AdCompanionView_** object.
 
+## Server side & Podcasts setup
+
+In order for Ad Companion Banner to work with a server side or podcast integration you must create an AFR Config object that should be provided to the SDK at initialization. With the information obtained from AdsWizz this object can be configured like in the code snippet below:
+
+```kotlin
+    AdswizzSDK.initialize(context: Context)
+
+    AdswizzSDK.afrConfig = AfrConfig(
+            AdswizzAdRequest.HttpProtocol.HTTP,
+            "demo.deliveryengine.adswizz.com", // provide your own delivery engine endpoint address here
+            "www/delivery/afr.php"
+        )
+```
+
 ## Companion events
 
 You can associate a listener to your AdCompanionView that implements the AdCompanionView.Listener interface.
@@ -2240,18 +2249,6 @@ If you want to re-enable it simply add the following line:
 
 For each call Adswizz SDK checks the response and updates the xpaid header (aw_0_awz.xpaid) value. The host app can obtain it by calling **_AdswizzSDK.xpaid_**.
 
-## AFR config
-
-In order to have the companion displayed during 'Server-Side Insertion' an AFR Config object should be provided to the SDK. With the information obtained from AdsWizz this object can be configured like in the code snippet below:
-
-```kotlin
-    AdswizzSDK.afrConfig = AfrConfig(
-            AdswizzAdRequest.HttpProtocol.HTTP,
-            "demo.deliveryengine.adswizz.com",
-            "www/delivery/afr.php"
-        )
-```
-
 ## Integrator Context
 
 In order to correctly do macro expansion the integrator should implement the `IntegratorContext` interface and provide it to the SDK.
@@ -2354,130 +2351,6 @@ and partially supports:
 - ERRORCODE - only a part of the error codes are currently covered
 
 For more informations about them consult [VAST_4.2_final_june26.pdf](https://iabtechlab.com/wp-content/uploads/2019/06/VAST_4.2_final_june26.pdf) .
-
-
-# Multiprocess Host App Guide
-
-The Adswizz SDK is able to work within a multiprocess host application. If your app runs the playback logic in one process and the UI logic in another one, here you will find what you will need to do in order to make it work.
-
-In your manifest add the following lines:
-```xml
-    <service
-        android:name="com.ad.core.multiprocess.ipc.ProcessIpcService"
-        android:enabled="true"
-        android:exported="false"
-        android:process=":NAME_OF_THE_UI_PROCESS" />
-
-    <service
-        android:name="com.ad.core.companion.ipc.AdCompanionService"
-        android:enabled="true"
-        android:exported="false"
-        android:process=":NAME_OF_THE_PLAYBACK_PROCESS" />
-
-    <service
-        android:name="com.ad.core.video.ipc.AdVideoService"
-        android:enabled="true"
-        android:exported="false"
-        android:process=":NAME_OF_THE_PLAYBACK_PROCESS" />
-
-```
-where `NAME_OF_THE_PLAYBACK_PROCESS` is the name of the process in which `AdswizzSDK.initialize(context: Context)` function is called, and `NAME_OF_THE_UI_PROCESS` is the name of the process where the UI logic is handled. For single process applications `NAME_OF_THE_PLAYBACK_PROCESS` and `NAME_OF_THE_UI_PROCESS` will be the same.
-
-## Work Manager Configuration
-
-The work manager can be configured to run in either the ui process or the playback process.
-
-To make it work in the ui process add the following lines in your manifest:
-
-```xml
-    <provider
-        android:name="androidx.work.impl.WorkManagerInitializer"
-        android:authorities="${applicationId}.workmanager-init"
-        tools:node="remove" />
-
-    <service
-        android:name="androidx.work.multiprocess.RemoteWorkManagerService"
-        tools:replace="android:process"
-        android:process=":NAME_OF_THE_UI_PROCESS"/>
-
-    <service
-        android:name="androidx.work.impl.background.systemjob.SystemJobService"
-        tools:replace="android:process"
-        android:process=":NAME_OF_THE_UI_PROCESS"/>
-```
-
-and then add the following in your custom `Application` class:
-
-```kotlin
-class NameOfYourApplicationClass : Application(), Configuration.Provider {
-    override fun getWorkManagerConfiguration() =
-            Configuration.Builder()
-                    .setDefaultProcessName("APPLICATION_PACKAGE_NAME:NAME_OF_THE_UI_PROCESS")
-                    .build()
-
-}
-```
-
-To make it work in the playback process add the following lines in your manifest:
-
-```xml
-    <provider
-        android:name="androidx.work.impl.WorkManagerInitializer"
-        android:authorities="${applicationId}.workmanager-init"
-        tools:node="remove" />
-
-    <service
-        android:name="androidx.work.multiprocess.RemoteWorkManagerService"
-        tools:replace="android:process"
-        android:process=":NAME_OF_THE_PLAYBACK_PROCESS"/>
-
-    <service
-        android:name="androidx.work.impl.background.systemjob.SystemJobService"
-        tools:replace="android:process"
-        android:process=":NAME_OF_THE_PLAYBACK_PROCESS"/>
-```
-
-and then add the following in your Application class:
-
-```kotlin
-class NameOfYourApplicationClass : Application(), Configuration.Provider {
-    override fun getWorkManagerConfiguration() =
-            Configuration.Builder()
-                    .setDefaultProcessName("APPLICATION_PACKAGE_NAME:NAME_OF_THE_PLAYBACK_PROCESS")
-                    .build()
-
-}
-```
-
-As above, `NAME_OF_THE_PLAYBACK_PROCESS` is the name of the process in which `AdswizzSDK.initialize(context: Context)` function is called, and `NAME_OF_THE_UI_PROCESS` is the name of the process where the UI logic is handled. For single process applications `NAME_OF_THE_PLAYBACK_PROCESS` and `NAME_OF_THE_UI_PROCESS` will be the same.
-
-## Companion Support
-
-Having the app split in 2 separate processes means that the user may encounter the situation where one process is dead and the other active.
-
-In case the playback process is killed the `AdCompanionView` class has 2 methods that can be used:
- - `fun clearContent()`. When called cleans the visual content of the companion view. By default when the playback process dies the content remains unchanged.
- - `fun reconnect()`. The app should call this method after the playback process was restored and the Adswizz SDK reinitialized and ready to use. Calling `reconnect` will register the `AdCompanionView` into Adswizz SDK.
-
- In case the UI process is killed, the Adswizz SDK will detect that the registered `AdCompanionView` is no longer available and it will gracefully unregistered it.
-
-## Video Support
-
- Having the app split in 2 separate processes means that the user may encounter the situation where one process is dead and the other active.
-
- In case the playback process is killed the `AdVideoView` class has 2 methods that can be used:
-  - `fun clearContent()`. When called cleans the visual content of the video view. By default when the playback process dies the content remains unchanged.
-  - `fun reconnect()`. The app should call this method after the playback process was restored and the Adswizz SDK reinitialized and ready to use. Calling `reconnect` will register the `AdVideoView` into Adswizz SDK.
-
-  In case the UI process is killed, the Adswizz SDK will detect that the registered `AdVideoView` is no longer available and it will gracefully unregistered it.
-
-## Limitations
-
-The following features don't have support in multiprocess applications:
-- In-app notification detector: in a multiprocess application it will not appear on screen. So the actions can't be triggered because the user will be unable to press the buttons.
-- Permissions action: the action will not appear on-screen, although it can be triggered.
-- Analytics logs: the logs will not be sent.
-- OMSDK plugin: it will not measure anything.
 
 # AdData interface
 
