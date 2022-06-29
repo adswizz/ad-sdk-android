@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.6] - 2022-06-29
+### Added:
+- New public method on class **_AdVideoView_**
+	- `activityOnDestroy()` to be called when parent container (Activity or Fragment) is destroyed
+### Changed:
+- [Integration Guide](README.md) was modified to explain AdVideoView new public function `activityOnDestroy()` usage
+
 ## [7.7.6] - 2022-06-16
 ### Added:
 - Podcast RAD support
