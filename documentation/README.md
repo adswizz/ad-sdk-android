@@ -53,6 +53,7 @@
       * [Viewability](#viewability)
          * [Friendly obstructions](#friendly-obstructions)
          * [Video state](#video-state)
+      * [Video View Cleanup](#video-view-cleanup)
  * [<strong>Podcasts</strong>](#podcasts)
       * [Getting started](#getting-started)
       * [Playback operations](#playback-operations)
@@ -1477,6 +1478,10 @@ val videoView = rootView.findViewById(R.id.videoView)
 videoView.state = AdVideoState.FULLSCREEN
 
 ```
+
+## Video View Cleanup
+While **_AdVideoView_** has its cleanup mechanism, for a better performance,  `activityOnDestroy()` method should be called when Activity or Fragment containing it are about to be destroyed.
+
 ---
 
 # Podcasts
