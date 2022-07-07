@@ -15,10 +15,10 @@ import com.ad.core.adFetcher.AdRequestConnection
 import com.ad.core.adManager.AdManager
 import com.ad.core.adManager.AdManagerListener
 import com.ad.core.adManager.AdManagerSettings
-import com.ad.core.cache.CacheManager
 import com.ad.core.cache.CachePolicy
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.adFetcher.AdswizzAdZone
+import com.adswizz.player.CacheManager
 import com.adswizz.sdk.AdswizzSDK
 import kotlinx.android.synthetic.main.activity_main.*
 

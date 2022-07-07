@@ -15,10 +15,11 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.ad.core.adBaseManager.AdBaseManager
-import com.ad.core.adBaseManager.AdPlayer
 import com.ad.core.companion.AdCompanionView
 import com.ad.core.streaming.AdManagerStreamingSettings
 import com.ad.core.streaming.AdStreamManager
+import com.ad.core.streaming.DvrBufferInfo
+import com.adswizz.common.AdPlayer
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.streaming.AdswizzAdStreamManager
 import com.adswizz.core.streaming.AfrConfig
@@ -53,6 +54,13 @@ class MainActivity : AppCompatActivity() {
 
         override fun didResumePlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
             appLogs.addEntry("Did resume playing url: $url")
+        }
+
+        override fun onDvrMetadataReceived(
+            adStreamManager: AdStreamManager,
+            dvrBufferInfo: DvrBufferInfo?
+        ) {
+            // ignored
         }
 
         override fun adBreakStarted(

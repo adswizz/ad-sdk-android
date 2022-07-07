@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import com.ad.core.adBaseManager.AdBaseManager
-import com.ad.core.adBaseManager.AdPlayer
 import com.ad.core.streaming.AdManagerStreamingSettings
 import com.ad.core.streaming.AdStreamManager
 import com.ad.core.streaming.DvrBufferInfo
+import com.adswizz.common.AdPlayer
 import com.adswizz.core.streaming.AdswizzAdStreamManager
 import com.adswizz.dvrstreamingsample.databinding.ActivityMainBinding
 import com.adswizz.sdk.AdswizzSDK

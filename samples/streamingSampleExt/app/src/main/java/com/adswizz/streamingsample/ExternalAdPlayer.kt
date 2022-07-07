@@ -3,30 +3,31 @@ package com.adswizz.streamingsample
 import android.content.Context
 import android.net.Uri
 import android.view.Surface
-import com.ad.core.adBaseManager.AdPlayer
-import com.ad.core.cache.CacheManager
-import com.ad.core.macro.PlayerCapabilities
-import com.ad.core.macro.PlayerState
-import com.ad.core.video.AdVideoState
+import com.adswizz.common.AdPlayer
+import com.adswizz.common.CommonContext
+import com.adswizz.common.Utils
+import com.adswizz.common.macro.PlayerCapabilities
+import com.adswizz.common.macro.PlayerState
+import com.adswizz.common.video.AdVideoState
+import com.adswizz.player.CacheManager
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.analytics.AnalyticsListener
-import com.google.android.exoplayer2.audio.AudioListener
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
+import com.google.android.exoplayer2.metadata.Metadata
 import com.google.android.exoplayer2.metadata.MetadataOutput
 import com.google.android.exoplayer2.metadata.emsg.EventMessage
 import com.google.android.exoplayer2.metadata.icy.IcyInfo
 import com.google.android.exoplayer2.metadata.id3.*
-import com.google.android.exoplayer2.source.ConcatenatingMediaSource
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.MediaSourceEventListener
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.source.*
 import com.google.android.exoplayer2.source.dash.DashMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
+import com.google.android.exoplayer2.upstream.FileDataSource
 import com.google.android.exoplayer2.upstream.RawResourceDataSource
 import com.google.android.exoplayer2.util.Util
-import com.google.android.exoplayer2.video.VideoListener
+import com.google.android.exoplayer2.video.VideoSize
 import java.io.IOException
 import java.lang.ref.WeakReference
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -35,7 +36,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 /**
  * Based on exoplayer
  */
-class ExternalAdPlayer(val context: Context) : AdPlayer, Player.EventListener, AnalyticsListener, CacheManager.Listener, AudioListener, MetadataOutput, VideoListener {
+class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener, AnalyticsListener, CacheManager.Listener, MetadataOutput {
 
     private enum class AssetState {
         INITIALIZED,
@@ -89,7 +90,7 @@ class ExternalAdPlayer(val context: Context) : AdPlayer, Player.EventListener, A
     private var duration: Double? = null
     private var listenerList: ConcurrentLinkedQueue<WeakReference<AdPlayer.Listener>> = ConcurrentLinkedQueue()
 
-    private val player: SimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(context)
+    private val player: ExoPlayer = ExoPlayer.Builder(context).build()
     private val mediaSources = ConcatenatingMediaSource()
 
     private val playlist = CopyOnWriteArrayList<Asset>()
@@ -101,18 +102,12 @@ class ExternalAdPlayer(val context: Context) : AdPlayer, Player.EventListener, A
 
     init {
         player.addListener(this)
-        player.addMetadataOutput(this)
-        player.addAudioListener(this)
         player.addAnalyticsListener(this)
-        player.addVideoListener(this)
     }
 
     // cleanup should be used by AdManagers when they do cleanup
     fun cleanup() {
-        player.removeVideoListener(this)
         player.removeAnalyticsListener(this)
-        player.removeAudioListener(this)
-        player.removeMetadataOutput(this)
         player.removeListener(this)
     }
 
@@ -135,7 +130,8 @@ class ExternalAdPlayer(val context: Context) : AdPlayer, Player.EventListener, A
 
             playingIndex = 0
             seekInProgress = true
-            player.prepare(mediaSources)
+            player.setMediaSource(mediaSources)
+            player.prepare()
         }
     }
 
@@ -143,29 +139,54 @@ class ExternalAdPlayer(val context: Context) : AdPlayer, Player.EventListener, A
         val uri = Uri.parse(urlString)
         val undecoratedUri = Uri.parse(urlString).buildUpon().clearQuery().build()
 
-        if (urlString.startsWith("rawresource://", true)) {
-            val dataSourceFactory = DataSource.Factory { RawResourceDataSource(context) }
-            return ProgressiveMediaSource.Factory(dataSourceFactory).setTag(urlString).createMediaSource(uri)
-        } else {
-            val dataSourceFactory = DefaultHttpDataSourceFactory("ArtemisKotlin")
+        val mediaItem = MediaItem.Builder()
+            .setMediaId(urlString)
+            .setUri(uri)
+            .build()
 
-            when (Util.inferContentType(undecoratedUri)) {
-                C.TYPE_DASH -> {
-                    return DashMediaSource.Factory(dataSourceFactory).setTag(urlString).createMediaSource(uri)
-                }
-                C.TYPE_HLS -> {
-                    return HlsMediaSource.Factory(dataSourceFactory).setTag(urlString).createMediaSource(uri)
-                }
-                C.TYPE_SS -> {
-                    return SsMediaSource.Factory(dataSourceFactory).setTag(urlString).createMediaSource(uri)
-                }
-                else -> {
-                    return if (cacheAssetsHint) {
-                        ProgressiveMediaSource.Factory(CacheManager.getCacheDataSourceFactory(dataSourceFactory))
-                                .setTag(urlString)
-                                .createMediaSource(uri)
-                    } else {
-                        ProgressiveMediaSource.Factory(dataSourceFactory).setTag(urlString).createMediaSource(uri)
+        when {
+            urlString.startsWith("rawresource://", true) -> {
+                val dataSourceFactory =
+                    DataSource.Factory { RawResourceDataSource(CommonContext.getContext()) }
+                val extractorsFactory: DefaultExtractorsFactory =
+                    DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
+                return ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory)
+                    .createMediaSource(mediaItem)
+            }
+            urlString.startsWith("file:///",true) -> {
+                val dataSourceFactory = DataSource.Factory { FileDataSource() }
+                val extractorsFactory: DefaultExtractorsFactory =
+                    DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
+                return ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory)
+                    .createMediaSource(mediaItem)
+            }
+            else -> {
+                val dataSourceFactory = DefaultHttpDataSource.Factory().setUserAgent(Utils.getDefaultUserAgent())
+
+                when (Util.inferContentType(undecoratedUri)) {
+                    C.TYPE_DASH -> {
+                        return DashMediaSource.Factory(dataSourceFactory).createMediaSource(mediaItem)
+                    }
+                    C.TYPE_HLS -> {
+                        return HlsMediaSource.Factory(dataSourceFactory).createMediaSource(mediaItem)
+                    }
+                    C.TYPE_SS -> {
+                        return SsMediaSource.Factory(dataSourceFactory).createMediaSource(mediaItem)
+                    }
+                    else -> {
+                        val extractorsFactory: DefaultExtractorsFactory =
+                            DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
+                        return if (cacheAssetsHint) {
+                            ProgressiveMediaSource.Factory(
+                                CacheManager.getCacheDataSourceFactory(
+                                    dataSourceFactory
+                                ), extractorsFactory
+                            )
+                                .createMediaSource(mediaItem)
+                        } else {
+                            ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory)
+                                .createMediaSource(mediaItem)
+                        }
                     }
                 }
             }
@@ -208,6 +229,15 @@ class ExternalAdPlayer(val context: Context) : AdPlayer, Player.EventListener, A
         }
     }
 
+    override fun seekTo(position: Double) {
+        try {
+            seekInProgress = true
+            player.seekTo(player.currentMediaItemIndex, (position * 1000.0).toLong())
+        } catch (e: Exception) {
+            seekInProgress = false
+        }
+    }
+
     // endregion
 
 
@@ -229,7 +259,8 @@ class ExternalAdPlayer(val context: Context) : AdPlayer, Player.EventListener, A
                 if (mediaSources.size == 1) {
                     playingIndex = 0
                     seekInProgress = true
-                    player.prepare(mediaSources)
+                    player.setMediaSource(mediaSources)
+                    player.prepare()
                 }
             }
         }
@@ -238,7 +269,7 @@ class ExternalAdPlayer(val context: Context) : AdPlayer, Player.EventListener, A
     override fun dequeue(index: Int) {
         if ((index >= 0) && (index < playlist.size)) {
             if (cacheAssetsHint) {
-                val tag = mediaSources.getMediaSource(index).tag.toString()
+                val tag = mediaSources.getMediaSource(index).mediaItem.mediaId
                 if (!tag.startsWith("rawresource://", true))
                     CacheManager.removeAssetFromCache(tag)
             }
@@ -396,8 +427,8 @@ class ExternalAdPlayer(val context: Context) : AdPlayer, Player.EventListener, A
         }
     }
 
-    override fun onPlayerError(error: ExoPlaybackException) {
-        super<Player.EventListener>.onPlayerError(error)
+    override fun onPlayerError(error: PlaybackException) {
+        super<Player.Listener>.onPlayerError(error)
         status = AdPlayer.Status.FAILED
         val errorMessage = "Something went wrong with external exoplayer: ${error?.message}"
         listenerList.forEach { it.get()?.onError(errorMessage) }
@@ -405,7 +436,7 @@ class ExternalAdPlayer(val context: Context) : AdPlayer, Player.EventListener, A
 
     override fun onPositionDiscontinuity(reason: Int) {
         var posChanged = false
-        if (reason == Player.DISCONTINUITY_REASON_PERIOD_TRANSITION) {  // transition from one track to the next
+        if (reason == Player.DISCONTINUITY_REASON_AUTO_TRANSITION) {  // transition from one track to the next
             playingIndex++
             duration = player.duration.toDouble() / 1000
             listenerList.forEach { it.get()?.onTrackChanged(playingIndex) }
@@ -420,7 +451,7 @@ class ExternalAdPlayer(val context: Context) : AdPlayer, Player.EventListener, A
         if (cacheAssetsHint && posChanged) {
             val cancelIndex = playingIndex - 1
             if (cancelIndex >= 0 && cancelIndex < mediaSources.size) {
-                CacheManager.cancelDownload(mediaSources.getMediaSource(playingIndex - 1).tag.toString())
+                CacheManager.cancelDownload(mediaSources.getMediaSource(playingIndex - 1).mediaItem.mediaId)
             }
         }
     }
@@ -430,70 +461,68 @@ class ExternalAdPlayer(val context: Context) : AdPlayer, Player.EventListener, A
 
     // region MetadataOutput
 
-    override fun onMetadata(metadata: com.google.android.exoplayer2.metadata.Metadata) {
+    override fun onMetadata(metadata: Metadata) {
         val metadataList = mutableListOf<AdPlayer.MetadataItem>()
-        if (metadata != null) {
-            for (i in 0 until metadata.length()) {
-                when (val entry = metadata.get(i)) {
-                    is IcyInfo -> {
-                        if (entry.title != null) {
-                            metadataList.add(AdPlayer.MetadataItem("title", entry.title ?: ""))
-                        }
-                        if (entry.url != null) {
-                            metadataList.add(AdPlayer.MetadataItem("url", entry.url ?: ""))
-                        }
+        for (i in 0 until metadata.length()) {
+            when (val entry = metadata.get(i)) {
+                is IcyInfo -> {
+                    if (entry.title != null) {
+                        metadataList.add(AdPlayer.MetadataItem("title", entry.title ?: ""))
                     }
-                    is TextInformationFrame -> {
-                        if (!entry.value.isNullOrEmpty()) {
-                            metadataList.add(AdPlayer.MetadataItem("value", entry.value))
-                        }
-                        if (!entry.description.isNullOrEmpty()) {
-                            metadataList.add(
-                                    AdPlayer.MetadataItem(
-                                            "description",
-                                            entry.description.toString()
-                                    )
-                            )
-                        }
+                    if (entry.url != null) {
+                        metadataList.add(AdPlayer.MetadataItem("url", entry.url ?: ""))
                     }
-                    is UrlLinkFrame -> {
-                        // do nothing
+                }
+                is TextInformationFrame -> {
+                    if (entry.value.isNotEmpty()) {
+                        metadataList.add(AdPlayer.MetadataItem("value", entry.value))
                     }
-                    is PrivFrame -> {
-                        // do nothing
+                    if (!entry.description.isNullOrEmpty()) {
+                        metadataList.add(
+                                AdPlayer.MetadataItem(
+                                        "description",
+                                        entry.description.toString()
+                                )
+                        )
                     }
-                    is GeobFrame -> {
-                        // do nothing
+                }
+                is UrlLinkFrame -> {
+                    // do nothing
+                }
+                is PrivFrame -> {
+                    // do nothing
+                }
+                is GeobFrame -> {
+                    // do nothing
+                }
+                is ApicFrame -> {
+                    if (!entry.description.isNullOrEmpty()) {
+                        metadataList.add(
+                                AdPlayer.MetadataItem(
+                                        "description",
+                                        entry.description.toString()
+                                )
+                        )
                     }
-                    is ApicFrame -> {
-                        if (!entry.description.isNullOrEmpty()) {
-                            metadataList.add(
-                                    AdPlayer.MetadataItem(
-                                            "description",
-                                            entry.description.toString()
-                                    )
-                            )
-                        }
-                        if (!entry.mimeType.isNullOrEmpty()) {
-                            metadataList.add(
-                                    AdPlayer.MetadataItem(
-                                            "description",
-                                            entry.mimeType.toString()
-                                    )
-                            )
-                        }
+                    if (entry.mimeType.isNotEmpty()) {
+                        metadataList.add(
+                                AdPlayer.MetadataItem(
+                                        "description",
+                                        entry.mimeType
+                                )
+                        )
                     }
-                    is CommentFrame -> {
-                        if (!entry.text.isNullOrEmpty()) {
-                            metadataList.add(AdPlayer.MetadataItem("text", entry.text))
-                        }
+                }
+                is CommentFrame -> {
+                    if (entry.text.isNotEmpty()) {
+                        metadataList.add(AdPlayer.MetadataItem("text", entry.text))
                     }
-                    is Id3Frame -> {
-                        // do nothing
-                    }
-                    is EventMessage -> {
-                        // do nothing
-                    }
+                }
+                is Id3Frame -> {
+                    // do nothing
+                }
+                is EventMessage -> {
+                    // do nothing
                 }
             }
         }
@@ -505,38 +534,49 @@ class ExternalAdPlayer(val context: Context) : AdPlayer, Player.EventListener, A
 
     //region Analytics Listener
 
-    override fun onLoadStarted(eventTime: AnalyticsListener.EventTime, loadEventInfo: MediaSourceEventListener.LoadEventInfo, mediaLoadData: MediaSourceEventListener.MediaLoadData) {
-        eventTime?.windowIndex?.let { wi ->
-            if ((wi >= 0) && (wi < playlist.size)) {
-                val item = playlist.elementAt(wi)
-                item.assetState = AssetState.LOADING
-                if (item.lastLoadingCallbackSent == LastLoadingCallbackSent.NONE) {
-                    item.lastLoadingCallbackSent = LastLoadingCallbackSent.LOADING
-                    val i = if (enqueueEnabledHint) wi else null
-                    listenerList.forEach { it.get()?.onLoading(i) }
-                }
+    // monitor removed media sources and offset the windowIndex to reflect the ad index
+    private var removedMediaSourcesCount = 0
+
+    override fun onLoadStarted(eventTime: AnalyticsListener.EventTime, loadEventInfo: LoadEventInfo, mediaLoadData: MediaLoadData) {
+        val wi = eventTime.windowIndex
+        if ((wi >= 0) && (wi < playlist.size)) {
+            val item = playlist.elementAt(wi + removedMediaSourcesCount)
+            item.assetState = AssetState.LOADING
+            if (item.lastLoadingCallbackSent == LastLoadingCallbackSent.NONE) {
+                item.lastLoadingCallbackSent = LastLoadingCallbackSent.LOADING
+                val i = if (enqueueEnabledHint) wi + removedMediaSourcesCount else null
+                listenerList.forEach { it.get()?.onLoading(i) }
             }
         }
     }
 
-    override fun onLoadCompleted(eventTime: AnalyticsListener.EventTime, loadEventInfo: MediaSourceEventListener.LoadEventInfo, mediaLoadData: MediaSourceEventListener.MediaLoadData) {
-        eventTime?.windowIndex?.let { wi ->
-            loadCompleted(wi)
+    override fun onLoadCompleted(eventTime: AnalyticsListener.EventTime, loadEventInfo: LoadEventInfo, mediaLoadData: MediaLoadData) {
+        loadCompleted(eventTime.windowIndex + removedMediaSourcesCount)
+    }
+
+    override fun onLoadError(eventTime: AnalyticsListener.EventTime, loadEventInfo: LoadEventInfo, mediaLoadData: MediaLoadData, error: IOException, wasCanceled: Boolean) {
+        val wi = eventTime.windowIndex
+        if ((wi >= 0) && (wi < playlist.size)) {
+            playlist.elementAt(wi).assetState = AssetState.FAILED
+
+            if(wi >= 0 && wi < mediaSources.size) {
+                if(mediaSources.getMediaSource(wi).mediaItem.mediaId == loadEventInfo.uri.toString()) {
+                    mediaSources.removeMediaSource(wi)
+                    if(enqueueEnabledHint) {
+                        removedMediaSourcesCount++
+                    }
+                }
+            }
+
+            val errorMessage = "ExoPlayer failed to load media: ${loadEventInfo.uri} with ${error.message}"
+            listenerList.forEach { it.get()?.onError(errorMessage) }
         }
     }
 
-    override fun onLoadError(eventTime: AnalyticsListener.EventTime, loadEventInfo: MediaSourceEventListener.LoadEventInfo, mediaLoadData: MediaSourceEventListener.MediaLoadData, error: IOException, wasCanceled: Boolean) {
-        eventTime?.windowIndex?.let { wi ->
-            if ((wi >= 0) && (wi < playlist.size))
-                playlist.elementAt(wi).assetState = AssetState.FAILED
-        }
-    }
-
-    override fun onLoadCanceled(eventTime: AnalyticsListener.EventTime, loadEventInfo: MediaSourceEventListener.LoadEventInfo, mediaLoadData: MediaSourceEventListener.MediaLoadData) {
-        eventTime?.windowIndex?.let { wi ->
-            if ((wi >= 0) && (wi < playlist.size))
-                playlist.elementAt(wi).assetState = AssetState.CANCELED
-        }
+    override fun onLoadCanceled(eventTime: AnalyticsListener.EventTime, loadEventInfo: LoadEventInfo, mediaLoadData: MediaLoadData) {
+        val wi = eventTime.windowIndex
+        if ((wi >= 0) && (wi < playlist.size))
+            playlist.elementAt(wi).assetState = AssetState.CANCELED
     }
 
     private fun loadCompleted(index: Int) {
@@ -578,7 +618,7 @@ class ExternalAdPlayer(val context: Context) : AdPlayer, Player.EventListener, A
     // region Audio Listener
 
     override fun onVolumeChanged(volume: Float) {
-        super<AudioListener>.onVolumeChanged(volume)
+        super<Player.Listener>.onVolumeChanged(volume)
         listenerList.forEach { it.get()?.onVolumeChanged(volume) }
     }
 
@@ -586,8 +626,8 @@ class ExternalAdPlayer(val context: Context) : AdPlayer, Player.EventListener, A
 
     // region VideoListener
 
-    override fun onVideoSizeChanged(width: Int, height: Int, unappliedRotationDegrees: Int, pixelWidthHeightRatio: Float) {
-        listenerList.forEach { it.get()?.onVideoSizeChanged(this, width, height) }
+    override fun onVideoSizeChanged(videoSize: VideoSize) {
+        listenerList.forEach { it.get()?.onVideoSizeChanged(this, videoSize.width, videoSize.height) }
     }
 
     // endregion
