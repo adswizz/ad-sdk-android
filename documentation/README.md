@@ -1480,7 +1480,7 @@ videoView.state = AdVideoState.FULLSCREEN
 ```
 
 ## Video View Cleanup
-While **_AdVideoView_** has its cleanup mechanism, for a better performance,  `activityOnDestroy()` method should be called when Activity or Fragment containing it are about to be destroyed.
+While **_AdVideoView_** has its cleanup mechanism, for a better performance, the `activityOnDestroy()` method of **_AdVideoView_** needs be called when the Activity or the Fragment containing that **_AdVideoView_** instance is about to be destroyed.
 
 ---
 

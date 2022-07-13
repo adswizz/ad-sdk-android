@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New public method on class **_AdVideoView_**
 	- `activityOnDestroy()` to be called when parent container (Activity or Fragment) is destroyed
 ### Changed:
-- [Integration Guide](README.md) was modified to explain AdVideoView new public function `activityOnDestroy()` usage
+- [Integration Guide](README.md) was modified to explain how to use the new **_AdVideoView_**'s public function named `activityOnDestroy()`
 
 ## [7.7.6] - 2022-06-16
 ### Added:
