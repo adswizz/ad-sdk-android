@@ -1,5 +1,6 @@
 package com.adswizz.basicsample
 
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Bundle
@@ -8,6 +9,8 @@ import android.text.method.ScrollingMovementMethod
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.text.style.TypefaceSpan
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
@@ -18,6 +21,7 @@ import com.ad.core.adBaseManager.AdEvent
 import com.ad.core.adFetcher.AdRequestConnection
 import com.ad.core.adManager.AdManager
 import com.ad.core.adManager.AdManagerListener
+import com.adswizz.basicsample.databinding.ActivityMainBinding
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.adFetcher.AdswizzAdZone
 import com.adswizz.sdk.AdswizzSDK
@@ -38,6 +42,8 @@ class MainActivity : AppCompatActivity() {
     private enum class AdManagerState {
         Unknown, ReadyForPlay, Playing, Paused, AllAdsCompleted
     }
+
+    private lateinit var binding: ActivityMainBinding
 
     private var adManager: AdManager? = null
     private var adRequestConnection: AdRequestConnection? = null
@@ -101,7 +107,7 @@ class MainActivity : AppCompatActivity() {
 
                 AdEvent.Type.State.AllAdsCompleted -> {
                     adManagerState = AdManagerState.AllAdsCompleted
-                    playButton.setBackgroundResource(R.drawable.ic_play_arrow_black_24dp)
+                    //playButton.setBackgroundResource(R.drawable.ic_play_arrow_black_24dp)
                     appLogs.addEntry("Ad - all ads completed")
                 }
 
@@ -148,10 +154,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+//        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        supportActionBar?.hide()
+        //supportActionBar?.hide()
 
         val window = this.window
         getWindow().decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -177,46 +186,57 @@ class MainActivity : AppCompatActivity() {
                     handleResponse(error, adManager)
                 }
             }
+    }
 
-        playButton.setOnClickListener {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
 
-            when (adManagerState) {
-                AdManagerState.Unknown, AdManagerState.ReadyForPlay -> {
-                    if (adManagerState == AdManagerState.Unknown) {
-                        appLogs.addEntry("Recommendation: just to be sure that the ad playback will start immediately wait for the <<AdEvent.Type.State.ReadyForPlay>> event")
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menuPlay -> {
+                //startActivity(Intent(this, SettingsActivity::class.java))
+                when (adManagerState) {
+                    AdManagerState.Unknown, AdManagerState.ReadyForPlay -> {
+                        if (adManagerState == AdManagerState.Unknown) {
+                            appLogs.addEntry("Recommendation: just to be sure that the ad playback will start immediately wait for the <<AdEvent.Type.State.ReadyForPlay>> event")
+                        }
+                        //it.setBackgroundResource(R.drawable.ic_pause_arrow_black_24dp)
+                        adManager?.play()
                     }
-                    it.setBackgroundResource(R.drawable.ic_pause_arrow_black_24dp)
-                    adManager?.play()
-                }
-                AdManagerState.Paused -> {
-                    it.setBackgroundResource(R.drawable.ic_pause_arrow_black_24dp)
-                    adManager?.resume()
-                }
-                AdManagerState.Playing -> {
-                    it.setBackgroundResource(R.drawable.ic_play_arrow_black_24dp)
-                    adManager?.pause()
-                }
-                AdManagerState.AllAdsCompleted -> {
-                    it.setBackgroundResource(R.drawable.ic_pause_arrow_black_24dp)
-                    adManager?.reset()
-                    adManager?.prepare()
-                    adManager?.play()
+                    AdManagerState.Paused -> {
+                        //it.setBackgroundResource(R.drawable.ic_pause_arrow_black_24dp)
+                        adManager?.resume()
+                    }
+                    AdManagerState.Playing -> {
+                        //it.setBackgroundResource(R.drawable.ic_play_arrow_black_24dp)
+                        adManager?.pause()
+                    }
+                    AdManagerState.AllAdsCompleted -> {
+                        //it.setBackgroundResource(R.drawable.ic_pause_arrow_black_24dp)
+                        adManager?.reset()
+                        adManager?.prepare()
+                        adManager?.play()
+                    }
                 }
             }
-        }
+            R.id.menuReplay -> {
+                adManager?.reset()
+                adManager = null
+                adManagerState = AdManagerState.Unknown
 
-        replayButton.setOnClickListener {
-            adManager?.reset()
-            adManager = null
-            adManagerState = AdManagerState.Unknown
+                appLogs.text = ""
 
-            appLogs.text = ""
-
-            adRequestConnection?.requestAds { adManager, error ->
-                handleResponse(error, adManager)
+                adRequestConnection?.requestAds { adManager, error ->
+                    handleResponse(error, adManager)
+                }
             }
+//            R.id.menuShakeItem -> {
+//            }
         }
-
+        return super.onOptionsItemSelected(item)
     }
 
     private fun handleResponse(

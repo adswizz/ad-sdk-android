@@ -9,6 +9,8 @@ import android.text.method.ScrollingMovementMethod
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.text.style.TypefaceSpan
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
@@ -24,6 +26,7 @@ import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.streaming.AdswizzAdStreamManager
 import com.adswizz.core.streaming.AfrConfig
 import com.adswizz.sdk.AdswizzSDK
+import com.adswizz.streamingsample.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,6 +35,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
     companion object {
         const val SERVER_URL = "http://sdk.mobile.streaming.adswizz.com:8500/shakeDemo"
     }
@@ -88,10 +92,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        //setContentView(R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        supportActionBar?.hide()
+        //supportActionBar?.hide()
 
         val window = this.window
         getWindow().decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -124,15 +132,26 @@ class MainActivity : AppCompatActivity() {
         streamManager?.addListener(listener)
         streamManager?.play(SERVER_URL)
 
-        replayButton.setOnClickListener {
-            streamManager?.stop()
-            streamManager?.removeListener(listener)
-            appLogs.text = ""
+    }
 
-            streamManager = AdswizzAdStreamManager(null)
-            streamManager?.play(SERVER_URL)
-            streamManager?.addListener(listener)
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menuReplay -> {
+                streamManager?.stop()
+                streamManager?.removeListener(listener)
+                appLogs.text = ""
+
+                streamManager = AdswizzAdStreamManager(null)
+                streamManager?.play(SERVER_URL)
+                streamManager?.addListener(listener)
+            }
         }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {
@@ -148,7 +167,7 @@ class MainActivity : AppCompatActivity() {
         val ssBuilder = SpannableStringBuilder(this.text)
 
         val timeStamp: String = SimpleDateFormat("HH:mm:ss.SSS").format(Date())
-        val entryLine = "$timeStamp $entry\n"
+        val entryLine = "$timeStamp $entry\n\n"
 
         ssBuilder.append(entryLine)
 

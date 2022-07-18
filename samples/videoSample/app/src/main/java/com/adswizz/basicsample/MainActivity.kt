@@ -8,6 +8,8 @@ import android.text.method.ScrollingMovementMethod
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.text.style.TypefaceSpan
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
@@ -20,8 +22,10 @@ import com.ad.core.adManager.AdManager
 import com.ad.core.adManager.AdManagerListener
 import com.ad.core.adManager.AdManagerSettings
 import com.ad.core.video.AdVideoView
+import com.adswizz.basicsample.databinding.ActivityMainBinding
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.adFetcher.AdswizzAdZone
+import com.adswizz.core.streaming.AdswizzAdStreamManager
 import com.adswizz.sdk.AdswizzSDK
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
@@ -36,6 +40,9 @@ class MainActivity : AppCompatActivity() {
         const val ZONE_ID = "14756"
         //const val ZONE_ID = "14578"
     }
+
+    private lateinit var binding: ActivityMainBinding
+
 
     private enum class AdManagerState {
         Unknown, ReadyForPlay, Playing, Paused, AllAdsCompleted
@@ -103,7 +110,8 @@ class MainActivity : AppCompatActivity() {
 
                 AdEvent.Type.State.AllAdsCompleted -> {
                     adManagerState = AdManagerState.AllAdsCompleted
-                    playButton.setBackgroundResource(R.drawable.ic_play_arrow_black_24dp)
+                    binding.toolbar.menu.findItem(R.id.menuPlay).setIcon(R.drawable.ic_play_arrow_black_24dp)
+                    //playButton.setBackgroundResource(R.drawable.ic_play_arrow_black_24dp)
                     appLogs.addEntry("Ad - all ads completed")
                 }
 
@@ -150,10 +158,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+//        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        supportActionBar?.hide()
+//        supportActionBar?.hide()
 
         val window = this.window
         getWindow().decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -179,45 +190,6 @@ class MainActivity : AppCompatActivity() {
                         handleResponse(error, adManager)
                     }
                 }
-
-        playButton.setOnClickListener {
-
-            when (adManagerState) {
-                AdManagerState.Unknown, AdManagerState.ReadyForPlay -> {
-                    if (adManagerState == AdManagerState.Unknown) {
-                        appLogs.addEntry("Recommendation: just to be sure that the ad playback will start immediately wait for the <<AdEvent.Type.State.ReadyForPlay>> event")
-                    }
-                    it.setBackgroundResource(R.drawable.ic_pause_arrow_black_24dp)
-                    adManager?.play()
-                }
-                AdManagerState.Paused -> {
-                    it.setBackgroundResource(R.drawable.ic_pause_arrow_black_24dp)
-                    adManager?.resume()
-                }
-                AdManagerState.Playing -> {
-                    it.setBackgroundResource(R.drawable.ic_play_arrow_black_24dp)
-                    adManager?.pause()
-                }
-                AdManagerState.AllAdsCompleted -> {
-                    it.setBackgroundResource(R.drawable.ic_pause_arrow_black_24dp)
-                    adManager?.reset()
-                    adManager?.prepare()
-                    adManager?.play()
-                }
-            }
-        }
-
-        replayButton.setOnClickListener {
-            adManager?.reset()
-            adManager = null
-            adManagerState = AdManagerState.Unknown
-
-            appLogs.text = ""
-
-            adRequestConnection?.requestAds { adManager, error ->
-                handleResponse(error, adManager)
-            }
-        }
     }
 
     private fun handleResponse(
@@ -238,6 +210,53 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menuPlay -> {
+                when (adManagerState) {
+                    AdManagerState.Unknown, AdManagerState.ReadyForPlay -> {
+                        if (adManagerState == AdManagerState.Unknown) {
+                            appLogs.addEntry("Recommendation: just to be sure that the ad playback will start immediately wait for the <<AdEvent.Type.State.ReadyForPlay>> event")
+                        }
+                        item.setIcon(R.drawable.ic_pause_arrow_black_24dp)
+                        adManager?.play()
+                    }
+                    AdManagerState.Paused -> {
+                        item.setIcon(R.drawable.ic_pause_arrow_black_24dp)
+                        adManager?.resume()
+                    }
+                    AdManagerState.Playing -> {
+                        item.setIcon(R.drawable.ic_play_arrow_black_24dp)
+                        adManager?.pause()
+                    }
+                    AdManagerState.AllAdsCompleted -> {
+                        item.setIcon(R.drawable.ic_pause_arrow_black_24dp)
+                        adManager?.reset()
+                        adManager?.prepare()
+                        adManager?.play()
+                    }
+                }
+            }
+            R.id.menuReplay -> {
+                adManager?.reset()
+                adManager = null
+                adManagerState = AdManagerState.Unknown
+
+                appLogs.text = ""
+
+                adRequestConnection?.requestAds { adManager, error ->
+                    handleResponse(error, adManager)
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onDestroy() {
         AdswizzSDK.cleanup()
         super.onDestroy()
@@ -247,7 +266,7 @@ class MainActivity : AppCompatActivity() {
         val ssBuilder = SpannableStringBuilder(this.text)
 
         val timeStamp: String = SimpleDateFormat("HH:mm:ss.SSS").format(Date())
-        val entryLine = "$timeStamp $entry\n"
+        val entryLine = "$timeStamp $entry\n\n"
 
         ssBuilder.append(entryLine)
 

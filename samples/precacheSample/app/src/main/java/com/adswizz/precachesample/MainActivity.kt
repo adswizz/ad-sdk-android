@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
@@ -19,6 +21,7 @@ import com.ad.core.cache.CachePolicy
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.adFetcher.AdswizzAdZone
 import com.adswizz.player.CacheManager
+import com.adswizz.precachesample.databinding.ActivityMainBinding
 import com.adswizz.sdk.AdswizzSDK
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -29,8 +32,11 @@ class MainActivity : AppCompatActivity(), CacheManager.Listener {
         const val ZONE_ID_2 = "11993"
     }
 
+    private lateinit var binding: ActivityMainBinding
+
     private var adManager: AdManager? = null
     private var adManagerSettings: AdManagerSettings? = null
+    private var adRequestConnection: AdRequestConnection? = null
     private var count = 0
 
     private val listener = object : AdManagerListener {
@@ -133,10 +139,12 @@ class MainActivity : AppCompatActivity(), CacheManager.Listener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+//        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        supportActionBar?.hide()
+//        supportActionBar?.hide()
 
         val window = this.window
         getWindow().decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -148,6 +156,8 @@ class MainActivity : AppCompatActivity(), CacheManager.Listener {
         appLogs.movementMethod = scroll
 
         AdswizzSDK.initialize(this)
+        sdkVersion.text = String.format(getString(R.string.adswizz_version_prefix, com.adswizz.sdk.BuildConfig.VERSION_NAME))
+
         adManagerSettings = AdManagerSettings.Builder()
             .addCachePolicy(CachePolicy.ASSETS)
             .enqueueEnabled(true)
@@ -160,25 +170,25 @@ class MainActivity : AppCompatActivity(), CacheManager.Listener {
             .withZones(setOf(AdswizzAdZone(ZONE_ID), AdswizzAdZone(ZONE_ID_2)))
             .build { adRequest ->
                 // Create the AdRequestConnection using the above adRequest
-                val adRequestConnection = AdRequestConnection(adRequest)
-                adRequestConnection.requestAds { adManager, error ->
+                adRequestConnection = AdRequestConnection(adRequest)
+                adRequestConnection?.requestAds { adManager, error ->
                     // Handle the response from server
                     handleResponse(error, adManager)
                 }
 
-                playButton.setOnClickListener {
-                    adManager?.play()
-                }
-                replayButton.setOnClickListener {
-                    adManager?.reset()
-                    adManager = null
-
-                    appLogs.text = ""
-
-                    adRequestConnection.requestAds { adManager, error ->
-                        handleResponse(error, adManager)
-                    }
-                }
+//                playButton.setOnClickListener {
+//                    adManager?.play()
+//                }
+//                replayButton.setOnClickListener {
+//                    adManager?.reset()
+//                    adManager = null
+//
+//                    appLogs.text = ""
+//
+//                    adRequestConnection.requestAds { adManager, error ->
+//                        handleResponse(error, adManager)
+//                    }
+//                }
             }
     }
 
@@ -197,6 +207,53 @@ class MainActivity : AppCompatActivity(), CacheManager.Listener {
             adManager.setListener(listener)
             adManager.prepare()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menuPlay -> {
+                adManager?.play()
+//                when (adManagerState) {
+//                    AdManagerState.Unknown, AdManagerState.ReadyForPlay -> {
+//                        if (adManagerState == AdManagerState.Unknown) {
+//                            appLogs.addEntry("Recommendation: just to be sure that the ad playback will start immediately wait for the <<AdEvent.Type.State.ReadyForPlay>> event")
+//                        }
+//                        item.setIcon(R.drawable.ic_pause_arrow_black_24dp)
+//                        adManager?.play()
+//                    }
+//                    AdManagerState.Paused -> {
+//                        item.setIcon(R.drawable.ic_pause_arrow_black_24dp)
+//                        adManager?.resume()
+//                    }
+//                    AdManagerState.Playing -> {
+//                        item.setIcon(R.drawable.ic_play_arrow_black_24dp)
+//                        adManager?.pause()
+//                    }
+//                    AdManagerState.AllAdsCompleted -> {
+//                        item.setIcon(R.drawable.ic_pause_arrow_black_24dp)
+//                        adManager?.reset()
+//                        adManager?.prepare()
+//                        adManager?.play()
+//                    }
+//                }
+            }
+            R.id.menuReplay -> {
+                adManager?.reset()
+                adManager = null
+
+                appLogs.text = ""
+
+                adRequestConnection?.requestAds { adManager, error ->
+                    handleResponse(error, adManager)
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {
