@@ -2,21 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<!--    <item-->
-<!--        android:id="@+id/menuPlay"-->
-<!--        android:icon="@drawable/ic_play_arrow_black_24dp"-->
-<!--        android:title="Send interactivity"-->
-<!--        app:showAsAction="always" />-->
-
-<!--    <item-->
-<!--        android:id="@+id/menuPause"-->
-<!--        android:icon="@drawable/ic_pause_arrow_black_24dp"-->
-<!--        android:title=""-->
-<!--        app:showAsAction="always" />-->
-
     <item
         android:id="@+id/menuReplay"
-        android:icon="@drawable/ic_replay_black_24dp"
+        android:icon="@drawable/ic_replay_white_24dp"
         android:title=""
         app:showAsAction="always" />
 </menu>

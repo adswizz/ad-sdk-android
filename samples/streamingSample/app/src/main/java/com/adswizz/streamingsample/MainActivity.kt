@@ -19,7 +19,6 @@ import com.adswizz.core.streaming.AdswizzAdStreamManager
 import com.adswizz.sdk.AdswizzSDK
 import com.adswizz.streamingsample.databinding.ActivityMainBinding
 
-import kotlinx.android.synthetic.main.activity_main.*
 
 // Streaming app shows minimal server side functionality
 
@@ -35,19 +34,19 @@ class MainActivity : AppCompatActivity() {
 
     private val listener = object : AdStreamManager.Listener {
         override fun willStartPlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
-            appLogs.addEntry("Will start playing url: $url")
+            binding.appLogs.addEntry("Will start playing url: $url")
         }
 
         override fun didFinishPlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
-            appLogs.addEntry("Did finish playing url: $url")
+            binding.appLogs.addEntry("Did finish playing url: $url")
         }
 
         override fun didPausePlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
-            appLogs.addEntry("Did pause playing url: $url")
+            binding.appLogs.addEntry("Did pause playing url: $url")
         }
 
         override fun didResumePlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
-            appLogs.addEntry("Did resume playing url: $url")
+            binding.appLogs.addEntry("Did resume playing url: $url")
         }
 
         override fun onDvrMetadataReceived(
@@ -60,23 +59,23 @@ class MainActivity : AppCompatActivity() {
         override fun adBreakStarted(
             adStreamManager: AdStreamManager, adBaseManager: AdBaseManager
         ) {
-            appLogs.addEntry("Ad break started: adBaseManager $adBaseManager")
+            binding.appLogs.addEntry("Ad break started: adBaseManager $adBaseManager")
         }
 
         override fun adBreakEnded(
             adStreamManager: AdStreamManager, adBaseManager: AdBaseManager
         ) {
-            appLogs.addEntry("Ad break ended: adBaseManager $adBaseManager")
+            binding.appLogs.addEntry("Ad break ended: adBaseManager $adBaseManager")
         }
 
         override fun onError(adStreamManager: AdStreamManager, error: Error) {
-            appLogs.addEntry("Error - ${error.message} for adStreamManager: $adStreamManager")
+            binding.appLogs.addEntry("Error - ${error.message} for adStreamManager: $adStreamManager")
         }
 
         override fun onMetadataChanged(
             adStreamManager: AdStreamManager, metadataItem: AdPlayer.MetadataItem
         ) {
-            appLogs.addEntry("Metadata received - adStreamManager: $adStreamManager - metadata count: ${metadataItem.value.count()}")
+            binding.appLogs.addEntry("Metadata received - adStreamManager: $adStreamManager - metadata count: ${metadataItem.value.count()}")
         }
 
     }
@@ -99,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.my_statusbar_color)
 
         val scroll = ScrollingMovementMethod()
-        appLogs.movementMethod = scroll
+        binding.appLogs.movementMethod = scroll
 
         AdswizzSDK.initialize(this)
 
@@ -118,7 +117,7 @@ class MainActivity : AppCompatActivity() {
             R.id.menuReplay -> {
                 streamManager?.stop()
                 streamManager?.removeListener(listener)
-                appLogs.text = ""
+                binding.appLogs.text = ""
 
                 streamManager = AdswizzAdStreamManager(null)
                 streamManager?.play(SERVER_URL)

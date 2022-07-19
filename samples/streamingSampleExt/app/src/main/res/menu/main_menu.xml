@@ -16,7 +16,7 @@
 
     <item
         android:id="@+id/menuReplay"
-        android:icon="@drawable/ic_replay_black_24dp"
+        android:icon="@drawable/ic_replay_white_24dp"
         android:title=""
         app:showAsAction="always" />
 </menu>

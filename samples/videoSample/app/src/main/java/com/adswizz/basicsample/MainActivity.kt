@@ -25,9 +25,8 @@ import com.ad.core.video.AdVideoView
 import com.adswizz.basicsample.databinding.ActivityMainBinding
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.adFetcher.AdswizzAdZone
-import com.adswizz.core.streaming.AdswizzAdStreamManager
 import com.adswizz.sdk.AdswizzSDK
-import kotlinx.android.synthetic.main.activity_main.*
+//import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -37,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val SERVER_URL = "demo.deliveryengine.adswizz.com"
-        const val ZONE_ID = "14756"
+        const val ZONE_ID = "17161"
         //const val ZONE_ID = "14578"
     }
 
@@ -57,102 +56,99 @@ class MainActivity : AppCompatActivity() {
         override fun onEventReceived(adManager: AdManager, event: AdEvent) {
             when (event.type) {
                 AdEvent.Type.State.FirstAdWillInitialize -> {
-                    appLogs.addEntry("Ad - first ad will initialize")
+                    binding.appLogs.addEntry("Ad - first ad will initialize")
                 }
 
                 AdEvent.Type.State.Initialized -> {
-                    appLogs.addEntry("Ad ${event.ad?.id} - initialized")
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - initialized")
                 }
 
                 AdEvent.Type.State.Unknown -> {
-                    appLogs.addEntry("Ad ${event.ad?.id} - in unknown state")
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - in unknown state")
                 }
 
                 AdEvent.Type.State.PreparingForPlay -> {
-                    appLogs.addEntry("Ad ${event.ad?.id} - preparing for play")
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - preparing for play")
                 }
 
                 AdEvent.Type.State.ReadyForPlay -> {
                     adManagerState = AdManagerState.ReadyForPlay
-                    appLogs.addEntry("Ad ${event.ad?.id} - ready for play")
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - ready for play")
                 }
 
                 AdEvent.Type.State.WillStartBuffering -> {
-                    appLogs.addEntry("Ad ${event.ad?.id} - will start buffering")
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - will start buffering")
                 }
 
                 AdEvent.Type.State.DidFinishBuffering -> {
-                    appLogs.addEntry("Ad ${event.ad?.id} - did finish buffering")
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - did finish buffering")
                 }
 
                 AdEvent.Type.State.DidStartPlaying -> {
                     adManagerState = AdManagerState.Playing
-                    appLogs.addEntry("Ad ${event.ad?.id} - did start playing")
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - did start playing")
                 }
 
                 AdEvent.Type.State.DidResumePlaying -> {
                     adManagerState = AdManagerState.Playing
-                    appLogs.addEntry("Ad ${event.ad?.id} - did resume playing")
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - did resume playing")
                 }
 
                 AdEvent.Type.State.DidPausePlaying -> {
                     adManagerState = AdManagerState.Paused
-                    appLogs.addEntry("Ad ${event.ad?.id} - did pause playing")
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - did pause playing")
                 }
 
                 AdEvent.Type.State.DidFinishPlaying -> {
-                    appLogs.addEntry("Ad ${event.ad?.id} - did finish playing")
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - did finish playing")
                 }
 
                 AdEvent.Type.State.Completed -> {
-                    appLogs.addEntry("Ad ${event.ad?.id} - completed")
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - completed")
                 }
 
                 AdEvent.Type.State.AllAdsCompleted -> {
                     adManagerState = AdManagerState.AllAdsCompleted
-                    binding.toolbar.menu.findItem(R.id.menuPlay).setIcon(R.drawable.ic_play_arrow_black_24dp)
-                    //playButton.setBackgroundResource(R.drawable.ic_play_arrow_black_24dp)
-                    appLogs.addEntry("Ad - all ads completed")
+                    binding.toolbar.menu.findItem(R.id.menuPlay).setIcon(R.drawable.ic_play_arrow_white_24dp)
+                    binding.appLogs.addEntry("Ad - all ads completed")
                 }
 
                 AdEvent.Type.State.DidSkip -> {
-                    appLogs.addEntry("Ad ${event.ad?.id} - did skip playing")
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - did skip playing")
                 }
 
                 AdEvent.Type.State.NotUsed -> {
-                    appLogs.addEntry("Ad ${event.ad?.id} - not used for playing")
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - not used for playing")
                 }
 
                 AdEvent.Type.State.AdUpdated -> {
-                    appLogs.addEntry("Ad ${event.ad?.id} - ad updated")
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - ad updated")
                 }
 
                 AdEvent.Type.Position.Start -> {
-                    appLogs.addEntry("Ad ${event.ad?.id} - 0% start")
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - 0% start")
                 }
 
                 AdEvent.Type.Position.FirstQuartile -> {
-                    appLogs.addEntry("Ad ${event.ad?.id} - 25% first quartile")
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - 25% first quartile")
                 }
 
                 AdEvent.Type.Position.Midpoint -> {
-                    appLogs.addEntry("Ad ${event.ad?.id} - 50% midpoint")
-
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - 50% midpoint")
                 }
 
                 AdEvent.Type.Position.ThirdQuartile -> {
-                    appLogs.addEntry("Ad ${event.ad?.id} - 75% third quartile")
-
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - 75% third quartile")
                 }
 
                 AdEvent.Type.Position.Complete -> {
-                    appLogs.addEntry("Ad ${event.ad?.id} - 100% complete")
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - 100% complete")
                 }
             }
         }
 
         override fun onEventErrorReceived(adManager: AdManager, ad: AdData?, error: Error) {
-            appLogs.addEntry("Error - ${error.message} for ad: ${ad?.id}")
+            binding.appLogs.addEntry("Error - ${error.message} for ad: ${ad?.id}")
         }
     }
 
@@ -173,11 +169,11 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.my_statusbar_color)
 
         val scroll = ScrollingMovementMethod()
-        appLogs.movementMethod = scroll
+        binding.appLogs.movementMethod = scroll
 
         AdswizzSDK.initialize(this)
 
-        sdkVersion.text = String.format(getString(R.string.adswizz_version_prefix, com.adswizz.sdk.BuildConfig.VERSION_NAME))
+        binding.sdkVersion.text = String.format(getString(R.string.adswizz_version_prefix, com.adswizz.sdk.BuildConfig.VERSION_NAME))
 
         //Build the Ad Request with the needed parameters
         AdswizzAdRequest.Builder()
@@ -197,14 +193,14 @@ class MainActivity : AppCompatActivity() {
             adManager: AdManager?
     ) {
         if (error != null) {
-            appLogs.addEntry("RequestError: ${error.message}")
+            binding.appLogs.addEntry("RequestError: ${error.message}")
         }
         if (adManager != null) {
             this.adManager = adManager
             this.adManager?.adManagerSettings = AdManagerSettings.Builder()
                     .videoViewId(1)
                     .build()
-            appLogs.addEntry("Received ad manager")
+            binding.appLogs.addEntry("Received ad manager")
             adManager.setListener(listener)
             adManager.prepare()
         }
@@ -221,21 +217,21 @@ class MainActivity : AppCompatActivity() {
                 when (adManagerState) {
                     AdManagerState.Unknown, AdManagerState.ReadyForPlay -> {
                         if (adManagerState == AdManagerState.Unknown) {
-                            appLogs.addEntry("Recommendation: just to be sure that the ad playback will start immediately wait for the <<AdEvent.Type.State.ReadyForPlay>> event")
+                            binding.appLogs.addEntry("Recommendation: just to be sure that the ad playback will start immediately wait for the <<AdEvent.Type.State.ReadyForPlay>> event")
                         }
-                        item.setIcon(R.drawable.ic_pause_arrow_black_24dp)
+                        item.setIcon(R.drawable.ic_pause_arrow_white_24dp)
                         adManager?.play()
                     }
                     AdManagerState.Paused -> {
-                        item.setIcon(R.drawable.ic_pause_arrow_black_24dp)
+                        item.setIcon(R.drawable.ic_pause_arrow_white_24dp)
                         adManager?.resume()
                     }
                     AdManagerState.Playing -> {
-                        item.setIcon(R.drawable.ic_play_arrow_black_24dp)
+                        item.setIcon(R.drawable.ic_play_arrow_white_24dp)
                         adManager?.pause()
                     }
                     AdManagerState.AllAdsCompleted -> {
-                        item.setIcon(R.drawable.ic_pause_arrow_black_24dp)
+                        item.setIcon(R.drawable.ic_play_arrow_white_24dp)
                         adManager?.reset()
                         adManager?.prepare()
                         adManager?.play()
@@ -247,7 +243,7 @@ class MainActivity : AppCompatActivity() {
                 adManager = null
                 adManagerState = AdManagerState.Unknown
 
-                appLogs.text = ""
+                binding.appLogs.text = ""
 
                 adRequestConnection?.requestAds { adManager, error ->
                     handleResponse(error, adManager)
