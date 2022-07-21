@@ -155,6 +155,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_main)
+
+        AdswizzSDK.initialize(this)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
@@ -171,7 +174,6 @@ class MainActivity : AppCompatActivity() {
         val scroll = ScrollingMovementMethod()
         binding.appLogs.movementMethod = scroll
 
-        AdswizzSDK.initialize(this)
 
         binding.sdkVersion.text = String.format(getString(R.string.adswizz_version_prefix, com.adswizz.sdk.BuildConfig.VERSION_NAME))
 

@@ -93,6 +93,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
+        AdswizzSDK.initialize(this)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -112,10 +113,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.sdkVersion.text = "${getString(R.string.adswizz_version_prefix)}${com.adswizz.sdk.BuildConfig.VERSION_NAME}"
 
-        val companion = findViewById<AdCompanionView>(R.id.companionView)
-        companion.setBackgroundColor(Color.parseColor("#00000000"))
+        //val companion = findViewById<AdCompanionView>(R.id.companionView)
+        binding.companionView.setBackgroundColor(Color.parseColor("#00000000"))
 
-        AdswizzSDK.initialize(this)
         AdswizzSDK.afrConfig = AfrConfig(
             protocol = AdswizzAdRequest.HttpProtocol.HTTP,
             server = "demo.deliveryengine.adswizz.com/",
