@@ -85,6 +85,7 @@
       * [Extra exposure time for an AdCompanionView](#extra-exposure-time-for-an-adcompanionview)
       * [Preferred resource type](#preferred-resource-type)
       * [Asset Quality](#asset-quality)
+      * [preferredMaxBitrate](#preferredMaxBitrate)
       * [Enable RAD](#enable-rad)
  * [<strong>Open Measurement in AdswizzSDK</strong>](#open-measurement-in-adswizzsdk)
       * [Video controls obstructions](#video-controls-obstructions)
@@ -1255,6 +1256,23 @@ Possible values are:
 - .AUTO: it will try to select a media file based on the internet connection that the device has: the better the connection the higher the bitrate. In case of video resources first the frame size is taken into account, the better the connection the higher the frame size. Internet connections is categories in the following buckets: 2g, 2.5g, 2.75g, 3g, 3.5g, "3.55g", "3.6g", 3.75g, 4g, 5g and wifi.
 
 Default value for asset quality is .HIGH.
+
+## preferredMaxBitrate
+
+Instead of setting asset quality, the preferredMaxBitrate can be set in the _AdManagerSettings_ which allows
+the selection of an asset with quality that matches preferredMaxBitrate or the closest one to it.
+
+```kotlin
+adManager.adManagerSettings = AdManagerSettings.Builder()
+    .preferredMaxBitrate(32000)
+    .build()
+```
+
+Setting a non-zero positive value will trigger another selection logic, where asset quality is ignored if was 
+previously set. The selection logic is the following: it first try to find an asset with the bitrate specified. 
+In case it doesn't find one, it tries to find the closest bitrate available with the bitrate less than the specified one,
+and if it doesn't find one it tries with the closest one that has a higher bitrate.
+
 
 ### Enable RAD
 
