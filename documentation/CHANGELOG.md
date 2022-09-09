@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed:
 - [Integration Guide](README.md) was modified to explain how to use the new **_AdManagerSettings_**'s public function named `preferredMaxBitrate(bitrate: Int)`
 
+## [7.7.8] - 2022-08-02
+### Added:
+- FireOS compatibility limitations to the integration guide
+### Fixed:
+- fire properly the tracking events when an ad is skipped in a multiple ads in ad manager scenario
 
 ## [7.7.7] - 2022-06-29
 ### Added:
