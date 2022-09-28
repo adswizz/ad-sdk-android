@@ -20,7 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         tools:replace="android:allowBackup"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.Samples">
 
         <meta-data
             android:name="com.google.android.gms.ads.AD_MANAGER_APP"
@@ -28,7 +28,8 @@
         <meta-data android:name="com.adswizz.core.installationId" android:value="adswizz_android_exoPlayer_v2" />
         <meta-data android:name="com.adswizz.core.playerId" android:value="PUT_HERE_YOUR_PLAYER_ID_OBTAINED_FROM_YOUR_AW_TAM" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:theme="@style/Theme.Samples.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

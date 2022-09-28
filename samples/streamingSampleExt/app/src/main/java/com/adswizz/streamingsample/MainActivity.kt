@@ -9,6 +9,8 @@ import android.text.method.ScrollingMovementMethod
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.text.style.TypefaceSpan
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
@@ -24,7 +26,8 @@ import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.streaming.AdswizzAdStreamManager
 import com.adswizz.core.streaming.AfrConfig
 import com.adswizz.sdk.AdswizzSDK
-import kotlinx.android.synthetic.main.activity_main.*
+import com.adswizz.streamingsample.databinding.ActivityMainBinding
+//import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,6 +35,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
     companion object {
         const val SERVER_URL = "http://sdk.mobile.streaming.adswizz.com:8500/shakeDemo"
     }
@@ -41,19 +45,19 @@ class MainActivity : AppCompatActivity() {
 
     private val listener = object : AdStreamManager.Listener {
         override fun willStartPlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
-            appLogs.addEntry("Will start playing url: $url")
+            binding.appLogs.addEntry("Will start playing url: $url")
         }
 
         override fun didFinishPlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
-            appLogs.addEntry("Did finish playing url: $url")
+            binding.appLogs.addEntry("Did finish playing url: $url")
         }
 
         override fun didPausePlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
-            appLogs.addEntry("Did pause playing url: $url")
+            binding.appLogs.addEntry("Did pause playing url: $url")
         }
 
         override fun didResumePlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
-            appLogs.addEntry("Did resume playing url: $url")
+            binding.appLogs.addEntry("Did resume playing url: $url")
         }
 
         override fun onDvrMetadataReceived(
@@ -66,32 +70,37 @@ class MainActivity : AppCompatActivity() {
         override fun adBreakStarted(
             adStreamManager: AdStreamManager, adBaseManager: AdBaseManager
         ) {
-            appLogs.addEntry("Ad break started: adBaseManager $adBaseManager")
+            binding.appLogs.addEntry("Ad break started: adBaseManager $adBaseManager")
         }
 
         override fun adBreakEnded(
             adStreamManager: AdStreamManager, adBaseManager: AdBaseManager
         ) {
-            appLogs.addEntry("Ad break ended: adBaseManager $adBaseManager")
+            binding.appLogs.addEntry("Ad break ended: adBaseManager $adBaseManager")
         }
 
         override fun onError(adStreamManager: AdStreamManager, error: Error) {
-            appLogs.addEntry("Error - ${error.message} for adStreamManager: $adStreamManager")
+            binding.appLogs.addEntry("Error - ${error.message} for adStreamManager: $adStreamManager")
         }
 
         override fun onMetadataChanged(
             adStreamManager: AdStreamManager, metadataItem: AdPlayer.MetadataItem
         ) {
-            appLogs.addEntry("Metadata received - adStreamManager: $adStreamManager - metadata count: ${metadataItem.value.count()}")
+            binding.appLogs.addEntry("Metadata received - adStreamManager: $adStreamManager - metadata count: ${metadataItem.value.count()}")
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        //setContentView(R.layout.activity_main)
+        AdswizzSDK.initialize(this)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        supportActionBar?.hide()
+        //supportActionBar?.hide()
 
         val window = this.window
         getWindow().decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -100,14 +109,13 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.my_statusbar_color)
 
         val scroll = ScrollingMovementMethod()
-        appLogs.movementMethod = scroll
+        binding.appLogs.movementMethod = scroll
 
-        sdkVersion.text = "${getString(R.string.adswizz_version_prefix)}${com.adswizz.sdk.BuildConfig.VERSION_NAME}"
+        binding.sdkVersion.text = "${getString(R.string.adswizz_version_prefix)}${com.adswizz.sdk.BuildConfig.VERSION_NAME}"
 
-        val companion = findViewById<AdCompanionView>(R.id.companionView)
-        companion.setBackgroundColor(Color.parseColor("#00000000"))
+        //val companion = findViewById<AdCompanionView>(R.id.companionView)
+        binding.companionView.setBackgroundColor(Color.parseColor("#00000000"))
 
-        AdswizzSDK.initialize(this)
         AdswizzSDK.afrConfig = AfrConfig(
             protocol = AdswizzAdRequest.HttpProtocol.HTTP,
             server = "demo.deliveryengine.adswizz.com/",
@@ -124,15 +132,26 @@ class MainActivity : AppCompatActivity() {
         streamManager?.addListener(listener)
         streamManager?.play(SERVER_URL)
 
-        replayButton.setOnClickListener {
-            streamManager?.stop()
-            streamManager?.removeListener(listener)
-            appLogs.text = ""
+    }
 
-            streamManager = AdswizzAdStreamManager(null)
-            streamManager?.play(SERVER_URL)
-            streamManager?.addListener(listener)
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menuReplay -> {
+                streamManager?.stop()
+                streamManager?.removeListener(listener)
+                binding.appLogs.text = ""
+
+                streamManager = AdswizzAdStreamManager(null)
+                streamManager?.play(SERVER_URL)
+                streamManager?.addListener(listener)
+            }
         }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {
@@ -148,7 +167,7 @@ class MainActivity : AppCompatActivity() {
         val ssBuilder = SpannableStringBuilder(this.text)
 
         val timeStamp: String = SimpleDateFormat("HH:mm:ss.SSS").format(Date())
-        val entryLine = "$timeStamp $entry\n"
+        val entryLine = "$timeStamp $entry\n\n"
 
         ssBuilder.append(entryLine)
 

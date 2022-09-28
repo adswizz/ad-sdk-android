@@ -4,6 +4,8 @@ import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
@@ -15,7 +17,8 @@ import com.ad.core.streaming.DvrBufferInfo
 import com.adswizz.common.AdPlayer
 import com.adswizz.core.streaming.AdswizzAdStreamManager
 import com.adswizz.sdk.AdswizzSDK
-import kotlinx.android.synthetic.main.activity_main.*
+import com.adswizz.streamingsample.databinding.ActivityMainBinding
+
 
 // Streaming app shows minimal server side functionality
 
@@ -25,23 +28,25 @@ class MainActivity : AppCompatActivity() {
         const val SERVER_URL = "http://sdk.mobile.streaming.adswizz.com:8500/shakeDemo"
     }
 
+    private lateinit var binding: ActivityMainBinding
+
     private var streamManager: AdswizzAdStreamManager? = null
 
     private val listener = object : AdStreamManager.Listener {
         override fun willStartPlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
-            appLogs.addEntry("Will start playing url: $url")
+            binding.appLogs.addEntry("Will start playing url: $url")
         }
 
         override fun didFinishPlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
-            appLogs.addEntry("Did finish playing url: $url")
+            binding.appLogs.addEntry("Did finish playing url: $url")
         }
 
         override fun didPausePlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
-            appLogs.addEntry("Did pause playing url: $url")
+            binding.appLogs.addEntry("Did pause playing url: $url")
         }
 
         override fun didResumePlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
-            appLogs.addEntry("Did resume playing url: $url")
+            binding.appLogs.addEntry("Did resume playing url: $url")
         }
 
         override fun onDvrMetadataReceived(
@@ -54,33 +59,37 @@ class MainActivity : AppCompatActivity() {
         override fun adBreakStarted(
             adStreamManager: AdStreamManager, adBaseManager: AdBaseManager
         ) {
-            appLogs.addEntry("Ad break started: adBaseManager $adBaseManager")
+            binding.appLogs.addEntry("Ad break started: adBaseManager $adBaseManager")
         }
 
         override fun adBreakEnded(
             adStreamManager: AdStreamManager, adBaseManager: AdBaseManager
         ) {
-            appLogs.addEntry("Ad break ended: adBaseManager $adBaseManager")
+            binding.appLogs.addEntry("Ad break ended: adBaseManager $adBaseManager")
         }
 
         override fun onError(adStreamManager: AdStreamManager, error: Error) {
-            appLogs.addEntry("Error - ${error.message} for adStreamManager: $adStreamManager")
+            binding.appLogs.addEntry("Error - ${error.message} for adStreamManager: $adStreamManager")
         }
 
         override fun onMetadataChanged(
             adStreamManager: AdStreamManager, metadataItem: AdPlayer.MetadataItem
         ) {
-            appLogs.addEntry("Metadata received - adStreamManager: $adStreamManager - metadata count: ${metadataItem.value.count()}")
+            binding.appLogs.addEntry("Metadata received - adStreamManager: $adStreamManager - metadata count: ${metadataItem.value.count()}")
         }
 
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
+
 
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        supportActionBar?.hide()
+       // supportActionBar?.hide()
 
         val window = this.window
         getWindow().decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -89,24 +98,36 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.my_statusbar_color)
 
         val scroll = ScrollingMovementMethod()
-        appLogs.movementMethod = scroll
+        binding.appLogs.movementMethod = scroll
 
         AdswizzSDK.initialize(this)
 
         streamManager = AdswizzAdStreamManager(null)
         streamManager?.addListener(listener)
         streamManager?.play(SERVER_URL)
-
-        replayButton.setOnClickListener {
-            streamManager?.stop()
-            streamManager?.removeListener(listener)
-            appLogs.text = ""
-
-            streamManager = AdswizzAdStreamManager(null)
-            streamManager?.play(SERVER_URL)
-            streamManager?.addListener(listener)
-        }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menuReplay -> {
+                streamManager?.stop()
+                streamManager?.removeListener(listener)
+                binding.appLogs.text = ""
+
+                streamManager = AdswizzAdStreamManager(null)
+                streamManager?.play(SERVER_URL)
+                streamManager?.addListener(listener)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
 
     override fun onDestroy() {
         streamManager?.cleanup()
@@ -117,7 +138,7 @@ class MainActivity : AppCompatActivity() {
     fun TextView.addEntry(entry: String) {
         val strBuilder = StringBuilder(this.text)
         strBuilder.append(entry)
-        strBuilder.append("\n")
+        strBuilder.append("\n\n")
         this.text = strBuilder.toString()
     }
 }

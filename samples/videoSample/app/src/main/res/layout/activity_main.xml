@@ -1,49 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
-    tools:context=".MainActivity">
-
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
+    android:orientation="vertical"
+    android:background="#ffffff">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:gravity="center"
-        android:text="@string/basic_sample_app"
-        android:textColor="#000000"
-        android:textSize="35sp"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:theme="@style/Theme.Samples.AppBarOverlay">
 
-    <TextView
-        android:id="@+id/playButton"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/ic_play_arrow_black_24dp"
-        app:layout_constraintRight_toLeftOf="@id/replayButton"
-        app:layout_constraintTop_toTopOf="@id/titleTextView" />
-
-    <TextView
-        android:id="@+id/replayButton"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/ic_replay_black_24dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/titleTextView" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/Theme.Samples.PopupOverlay" />
+    </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
         android:id="@+id/sdkVersion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="10dp"
         android:text="AdsWizzSDK v7.2.30"
+        android:textColor="#434343"
         android:textAlignment="viewStart"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
@@ -57,35 +39,37 @@
         android:text="@string/app_logs"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:textColor="@color/black"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sdkVersion" />
-
-    <TextView
-        android:id="@+id/appLogs"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_margin="10dp"
-        android:background="@drawable/rounded_corners"
-        android:padding="10dp"
-        android:scrollbars="vertical"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/adVideoView"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appLogsLabel" />
-
-    <com.ad.core.video.AdVideoView
-        android:id="@+id/adVideoView"
+        app:cardCornerRadius="6dp">
+        <TextView
+            android:id="@+id/appLogs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#efefef"
+            android:padding="10dp"
+            android:scrollbars="vertical"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_margin="10dp"
-        android:background="@drawable/rounded_corners"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appLogs"
-        app:video_surface_type="surface_view"
-        app:video_view_id="1" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:cardCornerRadius="6dp">
+        <com.ad.core.video.AdVideoView
+            android:id="@+id/adVideoView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:video_resize_mode="fit"
+            app:video_surface_type="surface_view"
+            app:video_view_id="1" />
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

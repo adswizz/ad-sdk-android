@@ -1,36 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
-    tools:context=".MainActivity">
-
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
+    android:orientation="vertical"
+    android:background="#ffffff">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:gravity="center"
-        android:text="@string/streaming_sample_app_ext"
-        android:textAlignment="viewStart"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/replayButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:theme="@style/Theme.Samples.AppBarOverlay">
 
-    <TextView
-        android:id="@+id/replayButton"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/ic_replay_black_24dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/titleTextView" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/Theme.Samples.PopupOverlay" />
+    </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
         android:id="@+id/sdkVersion"
@@ -38,37 +25,36 @@
         android:layout_height="wrap_content"
         android:text="AdsWizzSDK v7.2.30"
         android:textAlignment="viewStart"
-        android:layout_marginLeft="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
+        android:layout_marginTop="10dp"
+        android:textColor="#434343"
+        android:layout_marginLeft="10dp"
+        app:layout_anchorGravity="top" />
 
-    <FrameLayout
-        android:id="@+id/companionContainer"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        app:layout_constraintBottom_toTopOf="@id/appLogsLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/rounded_corners"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sdkVersion">
-
-        <TextView
-            android:gravity="center"
-            android:textSize="18sp"
-            android:layout_gravity="center"
-            android:text="Companion Placeholder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <com.ad.core.companion.AdCompanionView
-            android:id="@+id/companionView"
+        app:cardCornerRadius="6dp">
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="300dp">
 
-    </FrameLayout>
+            <TextView
+                android:gravity="center"
+                android:textSize="18sp"
+                android:layout_gravity="center"
+                android:text="Companion Placeholder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
+            <com.ad.core.companion.AdCompanionView
+                android:id="@+id/companionView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#efefef" />
 
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/appLogsLabel"
@@ -77,22 +63,24 @@
         android:layout_margin="10dp"
         android:text="@string/app_logs"
         android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/companionContainer" />
+        android:textColor="@color/black"
+        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/appLogs"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="10dp"
-        android:background="@drawable/rounded_corners"
-        android:padding="10dp"
-        android:scrollbars="vertical"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appLogsLabel" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_weight="1"
+        app:cardCornerRadius="6dp"
+        app:cardBackgroundColor="#efefef" >
+        <TextView
+            android:id="@+id/appLogs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:layout_margin="10dp"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:background="#efefef" />
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
