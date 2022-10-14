@@ -28,7 +28,8 @@
          * [ads](#ads)
          * [analyticsCustomData](#analyticsCustomData)
       * [Handling AdManager with no ads](#handling-admanager-with-no-ads)
-      * [AdManager life cycle](#admanager-life-cycle)         
+      * [(Advanced) Handling AdManager reporting for expected ads](#advanced-handling-admanager-reporting-for-expected-ads)
+      * [AdManager life cycle](#admanager-life-cycle)
  * [<strong>Server-Side Insertion</strong>](#server-side-insertion)
       * [Your first stream manager](#your-first-stream-manager)
       * [AdStreamManager Listener interface](#adstreammanager-listener-interface)
@@ -629,9 +630,24 @@ Here is an example that sets max duration to 90 seconds
 
 ```kotlin
 	AdswizzAdRequest.Builder()
+		...	
 		.withDuration(90000L)
 		...
 ```
+
+**(Advanced) Enable expected ads reporting**
+
+You may enable the reporting on the number of expected ads by setting the `enableExpectedAdsReporting` to `true` in your **_AdswizzAdRequest_** objects. By default `enableExpectedAdsReporting` is `false`.
+
+Here is an example:
+```kotlin
+    AdswizzAdRequest.Builder()
+        ...
+        .withExpectedAdsReporting(true)
+        ...
+```
+
+Read more about this behaviour at [(Advanced) Handling AdManager reporting for expected ads](#advanced-handling-admanager-reporting-for-expected-ads).
 
 **AdRequestConnection**
 
@@ -811,6 +827,41 @@ override fun onEventReceived(adManager: AdManager, event: AdEvent) {
 }
 ```
 Important: failing to call `play()` on an **_AdManager_** with no ads it will prevent AdswizzSDK to correctly track and fire opportunities for reporting purposes.
+
+## (Advanced) Handling AdManager reporting for expected ads
+
+Before requesting ads from the Adswizz server in a [Client-Side Insertion](#client-side-insertion) scenario, on the **_AdswizzAdRequest_** object you can enable **_AdManager_** reporting for the number of expected ads by setting the `enableExpectedAdsReporting` property to `true`. See [Your first ad request](#your-first-ad-request).
+
+When setting the `maxAds` value for an **_AdswizzAdZone_**, the Adswizz server will try to respond with that number of ads.
+However, when it cannot fulfill that request, by setting the `enableExpectedAdsReporting` to `true`, the SDK will calculate the difference between number of expected ads (totalMaxAds) and the number of ads from the response and it will determine how many _empty ads_ there are:
+```kotlin
+numberOfEmptyAds = totalMaxAds - numberOfAdsFromVASTResponse
+```
+
+Note that the `totalMaxAds` also takes into account zones which didn't configure a specific `maxAds` in which case every such zone will count as +1 towards the total number of expected ads.
+
+Read more about _empty ads_ at [Handling AdManager with no ads](#handling-admanager-with-no-ads).
+
+The `numberOfEmptyAds` computed above represents the number of _empty_ ads that will be appended to the ads container of the resulting **_AdManager_**.
+For each _empty_ **_AdData_** the SDK will fire the `urlsForNoAd(adBaseManager: AdBaseManager, noAdUrlString: String): List<String>`
+callback of the `AdBaseManagerAdapter` interface.
+
+Read more about `AdManagerDatasource` methods and behaviour at [Working with AdManager object](#working-with-admanager-object).
+
+**Example**
+```kotlin
+        ...
+        val adRequest: AdswizzAdRequest =
+            AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
+                .withServer("SERVER_PROVIDED_BY_PIM")
+                .withExpectedAdsReporting(true)
+                .withZones(setOf(AdswizzAdZone(zoneId = "12345", maxAds = 3), AdswizzAdZone(zoneId = "122245", maxAds = 2), AdswizzAdZone(zoneId = "17865")))
+                .build()
+        ....
+```
+In the above request the number of ads requested are 3 (zoneId = "12345") + 2 (zoneId = "122245") + 1 (zoneId = "17865") = 6. If no maxAds is provided (like for zone "17865")
+or is equal to 0, this actually means that 1 ad is requested. In this example the `numberOfEmptyAds` are `6 - numberOfAdsFromVASTResponse`.
+
 
 ## AdManager life cycle
 
