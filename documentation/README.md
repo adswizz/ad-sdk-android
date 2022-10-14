@@ -28,8 +28,8 @@
          * [ads](#ads)
          * [analyticsCustomData](#analyticsCustomData)
       * [Handling AdManager with no ads](#handling-admanager-with-no-ads)
+      * [(Advanced) Handling AdManager reporting for expected ads](#advanced-handling-admanager-reporting-for-expected-ads)
       * [AdManager life cycle](#admanager-life-cycle)
-      * [Report empty ads](#report-empty-ads)         
  * [<strong>Server-Side Insertion</strong>](#server-side-insertion)
       * [Your first stream manager](#your-first-stream-manager)
       * [AdStreamManager Listener interface](#adstreammanager-listener-interface)
@@ -630,9 +630,24 @@ Here is an example that sets max duration to 90 seconds
 
 ```kotlin
 	AdswizzAdRequest.Builder()
+		...	
 		.withDuration(90000L)
 		...
 ```
+
+**(Advanced) Enable expected ads reporting**
+
+You may enable the reporting on the number of expected ads by setting the `enableExpectedAdsReporting` to `true` in your **_AdswizzAdRequest_** objects. By default `enableExpectedAdsReporting` is `false`.
+
+Here is an example:
+```kotlin
+    AdswizzAdRequest.Builder()
+        ...
+        .withExpectedAdsReporting(true)
+        ...
+```
+
+Read more about this behaviour at [(Advanced) Handling AdManager reporting for expected ads](#advanced-handling-admanager-reporting-for-expected-ads).
 
 **AdRequestConnection**
 
@@ -813,23 +828,29 @@ override fun onEventReceived(adManager: AdManager, event: AdEvent) {
 ```
 Important: failing to call `play()` on an **_AdManager_** with no ads it will prevent AdswizzSDK to correctly track and fire opportunities for reporting purposes.
 
-## AdManager life cycle
+## (Advanced) Handling AdManager reporting for expected ads
 
-After requesting your first ad from the Adswizz ad server, you are ready to play the ads from the AdManager object. Keep in mind that you might receive more than one ad from the server, but you are not required to play them all. If you decide to play multiple ads in your app, you need to listen to the events that the AdManager sends to your app and decide what is the appropriate action to take. Here is a diagram of the AdManager state.
+Before requesting ads from the Adswizz server in a [Client-Side Insertion](#client-side-insertion) scenario, on the **_AdswizzAdRequest_** object you can enable **_AdManager_** reporting for the number of expected ads by setting the `enableExpectedAdsReporting` property to `true`. See [Your first ad request](#your-first-ad-request).
 
-<img src="img/AdManagerState.png" width="1000" />
-
-## Report empty ads
-
-What are empty ads ? Using `AdswizzAdRequest` you can request, based on zones one or more ads to be retrieved by the AdManager.
-Based on AdswizzAdZone parameter maxAds we compute a maximum number of ads that can be retrieve by the request. In case 
-the request has a response that contains less than the maximum number requested, empty ads are the difference between the two
-and shows how many ads were missing from the request. 
-
-Computing empty ads. First compute number of ads requested: 
+When setting the `maxAds` value for an **_AdswizzAdZone_**, the Adswizz server will try to respond with that number of ads.
+However, when it cannot fulfill that request, by setting the `enableExpectedAdsReporting` to `true`, the SDK will calculate the difference between number of expected ads (totalMaxAds) and the number of ads from the response and it will determine how many _empty ads_ there are:
 ```kotlin
-		...
+numberOfEmptyAds = totalMaxAds - adsFromVASTResponse
+```
 
+Note that the `totalMaxAds` also takes into account zones which didn't configure a specific `maxAds` in which case every such zone will count as +1 towards the total number of expected ads.
+
+Read more about _empty ads_ at [Handling AdManager with no ads](#handling-admanager-with-no-ads).
+
+The `numberOfEmptyAds` computed above represents the number of _empty_ ads that will be appended to the ads container of the resulting **_AdManager_**.
+For each _empty_ **_AdData_** the SDK will fire the `urlsForNoAd(adBaseManager: AdBaseManager, noAdUrlString: String): List<String>`
+callback of the `AdBaseManagerAdapter` interface.
+
+Read more about `AdManagerDatasource` methods and behaviour at [Working with AdManager object](#working-with-admanager-object).
+
+**Example**
+```kotlin
+        ...
         val adRequest: AdswizzAdRequest =
             AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
                 .withServer("SERVER_PROVIDED_BY_PIM")
@@ -837,14 +858,17 @@ Computing empty ads. First compute number of ads requested:
                 .withZones(setOf(AdswizzAdZone(zoneId = "12345", maxAds = 3), AdswizzAdZone(zoneId = "122245", maxAds = 2), AdswizzAdZone(zoneId = "17865")))
                 .build()
         ....
-
 ```
-In this case the number of ads requested are 3 (zoneId = "12345") + 2 (zoneId = "122245") + 1 (zoneId = "17865") = 6. If no maxAds is provided
-or is equal to 0 it will count as a request for 1 ad. So 6 ads requested and the number of empty ads are 6 - (ads returned by the request).
+In the above request the number of ads requested are 3 (zoneId = "12345") + 2 (zoneId = "122245") + 1 (zoneId = "17865") = 6. If no maxAds is provided (like for zone "17865")
+or is equal to 0, this actually means that 1 ad is requested. In this example the `numberOfEmptyAds` are `6 - adsFromVASTResponse`.
 
-Using `AdBaseManagerAdapter` interface we get the url to fire for the empty ads using `urlsForNoAd(adBaseManager: AdBaseManager, noAdUrlString: String): List<String>`
-callback provided and cycle trough each url in the list and fire them for each computed empty ad if `withExpectedAdsReporting(enable: Boolean)` method 
-of `AdswizzAdRequest.Builder` is set to true.
+
+## AdManager life cycle
+
+After requesting your first ad from the Adswizz ad server, you are ready to play the ads from the AdManager object. Keep in mind that you might receive more than one ad from the server, but you are not required to play them all. If you decide to play multiple ads in your app, you need to listen to the events that the AdManager sends to your app and decide what is the appropriate action to take. Here is a diagram of the AdManager state.
+
+<img src="img/AdManagerState.png" width="1000" />
+
 
 # Server-Side Insertion
 
