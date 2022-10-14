@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.13] - 2022-10-14
+### Added:
+- New public method on class **_AdswizzAdRequest.Builder__**:
+	- `withExpectedAdsReporting(enable: Boolean)` with enable default to false is added to enable
+	reporting of so called 'empty ads' in case the request returns less ads than desired with maxAds
+	property of **_AadswizzAdZone_** property.
+	
+### Changed:
+- [Integration Guide](README.md) was modified to explain how to use the new **_AdswizzAdRequest.Builder_**'s public function named `withExpectedAdsReporting(enable: Boolean)`
+
 ## [7.7.12] - 2022-09-21
 ### Changed:
 Podcasting:

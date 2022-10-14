@@ -28,7 +28,8 @@
          * [ads](#ads)
          * [analyticsCustomData](#analyticsCustomData)
       * [Handling AdManager with no ads](#handling-admanager-with-no-ads)
-      * [AdManager life cycle](#admanager-life-cycle)         
+      * [AdManager life cycle](#admanager-life-cycle)
+      * [Report empty ads](#report-empty-ads)         
  * [<strong>Server-Side Insertion</strong>](#server-side-insertion)
       * [Your first stream manager](#your-first-stream-manager)
       * [AdStreamManager Listener interface](#adstreammanager-listener-interface)
@@ -818,6 +819,32 @@ After requesting your first ad from the Adswizz ad server, you are ready to play
 
 <img src="img/AdManagerState.png" width="1000" />
 
+## Report empty ads
+
+What are empty ads ? Using `AdswizzAdRequest` you can request, based on zones one or more ads to be retrieved by the AdManager.
+Based on AdswizzAdZone parameter maxAds we compute a maximum number of ads that can be retrieve by the request. In case 
+the request has a response that contains less than the maximum number requested, empty ads are the difference between the two
+and shows how many ads were missing from the request. 
+
+Computing empty ads. First compute number of ads requested: 
+```kotlin
+		...
+
+        val adRequest: AdswizzAdRequest =
+            AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
+                .withServer("SERVER_PROVIDED_BY_PIM")
+                .withExpectedAdsReporting(true)
+                .withZones(setOf(AdswizzAdZone(zoneId = "12345", maxAds = 3), AdswizzAdZone(zoneId = "122245", maxAds = 2), AdswizzAdZone(zoneId = "17865")))
+                .build()
+        ....
+
+```
+In this case the number of ads requested are 3 (zoneId = "12345") + 2 (zoneId = "122245") + 1 (zoneId = "17865") = 6. If no maxAds is provided
+or is equal to 0 it will count as a request for 1 ad. So 6 ads requested and the number of empty ads are 6 - (ads returned by the request).
+
+Using `AdBaseManagerAdapter` interface we get the url to fire for the empty ads using `urlsForNoAd(adBaseManager: AdBaseManager, noAdUrlString: String): List<String>`
+callback provided and cycle trough each url in the list and fire them for each computed empty ad if `withExpectedAdsReporting(enable: Boolean)` method 
+of `AdswizzAdRequest.Builder` is set to true.
 
 # Server-Side Insertion
 
