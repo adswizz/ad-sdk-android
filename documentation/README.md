@@ -835,7 +835,7 @@ Before requesting ads from the Adswizz server in a [Client-Side Insertion](#clie
 When setting the `maxAds` value for an **_AdswizzAdZone_**, the Adswizz server will try to respond with that number of ads.
 However, when it cannot fulfill that request, by setting the `enableExpectedAdsReporting` to `true`, the SDK will calculate the difference between number of expected ads (totalMaxAds) and the number of ads from the response and it will determine how many _empty ads_ there are:
 ```kotlin
-numberOfEmptyAds = totalMaxAds - adsFromVASTResponse
+numberOfEmptyAds = totalMaxAds - numberOfAdsFromVASTResponse
 ```
 
 Note that the `totalMaxAds` also takes into account zones which didn't configure a specific `maxAds` in which case every such zone will count as +1 towards the total number of expected ads.
@@ -860,7 +860,7 @@ Read more about `AdManagerDatasource` methods and behaviour at [Working with AdM
         ....
 ```
 In the above request the number of ads requested are 3 (zoneId = "12345") + 2 (zoneId = "122245") + 1 (zoneId = "17865") = 6. If no maxAds is provided (like for zone "17865")
-or is equal to 0, this actually means that 1 ad is requested. In this example the `numberOfEmptyAds` are `6 - adsFromVASTResponse`.
+or is equal to 0, this actually means that 1 ad is requested. In this example the `numberOfEmptyAds` are `6 - numberOfAdsFromVASTResponse`.
 
 
 ## AdManager life cycle
