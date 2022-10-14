@@ -7,13 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.7.13] - 2022-10-14
 ### Added:
-- New public method on class **_AdswizzAdRequest.Builder__**:
-	- `withExpectedAdsReporting(enable: Boolean)` with enable default to false is added to enable
-	reporting of so called 'empty ads' in case the request returns less ads than desired with maxAds
-	property of **_AadswizzAdZone_** property.
+- New public method on class **_AdswizzAdRequest.Builder_**:
+	- `withExpectedAdsReporting(enable: Boolean)` - calling this method with `true` flag will enable
+	reporting of 'empty ads' when the ad request returns less ads than actually requested using the `maxAds`
+	property of the **_AadswizzAdZone_** object.
 	
 ### Changed:
-- [Integration Guide](README.md) was modified to explain how to use the new **_AdswizzAdRequest.Builder_**'s public function named `withExpectedAdsReporting(enable: Boolean)`
+- [Integration Guide](README.md) was updated to explain how to use the new **_AdswizzAdRequest.Builder_**'s public method named `withExpectedAdsReporting(enable: Boolean)`
 
 ## [7.7.12] - 2022-09-21
 ### Changed:
