@@ -27,6 +27,9 @@
          * [reset](#reset)
          * [ads](#ads)
          * [analyticsCustomData](#analyticsCustomData)
+      * [AdManagerListener interface](#admanagerlistener-interface)
+      	 * [onEventReceived ](#oneventreceived)
+		 * [onEventErrorReceived](#oneventerrorreceived)
       * [Handling AdManager with no ads](#handling-admanager-with-no-ads)
       * [(Advanced) Handling AdManager reporting for expected ads](#advanced-handling-admanager-reporting-for-expected-ads)
       * [AdManager life cycle](#admanager-life-cycle)
@@ -458,7 +461,7 @@ implementation 'com.adswizz:adswizz-sdk:version'
 implementation 'com.adswizz:exoplayer2-10:version'
 ```
 
-_Note_: the sdk before 7.6.1 included the exoplayer dependency. now this dependency is separated and you must include it to function correctly. at this time there 3 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14, 2.15, 2.16)
+_Note_: the sdk before 7.6.1 included the exoplayer dependency. now this dependency is separated and you must include it to function correctly. at this time (SDK 7.7.13) there 5 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14, 2.15, 2.16)
 
 Where <strong>version</strong> is the latest version of the phone and tablet SDK provided by AdsWizz (i.e. 7.7.2 - the latest version). Please notice the below example:
 
@@ -603,6 +606,23 @@ AdswizzSDK.initialize(context, AdswizzSDKConfig(installationId, playerId))
 
 You are now ready for your first ad request. You will need to create an AdswizzAdRequest object and configure it.
 
+**Minimal request parameters**
+The `AdswizzAdRequest` requires at minimum to set server url and a set of one ore more `AdswizzAdZone`.
+
+```kotlin
+	data class AdswizzAdZone @JvmOverloads constructor(
+        @Json(name = "zoneId")
+        val zoneId: String,
+        @Json(name = "maxAds")
+        val maxAds: Int? = null,
+        @Json(name = "maxDuration")
+        val maxDuration: Long? = null
+)
+```
+Each `AdswizzAdZone` object is defined by a mandatory zoneId and optionals maxAds and maxDuration fields, where zoneId is provided by PIM and the other fields are defined by the application logic therefore not mandatory.
+
+
+The minimal request than looks like the following: one or more zones and a server url 
 ```kotlin
 val adRequest: AdswizzAdRequest = AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
             .withServer("SERVER_PROVIDED_BY_PIM")
@@ -787,9 +807,19 @@ Get the normal ads in the ad manager. A zero value means the Ad Manager will not
 
 Set an **_AnalyticsCustomData_** data class to provide key-value custom attributes to all **_AnalyticsEvent_** instances triggered by the AdswizzSDK for Analytics purposes. Read more at [AdswizzSDK Analytics](#adswizzsdk-analytics).
 
-Below is a descriptive graph with all this information:
 
-</br></br>
+## AdManagerListener interface
+
+Notifications sent from `AdManager` to your app are implemented in the AdManagerListener interface. After listener is set using `setListener(listener: AdBaseManagerListener)` method of the AdManager your app will be called for the following cases
+
+### onEventReceived 
+
+Called when there is an event with the current ad in the ad manager. Some of the events are: Initialized, FirstAdWillInitialize, PreparingForPlay, ReadyForPlay, DidStartPlaying, DidResumePlaying, DidFinishPlaying , Completed and so on. See `AdEvent` for a complete list. 
+
+### onEventErrorReceived
+
+Called when there was an error playing the ad.
+
 
 ## Handling AdManager with no ads
 
@@ -1254,9 +1284,10 @@ In order for Ad Companion Banner to work with a server side or podcast integrati
     AdswizzSDK.initialize(context: Context)
 
     AdswizzSDK.afrConfig = AfrConfig(
-            AdswizzAdRequest.HttpProtocol.HTTP,
+            AdswizzAdRequest.HttpProtocol.HTTP, //protocol http or https
             "demo.deliveryengine.adswizz.com", // provide your own delivery engine endpoint address here
-            "www/delivery/afr.php"
+            "www/delivery/afr.php", // endpoint
+            "17213" // companion zone id - optional
         )
 ```
 
