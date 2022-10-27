@@ -98,6 +98,9 @@
  * [<strong>AdswizzSDK general settings</strong>](#adswizzsdk-general-settings)
       * [GDPR consent](#gdpr-consent)
       * [CCPA config](#ccpa-config)
+      *	[Permissions](#permissions1)
+      	+ [Get status](#get-status)
+      	+ [Disable permissions programmatically](#disable-permissions-programmatically)
       * [Disable data collection](#disable-data-collection)
       * [XPAID header](#xpaid-header)
       * [Integrator Context](#integrator-context)
@@ -3080,6 +3083,38 @@ With the introduction of CCPA in US, **_AdswizzSDK_** gives you the possibility 
 ```
 
 The first value represents the explicit notice for collecting consent. The next value is the opt-out of the sale of his personal information. The last one is the limitation of scope to the Limited Service Provider Agreement. For all tree, possible values are: **_NOT_APPLICABLE_**, **_YES_**, **_NO_**. The default value for all of them is **_NOT_APPLICABLE_**.
+
+## Permissions
+By default `AdswizzSDK` uses permissions set by host app in AndroidManifest file to operate different modules. 
+However it is possible, in a programatic way, to control wich permission the SDK can use
+
+### Get status
+To get the current permission status in the SDK, use `AdswizzSDK's` method called `getPermissionStatus(permission: String): Boolean` with permission string described in android.Manifest.permission frameowrk. This method returns true if AdswizzSDK can use the API guarded by the permission, or false otherwise.
+
+### Disable permissions programmatically
+You can instruct `AdswizzSDK` whether it can use the data exposed by any permission set in AndroidManifest by calling the `fun setPermissionStatus(permission: String, value: Boolean)` method. Pass true for status parameter if `AdswizzSDK` is allowed to use the permission or false if the AdswizzSDK is denied access.
+
+This is the list of permissions you can programatically set using the methods above. See also [Permissions](#permissions) section in Get started chapter
+
+```kotlin
+		permission.INTERNET,
+		permission.VIBRATE,
+		permission.ACCESS_FINE_LOCATION,
+		permission.RECORD_AUDIO,
+		permission.WRITE_EXTERNAL_STORAGE,
+		permission.CALL_PHONE,
+		permission.READ_PHONE_STATE,
+		permission.ACCESS_NETWORK_STATE,
+		permission.ACCESS_WIFI_STATE,
+		permission.ACCESS_COARSE_LOCATION,
+		permission.BLUETOOTH,
+		permission.ACTIVITY_RECOGNITION,
+		permission.WRITE_CONTACTS,
+		permission.WRITE_CALENDAR,
+		permission.CAMERA
+```
+
+
 
 ## Disable data collection
 
