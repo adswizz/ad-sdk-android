@@ -3114,6 +3114,25 @@ This is the list of permissions you can programatically set using the methods ab
 		permission.CAMERA
 ```
 
+For example these two lines will inhibit `VIBRATE`  and `ACCESS_FINE_LOCATION` permission 
+
+```kotlin
+
+	AdswizzSDK.setPermissionStatus("android.permission.VIBRATE", false)
+	AdswizzSDK.setPermissionStatus("android.permission.ACCESS_FINE_LOCATION", false)
+
+```
+or using Android SDK permission constants
+
+```kotlin
+	import android.Manifest
+	
+	...
+
+	AdswizzSDK.setPermissionStatus(permission.VIBRATE, false)
+    AdswizzSDK.setPermissionStatus(permission.ACCESS_FINE_LOCATION, false)
+    
+```
 
 
 ## Disable data collection
