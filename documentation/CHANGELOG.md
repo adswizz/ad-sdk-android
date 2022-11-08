@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.14] - 2022-11-08
+### Added
+- User-Agent support:
+    - Added the option for the **_AdswizzSDK_** to internally use a custom User-Agent when firing ad requests and tracking URLs to the AdsWizz server (configurable via ZeroConfig). The default value for the User-Agent has the `web` format
+
+### Changed
+- Session Id support:
+    - improved the **_AdswizzSDK_** handling for the internal `sessionId` (configurable via ZeroConfig)
+- Integration Guide:
+    - improved structure and privacy/permissions coverage
+
 ## [7.7.13] - 2022-10-14
 ### Added:
 - New public method on class **_AdswizzAdRequest.Builder_**:
