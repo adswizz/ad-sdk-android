@@ -1,10 +1,13 @@
 [![AdsWizz](img/adswizz_logo.png)](https://www.adswizz.com)
 # **AdswizzSDK - Integration guide**
  * [<strong>Before you start</strong>](#before-you-start)
+      * [Thread safety](#thread-safety)
       * [What is ‘Client-Side Insertion’](#what-is-client-side-insertion)
       * [What is ‘Server-Side Insertion’](#what-is-server-side-insertion)
+      * [What is ‘Podcasting‘](#what-is-podcasting)
       * [Prerequisites for ‘Client-Side Insertion’](#prerequisites-for-client-side-insertion)
       * [Prerequisites for ‘Server-Side Insertion’](#prerequisites-for-server-side-insertion)
+      * [Prerequisites for ‘Podcasting’](#prerequisites-for-podcasting)
  * [<strong>Get started</strong>](#get-started)
       * [Prerequisites](#prerequisites)
       * [Changelog](#changelog)
@@ -27,34 +30,21 @@
          * [reset](#reset)
          * [ads](#ads)
          * [analyticsCustomData](#analyticsCustomData)
+      * [AdManagerListener interface](#admanagerlistener-interface)
+      	 * [onEventReceived ](#oneventreceived)
+		 * [onEventErrorReceived](#oneventerrorreceived)
       * [Handling AdManager with no ads](#handling-admanager-with-no-ads)
+      * [AdBaseManagerAdapter](#adbasemanageradapter)
       * [(Advanced) Handling AdManager reporting for expected ads](#advanced-handling-admanager-reporting-for-expected-ads)
       * [AdManager life cycle](#admanager-life-cycle)
  * [<strong>Server-Side Insertion</strong>](#server-side-insertion)
       * [Your first stream manager](#your-first-stream-manager)
+         * [play](#play)
+         * [stop](#stop)
+         * [pause and resume](#pause-and-resume)
       * [AdStreamManager Listener interface](#adstreammanager-listener-interface)
+      * [DVR Timeshifting capability](#dvr-timeshifting-capability)
       * [AdStreamManager life cycle](#adstreammanager-life-cycle)      
- * [<strong>Interactive ads</strong>](#interactive-ads)
-      * [Shake enabled interactive ads](#shake-enabled-interactive-ads)
-      * [Voice enabled interactive ads](#voice-enabled-interactive-ads)
-      * [TapTap enabled interactive ads](#taptap-enabled-interactive-ads)
-      * [Handling interactive ad events](#handling-interactive-ad-events)
- * [<strong>Companion Banner</strong>](#companion-banner)
-      * [Adding an AdCompanionView](#adding-an-adcompanionview)
-      * [Setting up](#setting-up)
-      * [Server side & Podcasts setup](#server-side--podcasts-setup)
-      * [Companion events](#companion-events)
-      * [Extra exposure time](#extra-exposure-time)
-      * [Preferred resource type](#preferred-resource-type)
- * [<strong>Video ads</strong>](#video-ads)
-      * [Adding an AdVideoView](#adding-an-advideoview)
-      * [Setup video support](#setup-video-support)
-      * [Subclassing AdVideoView](#subclassing-advideoview)
-      * [Video View Listener](#video-view-listener)
-      * [Viewability](#viewability)
-         * [Friendly obstructions](#friendly-obstructions)
-         * [Video state](#video-state)
-      * [Video View Cleanup](#video-view-cleanup)
  * [<strong>Podcasts</strong>](#podcasts)
       * [Getting started](#getting-started)
       * [Playback operations](#playback-operations)
@@ -69,10 +59,38 @@
         + [remove](#remove-download)
       * [AdPodcastManager.Listener interface](#adpodcastmanagerlistener-interface)
       * [AdPodcastManagerDownloadListener interface](#adpodcastmanagerdownloadlistener-interface)
+      * [Handling interactive ads during podcasts](#handling-interactive)
       * [Remote Audio Data](#remote-audio-data)
       	+ [Handling RAD id3 metadata using your player](#handling-rad-id3-metadata-using-your-player)
+ * [<strong>Companion Banner</strong>](#companion-banner)
+      * [Adding an AdCompanionView](#adding-an-adcompanionview)
+      * [Setting up](#setting-up)
+      	+ [Client side setup](#client-side-setup)
+      	+ [Server side & Podcasts setup](#server-side-podcasts-setup)
+      * [Companion events](#companion-events)
+      * [Extra exposure time](#extra-exposure-time)
+      * [Preferred resource type](#preferred-resource-type)
+ * [<strong>Interactive ads</strong>](#interactive-ads)
+      * [Shake enabled interactive ads](#shake-enabled-interactive-ads)
+      * [Voice enabled interactive ads](#voice-enabled-interactive-ads)
+      * [TapTap enabled interactive ads](#taptap-enabled-interactive-ads)
+      * [Handling interactive ad events](#handling-interactive-ad-events)
+ * [<strong>Video ads</strong>](#video-ads)
+      * [Adding an AdVideoView](#adding-an-advideoview)
+      * [Setup video support](#setup-video-support)
+      * [Subclassing AdVideoView](#subclassing-advideoview)
+      * [Video View Listener](#video-view-listener)
+      * [Viewability](#viewability)
+         * [Friendly obstructions](#friendly-obstructions)
+         * [Video state](#video-state)
+      * [Video View Cleanup](#video-view-cleanup)
  * [<strong>Playing ads using your player</strong>](#playing-ads-using-your-player)
+      * [Client side setup](#client-side-setup1)
+      * [Server side setup](#server-side-setup1)
+      * [Podcast setup](#podcast-setup1)
       * [AdPlayer Interface](#adplayer-interface)
+      * [AdPlayer.Listener Interface](#adplayer-listener-interface)
+      * [Sample AdPlayer Interface Implementation](#samplep-adplayer-interface-implementation)
       * [CacheManager](#cache-manager)
  * [<strong>Integrate into Wear OS apps</strong>](#integrate-into-wear-os-apps)
       * [ShakeMe on Wear OS](#shakeme-on-wear-os)
@@ -80,6 +98,9 @@
  * [<strong>AdswizzSDK general settings</strong>](#adswizzsdk-general-settings)
       * [GDPR consent](#gdpr-consent)
       * [CCPA config](#ccpa-config)
+      *	[Permissions](#permissions1)
+      	+ [Get status](#get-status)
+      	+ [Disable permissions programmatically](#disable-permissions-programmatically)
       * [Disable data collection](#disable-data-collection)
       * [XPAID header](#xpaid-header)
       * [Integrator Context](#integrator-context)
@@ -112,11 +133,10 @@
 
 # Before you start
 
-This guide is addressed to the Android developers who want to integrate AdswizzSDK in their apps.
+This guide is addressed to the Android developers who want to integrate AdswizzSDK in their apps. Here is a quick overview. More details will be provided for each scenario in their respective section.
 
+## Thread safety
 AdswizzSDK is not thread safe, so it is expected that all the calls to the SDK are done on the main thread. AdswizzSDK does all the heavy lifting on other threads, so that the main one remains responsive.
-
-Here is a quick overview. More details will be provided for each scenario in their respective section.
 
 ## What is Client-Side Insertion
 
@@ -136,6 +156,20 @@ The responsibilities are split between streaming server and SDK as follows:
    * retrieves, displays, synchronizes companion banner with audio content based on metadata information
    * may handle the display area for companion banners outside of an ad break
    * retrieves and processes interactivity information based on metadata
+
+## What is ‘Podcasting‘
+
+For podcasting scenario your app will be able to stream or download podcasts from an AIS (Ads Insertion Server) server with the audio ads being automatically inserted on the server-side. The podcasting server and the SDK split their responsibilities as follows:
+
+**Podcasting Server:**
+*  "stiches" ad breaks and inserts audio ads into the podcast creative audio file
+
+**SDK:**
+*  decorates podcast stream URL to increase targetability of ads
+*  detects all events associated with an ad break (start, stop, change of ad)
+*  retrieves, displays, synchronizes companion banner with the audio content based on metadata information
+*  retrieves and process interactivity metadata information based on metadata information
+*  processes metadata to make it possible for the SDK to synchronize companion banner with the audio content, to detect interactive ads and / or enable Remote Audio Data measurement
 
 ## Prerequisites for ‘Client-Side Insertion’
 
@@ -168,6 +202,21 @@ The following can be set as general AdswizzSDK parameters:
 *  (optional) enable/disable data collection
 *  (optional) integrator context. This contain information that the integrator should provide and will be used by the SDK (for example for VAST macro expansion)
 
+
+## Prerequisites for ‘Podcasting’
+
+In order to successfully integrate the ‘Podcasting’ scenario, you will need to set/provide the following information for your **_AdswizzAdPodcastManager_** object:
+*  adPodcastURL = URL of audio stream or downloaded audio file path (pass it to **_AdswizzAdPodcastManager_**'s _play()_ method)
+*  conditions = (optional) a set of download conditions when using the download functionality of 'AdswizzAdPodcastManager'
+* in afrConfig:
+   *  server = the name of Adserver used to insert ads from
+   *  endpoint = contains the identifier of zone to retrieve creatives to be displayed by the companion banner
+
+The following can be set as general AdswizzSDK parameters:
+*  (optional) GDPR consent value
+*  (optional) CCPA (U.S. privacy string) consent value
+*  (optional) location accuracy
+*  (optional) location enable significant changes
 
 # Get started
 
@@ -458,7 +507,7 @@ implementation 'com.adswizz:adswizz-sdk:version'
 implementation 'com.adswizz:exoplayer2-10:version'
 ```
 
-_Note_: the sdk before 7.6.1 included the exoplayer dependency. now this dependency is separated and you must include it to function correctly. at this time there 3 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14, 2.15, 2.16)
+_Note_: the sdk before 7.6.1 included the exoplayer dependency. now this dependency is separated and you must include it to function correctly. at this time (SDK 7.7.13) there 5 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14, 2.15, 2.16)
 
 Where <strong>version</strong> is the latest version of the phone and tablet SDK provided by AdsWizz (i.e. 7.7.2 - the latest version). Please notice the below example:
 
@@ -603,6 +652,23 @@ AdswizzSDK.initialize(context, AdswizzSDKConfig(installationId, playerId))
 
 You are now ready for your first ad request. You will need to create an AdswizzAdRequest object and configure it.
 
+**Minimal request parameters**
+The `AdswizzAdRequest` requires at minimum to set server url and a set of one ore more `AdswizzAdZone`.
+
+```kotlin
+	data class AdswizzAdZone @JvmOverloads constructor(
+        @Json(name = "zoneId")
+        val zoneId: String,
+        @Json(name = "maxAds")
+        val maxAds: Int? = null,
+        @Json(name = "maxDuration")
+        val maxDuration: Long? = null
+)
+```
+Each `AdswizzAdZone` object is defined by a mandatory zoneId and optionals maxAds and maxDuration fields, where zoneId is provided by PIM and the other fields are defined by the application logic therefore not mandatory.
+
+
+The minimal request than looks like the following: one or more zones and a server url 
 ```kotlin
 val adRequest: AdswizzAdRequest = AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
             .withServer("SERVER_PROVIDED_BY_PIM")
@@ -787,9 +853,60 @@ Get the normal ads in the ad manager. A zero value means the Ad Manager will not
 
 Set an **_AnalyticsCustomData_** data class to provide key-value custom attributes to all **_AnalyticsEvent_** instances triggered by the AdswizzSDK for Analytics purposes. Read more at [AdswizzSDK Analytics](#adswizzsdk-analytics).
 
-Below is a descriptive graph with all this information:
 
-</br></br>
+## AdManagerListener interface
+
+Notifications sent from `AdManager` to your app are implemented in the AdManagerListener interface. After listener is set using `setListener(listener: AdBaseManagerListener)` method of the AdManager your app will be called for the following cases
+
+### onEventReceived 
+
+Called when there is an event with the current ad in the ad manager. Some of the events are: Initialized, FirstAdWillInitialize, PreparingForPlay, ReadyForPlay, DidStartPlaying, DidResumePlaying, DidFinishPlaying , Completed and so on. See `AdEvent` for a complete list. 
+
+### onEventErrorReceived
+
+Called when there was an error playing the ad.
+
+## AdBaseManagerAdapter interface
+
+Starting with 7.3.1 the SDK is also able to request data in order for your application to benefit from additional customisation while working with the AdManager object. To be able to customise the behaviour, you need to set up an adapter with `setAdapter` for the AdBaseManagerAdapter that conforms to the `AdBaseManagerAdapter` interface.
+Through the `AdBaseManagerAdapter` adapter, when firing VAST tracking URLs, the SDK is currently able to ask for your additional custom tracking URLs which will be fired along using the same engine thus ensuring retryability and other improvements under the hood.
+The `AdBaseManagerAdapter` adapter allows your integration to pass your own custom tracking URLs for the following use cases:
+
+```kotlin
+fun urlsForTracking(event: Tracking.EventType, adBaseManager: AdBaseManager, adData: AdData): List<String> 
+```
+Called when the AdManager is about to trigger a VAST event. It passes the Tracking.EventType, for which the SDK could fire your custom additional URLs. Check the Tracking.EventType, enum for possible values.
+
+
+```kotlin
+fun urlsForImpression(adBaseManager: AdBaseManager, adData: AdData): List<String> 
+```
+Called when the AdManager is about to trigger impressions.
+
+
+```kotlin
+fun urlsForError(errorCode: VASTErrorCode, adBaseManager: AdBaseManager, adData: AdData): List<String> 
+```
+Called when the AdManager is about to trigger a VAST error. It passes the VastErrorCode for which the SDK could fire your custom additional URLs. Check the VastErrorCode enum for possible values.
+
+
+```kotlin
+fun urlsForCompanionClickTracking(adBaseManager: AdBaseManager, adData: AdData): List<String>
+```
+Called when the AdManager is about to trigger companion banner click URLs. When a companion banner is tapped, the SDK could fire your custom additional URLs.
+
+
+```kotlin
+fun urlsForVideoClickTracking(adBaseManager: AdBaseManager, adData: AdData): List<String>
+```
+Called when the AdManager is about to trigger video view click URLs. When the video view is tapped, the SDK could fire your custom additional URLs.
+
+
+```kotlin
+fun urlsForNoAd(adBaseManager: AdBaseManager, noAdUrlString: String): List<String> 
+```
+Called when the AdManager is about to trigger empty ads event. See  `Handling AdManager with no ads` for more information
+
 
 ## Handling AdManager with no ads
 
@@ -962,7 +1079,7 @@ The stream object can play the url using his internal player or using an externa
         ...
     }
 ```
-
+###play
 To start playing the stream do the following:
 
 ```kotlin
@@ -971,6 +1088,7 @@ To start playing the stream do the following:
 
 As a response, **_AdswizzSDK_** will call back `fun willStartPlayingUrl(adStreamManager: AdStreamManager, url: Uri)` with the provided url that has some extra query params added.
 
+###stop
 To stop the playing of stream call the stop function:
 
 ```kotlin
@@ -979,6 +1097,7 @@ To stop the playing of stream call the stop function:
 
 The SDK will respond with the callback `fun didFinishPlayingUrl(adStreamManager: AdStreamManager, url: Uri)`. The url is the same as for `willStartPlayingUrl`.
 
+###pause and resume
 The stream can be paused and resumed:
 
 ```kotlin
@@ -1082,6 +1201,326 @@ When an error occurs during your interaction with the stream manager this callba
 Below is a diagram of the AdStreamManager states:
 
 <img src="img/AdStreamManagerState.png" width="1000" />
+
+
+# Podcasts
+
+Podcast apps that integrate AdswizzSDK will benefit from real-time reporting, companion display and interactive ads with formats such as ShakeMe and VoiceAds. Of course, these features are available only if the podcasts are delivered by AdsWizz's AIS. The setup uses an underlying functionality similar to Server Side Insertion as well as some Client Side Insertion familiar objects such as **_AdManager_**.
+
+## Getting started
+
+To get started, you need to create an **_AdswizzAdPodcastManager_** object and give it a **_AdPodcastManager.Listener_** 
+
+```kotlin
+import com.adswizz.core.podcast.AdswizzAdPodcastManager
+
+class YourModelClass {
+    private var podcastManager: AdswizzAdPodcastManager? = null
+
+    private val podcastListener = object : AdPodcastManager.Listener {
+        override fun willStartPlayingUrl(
+            adPodcastManager: AdPodcastManager,
+            url: Uri,
+            adBaseManager: AdBaseManager?
+        ) {
+        }
+
+        override fun didFinishPlayingUrl(adPodcastManager: AdPodcastManager, url: Uri) {
+        }
+
+        override fun didPausePlayingUrl(adPodcastManager: AdPodcastManager, url: Uri) {
+        }
+
+        override fun didResumePlayingUrl(adPodcastManager: AdPodcastManager, url: Uri) {
+        }
+
+        override fun adBreakStarted(
+            adPodcastManager: AdPodcastManager,
+            adBaseManager: AdBaseManager
+        ) {
+        }
+
+        override fun adBreakEnded(
+            adPodcastManager: AdPodcastManager,
+            adBaseManager: AdBaseManager
+        ) {
+        }
+
+        override fun onError(adPodcastManager: AdPodcastManager, error: Error) {
+        }
+
+        override fun onPlayHeadReport(
+            adPodcastManager: AdPodcastManager,
+            elapsedSec: Double,
+            durationSec: Double
+        ) {
+        }
+    }
+
+    fun createPodcastManager() {
+        ....
+        podcastManager = AdswizzAdPodcastManager()
+        podcastManager?.addListener(podcastListener)
+        ...
+    }
+}
+```
+
+The **_AdswizzAdPodcastManager_** object can be configured through a _AdPodcastManagerSettings_ and enables providing your own implementation of a player that implements the _AdPlayer_ interface.
+
+```kotlin
+fun createPodcastManager() {
+        val settings = AdPodcastManagerSettings.Builder()
+            .adPlayerInstance(customPlayerInstance)
+            .build()
+        podcastManager = AdswizzAdPodcastManager(settings)
+        podcastManager?.addListener(podcastListener)
+        ...
+    }
+```
+
+This is your only entry point to drive the podcast functionality further and typically your app would need a single **_AdswizzAdPodcastManager_** instance. 
+
+## Playback operations
+
+
+### play
+
+Calling this method from **_AdswizzAdPodcastManager_** with an URL will begin playing either remotely or locally from a location on disk. This method should be called  even if the podcast is played with an external player, because the remote URL will be enhanced by the SDK with extra parameters that enable the delivery of ads from an Adswizz server. As a response, AdswizzSDK will call back function `fun willStartPlayingUrl(adPodcastManager: AdPodcastManager, url: Uri, adBaseManager: AdBaseManager?)` with the newly formatted URL.
+
+Additionally, `play(uri: Uri)` will also attempt to generate and build an **_AdBaseManager_** for handling ads
+
+### pause
+
+Calling this method will pause a podcast that is played by the SDK’s internal player or the provided custom player. You'll get notified by `fun didPausePlayingUrl(adPodcastManager: AdPodcastManager, url: Uri)`
+
+### resume
+
+Calling this method will resume a podcast that is played by the SDK’s internal player or the provided custom player. You'll get notified by `fun didResumePlayingUrl(adPodcastManager: AdPodcastManager, url: Uri)`
+
+### stop
+
+Calling this method will stop a podcast that is played by the SDK’s internal playeror the provided custom player. You'll get notified by `fun didFinishPlayingUrl(adPodcastManager: AdPodcastManager, url: Uri)`
+
+### seekTo
+
+Calling `fun seekTo(position: Double)` will trigger a seek by setting the current playback time to the specified `position` parameter measured in seconds.
+
+Take note that the **_AdPodcastManager.Listener_** also notifies you when an ad break starts and ends and also there is a callback that provides you the play head information(elapsed time in seconds and duration of podcast also in seconds)
+
+## Download operations
+
+**_AdswizzAdPodcastManager_** also exposes download functionality to be able to store and play podcasts from the device's storage.
+As best practice, downloading a podcast should continue to run even when your app is put in background. Downloading functionality is enabled by the android's WorkManager library and is subjected to the inherited limitations. Also the download constraints can be supplied through the _AdPodcastManagerSettings_ configuration passed to the **_AdswizzAdPodcastManager_**:
+
+```kotlin
+fun createPodcastManager() {
+        val settings = AdPodcastManagerSettings.Builder()
+            .adPlayerInstance(customPlayerInstance)
+            .withDownloadConditions(setOf(
+                DownloadCondition.NotRoaming, 
+                DownloadCondition.OnlyWhenCharging
+            ))
+            .build()
+        podcastManager = AdswizzAdPodcastManager(settings)
+        podcastManager?.addListener(podcastListener)
+        ...
+    }
+```
+
+### start download
+
+To begin downloading a podcast, the `startDownloadPodcast(uri: Uri, location: Uri, completion: ((Boolean, Exception?) -> Unit)? = null)` method takes a remote Uri to download from and a location file Uri as destination to save the media file once the download is complete. Similar to `play(uri: Uri)` method, the remote Uri will be enhanced by **_AdswizzAdPodcastManager_** with extra parameters that enable the delivery of ads from an Adswizz server when the podcast will actually be played.
+
+### stop download
+
+Calling the `stopDownloadPodcast(location: Uri)` method cancels a previously started download operation for a podcast at its location file Uri as destination on disk.
+
+### remove download
+
+Calling `removePodcast(location: Uri)` method removes a previously downloaded podcast at its location file Uri as destination on disk.
+
+## **_AdPodcastManager.Listener_** interface
+
+Playback and ad breaks related notifications sent from **_AdswizzAdPodcastManager_** to your app are implemented in the **_AdPodcastManager.Listener_** interface.
+
+### fun willStartPlayingUrl(adPodcastManager: AdPodcastManager, url: Uri, adBaseManager: AdBaseManager?)
+
+This callback will be called after the podcasts starts playing
+
+### fun didFinishPlayingUrl(adPodcastManager: AdPodcastManager, url: Uri)
+
+This callback will be called after the podcasts finishes playing or is stopped
+
+### fun didPausePlayingUrl(adPodcastManager: AdPodcastManager, url: Uri)
+
+This callback will be called after the podcasts pauses playing
+
+### fun didResumePlayingUrl(adPodcastManager: AdPodcastManager, url: Uri)
+
+This callback will be called after the podcasts resumes playing
+
+### fun adBreakStarted(adPodcastManager: AdPodcastManager, adBaseManager: AdBaseManager)
+This callback signals the ad break started. During podcast playing, the **_AdswizzAdPodcastManager_** listens to the current `playhead` property of the player and detects ad breaks in the podcast based on the associated playhead start positions of the ads stitched within the podcast.
+
+### fun adBreakEnded(adPodcastManager: AdPodcastManager, adBaseManager: AdBaseManager)
+This callback signals the ad break ended
+
+### fun onError(adPodcastManager: AdPodcastManager, error: Error)
+Every time there is an error in the podcast functionality you'll get notified through this callback
+
+### fun onPlayHeadReport(adPodcastManager: AdPodcastManager, elapsedSec: Double, durationSec: Double)
+
+Every time the current playhead changes, your app will get notified in this function. The duration reflects the total expected podcast duration. This method can also be used to update UI accordingly.
+
+
+## **_AdPodcastManagerDownloadListener_** interface
+
+Download related notifications sent from **_AdswizzAdPodcastManager_** to your app are implemented in the **_AdPodcastManagerDownloadDelegate_** interface.
+
+## Handling interactive ads during podcasts
+
+For more information on how to handle interactive ads such as ShakeMe and Voice Ads please refer to [Interactive ads](#interactive-ads) ads section.
+Note that the interactivity component of an ad requires fetching data from a remote service which may not be available for downloaded podcasts especially in a no internet connection scenario.
+
+## Remote Audio Data
+
+Podcasts come with _Remote Audio Data_ (RAD) support. Based on the industry standard by [NPR](https://rad.npr.org/), each podcast with RAD metadata will send events everytime its playhead crosses a certain point in time. 
+To enable RAD measurement for your podcasts, additional ZeroConfig configuration is needed. Contact your AdsWizz partner integration manager to setup your app's AdswizzSDK ZeroConfig instance.
+After this is in-place, as best practice you should present your users the option to opt-in or out for RAD measurement when playing podcasts. 
+
+This can be achieved with a single line of code:
+
+```kotlin
+AdswizzSDK.disableRAD = false //or `true` if user opted out
+```       
+By default, when `AdswizzSDK` is initialized, `disableRAD` property is set to `true`, so RAD measurement is **disabled** by default.
+ 
+The `disableRAD` property is applied to all podcasts and can be updated on the fly. When RAD measurement is disabled, all current event uploads are cancelled and the local database is emptied.
+
+Disabling RAD data collection at the ZeroConfig level takes precedence over disabling it from code. If RAD is disabled in ZeroConfig, setting a new value to `disableRAD` property will be the same as setting this value to `false` everytime.
+
+### Handling RAD id3 metadata using your player
+
+Remote Audio Data measurement is based on reading specific `id3` metadata formats from the podcast being played. The SDK is able to read these specific metadata formats when playing with the internal player.
+However, when playing podcasts using your own player you are responsable for passing the metadata items to the SDK. You can find more details at [AdPlayer.Listener interface](#adplayer-interface) and [MetadataItem](#adplayer-interface) sections.
+
+
+### fun didDownload(adPodcastManager: AdPodcastManager, bytesDownloaded: Long, bytesExpected:Long, asset: DownloadableAsset)
+
+This method gets called when a podcast has already started downloading and a chunk of data was received. It sends all the necessary data to compute a progress needed for any UI updates. It also encapsulates the asset being downloaded into a **_DownloadableAsset_** which is kept alive until the download finishes.
+
+The **_DownloadableAsset_** object provides info on the asset that being handled:
+* url - the remote URL that is downloading from
+* mimeType - the creative type e.g "audio/mp3"
+* expectedContentLength - should match bytesExpected in the progress callback
+* state - the current state e.g `downloading`, `ready`, `failed`
+* location - the local file URL path where the asset will be saved once download completes
+
+### fun didFinishDownload(adPodcastManager: AdPodcastManager,  asset: DownloadableAsset)
+
+Called when the asset finished downloading all of its data.
+
+### fun didReceive(adPodcastManager: AdPodcastManager,  error:Error, asset: DownloadableAsset){
+
+Called when a network error occurred while trying to download the asset.
+
+
+---
+
+# Companion Banner
+
+AdswizzSDK lets you configure companion banner(s) if you are provided by the AdsWizz PIM with a companion zone id.
+
+
+## Adding an AdCompanionView
+
+The easiest way to add a companion view is from XML. You could also add the view programmatically.
+Once created, the SDK will keep track of all of your companion views and fill them with ad related content as the
+ad is playing. By default an **_AdCompanionView_** instance is inactive, meaning that as long as it's not visible on screen it won't load the content (during the ad break) or fire tracking events. You can "deactivate" companion view at any time temporarily by either hiding it, resizing it so that the frame width or height is zero, making it transparent or removing it from the view tree. The SDK will automatically keep track of your companion state and stop or resume rendering.
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+....
+    <com.ads.coresdk.companion.AdCompanionView
+            android:id="@+id/companionView1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+....
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+## Setting up
+
+There are two scenarios for setting up the companion banner: one for client side insertion and one for server side insertion or podcasting.
+
+### Client side setup
+First when you create an **_AdswizzAdRequest_** you must configure the **_companionZones_** with the value provided by the PIM.
+
+```kotlin
+val adRequest = AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
+                .withServer("SERVER_PROVIDED_BY_PIM")
+                .withZones(setOf(AdswizzAdZone("ZONEID_PROVIDED_BY_PIM")))
+                .withCompanionZones("COMPANION_PROVIDED_BY_PIM")
+                .build()
+```
+
+Once the request is made, if there is a companion associated with the ad it will be loaded into your **_AdCompanionView_** object.
+
+### Server side & Podcasts setup
+
+In order for Ad Companion Banner to work with a server side or podcast integration you must create an AFR Config object that should be provided to the SDK at initialization. With the information obtained from AdsWizz this object can be configured like in the code snippet below:
+
+```kotlin
+    AdswizzSDK.initialize(context: Context)
+
+    AdswizzSDK.afrConfig = AfrConfig(
+            AdswizzAdRequest.HttpProtocol.HTTP, //protocol http or https
+            "demo.deliveryengine.adswizz.com", // provide your own delivery engine endpoint address here
+            "www/delivery/afr.php", // endpoint
+            "17213" // companion zone id - optional
+        )
+```
+
+## Companion events
+
+You can associate a listener to your AdCompanionView that implements the AdCompanionView.Listener interface.
+You will be notified when the ad has loaded the companion view, if the companion view was displayed, or if it ended
+the display. If there was an error while loading the companion you will be notified through this listener.
+Also, you can decide whether or not to override click through on the companion view.
+
+## Extra exposure time
+
+By default the AdCompanionView will end displaying the content after the ad finishes playing.
+If you need to keep the companion on the screen for a longer time(or indefinitely) you can configure it like this.
+
+```kotlin
+val adCompanionOptions = AdCompanionOptions()
+adCompanionOptions.extraExposureTime = 1.2// these are seconds.
+AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
+```
+
+## Preferred resource type
+
+You can select the preferred resource type from a list of 4 options: image, html, iframe and first resource available. Below is a snippet:
+
+```kotlin
+val adCompanionOptions = AdCompanionOptions()
+adCompanionOptions.preferredResourceType = AdCompanionResourceType.IMAGE
+AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
+```
+
+If not set, the default value is first resource available.
+If the preferred resource type is not found, it will default back to first resource available.
+
+---
 
 
 # Interactive ads
@@ -1203,135 +1642,6 @@ class MyInteractivityListener : InteractivityListener {
 }
 ```
 
-# Companion Banner
-
-AdswizzSDK lets you configure companion banner(s) if you are provided by the AdsWizz PIM with a companion zone id.
-
-
-## Adding an AdCompanionView
-
-The easiest way to add a companion view is from XML. You could also add the view programmatically.
-Once created, the SDK will keep track of all of your companion views and fill them with ad related content as the
-ad is playing. By default an **_AdCompanionView_** instance is inactive, meaning that as long as it's not visible on screen it won't load the content (during the ad break) or fire tracking events. You can "deactivate" companion view at any time temporarily by either hiding it, resizing it so that the frame width or height is zero, making it transparent or removing it from the view tree. The SDK will automatically keep track of your companion state and stop or resume rendering.
-
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
-....
-    <com.ads.coresdk.companion.AdCompanionView
-            android:id="@+id/companionView1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-....
-</androidx.constraintlayout.widget.ConstraintLayout>
-```
-## Setting up
-
-First when you create an **_AdswizzAdRequest_** you must configure the **_companionZones_** with the value provided by the PIM.
-
-```kotlin
-val adRequest = AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
-                .withServer("SERVER_PROVIDED_BY_PIM")
-                .withZones(setOf(AdswizzAdZone("ZONEID_PROVIDED_BY_PIM")))
-                .withCompanionZones("COMPANION_PROVIDED_BY_PIM")
-                .build()
-```
-
-Once the request is made, if there is a companion associated with the ad it will be loaded into your **_AdCompanionView_** object.
-
-## Server side & Podcasts setup
-
-In order for Ad Companion Banner to work with a server side or podcast integration you must create an AFR Config object that should be provided to the SDK at initialization. With the information obtained from AdsWizz this object can be configured like in the code snippet below:
-
-```kotlin
-    AdswizzSDK.initialize(context: Context)
-
-    AdswizzSDK.afrConfig = AfrConfig(
-            AdswizzAdRequest.HttpProtocol.HTTP,
-            "demo.deliveryengine.adswizz.com", // provide your own delivery engine endpoint address here
-            "www/delivery/afr.php"
-        )
-```
-
-## Companion events
-
-You can associate a listener to your AdCompanionView that implements the AdCompanionView.Listener interface.
-You will be notified when the ad has loaded the companion view, if the companion view was displayed, or if it ended
-the display. If there was an error while loading the companion you will be notified through this listener.
-Also, you can decide whether or not to override click through on the companion view.
-
-## Extra exposure time
-
-By default the AdCompanionView will end displaying the content after the ad finishes playing.
-If you need to keep the companion on the screen for a longer time(or indefinitely) you can configure it like this.
-
-```kotlin
-val adCompanionOptions = AdCompanionOptions()
-adCompanionOptions.extraExposureTime = 1.2// these are seconds.
-AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
-```
-
-## Preferred resource type
-
-You can select the preferred resource type from a list of 4 options: image, html, iframe and first resource available. Below is a snippet:
-
-```kotlin
-val adCompanionOptions = AdCompanionOptions()
-adCompanionOptions.preferredResourceType = AdCompanionResourceType.IMAGE
-AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
-```
-
-If not set, the default value is first resource available.
-If the preferred resource type is not found, it will default back to first resource available.
-
-## Asset Quality
-
-The asset quality can be set in the _AdManagerSettings_. Below is a code snippet:
-
-```kotlin
-adManager.adManagerSettings = AdManagerSettings.Builder()
-    .assetQuality(AssetQuality.MEDIUM)
-    .build()
-```
-Possible values are:
-- .LOW: it will try to select a media file with a bitrate up to 179199 bps
-- .MEDIUM: will try to select a media file with a bitrate between 179200 bps and 665599 bps
-- .HIGH: will try to select a media file with a bitrate at least 665600 bps
-- .AUTO: it will try to select a media file based on the internet connection that the device has: the better the connection the higher the bitrate. In case of video resources first the frame size is taken into account, the better the connection the higher the frame size. Internet connections is categories in the following buckets: 2g, 2.5g, 2.75g, 3g, 3.5g, "3.55g", "3.6g", 3.75g, 4g, 5g and wifi.
-
-Default value for asset quality is .HIGH.
-
-## preferredMaxBitrate
-
-Instead of setting asset quality, the preferredMaxBitrate can be set in the _AdManagerSettings_ which allows
-the selection of an asset with quality that matches preferredMaxBitrate or the closest one to it.
-
-```kotlin
-adManager.adManagerSettings = AdManagerSettings.Builder()
-    .preferredMaxBitrate(32000)
-    .build()
-```
-
-Setting a non-zero positive value will trigger another selection logic, where asset quality is ignored if was 
-previously set. The selection logic is the following: it first try to find an asset with the bitrate specified. 
-In case it doesn't find one, it tries to find the closest bitrate available with the bitrate less than the specified one,
-and if it doesn't find one it tries with the closest one that has a higher bitrate.
-
-
-### Enable RAD
-
-You can enable or disable Remote Audio Data measurement for your podcasts based on your user's consent. It can be configured like this:
-
-```kotlin
-AdswizzSDK.disableRAD = false //or `true` if user opted out
-```
 
 # Video ads
 
@@ -1554,244 +1864,95 @@ While **_AdVideoView_** has its cleanup mechanism, for a better performance, the
 
 ---
 
-# Podcasts
-
-Podcast apps that integrate AdswizzSDK will benefit from real-time reporting, companion display and interactive ads with formats such as ShakeMe and VoiceAds. Of course, these features are available only if the podcasts are delivered by AdsWizz's AIS. The setup uses an underlying functionality similar to Server Side Insertion as well as some Client Side Insertion familiar objects such as **_AdManager_**.
-
-## Getting started
-
-To get started, you need to create an **_AdswizzAdPodcastManager_** object and give it a **_AdPodcastManager.Listener_** 
-
-```kotlin
-import com.adswizz.core.podcast.AdswizzAdPodcastManager
-
-class YourModelClass {
-    private var podcastManager: AdswizzAdPodcastManager? = null
-
-    private val podcastListener = object : AdPodcastManager.Listener {
-        override fun willStartPlayingUrl(
-            adPodcastManager: AdPodcastManager,
-            url: Uri,
-            adBaseManager: AdBaseManager?
-        ) {
-        }
-
-        override fun didFinishPlayingUrl(adPodcastManager: AdPodcastManager, url: Uri) {
-        }
-
-        override fun didPausePlayingUrl(adPodcastManager: AdPodcastManager, url: Uri) {
-        }
-
-        override fun didResumePlayingUrl(adPodcastManager: AdPodcastManager, url: Uri) {
-        }
-
-        override fun adBreakStarted(
-            adPodcastManager: AdPodcastManager,
-            adBaseManager: AdBaseManager
-        ) {
-        }
-
-        override fun adBreakEnded(
-            adPodcastManager: AdPodcastManager,
-            adBaseManager: AdBaseManager
-        ) {
-        }
-
-        override fun onError(adPodcastManager: AdPodcastManager, error: Error) {
-        }
-
-        override fun onPlayHeadReport(
-            adPodcastManager: AdPodcastManager,
-            elapsedSec: Double,
-            durationSec: Double
-        ) {
-        }
-    }
-
-    fun createPodcastManager() {
-        ....
-        podcastManager = AdswizzAdPodcastManager()
-        podcastManager?.addListener(podcastListener)
-        ...
-    }
-}
-```
-
-The **_AdswizzAdPodcastManager_** object can be configured through a _AdPodcastManagerSettings_ and enables providing your own implementation of a player that implements the _AdPlayer_ interface.
-
-```kotlin
-fun createPodcastManager() {
-        val settings = AdPodcastManagerSettings.Builder()
-            .adPlayerInstance(customPlayerInstance)
-            .build()
-        podcastManager = AdswizzAdPodcastManager(settings)
-        podcastManager?.addListener(podcastListener)
-        ...
-    }
-```
-
-This is your only entry point to drive the podcast functionality further and typically your app would need a single **_AdswizzAdPodcastManager_** instance. 
-
-## Playback operations
-
-
-### play
-
-Calling this method from **_AdswizzAdPodcastManager_** with an URL will begin playing either remotely or locally from a location on disk. This method should be called  even if the podcast is played with an external player, because the remote URL will be enhanced by the SDK with extra parameters that enable the delivery of ads from an Adswizz server. As a response, AdswizzSDK will call back function `fun willStartPlayingUrl(adPodcastManager: AdPodcastManager, url: Uri, adBaseManager: AdBaseManager?)` with the newly formatted URL.
-
-Additionally, `play(uri: Uri)` will also attempt to generate and build an **_AdBaseManager_** for handling ads
-
-### pause
-
-Calling this method will pause a podcast that is played by the SDK’s internal player or the provided custom player. You'll get notified by `fun didPausePlayingUrl(adPodcastManager: AdPodcastManager, url: Uri)`
-
-### resume
-
-Calling this method will resume a podcast that is played by the SDK’s internal player or the provided custom player. You'll get notified by `fun didResumePlayingUrl(adPodcastManager: AdPodcastManager, url: Uri)`
-
-### stop
-
-Calling this method will stop a podcast that is played by the SDK’s internal playeror the provided custom player. You'll get notified by `fun didFinishPlayingUrl(adPodcastManager: AdPodcastManager, url: Uri)`
-
-### seekTo
-
-Calling `fun seekTo(position: Double)` will trigger a seek by setting the current playback time to the specified `position` parameter measured in seconds.
-
-Take note that the **_AdPodcastManager.Listener_** also notifies you when an ad break starts and ends and also there is a callback that provides you the play head information(elapsed time in seconds and duration of podcast also in seconds)
-
-## Download operations
-
-**_AdswizzAdPodcastManager_** also exposes download functionality to be able to store and play podcasts from the device's storage.
-As best practice, downloading a podcast should continue to run even when your app is put in background. Downloading functionality is enabled by the android's WorkManager library and is subjected to the inherited limitations. Also the download constraints can be supplied through the _AdPodcastManagerSettings_ configuration passed to the **_AdswizzAdPodcastManager_**:
-
-```kotlin
-fun createPodcastManager() {
-        val settings = AdPodcastManagerSettings.Builder()
-            .adPlayerInstance(customPlayerInstance)
-            .withDownloadConditions(setOf(
-                DownloadCondition.NotRoaming, 
-                DownloadCondition.OnlyWhenCharging
-            ))
-            .build()
-        podcastManager = AdswizzAdPodcastManager(settings)
-        podcastManager?.addListener(podcastListener)
-        ...
-    }
-```
-
-### start download
-
-To begin downloading a podcast, the `startDownloadPodcast(uri: Uri, location: Uri, completion: ((Boolean, Exception?) -> Unit)? = null)` method takes a remote Uri to download from and a location file Uri as destination to save the media file once the download is complete. Similar to `play(uri: Uri)` method, the remote Uri will be enhanced by **_AdswizzAdPodcastManager_** with extra parameters that enable the delivery of ads from an Adswizz server when the podcast will actually be played.
-
-### stop download
-
-Calling the `stopDownloadPodcast(location: Uri)` method cancels a previously started download operation for a podcast at its location file Uri as destination on disk.
-
-### remove download
-
-Calling `removePodcast(location: Uri)` method removes a previously downloaded podcast at its location file Uri as destination on disk.
-
-## **_AdPodcastManager.Listener_** interface
-
-Playback and ad breaks related notifications sent from **_AdswizzAdPodcastManager_** to your app are implemented in the **_AdPodcastManager.Listener_** interface.
-
-### fun willStartPlayingUrl(adPodcastManager: AdPodcastManager, url: Uri, adBaseManager: AdBaseManager?)
-
-This callback will be called after the podcasts starts playing
-
-### fun didFinishPlayingUrl(adPodcastManager: AdPodcastManager, url: Uri)
-
-This callback will be called after the podcasts finishes playing or is stopped
-
-### fun didPausePlayingUrl(adPodcastManager: AdPodcastManager, url: Uri)
-
-This callback will be called after the podcasts pauses playing
-
-### fun didResumePlayingUrl(adPodcastManager: AdPodcastManager, url: Uri)
-
-This callback will be called after the podcasts resumes playing
-
-### fun adBreakStarted(adPodcastManager: AdPodcastManager, adBaseManager: AdBaseManager)
-This callback signals the ad break started. During podcast playing, the **_AdswizzAdPodcastManager_** listens to the current `playhead` property of the player and detects ad breaks in the podcast based on the associated playhead start positions of the ads stitched within the podcast.
-
-### fun adBreakEnded(adPodcastManager: AdPodcastManager, adBaseManager: AdBaseManager)
-This callback signals the ad break ended
-
-### fun onError(adPodcastManager: AdPodcastManager, error: Error)
-Every time there is an error in the podcast functionality you'll get notified through this callback
-
-### fun onPlayHeadReport(adPodcastManager: AdPodcastManager, elapsedSec: Double, durationSec: Double)
-
-Every time the current playhead changes, your app will get notified in this function. The duration reflects the total expected podcast duration. This method can also be used to update UI accordingly.
-
-
-## **_AdPodcastManagerDownloadListener_** interface
-
-Download related notifications sent from **_AdswizzAdPodcastManager_** to your app are implemented in the **_AdPodcastManagerDownloadDelegate_** interface.
-
-## Remote Audio Data
-
-Podcasts come with _Remote Audio Data_ (RAD) support. Based on the industry standard by [NPR](https://rad.npr.org/), each podcast with RAD metadata will send events everytime its playhead crosses a certain point in time. 
-To enable RAD measurement for your podcasts, additional ZeroConfig configuration is needed. Contact your AdsWizz partner integration manager to setup your app's AdswizzSDK ZeroConfig instance.
-After this is in-place, as best practice you should present your users the option to opt-in or out for RAD measurement when playing podcasts. 
-
-This can be achieved with a single line of code:
-
-```kotlin
-AdswizzSDK.disableRAD = false //or `true` if user opted out
-```       
-By default, when `AdswizzSDK` is initialized, `disableRAD` property is set to `true`, so RAD measurement is **disabled** by default.
- 
-The `disableRAD` property is applied to all podcasts and can be updated on the fly. When RAD measurement is disabled, all current event uploads are cancelled and the local database is emptied.
-
-Disabling RAD data collection at the ZeroConfig level takes precedence over disabling it from code. If RAD is disabled in ZeroConfig, setting a new value to `disableRAD` property will be the same as setting this value to `false` everytime.
-
-### Handling RAD id3 metadata using your player
-
-Remote Audio Data measurement is based on reading specific `id3` metadata formats from the podcast being played. The SDK is able to read these specific metadata formats when playing with the internal player.
-However, when playing podcasts using your own player you are responsable for passing the metadata items to the SDK. You can find more details at [AdPlayer.Listener interface](#adplayer-interface) and [MetadataItem](#adplayer-interface) sections.
-
-
-### fun didDownload(adPodcastManager: AdPodcastManager, bytesDownloaded: Long, bytesExpected:Long, asset: DownloadableAsset)
-
-This method gets called when a podcast has already started downloading and a chunk of data was received. It sends all the necessary data to compute a progress needed for any UI updates. It also encapsulates the asset being downloaded into a **_DownloadableAsset_** which is kept alive until the download finishes.
-
-The **_DownloadableAsset_** object provides info on the asset that being handled:
-* url - the remote URL that is downloading from
-* mimeType - the creative type e.g "audio/mp3"
-* expectedContentLength - should match bytesExpected in the progress callback
-* state - the current state e.g `downloading`, `ready`, `failed`
-* location - the local file URL path where the asset will be saved once download completes
-
-### fun didFinishDownload(adPodcastManager: AdPodcastManager,  asset: DownloadableAsset)
-
-Called when the asset finished downloading all of its data.
-
-### fun didReceive(adPodcastManager: AdPodcastManager,  error:Error, asset: DownloadableAsset){
-
-Called when a network error occurred while trying to download the asset.
-
-
----
-
 # Playing ads using your player
 
 AdswizzSDK gives the possibility to choose whether to play the ad media with your player or let the SDK handle that for you.
 By default, the SDK will use its internal player to play the ad.<br/>
+
+## Client side setup
+
 For client side insertion, to use the external player you have to provide an **_AdManagerSettings_** object with an instance of your player before calling ```adManager.prepare()```. See below:
 
 ```kotlin
-    adManager.adManagerSettings = AdManagerSettings.Builder().adPlayerInstance(externalPlayer).build()
+	class ExternalExoPlayer(val context: Context) : AdPlayer{
+		...
+	
+	}
+
+	...
+	AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
+		.withServer()
+		.withZones(adZones)
+		.withCustomParameter(additionalCustomParam)
+		.build { adRequest ->
+	
+			val adRequestConnection = AdRequestConnection(adRequest)
+
+			adRequestConnection.requestAds { adManager, error ->
+				// setup adManager using AdManagerSettings
+			
+				val eap = ExternalExoPlayer(context) // ExternalExoPlayer implements AdPlayer interface
+
+			
+				//customize adManager using AdManagerSettings
+				adManager.adManagerSettings = AdManagerSettings.Builder()
+						.adPlayerInstance(eap) // provide your AdPlayer implementation
+						.assetQuality(assetQuality) // set desired asset quality
+						.videoViewId(newVideoId) // 
+						.build()
+
+				handleResponse(adManager) //make other preparations and play the ad pod 
+			}
+		
+	}    
 ```
+
+## Server side setup
 
 For server side insertion, to use the external player you have to provide an **_AdManagerStreamingSettings_** object with an instance of your player during initialization of ```AdswizzAdStreamManager```. See below:
 
 ```kotlin
-    val adStreamManagerSettings = AdManagerStreamingSettings.Builder().adPlayerInstance(externalPlayer).build()
-    adStreamManager = AdswizzAdStreamManager(adStreamManagerSettings)
+	class ExternalExoPlayer(val context: Context) : AdPlayer{
+		...
+	
+	}
+
+	val adStreamManagerSettings = AdManagerStreamingSettings.Builder()
+						.videoViewId(newVideoId)
+						.enqueueEnabled(enqueueEnabled)
+						.dvrEnabled(dvrEnable)
+						.adPlayerInstance(it)
+						.build()
+
+	val adStreamManager = AdswizzAdStreamManager(adStreamManagerSettings)
+				
+	...            
+	adStreamManager.play(streamUrl)
 ```
 
-The provided player (externalPlayer in the examples above) must implement the **_AdPlayer_** interface.
+## Podcast setup
+
+For podcast setup, to use the external player you have to provide an **_AdPodcastManagerSettings_** object with an instance of your player during initialization of ```AdswizzAdPodcastManager```. See below:
+
+```kotlin
+	class ExternalExoPlayer(val context: Context) : AdPlayer{
+		...
+	
+	}
+
+	...
+
+	val player = ExternalExoPlayer(context)
+
+
+	val adPodcastManagerSettings = AdPodcastManagerSettings.Builder().
+			 .adPlayerInstance(player)
+		 
+	val adPodcastManager = AdswizzAdPodcastManager(adPodcastManagerSettings.build())
+
+	...
+	adPodcastManager.play(uri)
+```
 
 ## AdPlayer Interface
 
@@ -2193,40 +2354,629 @@ Also, for macro expansion purposes it is recommended to implement the ```setVide
 ### listener functions
 
 The AdPlayer functions ```fun addListener(listener: Listener)``` and ```fun removeListener(listener: Listener)``` should be used to add and remove a listener.
+
+All AdManagers (client side manager, server side manager and podcast manager) register themselvs using the above function in order to receive events from the player . It is the 
+responsability of your player to forward events from player to manager using AdPlayer.Listener interface.
+
+For a complete functionality of the sdk all the callback in the AdPlayer.Listener should be called when your player send events to your object in order to forward these events to the AdManager. For a complete implementation use sample code provived in StreamingSample with External Player in sample directory.
+
 From the ```Listener``` interface there are only a couple of callbacks that were not explained yet.
 Whenever an error occurs the ```fun onError(error: String)``` callback should be called.
+
 When doing server side insertion (streams) the ```fun onMetadata(metadataList: List<MetadataItem>)``` function should be called whenever there is metadata in the stream. This is very important for streams. 
+
 It is also required if your player is used in a podcast context for reporting any id3 metadata formats to enable [Remote Audio Data](#remote-audio-data) measurement. The MetadataItem should have a "RAD" key
 and the corresponding RAD json string as value.
 For client side insertion this callback is not used.
+
 Whenever the player volume changes the ```fun onVolumeChanged(volume: Float)``` callback should be called.
 
 
-# Integrate into Wear OS apps
+## AdPlayer.Listener Interface
 
-If you have a companion Wear OS app for your Android app, you can also integrate our Wear OS SDK. This will allow you to use the smartwatch as a detector along side your phone.
+```kotlin
+   interface Listener {
 
-To integrate AdsWizz Wear OS SDK into your Wear OS app simply write the following line into your Wear OS app ```build.gradle``` file.
+        /**
+         * @param index: if enqueue is used then index should represent the loading item index.
+         * If enqueue is not used then index should always be null
+         */
+        fun onLoading(index: Int?)
 
-```groovy
-implementation 'com.adswizz:adswizz-wear-sdk:version'
+        /**
+         * @param index: if enqueue is used then index should represent the loading item index.
+         * If enqueue is not used then index should always be null
+         */
+        fun onLoadingFinished(index: Int?)
+
+        /**
+         * Fire this callback when the buffering has started
+         */
+        fun onBuffering()
+
+        /**
+         * Fire this callback when the buffering has finished
+         */
+        fun onBufferingFinished()
+
+        /**
+         * Fire this callback when the play starts
+         */
+        fun onPlay()
+
+        /**
+         * Fire this callback when the player has paused
+         */
+        fun onPause()
+
+        /**
+         * Fire this callback when the player resumed
+         */
+        fun onResume()
+
+        /**
+         * Fire this callback when the player has finished playing
+         */
+        fun onEnded()
+
+        /**
+         *
+         * @param currentTrackIndex: index of the current track
+         */
+        fun onSeekToTrackEnd(currentTrackIndex: Int)
+
+        /**
+         * On track changed.
+         *
+         * @param newTrackIndex - index of the new track
+         */
+        fun onTrackChanged(newTrackIndex: Int) {
+            // default implementation does nothing. This is only needed for enqueue functionality
+        }
+
+        /**
+         * Fire this callback on error
+         */
+        fun onError(error: String)
+
+        /**
+         * Fire this callback when metadata is received in streaming
+         * It is fired only on server side insertion
+         * @param metadataList: list of metadata items received in stream
+         */
+        fun onMetadata(metadataList: List<MetadataItem>) {
+            // default implementation does nothing. This is only needed for server side insertion or podcasting
+        }
+
+        /**
+         * Fire this callback when player volume has changed
+         */
+        fun onVolumeChanged(volume: Float) {
+            // default implementation does nothing
+        }
+
+        /**
+         * Called when video size changes and also when it starts with the initial values
+         *
+         * @param player - this player
+         * @param width - the video width
+         * @param height - the video height
+         *
+         * @since 7.3.0
+         */
+        fun onVideoSizeChanged(player: AdPlayer, width: Int, height: Int) {
+            // default implementation does nothing
+        }
+    }
 ```
-where ```version``` is the latest version of adswizz-wear-sdk provided to you by an AdsWizz PIM.
 
-Keep in mind that for the communication to work between phone and Wear OS app, the apps have to have the same ```aplicationId``` (i.e. ```com.example.sample.app```)
 
-## ShakeMe on Wear OS
+## Sample AdPlayer Interface Implementation
 
-After the ```adswizz-wear-sdk``` integration is done, you don't need to do anything else for this to work. As long as there is a connection between your phone and your Wear OS device, if you receive an interactive ad
-with ```shake``` as detection method, the detector will automatically start on both devices. When one device detects, the other is notified and stops its own detector.
+```kotlin
+	class ExternalExoPlayer(val context: Context) : AdPlayer, Player.EventListener, AnalyticsListener, CacheManager.Listener, AudioListener, MetadataOutput, VideoListener {
+		...
+		override val name = "ExternalExoPlayer"
+	    override val version = "1.23.456"
+    	override val playerCapabilities: List<PlayerCapabilities> = listOf(PlayerCapabilities.SKIP, PlayerCapabilities.MUTE, PlayerCapabilities.FULLSCREEN)
+		override var cacheAssetsHint: Boolean = true
+	    override var enqueueEnabledHint: Boolean = true
+    	override val isBufferingWhilePaused: Boolean = true
+    	
+    	...
+    	private var listenerList: ConcurrentLinkedQueue<WeakReference<AdPlayer.Listener>> = ConcurrentLinkedQueue()
 
-In the following image you can see a complete flow of how the feature works.
+    	private val player: SimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(context)
+	    private val mediaSources = ConcatenatingMediaSource()
+	    
+	    ...
+	    init {
+			player.addListener(this)
+			player.addMetadataOutput(this)
+			player.addAudioListener(this)
+			player.addAnalyticsListener(this)
+			player.addVideoListener(this)
+		}
 
-<img src="img/SmartWatch-ShakeFlow.png" width="1000" />
+		fun cleanup() {
+			player.removeVideoListener(this)
+			player.removeAnalyticsListener(this)
+			player.removeAudioListener(this)
+			player.removeMetadataOutput(this)
+			player.removeListener(this)
+		}
+		
+		// region Player Controls
+		override fun load(creativeUrlString: String) {
+			if (!enqueueEnabledHint) {
+				val oldPlayWhenReady = player.playWhenReady
+				reset()
+				player.playWhenReady = oldPlayWhenReady
 
-## Voice Detector on Wear OS
-The same as **shakeMe** the voice detector works on Wear OS too. After integrating the **Wear OS SDK**, the only thing you need to do
-to have voice detection active on the watch is to make sure you give your Wear OS app the ```RECORD_AUDIO``` permission.
+				playlist.add(Asset(creativeUrlString, AssetState.INITIALIZED))
+				val source = buildMediaSource(creativeUrlString)
+				mediaSources.addMediaSource(source)
+
+				playingIndex = 0
+				seekInProgress = true
+				player.prepare(mediaSources)
+			}
+		}
+
+		private fun buildMediaSource(urlString: String): MediaSource {
+			val uri = Uri.parse(urlString)
+			val undecoratedUri = Uri.parse(urlString).buildUpon().clearQuery().build()
+
+			when {
+				urlString.startsWith("rawresource://", true) -> {
+					val dataSourceFactory =
+						DataSource.Factory { RawResourceDataSource(CommonContext.getContext()) }
+					val extractorsFactory: DefaultExtractorsFactory =
+						DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
+					return ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory)
+						.setTag(urlString).createMediaSource(uri)
+				}
+				urlString.startsWith("file:///", true) -> {
+					val dataSourceFactory = DataSource.Factory { FileDataSource() }
+					val extractorsFactory: DefaultExtractorsFactory =
+						DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
+					return ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory)
+						.setTag(urlString).createMediaSource(uri)
+				}
+				else -> {
+					val dataSourceFactory =
+						DefaultHttpDataSourceFactory(com.adswizz.common.Utils.getDefaultUserAgent())
+
+					when (Util.inferContentType(undecoratedUri)) {
+						C.TYPE_DASH -> {
+							return DashMediaSource.Factory(dataSourceFactory).setTag(urlString)
+								.createMediaSource(uri)
+						}
+						C.TYPE_HLS -> {
+							return HlsMediaSource.Factory(dataSourceFactory).setTag(urlString)
+								.createMediaSource(uri)
+						}
+						C.TYPE_SS -> {
+							return SsMediaSource.Factory(dataSourceFactory).setTag(urlString)
+								.createMediaSource(uri)
+						}
+						else -> {
+							val extractorsFactory: DefaultExtractorsFactory =
+								DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
+							return if (cacheAssetsHint) {
+								ProgressiveMediaSource.Factory(
+									CacheManager.getCacheDataSourceFactory(
+										dataSourceFactory
+									), extractorsFactory
+								)
+									.setTag(urlString)
+									.createMediaSource(uri)
+							} else {
+								ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory)
+									.setTag(urlString).createMediaSource(uri)
+							}
+						}
+					}
+				}
+			}
+		}
+
+		override fun play() {
+			if (cacheAssetsHint) {
+				CacheManager.cancelAllDownloads()
+			}
+			player.playWhenReady = true
+		}
+
+		override fun pause() {
+			player.playWhenReady = false
+		}
+
+		override fun reset() {
+			player.stop(true)
+			player.playWhenReady = false
+			status = AdPlayer.Status.INITIALIZED
+			duration = null
+
+			mediaSources.clear()
+			playlist.clear()
+			playingIndex = -1
+			seekInProgress = false
+		}
+
+		override fun seekToTrackEnd() {
+			try {
+				seekInProgress = true
+				player.seekTo(playingIndex + 1, 0L)
+			} catch (e: Exception) {
+				seekInProgress = false
+				if (status != AdPlayer.Status.FINISHED) {
+					status = AdPlayer.Status.FINISHED
+					listenerList.forEach { it.get()?.onSeekToTrackEnd(playingIndex) }
+				}
+			}
+		}
+
+		override fun seekTo(position: Double) {
+			try {
+				seekInProgress = true
+				player.seekTo(player.currentWindowIndex, (position * 1000.0).toLong())
+			} catch (e: Exception) {
+				seekInProgress = false
+			}
+		}
+
+		// endregion
+		
+		// region Enqueue Related
+
+		override fun enqueue(creativeUrlString: String, index: Int) {
+			if (cacheAssetsHint && !creativeUrlString.startsWith("rawresource://", true))
+				CacheManager.addAssetToCache(creativeUrlString, this)
+
+			if (enqueueEnabledHint) {
+				if ((index >= 0) && (index <= playlist.size)) {
+					playlist.add(index, Asset(creativeUrlString, AssetState.INITIALIZED))
+					val source = buildMediaSource(creativeUrlString)
+					mediaSources.addMediaSource(index, source)
+
+					if (playingIndex >= index)
+						playingIndex++
+
+					if (mediaSources.size == 1) {
+						playingIndex = 0
+						seekInProgress = true
+						player.prepare(mediaSources)
+					}
+				}
+			}
+		}
+
+		override fun dequeue(index: Int) {
+			if ((index >= 0) && (index < playlist.size)) {
+				if (cacheAssetsHint) {
+					val tag = mediaSources.getMediaSource(index).tag.toString()
+					if (!tag.startsWith("rawresource://", true))
+						CacheManager.removeAssetFromCache(tag)
+				}
+
+				playlist.removeAt(index)
+				mediaSources.removeMediaSource(index)
+				if (playingIndex >= index)
+					playingIndex--
+			}
+		}
+
+		// endregion
+		
+		// region Current Values
+
+		override var volume: Float
+			set(value) {
+				player.volume = value
+			}
+			get() = player.volume
+
+		/**
+		 * @return the current play head from the player in seconds
+		 */
+		override fun getCurrentTime(): Double {
+			return player.currentPosition.toDouble() / 1000
+		}
+
+		/**
+		 * @return the track duration from the player in seconds
+		 */
+		override fun getDuration(): Double? {
+			return duration
+		}
+
+		/**
+		 * @return the current internal status from our media player
+		 */
+		override fun status(): AdPlayer.Status {
+			return status
+		}
+
+		// endregion
+		
+		   // region Listener
+
+    override fun addListener(listener: AdPlayer.Listener) {
+        cleanupNullsInListenerList()
+
+        listenerList.forEach {
+            if (it.get() == listener) {
+                return
+            }
+        }
+        listenerList.add(WeakReference(listener))
+    }
+
+    override fun removeListener(listener: AdPlayer.Listener) {
+        cleanupNullsInListenerList()
+        listenerList.forEach {
+            if (it.get() == listener) {
+                listenerList.remove(it)
+                return
+            }
+        }
+    }
+
+    private fun cleanupNullsInListenerList() {
+        listenerList.forEach {
+            if (it.get() == null) {
+                listenerList.remove(it)
+            }
+        }
+    }
+
+    // endregion
+
+
+    //region Player Event Listener
+
+    override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+        when (playbackState) {
+            Player.STATE_BUFFERING -> {
+                if (playingIndex >= 0) {
+                    status = AdPlayer.Status.BUFFERING
+                    if (!seekInProgress)
+                        listenerList.forEach { it.get()?.onBuffering() }
+                }
+            }
+            Player.STATE_READY -> {
+                if (duration == null) {
+                    duration = player.duration.toDouble() / 1000
+                }
+                if (status == AdPlayer.Status.BUFFERING) {
+                    status = AdPlayer.Status.BUFFERING_FINISHED
+                    if (seekInProgress)
+                        seekInProgress = false
+                    else
+                        listenerList.forEach { it.get()?.onBufferingFinished() }
+                }
+
+                when (playWhenReady) {
+                    true -> {
+                        val oldStatus = status
+                        if (status != AdPlayer.Status.PLAYING) {
+                            status = AdPlayer.Status.PLAYING
+                            if (oldStatus == AdPlayer.Status.PAUSED) {
+                                listenerList.forEach { it.get()?.onResume() }
+                            } else {
+                                loadCompleted(playingIndex)     // this is needed because ExoPlayer calls onPlayerStateChanged before onLoadCompleted
+                                listenerList.forEach { it.get()?.onPlay() }
+                            }
+                        }
+                    }
+                    false -> {
+                        if (status == AdPlayer.Status.PLAYING) {
+                            status = AdPlayer.Status.PAUSED
+                            listenerList.forEach { it.get()?.onPause() }
+                        }
+                    }
+                }
+            }
+            Player.STATE_ENDED -> {
+                if (playWhenReady) {
+                    player.playWhenReady = false
+                } else {
+                    if (status != AdPlayer.Status.FINISHED) {
+                        status = AdPlayer.Status.FINISHED
+                        listenerList.forEach { it.get()?.onEnded() }
+                    }
+                }
+            }
+            Player.STATE_IDLE -> {
+                status = AdPlayer.Status.INITIALIZED
+            }
+        }
+    }
+
+    override fun onPlayerError(error: ExoPlaybackException) {
+        super<Player.EventListener>.onPlayerError(error)
+        status = AdPlayer.Status.FAILED
+        val errorMessage = "Something went wrong with external exoplayer: ${error?.message}"
+        listenerList.forEach { it.get()?.onError(errorMessage) }
+    }
+
+    override fun onPositionDiscontinuity(reason: Int) {
+        var posChanged = false
+        if (reason == Player.DISCONTINUITY_REASON_PERIOD_TRANSITION) {  // transition from one track to the next
+            playingIndex++
+            duration = player.duration.toDouble() / 1000
+            listenerList.forEach { it.get()?.onTrackChanged(playingIndex) }
+            posChanged = true
+        } else if (reason == Player.DISCONTINUITY_REASON_SEEK) {    // triggered by seek to end of track function
+            listenerList.forEach { it.get()?.onSeekToTrackEnd(playingIndex) }
+            playingIndex++
+            duration = player.duration.toDouble() / 1000
+            posChanged = true
+        }
+
+        if (cacheAssetsHint && posChanged) {
+            val cancelIndex = playingIndex - 1
+            if (cancelIndex >= 0 && cancelIndex < mediaSources.size) {
+                CacheManager.cancelDownload(mediaSources.getMediaSource(playingIndex - 1).tag.toString())
+            }
+        }
+    }
+
+    // endregion
+
+
+    // region MetadataOutput
+
+    override fun onMetadata(metadata: com.google.android.exoplayer2.metadata.Metadata) {
+        val metadataList = mutableListOf<AdPlayer.MetadataItem>()
+        if (metadata != null) {
+            for (i in 0 until metadata.length()) {
+                when (val entry = metadata.get(i)) {
+                    is IcyInfo -> {
+                        if (entry.title != null) {
+                            metadataList.add(AdPlayer.MetadataItem("title", entry.title ?: ""))
+                        }
+                        if (entry.url != null) {
+                            metadataList.add(AdPlayer.MetadataItem("url", entry.url ?: ""))
+                        }
+                    }
+                    is TextInformationFrame -> {
+                        if (!entry.value.isNullOrEmpty()) {
+                            metadataList.add(AdPlayer.MetadataItem("value", entry.value))
+                        }
+                        if (!entry.description.isNullOrEmpty()) {
+                            metadataList.add(
+                                    AdPlayer.MetadataItem(
+                                            "description",
+                                            entry.description.toString()
+                                    )
+                            )
+                        }
+                    }
+                    is UrlLinkFrame -> {
+                        // do nothing
+                    }
+                    is PrivFrame -> {
+                        // do nothing
+                    }
+                    is GeobFrame -> {
+                        // do nothing
+                    }
+                    is ApicFrame -> {
+                        if (!entry.description.isNullOrEmpty()) {
+                            metadataList.add(
+                                    AdPlayer.MetadataItem(
+                                            "description",
+                                            entry.description.toString()
+                                    )
+                            )
+                        }
+                        if (!entry.mimeType.isNullOrEmpty()) {
+                            metadataList.add(
+                                    AdPlayer.MetadataItem(
+                                            "description",
+                                            entry.mimeType.toString()
+                                    )
+                            )
+                        }
+                    }
+                    is CommentFrame -> {
+                        if (!entry.text.isNullOrEmpty()) {
+                            metadataList.add(AdPlayer.MetadataItem("text", entry.text))
+                        }
+                    }
+                    is Id3Frame -> {
+                        // do nothing
+                    }
+                    is EventMessage -> {
+                        // do nothing
+                    }
+                }
+            }
+        }
+        listenerList.forEach { it.get()?.onMetadata(metadataList) }
+    }
+
+    //endregion
+    
+    	//region forward events
+    	
+		override fun onLoadStarted(eventTime: AnalyticsListener.EventTime, loadEventInfo: MediaSourceEventListener.LoadEventInfo, mediaLoadData: MediaSourceEventListener.MediaLoadData) {
+			eventTime?.windowIndex?.let { wi ->
+				if ((wi >= 0) && (wi < playlist.size)) {
+					val item = playlist.elementAt(wi + removedMediaSourcesCount)
+					item.assetState = AssetState.LOADING
+					if (item.lastLoadingCallbackSent == LastLoadingCallbackSent.NONE) {
+						item.lastLoadingCallbackSent = LastLoadingCallbackSent.LOADING
+						val i = if (enqueueEnabledHint) wi + removedMediaSourcesCount else null
+						listenerList.forEach { it.get()?.onLoading(i) }
+					}
+				}
+			}
+		}
+
+		override fun onLoadCompleted(eventTime: AnalyticsListener.EventTime, loadEventInfo: MediaSourceEventListener.LoadEventInfo, mediaLoadData: MediaSourceEventListener.MediaLoadData) {
+			eventTime?.windowIndex?.let { wi ->
+				loadCompleted(wi + removedMediaSourcesCount)
+			}
+		}
+
+		override fun onLoadError(eventTime: AnalyticsListener.EventTime, loadEventInfo: MediaSourceEventListener.LoadEventInfo, mediaLoadData: MediaSourceEventListener.MediaLoadData, error: IOException, wasCanceled: Boolean) {
+			eventTime.windowIndex.let { wi ->
+				if ((wi >= 0) && (wi < playlist.size)) {
+					playlist.elementAt(wi).assetState = AssetState.FAILED
+
+					if(wi >= 0 && wi < mediaSources.size) {
+						if(mediaSources.getMediaSource(wi).tag == loadEventInfo?.uri?.toString()) {
+							mediaSources.removeMediaSource(wi)
+							if(enqueueEnabledHint) {
+								removedMediaSourcesCount++
+							}
+						}
+					}
+					val errorMessage = "ExoPlayer failed to load media: ${loadEventInfo.uri} with ${error.message}"
+					listenerList.forEach { it.get()?.onError(errorMessage) }
+				}
+			}
+		}
+
+		override fun onLoadCanceled(eventTime: AnalyticsListener.EventTime, loadEventInfo: MediaSourceEventListener.LoadEventInfo, mediaLoadData: MediaSourceEventListener.MediaLoadData) {
+			eventTime?.windowIndex?.let { wi ->
+				if ((wi >= 0) && (wi < playlist.size))
+					playlist.elementAt(wi).assetState = AssetState.CANCELED
+			}
+		}
+
+		private fun loadCompleted(index: Int) {
+			if ((index >= 0) && (index < playlist.size)) {
+				val item = playlist.elementAt(index)
+				item.assetState = AssetState.COMPLETED
+				if (item.lastLoadingCallbackSent == LastLoadingCallbackSent.LOADING) {
+					item.lastLoadingCallbackSent = LastLoadingCallbackSent.LOADING_FINISHED
+					val i = if (enqueueEnabledHint) index else null
+					listenerList.forEach { it.get()?.onLoadingFinished(i) }
+				}
+			}
+		}
+		
+		override fun onVolumeChanged(volume: Float) {
+			super<AudioListener>.onVolumeChanged(volume)
+			listenerList.forEach { it.get()?.onVolumeChanged(volume) }
+		}
+
+		// endregion
+
+		// region VideoListener
+
+		override fun onVideoSizeChanged(width: Int, height: Int, unappliedRotationDegrees: Int, pixelWidthHeightRatio: Float) {
+			listenerList.forEach { it.get()?.onVideoSizeChanged(this, width, height) }
+		}
+
+		//endregion
+    
+	}
+```
 
 ## Cache Manager
 Pre-caching the media (creative) assets will allow for your app to serve audio/video ads in poor network or possibly complete lack of network connection. This will improve user experience because an ad can play instantly or prevent buffering mid ad.
@@ -2281,6 +3031,34 @@ private fun buildMediaSource(urlString: String): MediaSource {
         }
 ```
 
+# Integrate into Wear OS apps
+
+If you have a companion Wear OS app for your Android app, you can also integrate our Wear OS SDK. This will allow you to use the smartwatch as a detector along side your phone.
+
+To integrate AdsWizz Wear OS SDK into your Wear OS app simply write the following line into your Wear OS app ```build.gradle``` file.
+
+```groovy
+implementation 'com.adswizz:adswizz-wear-sdk:version'
+```
+where ```version``` is the latest version of adswizz-wear-sdk provided to you by an AdsWizz PIM.
+
+Keep in mind that for the communication to work between phone and Wear OS app, the apps have to have the same ```aplicationId``` (i.e. ```com.example.sample.app```)
+
+## ShakeMe on Wear OS
+
+After the ```adswizz-wear-sdk``` integration is done, you don't need to do anything else for this to work. As long as there is a connection between your phone and your Wear OS device, if you receive an interactive ad
+with ```shake``` as detection method, the detector will automatically start on both devices. When one device detects, the other is notified and stops its own detector.
+
+In the following image you can see a complete flow of how the feature works.
+
+<img src="img/SmartWatch-ShakeFlow.png" width="1000" />
+
+## Voice Detector on Wear OS
+The same as **shakeMe** the voice detector works on Wear OS too. After integrating the **Wear OS SDK**, the only thing you need to do
+to have voice detection active on the watch is to make sure you give your Wear OS app the ```RECORD_AUDIO``` permission.
+
+
+
 # AdswizzSDK general settings
 
 ## GDPR consent
@@ -2305,6 +3083,57 @@ With the introduction of CCPA in US, **_AdswizzSDK_** gives you the possibility 
 ```
 
 The first value represents the explicit notice for collecting consent. The next value is the opt-out of the sale of his personal information. The last one is the limitation of scope to the Limited Service Provider Agreement. For all tree, possible values are: **_NOT_APPLICABLE_**, **_YES_**, **_NO_**. The default value for all of them is **_NOT_APPLICABLE_**.
+
+## Permissions
+By default `AdswizzSDK` uses permissions set by host app in AndroidManifest file to operate different modules. 
+However it is possible, in a programatic way, to control wich permission the SDK can use
+
+### Get status
+To get the current permission status in the SDK, use `AdswizzSDK's` method called `getPermissionStatus(permission: String): Boolean` with permission string described in android.Manifest.permission frameowrk. This method returns true if AdswizzSDK can use the API guarded by the permission, or false otherwise.
+
+### Disable permissions programmatically
+You can instruct `AdswizzSDK` whether it can use the data exposed by any permission set in AndroidManifest by calling the `fun setPermissionStatus(permission: String, value: Boolean)` method. Pass true for status parameter if `AdswizzSDK` is allowed to use the permission or false if the AdswizzSDK is denied access.
+
+This is the list of permissions you can programatically set using the methods above. See also [Permissions](#permissions) section in Get started chapter
+
+```kotlin
+		permission.INTERNET,
+		permission.VIBRATE,
+		permission.ACCESS_FINE_LOCATION,
+		permission.RECORD_AUDIO,
+		permission.WRITE_EXTERNAL_STORAGE,
+		permission.CALL_PHONE,
+		permission.READ_PHONE_STATE,
+		permission.ACCESS_NETWORK_STATE,
+		permission.ACCESS_WIFI_STATE,
+		permission.ACCESS_COARSE_LOCATION,
+		permission.BLUETOOTH,
+		permission.ACTIVITY_RECOGNITION,
+		permission.WRITE_CONTACTS,
+		permission.WRITE_CALENDAR,
+		permission.CAMERA
+```
+
+For example these two lines will inhibit `VIBRATE`  and `ACCESS_FINE_LOCATION` permission 
+
+```kotlin
+
+	AdswizzSDK.setPermissionStatus("android.permission.VIBRATE", false)
+	AdswizzSDK.setPermissionStatus("android.permission.ACCESS_FINE_LOCATION", false)
+
+```
+or using Android SDK permission constants
+
+```kotlin
+	import android.Manifest
+	
+	...
+
+	AdswizzSDK.setPermissionStatus(permission.VIBRATE, false)
+    AdswizzSDK.setPermissionStatus(permission.ACCESS_FINE_LOCATION, false)
+    
+```
+
 
 ## Disable data collection
 
@@ -2359,6 +3188,50 @@ By default, the **_AdCompanionView_** will end displaying the content after the 
     val adCompanionOptions = AdCompanionOptions(exposureTime)
     AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
 ```
+
+
+## Asset Quality
+
+The asset quality can be set in the _AdManagerSettings_. Below is a code snippet:
+
+```kotlin
+adManager.adManagerSettings = AdManagerSettings.Builder()
+    .assetQuality(AssetQuality.MEDIUM)
+    .build()
+```
+Possible values are:
+- .LOW: it will try to select a media file with a bitrate up to 179199 bps
+- .MEDIUM: will try to select a media file with a bitrate between 179200 bps and 665599 bps
+- .HIGH: will try to select a media file with a bitrate at least 665600 bps
+- .AUTO: it will try to select a media file based on the internet connection that the device has: the better the connection the higher the bitrate. In case of video resources first the frame size is taken into account, the better the connection the higher the frame size. Internet connections is categories in the following buckets: 2g, 2.5g, 2.75g, 3g, 3.5g, "3.55g", "3.6g", 3.75g, 4g, 5g and wifi.
+
+Default value for asset quality is .HIGH.
+
+## preferredMaxBitrate
+
+Instead of setting asset quality, the preferredMaxBitrate can be set in the _AdManagerSettings_ which allows
+the selection of an asset with quality that matches preferredMaxBitrate or the closest one to it.
+
+```kotlin
+adManager.adManagerSettings = AdManagerSettings.Builder()
+    .preferredMaxBitrate(32000)
+    .build()
+```
+
+Setting a non-zero positive value will trigger another selection logic, where asset quality is ignored if was 
+previously set. The selection logic is the following: it first try to find an asset with the bitrate specified. 
+In case it doesn't find one, it tries to find the closest bitrate available with the bitrate less than the specified one,
+and if it doesn't find one it tries with the closest one that has a higher bitrate.
+
+
+### Enable RAD
+
+You can enable or disable Remote Audio Data measurement for your podcasts based on your user's consent. It can be configured like this:
+
+```kotlin
+AdswizzSDK.disableRAD = false //or `true` if user opted out
+```
+
 
 # Open Measurement in AdswizzSDK
 
