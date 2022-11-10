@@ -36,7 +36,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val SERVER_URL = "demo.deliveryengine.adswizz.com"
-        const val ZONE_ID = "17161"
+        //const val ZONE_ID = "17161"
+        const val ZONE_ID = "15098"
         //const val ZONE_ID = "14578"
     }
 
@@ -154,7 +155,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
 
         AdswizzSDK.initialize(this)
 
@@ -162,8 +162,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-//        supportActionBar?.hide()
+        //requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        //supportActionBar?.hide()
 
         val window = this.window
         getWindow().decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -178,7 +178,8 @@ class MainActivity : AppCompatActivity() {
         binding.sdkVersion.text = String.format(getString(R.string.adswizz_version_prefix, com.adswizz.sdk.BuildConfig.VERSION_NAME))
 
         //Build the Ad Request with the needed parameters
-        AdswizzAdRequest.Builder()
+        if ( adManager == null ) {
+            AdswizzAdRequest.Builder()
                 .withServer(SERVER_URL)
                 .withZones(setOf(AdswizzAdZone(ZONE_ID)))
                 .build() { adRequest ->
@@ -188,6 +189,7 @@ class MainActivity : AppCompatActivity() {
                         handleResponse(error, adManager)
                     }
                 }
+        }
     }
 
     private fun handleResponse(
@@ -256,7 +258,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        AdswizzSDK.cleanup()
+        //AdswizzSDK.cleanup()
         super.onDestroy()
     }
 
