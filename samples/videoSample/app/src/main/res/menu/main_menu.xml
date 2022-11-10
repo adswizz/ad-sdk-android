@@ -5,7 +5,7 @@
     <item
         android:id="@+id/menuPlay"
         android:icon="@drawable/ic_play_arrow_white_24dp"
-        android:title="Send interactivity"
+        android:title="Play or pause ad manager"
         app:showAsAction="always" />
 
     <item

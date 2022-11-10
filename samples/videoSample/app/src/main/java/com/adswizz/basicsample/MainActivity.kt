@@ -22,6 +22,7 @@ import com.ad.core.adManager.AdManager
 import com.ad.core.adManager.AdManagerListener
 import com.ad.core.adManager.AdManagerSettings
 import com.ad.core.video.AdVideoView
+import com.ad.core.video.VideoResizeMode
 import com.adswizz.basicsample.databinding.ActivityMainBinding
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.adFetcher.AdswizzAdZone
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val SERVER_URL = "demo.deliveryengine.adswizz.com"
         //const val ZONE_ID = "17161"
-        const val ZONE_ID = "15098"
+        const val ZONE_ID = "18017"
         //const val ZONE_ID = "14578"
     }
 
@@ -156,7 +157,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        AdswizzSDK.initialize(this)
+        AdswizzSDK.initialize(this.applicationContext)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -174,22 +175,10 @@ class MainActivity : AppCompatActivity() {
         val scroll = ScrollingMovementMethod()
         binding.appLogs.movementMethod = scroll
 
-
+        //binding.adVideoView.resizeMode = VideoResizeMode.FILL
         binding.sdkVersion.text = String.format(getString(R.string.adswizz_version_prefix, com.adswizz.sdk.BuildConfig.VERSION_NAME))
 
         //Build the Ad Request with the needed parameters
-        if ( adManager == null ) {
-            AdswizzAdRequest.Builder()
-                .withServer(SERVER_URL)
-                .withZones(setOf(AdswizzAdZone(ZONE_ID)))
-                .build() { adRequest ->
-                    // Create the AdRequestConnection using the above adRequest
-                    adRequestConnection = AdRequestConnection(adRequest)
-                    adRequestConnection?.requestAds { adManager, error ->
-                        handleResponse(error, adManager)
-                    }
-                }
-        }
     }
 
     private fun handleResponse(
@@ -207,6 +196,7 @@ class MainActivity : AppCompatActivity() {
             binding.appLogs.addEntry("Received ad manager")
             adManager.setListener(listener)
             adManager.prepare()
+            adManager.play()
         }
     }
 
@@ -218,27 +208,41 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menuPlay -> {
-                when (adManagerState) {
-                    AdManagerState.Unknown, AdManagerState.ReadyForPlay -> {
-                        if (adManagerState == AdManagerState.Unknown) {
-                            binding.appLogs.addEntry("Recommendation: just to be sure that the ad playback will start immediately wait for the <<AdEvent.Type.State.ReadyForPlay>> event")
+                if ( adManager == null ) {
+                    AdswizzAdRequest.Builder()
+                        .withServer(SERVER_URL)
+                        .withZones(setOf(AdswizzAdZone(ZONE_ID)))
+                        .build() { adRequest ->
+                            // Create the AdRequestConnection using the above adRequest
+                            adRequestConnection = AdRequestConnection(adRequest)
+                            adRequestConnection?.requestAds { adManager, error ->
+                                handleResponse(error, adManager)
+                            }
                         }
-                        item.setIcon(R.drawable.ic_pause_arrow_white_24dp)
-                        adManager?.play()
-                    }
-                    AdManagerState.Paused -> {
-                        item.setIcon(R.drawable.ic_pause_arrow_white_24dp)
-                        adManager?.resume()
-                    }
-                    AdManagerState.Playing -> {
-                        item.setIcon(R.drawable.ic_play_arrow_white_24dp)
-                        adManager?.pause()
-                    }
-                    AdManagerState.AllAdsCompleted -> {
-                        item.setIcon(R.drawable.ic_play_arrow_white_24dp)
-                        adManager?.reset()
-                        adManager?.prepare()
-                        adManager?.play()
+                }
+                else {
+                    when (adManagerState) {
+                        AdManagerState.Unknown, AdManagerState.ReadyForPlay -> {
+                            if (adManagerState == AdManagerState.Unknown) {
+                                binding.appLogs.addEntry("Recommendation: just to be sure that the ad playback will start immediately wait for the <<AdEvent.Type.State.ReadyForPlay>> event")
+                            }
+                            item.setIcon(R.drawable.ic_pause_arrow_white_24dp)
+                            adManager?.play()
+                        }
+                        AdManagerState.Paused -> {
+                            item.setIcon(R.drawable.ic_pause_arrow_white_24dp)
+                            adManager?.resume()
+                        }
+                        AdManagerState.Playing -> {
+                            item.setIcon(R.drawable.ic_play_arrow_white_24dp)
+                            adManager?.pause()
+                        }
+                        AdManagerState.AllAdsCompleted -> {
+                            item.setIcon(R.drawable.ic_play_arrow_white_24dp)
+                            adManager?.reset()
+                            adManager?.prepare()
+                            adManager?.play()
+                        }
                     }
                 }
             }
@@ -259,6 +263,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         //AdswizzSDK.cleanup()
+        adManager = null
         super.onDestroy()
     }
 
