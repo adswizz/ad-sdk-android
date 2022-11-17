@@ -18,7 +18,7 @@ with ```shake``` as detection method, the detector will automatically start on b
 
 In the following image you can see a complete flow of how the feature works.
 
-<img src="img/SmartWatch-ShakeFlow.png" width="1000" />
+<img src="../img/SmartWatch-ShakeFlow.png" width="1000" />
 
 ## Voice Detector on Wear OS
 The same as **shakeMe** the voice detector works on Wear OS too. After integrating the **Wear OS SDK**, the only thing you need to do
