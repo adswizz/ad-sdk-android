@@ -336,5 +336,5 @@ or is equal to 0, this actually means that 1 ad is requested. In this example th
 
 After requesting your first ad from the Adswizz ad server, you are ready to play the ads from the AdManager object. Keep in mind that you might receive more than one ad from the server, but you are not required to play them all. If you decide to play multiple ads in your app, you need to listen to the events that the AdManager sends to your app and decide what is the appropriate action to take. Here is a diagram of the AdManager state.
 
-<img src="img/AdManagerState.png" width="1000" />
+<img src="../img/AdManagerState.png" width="1000" />
 
