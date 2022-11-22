@@ -35,8 +35,10 @@ Podcasting:
 ### Added:
 - New public method on class **_AdManagerSettings_**
 	- `preferredMaxBitrate()` called to set a preferred bitrate for asset quality selection
+	
 ### Fixed
 	- fixes afrRequest where a banner mismatch occurs. When this happens, the `didFailToDisplayAd` method of `AdCompanionClient.Listener` is called
+	
 ### Changed:
 - [Integration Guide](README.md) was modified to explain how to use the new **_AdManagerSettings_**'s public function named `preferredMaxBitrate(bitrate: Int)`
 
@@ -47,6 +49,7 @@ Podcasting:
 ## [7.7.8] - 2022-08-02
 ### Added:
 - FireOS compatibility limitations to the integration guide
+
 ### Fixed:
 - fire properly the tracking events when an ad is skipped in a multiple ads in ad manager scenario
 
@@ -54,6 +57,7 @@ Podcasting:
 ### Added:
 - New public method on class **_AdVideoView_**
 	- `activityOnDestroy()` to be called when parent container (Activity or Fragment) is destroyed
+	
 ### Changed:
 - [Integration Guide](README.md) was modified to explain how to use the new **_AdVideoView_**'s public function named `activityOnDestroy()`
 
@@ -61,8 +65,10 @@ Podcasting:
 ### Added:
 - Podcast RAD support
 - Added analytics for voice ads interactivity to track which keyword triggered the action
+
 ### Fixed:
 - AdCompanion Banner sends `didFail` event correctly when the static resource fails to load
+
 ### Changed:
 - [Integration Guide](README.md) was modified to better explain the AdCompanion integration in a server side insertion scenario
 
@@ -74,6 +80,7 @@ Podcasting:
 ### Added:
 - Improved support for `duration` and `maxDuration` in the multiple zones format for ads requests.
   Added function `withDuration(duration: Long?)` in class `AdswizzAdRequest` which sets the maximum total duration of ads to be selected. Value is in milliseconds
+  
 ### Fixed
 - Fix for missing a browser app on the device when interactivity triggers a browse action
 
@@ -88,6 +95,7 @@ Podcasting:
 ## [7.7.1] - 2022-03-31
 ### Changed
 - OMSDK library updates
+
 ### Fixed
 - Restrict the ProGuard rules only to the AdsWizz packages
 

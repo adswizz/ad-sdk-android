@@ -1,0 +1,19 @@
+# (Optional) Interoperability with PAL SDK
+
+AdswizzSDK can work with Google's PAL SDK to access video demand from DV360. AdswizzSDK is not directly linked to the PAL SDK but exposes a public API to facilitate the communication.
+
+## What you need to do
+Firstly you need to integrate PAL SDK into your app.
+
+Then you have to create a **_PalNonceHandlerInterface_** object that contains the `nonce` string of the PAL SDK's `NonceManager` object and provides the following events to the PAL SDK's `NonceManager` object: `sendAdClick()`, `sendAdImpression()` and `sendTouch(event: MotionEvent)`. A `NonceManager`object can be obtained using `NonceLoader`. More details how to operate with these objects can be found in 'Programmatic Access Library' (PAL) documentation provided by Google. We have used version 17.0.5.
+
+Once you get a **_PalNonceHandlerInterface_** there is a final step to do: link AdswizzSDK with the **_PalNonceHandlerInterface_** object. This can be done using `AdRequest.Builder`.
+
+```kotlin
+AdswizzAdRequest.Builder()
+    .withServer(SERVER_URL)
+    .withZones(setOf(AdswizzAdZone(ZONE_ID)))
+    ...
+    .withNonceHandler(palNonceHandler) //set here the palNonceHandler object previously created
+    .build()
+```
