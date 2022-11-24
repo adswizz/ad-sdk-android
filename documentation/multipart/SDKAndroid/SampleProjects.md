@@ -31,3 +31,7 @@ This sample demonstrates a client-side insertion scenario with enqueue + precach
 ## Video Ads Sample
 
 This app demonstrates a client-side insertion with video by showing how to add a _**videoViewId**_ to the _**AdManagerSettings**_ and also a _**AdVideoView**_ to the layout. It is similar with the Basic Sample.
+
+## Video Ads Sample Full Screen External Player
+
+This app demonstrates a client-side insertion with video by showing how to add a _**videoViewId**_ to the _**AdManagerSettings**_ and also a _**AdVideoView**_ to the layout. The video is full screen, the application can change layout from portrait to landscape and it uses external player.

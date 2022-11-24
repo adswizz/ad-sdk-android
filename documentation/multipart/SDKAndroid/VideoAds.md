@@ -140,7 +140,7 @@ fun setPlayStateListener(listener: PlayStateListener?) {}
 
 ## Viewability
 
-Viewability enables AdswizzSDK to allow third party verification measurement for both audio and video ads. See [Open Measurement in AdswizzSDK](#open-measurement-in-adswizzsdk) for more details.
+Viewability enables AdswizzSDK to allow third party verification measurement for both audio and video ads. See [Open Measurement in AdswizzSDK](SDKAndroid/OpenMeasuremen) for more details.
 
 ### Friendly obstructions
 

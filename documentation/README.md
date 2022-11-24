@@ -27,6 +27,7 @@
          * [play](#play)
          * [pause](#pause)
          * [skipAd](#skipad)
+         * [skipAd with error](#skipad-with-error)
          * [reset](#reset)
          * [ads](#ads)
          * [analyticsCustomData](#analyticsCustomData)
@@ -130,6 +131,7 @@
       * [DvrStreamingSample](#DvrStreamingSample)
       * [Precache Sample](#precache-sample)
       * [Video Ads Sample](#video-ads-sample)
+      * [Video Ads Sample Full Screen External Player](#video-ads-sample-full-screen)
 
 # Before you start
 
@@ -837,6 +839,10 @@ Call **_resume_** when you want to play the ads after a pause. The SDK will trig
 If you need to skip an ad you can call this method to skip the current ad from the AdManager. Your app will receive
 a **_DidSkip_** or **_NotUsed_** event for the current ad and it will start to play the next one. If no ads are available, an **_AllAdsCompleted_** will be sent,
 signalling that all ads got processed in the AdManager.
+
+#### skipAd with error
+
+For a more advanced skip handling, you can call **_skipAd(error: Error)_** method to skip the current ad from the AdManager. It follows the same behaviour as for the **_skipAd_** method above. However, by passing an `Error` parameter, the SDK will **not** fire any tracking URLs for `skip` VAST events, but instead it will fire the VAST error tracking URLs. Additionally, for the skipped ad it will also call `fun onEventErrorReceived(adManager: AdManager, ad: AdData?, error: Error)` callback from [AdManagerListener interface](#admanagerlistener-interface) with the same error used in **_skipAd(error: Error)_**.
 
 
 ### reset
@@ -2440,6 +2446,16 @@ Whenever the player volume changes the ```fun onVolumeChanged(volume: Float)``` 
         fun onError(error: String)
 
         /**
+         * Fire this when you want to skip with an error
+         * this function will not fire skip tracking but error tracking with vast code 400
+         *
+         * @param error - error which is the reason for this skipAd call
+         */
+        fun onSkipAd(error: Error){
+            // default implementation does nothing.
+        }
+        
+        /**
          * Fire this callback when metadata is received in streaming
          * It is fired only on server side insertion
          * @param metadataList: list of metadata items received in stream
@@ -3517,3 +3533,7 @@ This sample demonstrates a client-side insertion scenario with enqueue + precach
 ## Video Ads Sample
 
 This app demonstrates a client-side insertion with video by showing how to add a _**videoViewId**_ to the _**AdManagerSettings**_ and also a _**AdVideoView**_ to the layout. It is similar with the Basic Sample.
+
+## Video Ads Sample Full Screen External Player
+
+This app demonstrates a client-side insertion with video by showing how to add a _**videoViewId**_ to the _**AdManagerSettings**_ and also a _**AdVideoView**_ to the layout. The video is full screen, the application can change layout from portrait to landscape and it uses external player.

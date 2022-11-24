@@ -190,6 +190,10 @@ If you need to skip an ad you can call this method to skip the current ad from t
 a **_DidSkip_** or **_NotUsed_** event for the current ad and it will start to play the next one. If no ads are available, an **_AllAdsCompleted_** will be sent,
 signalling that all ads got processed in the AdManager.
 
+#### skipAd with error
+
+For a more advanced skip handling, you can call **_skipAd(error: Error)_** method to skip the current ad from the AdManager. It follows the same behaviour as for the **_skipAd_** method above. However, by passing an `Error` parameter, the SDK will **not** fire any tracking URLs for `skip` VAST events, but instead it will fire the VAST error tracking URLs. Additionally, for the skipped ad it will also call `fun onEventErrorReceived(adManager: AdManager, ad: AdData?, error: Error)` callback from [AdManagerListener interface](#admanagerlistener-interface) with the same error used in **_skipAd(error: Error)_**.
+
 
 ### reset
 
@@ -203,7 +207,7 @@ Get the normal ads in the ad manager. A zero value means the Ad Manager will not
 
 ### analyticsCustomData
 
-Set an **_AnalyticsCustomData_** data class to provide key-value custom attributes to all **_AnalyticsEvent_** instances triggered by the AdswizzSDK for Analytics purposes. Read more at [AdswizzSDK Analytics](#adswizzsdk-analytics).
+Set an **_AnalyticsCustomData_** data class to provide key-value custom attributes to all **_AnalyticsEvent_** instances triggered by the AdswizzSDK for Analytics purposes. Read more at [AdswizzSDK Analytics](SDKAndroid/AdswizzSDKAnalytics).
 
 
 ## AdManagerListener interface

@@ -256,7 +256,20 @@ interface AdPlayer {
             // default implementation does nothing. This is only needed for enqueue functionality
         }
 
+        /**
+         * Fire this callback on error
+         */
         fun onError(error: String)
+        
+        /**
+         * Fire this when you want to skip with an error
+         * this function will not fire skip tracking but error tracking with vast code 400
+         *
+         * @param error - error which is the reason for this skipAd call
+         */
+        fun onSkipAd(error: Error){
+            // default implementation does nothing.
+        }
 
         fun onMetadata(metadataList: List<MetadataItem>) {
             // default implementation does nothing. This is only needed for server side insertion

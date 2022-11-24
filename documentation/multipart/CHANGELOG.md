@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.15] - 2022-11-17
+### Added
+- New public method in **_AdManager_** interface:
+	- `skipAd(error: Error)` Skip current ad with an error reason. It will fire error tracking instead of skip tracking
+- New public method in **_AdPlayer.Listener_** interface:
+	- `onSkipAd(error: Error)` When called inform `AdPlayer.Listener` implemented object that a skip with error should be triggered.AdManager default implementation will call `skipAd(error: Error)`
+
+
 ## [7.7.14] - 2022-11-08
 ### Added
 - User-Agent support:
