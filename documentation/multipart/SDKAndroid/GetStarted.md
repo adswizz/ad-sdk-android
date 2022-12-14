@@ -1,9 +1,9 @@
 # Get started
 
-AdswizzSDK facilitates the ad lifecycle management, right from your application.
-Sensing listeners environment, it crafts the overall ad exercise for superior addressability and augmented interactivity.
+The AdswizzSDK facilitates the ad lifecycle management, right from your application.
+Sensing listeners environment, it crafts the overall ad experience for superior addressability and augmented interactivity.
 
-On top, in a client-side insertion scenario, it retrieves the ad with its associated assets, and handles the reporting operations.<br>
+Additionally, in a client-side insertion scenario, it retrieves the ad with its associated assets, and handles the reporting operations.<br>
 In a server-side insertion scenario, it takes the pressure off your app by making the interactivity and assets easily available.
 
 
@@ -88,13 +88,13 @@ googleWearableVersion = '2.5.0'
 ---
 **NOTE**
 
-If you are excluding any tested dependency version and use another version instead of it (that doesn't ensure backward/forward compatibility with the version we have tested) you may encounter unexpected behaviour.
+If you are excluding any tested dependency version and using another version (that doesn't ensure backward/forward compatibility with the version we have tested) you may encounter unexpected behavior.
 
 ---  
 
 ## Permissions
 
-With the addition of the SDK to your project, there will be only a couple of permissions that will appear in your merged manifest file. These are the bare minimum in order for the sdk to function.
+With the addition of the SDK to your project, only a couple of permissions will appear in your merged manifest file. These are the bare minimum in order for the SDK to function.
 
 The AdswizzSDK uses the following permissions:
 
@@ -119,7 +119,7 @@ AdswizzWearSDK uses the following permissions:
 </manifest>
 ```
 
-In order to take full advantage of everything that the SDK has to offer additional permissions will be needed.
+To take full advantage of everything that the SDK has to offer, additional permissions will be needed.
 
 The AdswizzSDK additional permissions are:
 
@@ -167,13 +167,13 @@ For AdswizzWearSDK there is only one additional permission:
 </manifest>
 ```
 
-These additional permissions will have to be manually added in the host app manifest. Keep in mind that for missing permissions, some of the features from our SDK might not work. We handle the case of permissions missing so you don't have to worry about crashes.
+These additional permissions will have to be manually added in the host app manifest. Keep in mind that, due to missing permissions, some of the features of our SDK might not work. We handle the case of permissions missing so you don't have to worry about crashes.
 
-If you want to keep some permissions only for the host app to use then the following function `AdswizzSDK.setPermissionStatus` will help with denying the unwanted permission to the Adswizz SDK. By default the Adswizz SDK will use all permissions that the host app will use. If you need to know if a permission is allowed to be used by the Adswizz SDK then you can call `AdswizzSDK.getPermissionStatus`.
+If you want to keep some permissions only for the host app to use then the `AdswizzSDK.setPermissionStatus` function will help with denying the unwanted permissions to the Adswizz SDK. By default, the Adswizz SDK will use all the permissions that the host app uses. To find out if the Adswizz SDK is allowed to use a certain permission, call `AdswizzSDK.getPermissionStatus`.
 
 ### Disclaimer
-- Please be advised that including AdsWizz SDK in your project might require your application to ask for specific permissions, in order to take full advantage of the special formats and/or enhance targeting capabilities.
-- A complete list with all the permissions we require and why may be found here: https://support.adswizz.com/hc/en-us/articles/360018903057
+- Including AdsWizz SDK in your project may require your application to ask for specific permissions, in order to take full advantage of the special formats and/or enhance targeting capabilities.
+- A complete list of what permissions we require and why may be found here: https://support.adswizz.com/hc/en-us/articles/360018903057
 - We highly encourage you to loop your product and legal teams in the process of agreeing which features to enable, and finding the best way to reflect this in your application’s Privacy Policy.
 
 
@@ -232,17 +232,17 @@ AdswizzWearSDK uses the following queries setup:
 </manifest>
 ```
 
-If you want to change these queries in your app you can use the following line of code to remove it. Afterwards you will have to write your own <queries>.
+To change these queries in your app, use the following line of code to remove the default setup. Afterwards, you will have to write your own.
 
 ```xml
 <queries tools:node="remove" />
 ```
 
-Please note that if you remove the queries, some of the features from our SDK might not work. The system manages these automatically so you don't have to worry about crashes.
+If you remove the queries, some of the features of our SDK might not work. The system manages these automatically, so you don't have to worry about crashes.
 
 ## Adding the SDK to your Android Studio Project
 
-You can easily integrate AdswizzSDK into your project. There are 2 steps to this integration:
+You can easily integrate the AdswizzSDK into your project. There are 2 steps to this integration:
 
 1. Inside your project level build.gradle add the following block inside the allprojects->repositories tag:
 
@@ -280,45 +280,44 @@ allprojects {
 }
 ```
 
-2. Then, inside your module level build.gradle add the following line inside the dependencies block:
+2. Then, inside your module level build.gradle add the following lines inside the dependencies block:
 
 ```groovy
 implementation 'com.adswizz:adswizz-sdk:version'
 implementation 'com.adswizz:exoplayer2-10:version'
 ```
 
-_Note_: the sdk before 7.6.1 included the exoplayer dependency. now this dependency is separated and you must include it to function correctly. at this time (SDK 7.7.13) there 5 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14, 2.15, 2.16)
+_NOTE_: SDK version prior to before 7.6.1 included the exoplayer dependency. Now this dependency is separate and you must include it for the SDK to function correctly. At this time (SDK 7.7.13), there are 5 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14, 2.15, 2.16)
 
-Where <strong>version</strong> is the latest version of the phone and tablet SDK provided by AdsWizz (i.e. 7.7.2 - the latest version). Please notice the below example:
+In the code snippet above, replace <strong>version</strong> with the version of the phone and tablet SDK provided by AdsWizz (i.e. 7.7.2 - the latest version). Example:
 
 ```groovy
 implementation 'com.adswizz:adswizz-sdk:7.7.2'
 implementation 'com.adswizz:exoplayer2-10:7.7.2'
 ```
 
-_Note_: This artifact is using __protobuf java lite__ internally. In case your application is using the full protobuf java library you'll have to use another sdk artifact as following:
+_NOTE_: This artifact uses __protobuf java lite__ internally. If your application uses the full protobuf java library, you'll have to use another SDK artifact, as follows:
 
 ```groovy
 implementation 'com.adswizz:adswizz-sdk-protobufJava:7.7.2'
 ```
 
-Note:
-if you are compiling with an API > 30 (*Android 11*) you must also include a newer version of Androidx WorkManager runtime as follows:
+_NOTE_: if you are compiling with an API > 30 (*Android 11*), you must also include a newer version of the Androidx WorkManager runtime, as follows:
 
 ```groovy
 implementation 'androidx.work:work-runtime-ktx:2.7.1'
 implementation 'androidx.work:work-multiprocess:2.7.1'
 ```
-This is necessary since the included WorkManager version in the SDK doesn't implement the PendingIntent _*FLAG_IMMUTABLE*_ requirements introduced in Android 12
+This is necessary since the because WorkManager version included in the SDK doesn't implement the PendingIntent _*FLAG_IMMUTABLE*_ requirements introduced in Android 12.
     
-(optional) 3. The Adswizz Android SDK is using Google Play Services (`com.google.android.gms.ads.identifier.AdvertisingIdClient`) in order to get the Google Advertising ID (GAD). In order to do this your application may need to have following meta added in your `AndroidManifest.xml` file.
+3. (optional) The Adswizz Android SDK uses Google Play Services (`com.google.android.gms.ads.identifier.AdvertisingIdClient`) to get the Google Advertising ID (GAD). To do this, your application may need to have the following meta added in your `AndroidManifest.xml` file.
 ```xml
 <meta-data
     android:name="com.google.android.gms.ads.AD_MANAGER_APP"
     android:value="true" />
 ```
 
-The above meta should be placed inside of the `application` tag like in the below example:
+The above meta should be placed inside the `application` tag, like in the below example:
  ```xml
 <application
     android:allowBackup="true"
@@ -331,7 +330,7 @@ The above meta should be placed inside of the `application` tag like in the belo
 </application>
  ```
 
-Note: If the above `meta` is not added in your `AndroidManifest.xml` file you may receive an error message in Logcat like this one `"The Google Mobile Ads SDK was initialized incorrectly."` and your application will crash during the initialization.
+_NOTE_: If the above `meta` is not added in your `AndroidManifest.xml` file, you will receive an error message in Logcat like this one `"The Google Mobile Ads SDK was initialized incorrectly."` and your application will crash during initialization.
 
 
 ## SDK initialization and cleanup
@@ -371,16 +370,16 @@ Second, you need to add the playerId to your manifest. This is also obtained fro
 </application>
 ```
 
-If adding the installation id and player id at compile time is not an option then read [SDK initialization when installationId and playerId are unknown at compile time](#sdk-initialization-when-installationid-and-playerid-are-unknown-at-compile-time).
+If adding the installation id and player id at compile time is not an option, then read [SDK initialization when installationId and playerId are unknown at compile time](#sdk-initialization-when-installationid-and-playerid-are-unknown-at-compile-time).
 
-Next, you need to initialize the AdswizzSDK. The recommended way to do this is in the onCreate of your application. If you already extended
-the application class just add the following line inside the onCreate method:
+Next, you need to initialize the AdswizzSDK. The recommended way to do this is in the onCreate of your application. If you've already extended
+the application class, just add the following line inside the onCreate method:
 
 ```kotlin
 AdswizzSDK.initialize(this)
 ```
 
-If you didn't already extend the Application class you can do it now. It should look something like this:
+If you haven't already extend the Application class you can do it now. It should look something like this:
 
 ```kotlin
 class MyApp : Application() {
@@ -407,17 +406,17 @@ Don't forget to add this new class in your manifest. It should look like this:
 </application>
 ```
 
-For cleanup you should use:
+For cleanup, you should use:
 
 ```kotlin
 AdswizzSDK.cleanup()
 ```
 
-Call it when you will no longer need the SDK.
+Call it when you no longer need the SDK.
 
 ## SDK initialization when installationId and playerId are unknown at compile time
 
-If the installationId or playerId are not known at compile time and you want to set them at runtime you can construct an `AdswizzSDKConfig` data class and pass it to `AdswizzSDK.initialize` method. See below:
+If the installationId or playerId are not known at compile time and you want to set them at runtime you can construct an `AdswizzSDKConfig` data class and pass it to the `AdswizzSDK.initialize` method. See below:
 
 ```kotlin
 val installationId = ...
