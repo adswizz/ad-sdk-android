@@ -1,11 +1,11 @@
 # Playing ads using your player
 
-AdswizzSDK gives the possibility to choose whether to play the ad media with your player or let the SDK handle that for you.
+The AdswizzSDK enables you to choose whether to play the ad media with your player or let the SDK handle that for you.
 By default, the SDK will use its internal player to play the ad.<br/>
 
-## Client side setup
+## Client-side setup
 
-For client side insertion, to use the external player you have to provide an **_AdManagerSettings_** object with an instance of your player before calling ```adManager.prepare()```. See below:
+For client-side insertion, to use the external player you have to provide an **_AdManagerSettings_** object with an instance of your player before calling ```adManager.prepare()```. See below:
 
 ```kotlin
 	class ExternalExoPlayer(val context: Context) : AdPlayer{
@@ -41,9 +41,9 @@ For client side insertion, to use the external player you have to provide an **_
 	}    
 ```
 
-## Server side setup
+## Server-side setup
 
-For server side insertion, to use the external player you have to provide an **_AdManagerStreamingSettings_** object with an instance of your player during initialization of ```AdswizzAdStreamManager```. See below:
+For server-side insertion, to use the external player you have to provide an **_AdManagerStreamingSettings_** object with an instance of your player during initialization of ```AdswizzAdStreamManager```. See below:
 
 ```kotlin
 	class ExternalExoPlayer(val context: Context) : AdPlayer{
@@ -348,7 +348,7 @@ Below is a quote from [VAST_4.2_final_june26.pdf](https://iabtechlab.com/wp-cont
 ● icon to indicate the player's ability to render NAI icons from VAST
 ```
 
-In the SDK this list is represented with the following enum:
+In the SDK, this list is represented with the following enum:
 
 ```kotlin
 enum class PlayerCapabilities(val rawValue: String) {
@@ -365,14 +365,14 @@ The ```playerCapabilities``` represents a list of the supported player capabilit
 
 ### Player State
 
-Currently there are 2 player states defined in the VAST document ([VAST_4.2_final_june26.pdf](https://iabtechlab.com/wp-content/uploads/2019/06/VAST_4.2_final_june26.pdf)), they are:
+Currently, there are 2 player states defined in the VAST document ([VAST_4.2_final_june26.pdf](https://iabtechlab.com/wp-content/uploads/2019/06/VAST_4.2_final_june26.pdf)), as follows:
 
 ```text
 ● muted to indicate the player is currently muted
-● fullscreen to indicate the player is currently fullscreen
+● fullscreen to indicate the player is currently full screen
 ```
 
-In the SDK this list is represented with the following enum:
+In the SDK, this list is represented with the following enum:
 
 ```kotlin
 enum class PlayerState(val rawValue: String) {
@@ -387,56 +387,56 @@ The ```playerState``` represents a list of the current states in which the playe
 
 ### cacheAssetsHint property
 
-If true then the user expects that the audio/video media files are cached by the player. This is a hint so the AdPlayer implementation may or may not take it into consideration.
-If the property is set to true and the player in use is the *internal player* the SDK will start downloading the assets one by one. The ideal way of using the cache is waiting for all the assets to be downloaded, otherwise  
-enqueue should be enough for your needs. In the case that you still decide to play the ads before the download is complete, it will cancel the rest of the downloads, and the playback will fallback on enqueue/load depending  
+If true, then the user expects that the audio/video media files are cached by the player. This is a hint, so the AdPlayer implementation may or may not take it into consideration.
+If the property is set to true and the player in use is the *internal player*, the SDK will start downloading the assets one by one. The ideal way of using the cache is to wait for all the assets to be downloaded; otherwise,  
+enqueue should be enough for your needs. If you still decide to play the ads before the download is complete, it will cancel the rest of the downloads, and the playback will fall back on enqueue/load depending  
 on the selected settings. The playback will be instant because the already downloaded data is used right away.
 
 
 ### enqueueEnabledHint property
 
-If true then the user expects that the audio/video media files are enqueued in a playlist. This means that the playing will be smoother than when playing one by one. Also this is only a hint. The SDK is able work even if the AdPlayer implementation does not takes this hint into consideration.
+If true, then the user expects that the audio/video media files are enqueued in a playlist. This means that the playing will be smoother than when playing one by one. Also, this is only a hint. The SDK is able to work even if the AdPlayer implementation does not take this hint into consideration.
 
 ### isBufferingWhilePaused property
 
-The value returned by this property is used only for server side playback (streams). Return true if the player buffers the content while paused and starts from that same point when it resumes. Return false if the player does not buffer the content while paused, and when it resumes the playback starts from the live frame of the stream.
+The value returned by this property is used only for server-side playback (streams). Return true if the player buffers the content while paused and starts from that same point when it resumes. Return false if the player does not buffer the content while paused, and when it resumes the playback starts from the live frame of the stream.
 
 ### load function
 
-The ```fun load(creativeUrlString: String)``` function informs the AdPlayer that it should start the load of the media file. It is called by the AdManager when it detected that the loading didn't started. This means that the ```fun onLoading(index: Int?)``` function was not previously called.
+The ```fun load(creativeUrlString: String)``` function informs the AdPlayer that it should start the loading the media file. It is called by the AdManager when it detects that the loading hasn't started. This means that the ```fun onLoading(index: Int?)``` function was not previously called.
 
-If enqueue is disabled then most likely the loading will happen after the ```load(creativeUrlString: String)``` function is called.
+If enqueue is disabled, then most likely the loading will happen after the ```load(creativeUrlString: String)``` function is called.
 
-When this function is called the AdPlayer implementation should start loading the item and respond with ```fun onLoading(index: Int?)``` callback when the loading of the media file is about to begin and with ```fun onLoadingFinished(index: Int?)``` when the loading has been completed.
+When this function is called, the AdPlayer implementation should start loading the item and respond with the ```fun onLoading(index: Int?)``` callback when the loading of the media file is about to begin and with ```fun onLoadingFinished(index: Int?)``` when the loading has been completed.
 
 ### play function
 
-When the AdManager wants the playing to begin, for the first time, it will call ```fun play()```. For this case, the AdPlayer will respond with ```fun onPlay()```. When the AdManager wants the playing to resume after a pause it will also call ```fun play()``` but this time the AdPlayer should respond with ```fun onResume()```.
+When the AdManager wants the playing to begin for the first time, it will call ```fun play()```. For this case, the AdPlayer will respond with ```fun onPlay()```. When the AdManager wants the playing to resume after a pause it will also call ```fun play()``` but this time the AdPlayer should respond with ```fun onResume()```.
 
-During playback when the current track ends and the next one starts playing the ```fun onTrackChanged(newTrackIndex: Int)``` should be called.
+During playback, when the current track ends and the next one starts playing, the ```fun onTrackChanged(newTrackIndex: Int)``` should be called.
 
 ### pause function
 
-There may be a time when the user will want to pause the AdManager. When this will happen the AdManager will call ```fun pause()```. In this case the AdPlayer will respond with ```fun onPause()```.
+There may be a time when the user wants to pause the AdManager. When this happens the AdManager will call ```fun pause()```. In this case the AdPlayer will respond with ```fun onPause()```.
 
 ### reset function
 
-The ```fun reset()``` is called when the AdManager wants to stop everything and bring the AdPlayer to it's initial state.
+The ```fun reset()``` function is called when the AdManager wants to stop everything and bring the AdPlayer to its initial state.
 
 ### seekToTrackEnd function
 
-The ```fun seekToTrackEnd()``` is called when the AdManager wants the player to seek to current track's end.
+The ```fun seekToTrackEnd()``` function is called when the AdManager wants the player to seek to the current track's end.
 
 ### enqueue function
 
-During execution of the ```adManager.prepare()``` function the AdManager will call ```fun enqueue(creativeUrlString: String, index: Int)``` function for each ad.  
+During execution of the ```adManager.prepare()``` function, the AdManager will call the ```fun enqueue(creativeUrlString: String, index: Int)``` function for each ad.  
 The index represents the ad position in the AdManager, starting at 0. The creativeUrlString represents the ad media file.
 
-When this function is called the AdPlayer implementation may start loading the enqueued items and respond with ```fun onLoading(index: Int?)``` callback when the loading of a media file is about to begin and with ```fun onLoadingFinished(index: Int?)``` when the loading has been completed.
+When this function is called, the AdPlayer implementation may start loading the enqueued items and respond with the ```fun onLoading(index: Int?)``` callback when the loading of a media file is about to begin, and with ```fun onLoadingFinished(index: Int?)``` when the loading has been completed.
 
 ### dequeue function
 
-There may be certain situations when the player will want to remove an ad from the playlist. In this case it will call ```fun dequeue(index: Int)```. The index represents the ad position in the AdManager that should be removed.
+There may be certain situations when the player wants to remove an ad from the playlist. In this case, it will call ```fun dequeue(index: Int)```. The index represents the ad position in the AdManager that should be removed.
 
 ### Player volume
 
@@ -444,8 +444,8 @@ The ```volume``` variable can be used to get the player's current volume or to s
 
 ### getCurrentTime and getDuration
 
-The ```fun getDuration(): Double?``` should return the duration of the track in seconds when it can be obtained from the media resource otherwise null.
-The ```fun getCurrentTime(): Double``` should return the current position of the playhead in the current track in seconds. If no media resource exists then 0.0 should be returned. The value returned by this function should be between 0.0 and the duration returned by ```getDuration()```. When the playing finishes at the end of the track the value returned should be equal to ```getDuration()```.
+The ```fun getDuration(): Double?``` function should return the duration of the track in seconds when it can be obtained from the media resource; otherwise, null.
+The ```fun getCurrentTime(): Double``` function should return the current position of the playhead in the current track in seconds. If no media resource exists, then 0.0 should be returned. The value returned by this function should be between 0.0 and the duration returned by ```getDuration()```. When the playing finishes at the end of the track, the value returned should be equal to ```getDuration()```.
 
 ### status function
 
@@ -482,41 +482,41 @@ enum class Status {
 ```
 
 The initial player status should be ```INITIALIZED```. It should have this value also after ```fun reset()``` is called.
-In case the loading fails the ```FAILED``` status should be set. Also this should be set when an error occurs.
-During playback, if the player needs to buffer the media then it should change the status to ```BUFFERING``` and when the buffering ends it should change it to ```BUFFERING_FINISHED```. When it starts buffering it should also call ```fun onBuffering()``` and when it finishes ```fun onBufferingFinished()```. In this way the AdManager will be notified that a buffering is started or has completed.
-When the player actively plays the ad the status should be ```PLAYING``` and if it is paused the status should be ```PAUSED```.
-When the player finishes to play a track then the status should change to ```FINISHED```. It should also call ```fun onEnded()``` to notify the AdManager that the playback has finished.
+If the loading fails, the ```FAILED``` status should be set. Also, this should be set when an error occurs.
+During playback, if the player needs to buffer the media, then it should change the status to ```BUFFERING``` and, when the buffering ends, it should change it to ```BUFFERING_FINISHED```. When it starts buffering it should also call ```fun onBuffering()```, and when it finishes, ```fun onBufferingFinished()```. In this way the AdManager will be notified that buffering is started or has completed.
+When the player actively plays the ad, the status should be ```PLAYING``` and, if it is paused, the status should be ```PAUSED```.
+When the player finishes to playing a track, the status should change to ```FINISHED```. It should also call ```fun onEnded()``` to notify the AdManager that the playback has finished.
 
 ### video functions
 
-If the player needs to render video content then there are a couple of functions to implement:
+If the player needs to render video content, then there are a couple of functions to implement:
 - ```setVideoSurface```: this should provide a ```Surface``` to the player and it should use it to render the video content.
-- ```clearVideoSurface```: when this is called the ```Surface``` should be removed and the player should stop rendering the video in it. The playback may continue.
+- ```clearVideoSurface```: when this is called, the ```Surface``` should be removed and the player should stop rendering the video in it. The playback may continue.
 
-Just before you start rendering to the surface you should call the ```fun onVideoSizeChanged(player: AdPlayer, width: Int, height: Int)``` so that the listener knows the initial frame size of the video. Whenever this size changes you should call it again with the new values just before the frame with the new size is rendered.
+Just before you start rendering to the surface, you should call ```fun onVideoSizeChanged(player: AdPlayer, width: Int, height: Int)``` so that the listener knows the initial frame size of the video. Whenever this size changes, you should call it again with the new values, just before the frame with the new size is rendered.
 
-Also, for macro expansion purposes it is recommended to implement the ```setVideoState``` function which will be called when the state of the video view will change. This should be useful to determine if ```FULLSCREEN``` will be returned when calling ```playerState```.
+Also, for macro expansion purposes it is recommended to implement the ```setVideoState``` function, which will be called when the state of the video view changes. This should be useful to determine if ```FULLSCREEN``` will be returned when calling ```playerState```.
 
 
 ### listener functions
 
 The AdPlayer functions ```fun addListener(listener: Listener)``` and ```fun removeListener(listener: Listener)``` should be used to add and remove a listener.
 
-All AdManagers (client side manager, server side manager and podcast manager) register themselvs using the above function in order to receive events from the player . It is the 
-responsability of your player to forward events from player to manager using AdPlayer.Listener interface.
+All AdManagers (client-side manager, server-side manager and podcast manager) register themselves using the above function in order to receive events from the player . It is the 
+responsibility of your player to forward events from player to manager using the AdPlayer.Listener interface.
 
-For a complete functionality of the sdk all the callback in the AdPlayer.Listener should be called when your player send events to your object in order to forward these events to the AdManager. For a complete implementation use sample code provived in StreamingSample with External Player in sample directory.
+For a complete SDK functionality, all the callback in the AdPlayer.Listener should be called when your player sends events to your object, in order to forward these events to the AdManager. For a complete implementation, use the sample code provided in StreamingSample with External Player in the sample directory.
 
-From the ```Listener``` interface there are only a couple of callbacks that were not explained yet.
-Whenever an error occurs the ```fun onError(error: String)``` callback should be called.
+Some additional callbacks from the ```Listener``` interface are explained below.
+Whenever an error occurs, the ```fun onError(error: String)``` callback should be called.
 
-When doing server side insertion (streams) the ```fun onMetadata(metadataList: List<MetadataItem>)``` function should be called whenever there is metadata in the stream. This is very important for streams. 
+When doing server-side insertion (streams), the ```fun onMetadata(metadataList: List<MetadataItem>)``` function should be called whenever there is metadata in the stream. This is very important for streams. 
 
-It is also required if your player is used in a podcast context for reporting any id3 metadata formats to enable [Remote Audio Data](#remote-audio-data) measurement. The MetadataItem should have a "RAD" key
+It is also required if your player is used in a podcast context for reporting any ID3 metadata formats to enable [Remote Audio Data](#remote-audio-data) measurement. The MetadataItem should have a "RAD" key
 and the corresponding RAD json string as value.
-For client side insertion this callback is not used.
+For client-side insertion, this callback is not used.
 
-Whenever the player volume changes the ```fun onVolumeChanged(volume: Float)``` callback should be called.
+Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)``` callback should be called.
 
 
 ## AdPlayer.Listener Interface
@@ -1126,8 +1126,8 @@ Whenever the player volume changes the ```fun onVolumeChanged(volume: Float)``` 
 ```
 
 ## Cache Manager
-Pre-caching the media (creative) assets will allow for your app to serve audio/video ads in poor network or possibly complete lack of network connection. This will improve user experience because an ad can play instantly or prevent buffering mid ad.
-The **CacheManager** is a singleton that allows us to cache, and also playback media that is already cached. It works in close relation with the player, so if you have your own implementation of the AdPlayer interface
+Pre-caching the media (creative) assets will enable for your app to serve audio/video ads in poor network conditions or possibly when a network connection is not available. This will improve user experience, because an ad can play instantly, and prevent buffering mid ad.
+The **CacheManager** is a singleton that enables us to cache, and also playback media that is already cached. It works in close relation with the player, so if you have your own implementation of the AdPlayer interface
 you can use it, but also ignore it. Right now it only works for players that are based on **ExoPlayer**.
 
 ### Working with CacheManager object
@@ -1148,7 +1148,7 @@ To add an asset to the download queue you can call
 ```kotlin
 CacheManager.addAssetToCache(assetUri: String, listener: Listener? = null)
 ```
-where assetUri is the url for the asset, and the listener is your implementation of the above interface. As you can see the listener is optional. If you add
+where assetUri is the URL for the asset, and the listener is your implementation of the above interface. As you can see, the listener is optional. If you add
 the listener here, you will only receive updates for this particular asset.
 
 ```kotlin
@@ -1160,13 +1160,13 @@ CacheManager.addGlobalListener(listener: Listener) // adds a listener that recei
 CacheManager.removeGlobalListener(listener: Listener) // removes a global listener
 ```
 
-The **url** of an asset acts as it's **ID** in the cache. So if we want to play an asset from cache it's really straight forward:
+The **url** of an asset acts as its **ID** in the cache. Playing an asset from cache is straight-forward:
 When you are creating the media source for your exoplayer instance, you can get the CacheDataSourceFactory from the CacheManager as follows:
 
 ```kotlin
 CacheManager.getCacheDataSourceFactory(upstreamFactory: DefaultHttpDataSourceFactory)
 ```
-This returns a CacheDataSourceFactory. An example for usage would look something like this:
+This returns a CacheDataSourceFactory. An usage example would look something like this:
 ```kotlin
 private fun buildMediaSource(urlString: String): MediaSource {
         val dataSourceFactory = DefaultHttpDataSourceFactory("AdSDK")
@@ -1177,4 +1177,3 @@ private fun buildMediaSource(urlString: String): MediaSource {
 
         }
 ```
-
