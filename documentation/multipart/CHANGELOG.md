@@ -30,9 +30,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 	- `withExpectedAdsReporting(enable: Boolean)` - calling this method with the `true` flag will enable
 	reporting of 'empty ads' when the ad request returns fewer ads than actually requested using the `maxAds`
 	property of the **_AadswizzAdZone_** object.
-	
+
 ### Changed:
-- The [Integration Guide](README.md) was updated to explain how to use the new **_AdswizzAdRequest.Builder_**'s public method named `withExpectedAdsReporting(enable: Boolean)`
+- The [Integration Guide](SDKAndroid/ClientSideInsertion#(Advanced)-Enable-expected-ads-reporting) was updated to explain how to use the new **_AdswizzAdRequest.Builder_**'s public method named `withExpectedAdsReporting(enable: Boolean)`
 
 ## [7.7.12] - 2022-09-21
 ### Changed:
@@ -43,12 +43,12 @@ Podcasting:
 ### Added:
 - New public method on class **_AdManagerSettings_**
 	- `preferredMaxBitrate()` called to set a preferred bitrate for asset quality selection
-	
+
 ### Fixed
-	- fixes afrRequest where a banner mismatch occurs. When this happens, the `didFailToDisplayAd` method of `AdCompanionClient.Listener` is called
-	
+- fixes afrRequest where a banner mismatch occurs. When this happens, the `didFailToDisplayAd` method of `AdCompanionClient.Listener` is called
+
 ### Changed:
-- The [Integration Guide](README.md) was modified to explain how to use the new **_AdManagerSettings_**'s public function named `preferredMaxBitrate(bitrate: Int)`
+- The [Integration Guide](SDKAndroid/AdswizzGeneralSettings#preferredMaxBitrate) was modified to explain how to use the new **_AdManagerSettings_**'s public function named `preferredMaxBitrate(bitrate: Int)`
 
 ## [7.7.9-7.7.10]
 ### Fixed
@@ -65,9 +65,9 @@ Podcasting:
 ### Added:
 - New public method on class **_AdVideoView_**
 	- `activityOnDestroy()` to be called when parent container (Activity or Fragment) is destroyed
-	
+
 ### Changed:
-- The [Integration Guide](README.md) was modified to explain how to use the new **_AdVideoView_**'s public function named `activityOnDestroy()`
+- The [Integration Guide](SDKAndroid/VideoAds#Video-View-Cleanup) was modified to explain how to use the new **_AdVideoView_**'s public function named `activityOnDestroy()`
 
 ## [7.7.6] - 2022-06-16
 ### Added:
@@ -78,7 +78,7 @@ Podcasting:
 - AdCompanion Banner sends `didFail` event correctly when the static resource fails to load
 
 ### Changed:
-- The [Integration Guide](README.md) was modified to better explain the AdCompanion integration in a server-side insertion scenario
+- The [Integration Guide](SDKAndroid/CompanionBanner) was modified to better explain the AdCompanion integration in a server-side insertion scenario
 
 ## [7.7.5] - 2022-05-16
 ### Fixed:
@@ -200,7 +200,7 @@ Podcasting:
 - Generic intents (e.g generic skip action) specified at ZeroConfig level to be attached to Voice Ads interactivity
 
 ### Changed
-- The Adswizz SDK has been separated into 2 modules: one contains our core functionalities, the other one contains logic related to the internal `AdPlayer`, which relies on **ExoPlayer**. This enables us to be compatible with multiple **ExoPlayer** versions. For more details, consult our [Integration Guide](README.md).
+- The Adswizz SDK has been separated into 2 modules: one contains our core functionalities, the other one contains logic related to the internal `AdPlayer`, which relies on **ExoPlayer**. This enables us to be compatible with multiple **ExoPlayer** versions. For more details, consult our [Integration Guide](SDKAndroid/GetStarted).
 - We've changed the host package for some classes:
     - `import com.ad.core.adBaseManager.AdPlayer` has changed to `import com.adswizz.common.AdPlayer`
     - `import com.ad.core.utils.phone.SDKError` has changed to `com.adswizz.common.SDKError`

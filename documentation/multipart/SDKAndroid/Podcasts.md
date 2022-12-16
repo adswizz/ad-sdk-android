@@ -175,7 +175,7 @@ Download-related notifications sent from **_AdswizzAdPodcastManager_** to your a
 
 ## Handling interactive ads during podcasts
 
-For more information on how to handle interactive ads such as ShakeMe and Voice Ads, please refer to the [Interactive ads](InteractiveAds.md#interactive-ads) section.
+For more information on how to handle interactive ads such as ShakeMe and Voice Ads, please refer to the [Interactive ads](SDKAndroid/InteractiveAds.md#interactive-ads) section.
 Note that the interactivity component of an ad requires fetching data from a remote service that may not be available for downloaded podcasts, especially when there is no internet connection.
 
 ## Remote Audio Data
@@ -198,7 +198,7 @@ Disabling RAD data collection at the ZeroConfig level takes precedence over disa
 ### Handling RAD id3 metadata using your player
 
 Remote Audio Data measurement is based on reading specific `id3` metadata formats from the podcast being played. The SDK is able to read these specific metadata formats when playing with the internal player.
-However, when playing podcasts using your own player, you are responsible for passing the metadata items to the SDK. You can find more details in the [AdPlayer.Listener interface](#adplayer-interface) and [MetadataItem](#adplayer-interface) sections.
+However, when playing podcasts using your own player, you are responsible for passing the metadata items to the SDK. You can find more details in the [AdPlayer.Listener interface](SDKAndroid/Playingyourplayer#adplayer-interface) and [MetadataItem](SDKAndroid/Playingyourplayer#adplayer-interface) sections.
 
 
 ### fun didDownload(adPodcastManager: AdPodcastManager, bytesDownloaded: Long, bytesExpected:Long, asset: DownloadableAsset)
@@ -219,4 +219,3 @@ Called when the asset finished downloading all of its data.
 ### fun didReceive(adPodcastManager: AdPodcastManager,  error:Error, asset: DownloadableAsset){
 
 Called when a network error occurred while trying to download the asset.
-
