@@ -1,6 +1,6 @@
 # Ad Base Manager adapters
 
-The developer can use the **_AdBaseManager_** **_setAdapter(adBaseManagerAdapter)_** function to provide additional urls to be fired when impression, quartiles or errors are fired. This works for both client side and server side insertion.
+You can use the **_AdBaseManager_** **_setAdapter(adBaseManagerAdapter)_** function to provide additional URLs to be fired when an impression, quartiles or errors are fired. This works for both client-side and server-side insertion.
 
 ```kotlin
 var adBaseManagerAdapter = object : AdBaseManagerAdapter {

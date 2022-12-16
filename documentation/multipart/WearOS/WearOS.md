@@ -1,15 +1,15 @@
 # Integrate into Wear OS apps
 
-If you have a companion Wear OS app for your Android app, you can also integrate our Wear OS SDK. This will allow you to use the smartwatch as a detector along side your phone.
+If you have a companion Wear OS app for your Android app, you can also integrate our Wear OS SDK. This will enable you to use the smartwatch as a detector alongside your phone.
 
-To integrate AdsWizz Wear OS SDK into your Wear OS app simply write the following line into your Wear OS app ```build.gradle``` file.
+To integrate the AdsWizz Wear OS SDK into your Wear OS app, simply add the following line to your Wear OS app ```build.gradle``` file.
 
 ```groovy
 implementation 'com.adswizz:adswizz-wear-sdk:version'
 ```
 where ```version``` is the latest version of adswizz-wear-sdk provided to you by an AdsWizz PIM.
 
-Keep in mind that for the communication to work between phone and Wear OS app, the apps have to have the same ```aplicationId``` (i.e. ```com.example.sample.app```)
+Keep in mind that, for the communication to work between the phone app and the Wear OS app, both apps have to have the same ```aplicationId``` (i.e. ```com.example.sample.app```)
 
 ## ShakeMe on Wear OS
 
@@ -21,5 +21,5 @@ In the following image you can see a complete flow of how the feature works.
 <img src="../img/SmartWatch-ShakeFlow.png" width="1000" />
 
 ## Voice Detector on Wear OS
-The same as **shakeMe** the voice detector works on Wear OS too. After integrating the **Wear OS SDK**, the only thing you need to do
+Just like **shakeMe**, the voice detector also works on Wear OS. After integrating the **Wear OS SDK**, the only thing you need to do
 to have voice detection active on the watch is to make sure you give your Wear OS app the ```RECORD_AUDIO``` permission.
