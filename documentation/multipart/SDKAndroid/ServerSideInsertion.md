@@ -4,9 +4,9 @@
 ## Your first stream manager
 
 
-AdswizzSDK handles interactive ad insertions, while playing HLS or ICY live streams from Ad Insertion Servers. This is possible by reading the player's metadata for specific Adswizz data and convert it in Adswizz interactive formats or companion banners.
+The AdswizzSDK handles interactive ad insertion, while playing HLS or ICY live streams from an Ad Injector for Servers (AIS) server. This is possible by reading the player's metadata for specific Adswizz data and converting it to Adswizz interactive formats or companion banners.
 
-To get started, you need to create an **_AdswizzAdStreamManager_** object with a URL pointing to the ad server your Integration Manager provided you with.
+To get started, you need to create an **_AdswizzAdStreamManager_** object with a URL pointing to the ad server your Integration Manager has provided you with.
 
 
 ```kotlin
@@ -24,7 +24,7 @@ class YourClass {
 
 ```
 
-Once the stream manager is constructed it is recommended to set a listener:
+Once the stream manager is constructed, it is recommended to set a listener:
 
 ```kotlin
 class YourClass {
@@ -77,7 +77,7 @@ class YourClass {
 
 ```
 
-The stream object can play the url using his internal player or using an external player provided by you. This should be specified in the **_AdManagerStreamingSettings_**. Also the enqueueEnabled feature can be set in this class. Below is a sample on how to set the external player:
+The stream object can play the url using either its internal player or an external player provided by you. This should be specified in the **_AdManagerStreamingSettings_**. Also the enqueueEnabled feature can be set in this class. Below is a sample of how to set the external player:
 
 
 ```kotlin
@@ -91,16 +91,16 @@ The stream object can play the url using his internal player or using an externa
     }
 ```
 ###play
-To start playing the stream do the following:
+To start playing the stream, do the following:
 
 ```kotlin
     streamManager?.play(AIS_STREAM_URL)
 ```
 
-As a response, **_AdswizzSDK_** will call back `fun willStartPlayingUrl(adStreamManager: AdStreamManager, url: Uri)` with the provided url that has some extra query params added.
+As a response, the **_AdswizzSDK_** will call back `fun willStartPlayingUrl(adStreamManager: AdStreamManager, url: Uri)` with the provided url which has some extra query params added.
 
 ###stop
-To stop the playing of stream call the stop function:
+To stop playing the stream, call the stop function:
 
 ```kotlin
     streamManager?.stop()
@@ -123,7 +123,7 @@ The SDK will respond with the callbacks `fun didPausePlayingUrl(adStreamManager:
 
 ## DVR Timeshifting capability
 
-The SDK offers DVR timeshifting capability on HLS streams provided by AIS that have this feature enabled. To enable this feature on SDK side you have to specify this in the **_AdManagerStreamingSettings_** as follows:
+The SDK offers DVR timeshifting capability on HLS streams provided by AIS that have this feature enabled. To enable this feature on the SDK side, you have to specify this in the **_AdManagerStreamingSettings_** as follows:
 
 ```kotlin
     fun createStreamManager() {
@@ -136,21 +136,21 @@ The SDK offers DVR timeshifting capability on HLS streams provided by AIS that h
     }
 ```
 
- Please note that enabling DVR in Stream Manager's settings will automatically disable enqueue capability to ensure the functionality works as intended.
+ Please note that enabling DVR in Stream Manager's settings will automatically disable the enqueue capability, to ensure that the functionality works as intended.
 
-After enabling DVR start with normal play first
+After enabling DVR, start with normal play first:
 
 ```kotlin
     streamManager?.play(AIS_STREAM_URL)
 ```
 
-After the stream starts playing, if the stream server supports and has enabled the DVR feature for that particular stream it will provide more information through the **_AdStreamManager.Listener_** by calling
+After the stream starts playing, if the streaming server supports and has enabled the DVR feature for that particular stream, it will provide more information through the **_AdStreamManager.Listener_** by calling
 
 ```kotlin
 fun onDvrMetadataReceived(adStreamManager: AdStreamManager, dvrBufferInfo: DvrBufferInfo?)
 ```
 
-When you get this callback called with a non-null **dvrBufferInfo** you know that you can now perform timeshift by using
+Getting this callback called with a non-null **dvrBufferInfo** means that you can now perform timeshifting by using
 
 ```kotlin
     streamManager?.play(AIS_STREAM_URL, timestamp)
@@ -160,9 +160,9 @@ Do note that the timestamp is in epoch milliseconds format (milliseconds elapsed
 
 The fields of the **DvrBufferInfo** are:
 
-* start - represents the earliest moment that can be accessed with a timeshift play action (epoch milliseconds timestamp)
-* latest - represents the latest moment that can be accessed (it differs from now because the server works with the stream in chunks) (epoch milliseconds timestamp)
-* maxBufferSize - represents the largest buffer the server is capable to store (milliseconds value) and this gives the largest window the client can timeshift in the past. eg 36.000.000ms -> 10h window
+* start - the earliest moment that can be accessed with a timeshift play action (epoch milliseconds timestamp)
+* latest - the latest moment that can be accessed (it differs from now because the server works with the stream in chunks) (epoch milliseconds timestamp)
+* maxBufferSize - the largest buffer that the server is capable of storing (milliseconds value), which gives the largest window that the client can timeshift in the past. E.g. 36.000.000ms -> 10h window
 
 ## AdStreamManager Listener interface
 
@@ -194,17 +194,17 @@ After executing the pause function on the stream manager object, the SDK will ca
 After executing the resume function on the stream manager object, the SDK will call this function with the original url decorated with extra parameters. The decorated url will be the same as the one in the `willStartPlayingUrl` callback.
 
 ### fun adBreakStarted(adStreamManager: AdStreamManager, adBaseManager: AdBaseManager)
-When an ad break is detected in the stream, the SDK will execute this callback. It will provide an **_AdBaseManager_** object that can be used for the whole duration of the ad break. You can use it to listen to different Ad related events and also to request a skip of current ad.
-When you get this **_AdBaseManager_** object, the player will automatically play the ad, since it is part of the stream. Most of the times there will be only one ad in the **_AdBaseManager_** object but you can expect other ads to be inserted from the SDK if the ad is extended. This can happen, for instance, when the listener interacts with an ad (i.e. ShakeMe) and the action is to play an extension of the ad.
+When an ad break is detected in the stream, the SDK will execute this callback. It will provide an **_AdBaseManager_** object that can be used for the whole duration of the ad break. You can use it to listen to various ad-related events and also to request a skip of the current ad.
+When you get this **_AdBaseManager_** object, the player will automatically play the ad, since it is part of the stream. Typically, there will be only one ad in the **_AdBaseManager_** object but you can expect other ads to be inserted from the SDK if the ad is extended. This can happen, for instance, when the listener interacts with an ad (e.g. ShakeMe) and the action is to play an extension of the ad.
 
 ### fun adBreakEnded(adStreamManager: AdStreamManager, adBaseManager: AdBaseManager)
-When the ad break from the stream has ended you will get notified to clean up anything related to the provided **_AdBaseManager_**.
+When the ad break from the stream has ended, you will get notified to clean up anything related to the provided **_AdBaseManager_**.
 
 ### fun onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdPlayer.MetadataItem)
 Whenever the metadata is changed on the stream played by the SDK, you will be notified with this callback.
 
 ### fun onError(adStreamManager: AdStreamManager, error: Error)
-When an error occurs during your interaction with the stream manager this callback will be called by the SDK.
+When an error occurs during your interaction with the stream manager, this callback will be called by the SDK.
 
 
 ## AdStreamManager life cycle

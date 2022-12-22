@@ -1,4 +1,4 @@
-[![AdsWizz](img/adswizz_logo.png)](https://www.adswizz.com)
+[![AdsWizz](../img/adswizz_logo.png)](https://www.adswizz.com)
 # Changelog
 All notable changes to this project will be documented in this file.
 
@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New public method in **_AdManager_** interface:
 	- `skipAd(error: Error)` Skip current ad with an error reason. It will fire error tracking instead of skip tracking
 - New public method in **_AdPlayer.Listener_** interface:
-	- `onSkipAd(error: Error)` When called inform `AdPlayer.Listener` implemented object that a skip with error should be triggered.AdManager default implementation will call `skipAd(error: Error)`
+	- `onSkipAd(error: Error)` When called, inform `AdPlayer.Listener` implemented object that a skip with error should be triggered. The default AdManager implementation will call `skipAd(error: Error)`
 
 
 ## [7.7.14] - 2022-11-08
@@ -27,28 +27,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.7.13] - 2022-10-14
 ### Added:
 - New public method on class **_AdswizzAdRequest.Builder_**:
-	- `withExpectedAdsReporting(enable: Boolean)` - calling this method with `true` flag will enable
-	reporting of 'empty ads' when the ad request returns less ads than actually requested using the `maxAds`
+	- `withExpectedAdsReporting(enable: Boolean)` - calling this method with the `true` flag will enable
+	reporting of 'empty ads' when the ad request returns fewer ads than actually requested using the `maxAds`
 	property of the **_AadswizzAdZone_** object.
-	
+
 ### Changed:
-- [Integration Guide](README.md) was updated to explain how to use the new **_AdswizzAdRequest.Builder_**'s public method named `withExpectedAdsReporting(enable: Boolean)`
+- The [Integration Guide](SDKAndroid/ClientSideInsertion#(Advanced)-Enable-expected-ads-reporting) was updated to explain how to use the new **_AdswizzAdRequest.Builder_**'s public method named `withExpectedAdsReporting(enable: Boolean)`
 
 ## [7.7.12] - 2022-09-21
 ### Changed:
 Podcasting:
-	- the ability to disable client side reporting (impressions and quartile tracking urls)
+	- the ability to disable client-side reporting (impression and quartile tracking URLs)
 
 ## [7.7.11] - 2022-08-09
 ### Added:
 - New public method on class **_AdManagerSettings_**
 	- `preferredMaxBitrate()` called to set a preferred bitrate for asset quality selection
-	
+
 ### Fixed
-	- fixes afrRequest where a banner mismatch occurs. When this happens, the `didFailToDisplayAd` method of `AdCompanionClient.Listener` is called
-	
+- fixes afrRequest where a banner mismatch occurs. When this happens, the `didFailToDisplayAd` method of `AdCompanionClient.Listener` is called
+
 ### Changed:
-- [Integration Guide](README.md) was modified to explain how to use the new **_AdManagerSettings_**'s public function named `preferredMaxBitrate(bitrate: Int)`
+- The [Integration Guide](SDKAndroid/AdswizzGeneralSettings#preferredMaxBitrate) was modified to explain how to use the new **_AdManagerSettings_**'s public function named `preferredMaxBitrate(bitrate: Int)`
 
 ## [7.7.9-7.7.10]
 ### Fixed
@@ -59,26 +59,26 @@ Podcasting:
 - FireOS compatibility limitations to the integration guide
 
 ### Fixed:
-- fire properly the tracking events when an ad is skipped in a multiple ads in ad manager scenario
+- fire the tracking events properly when an ad is skipped in a multiple ads in ad manager scenario
 
 ## [7.7.7] - 2022-06-29
 ### Added:
 - New public method on class **_AdVideoView_**
 	- `activityOnDestroy()` to be called when parent container (Activity or Fragment) is destroyed
-	
+
 ### Changed:
-- [Integration Guide](README.md) was modified to explain how to use the new **_AdVideoView_**'s public function named `activityOnDestroy()`
+- The [Integration Guide](SDKAndroid/VideoAds#Video-View-Cleanup) was modified to explain how to use the new **_AdVideoView_**'s public function named `activityOnDestroy()`
 
 ## [7.7.6] - 2022-06-16
 ### Added:
 - Podcast RAD support
-- Added analytics for voice ads interactivity to track which keyword triggered the action
+- Added analytics for Voice Ads interactivity to track which keyword triggered the action
 
 ### Fixed:
 - AdCompanion Banner sends `didFail` event correctly when the static resource fails to load
 
 ### Changed:
-- [Integration Guide](README.md) was modified to better explain the AdCompanion integration in a server side insertion scenario
+- The [Integration Guide](SDKAndroid/CompanionBanner) was modified to better explain the AdCompanion integration in a server-side insertion scenario
 
 ## [7.7.5] - 2022-05-16
 ### Fixed:
@@ -86,8 +86,8 @@ Podcasting:
 
 ## [7.7.4] - 2022-05-11
 ### Added:
-- Improved support for `duration` and `maxDuration` in the multiple zones format for ads requests.
-  Added function `withDuration(duration: Long?)` in class `AdswizzAdRequest` which sets the maximum total duration of ads to be selected. Value is in milliseconds
+- Improved support for `duration` and `maxDuration` in the multiple zones format for ad requests.
+  Added function `withDuration(duration: Long?)` in class `AdswizzAdRequest`, which sets the maximum total duration of ads to be selected. The value is in milliseconds
   
 ### Fixed
 - Fix for missing a browser app on the device when interactivity triggers a browse action
@@ -109,7 +109,7 @@ Podcasting:
 
 ## [7.7.0] - 2022-03-11
 ### Added
-- Podcasts support
+- Podcast support
     - New public class **_AdPodcastManager_**
         - New public member `addListener(listener: Listener)` of type **_AdPodcastManager.Listener_**
         - New public member `removeListener(listener: Listener)` of type **_AdPodcastManager.Listener_**
@@ -153,9 +153,9 @@ Podcasting:
 ## [7.6.3] - 2022-02-25
 ### Added
 - Support for setting the `viewId` of **_AdVideoView_** programmatically after creation
-- SDK detects now the mute/unmute events for the internal player in sync with the system volume
+- The SDK now detects the mute/unmute events for the internal player in sync with the system volume
 - Exposed the `pricing` node from VAST in the **_AdData_**'s `pricing` member
-- Added TCFV2 support via **_AdswizzAdRequest.Builder_**'s method named `withUserConsentV2(userConsentV2: String?)`
+- Added TCFV2 support via the **_AdswizzAdRequest.Builder_**'s method named `withUserConsentV2(userConsentV2: String?)`
 - Added Amazon IFA (`aw_0_1st.ifa` query item) to the ad request decoration for FireOS devices
 
 ### Fixed
@@ -177,30 +177,30 @@ Podcasting:
   - public field `playState` of type `AdVideoPlayState` that reflects the video play state
   - **_PlayStateListener_** listener interface that exposes changes to the video play state as a callback
   - public method `setPlayStateListener`
-- SDK now properly outputs error logs in case of invalid URL given to `AdswizzAdStreamManager` _play_ method
+- The SDK now properly outputs error logs in case of invalid URL given to the `AdswizzAdStreamManager` _play_ method
 
 ### Fixed
-- Fixed potential ANR during SDK initialisation
+- Fixed potential ANR during SDK initialization
 - Fixed some AdVideoView issues occurring during multiple video ads playback
 
 
 ## [7.6.0] - 2021-11-04
 ### Added
-- Streaming playback with **DVR** capabilities (timeshift) for a HLS stream provided by the AIS playback server. Below all additions for **DVR**:
+- Streaming playback with **DVR** capabilities (timeshift) for a HLS stream provided by the AIS playback server. All additions for **DVR** are listed below:
     - New **_AdStreamManager.Listener_** event added:
-        - `onDvrMetadataReceived(adStreamManager: AdStreamManager, dvrBufferInfo: DvrBufferInfo?)` callback that is called when starting streaming on HLS stream provided by a DVR enabled AIS server and a `AdManagerStreamingSettings` with `dvrEnabled` set to `true`
+        - `onDvrMetadataReceived(adStreamManager: AdStreamManager, dvrBufferInfo: DvrBufferInfo?)` callback that is called when starting streaming of on HLS stream provided by a DVR-enabled AIS server and an `AdManagerStreamingSettings` with `dvrEnabled` set to `true`
     - New public members in **_AdswizzAdStreamManager_**:
         - **_play(url: String, timestamp: Long)_** method related to DVR
     - New public members in **_AdStreamManagerSettings.Builder_**:
         - **_dvrEnabled(dvrEnabled: Boolean)_** adds a capability for the stream manager (e.g `dvr`)
     - New public class **_DvrBufferInfo_** with public members:
-        - **_start_** is the start UNIX timestamp for DVR stream
-        - **_latest_** is the latest UNIX timestamp for DVR stream
-        - **_maxBufferSize_** is the length of DVR buffer
-- Generic intents (e.g generic skip action) specified at ZeroConfig level to be attached to voice ads interactivity
+        - **_start_** is the start UNIX timestamp for the DVR stream
+        - **_latest_** is the latest UNIX timestamp for the DVR stream
+        - **_maxBufferSize_** is the length of the DVR buffer
+- Generic intents (e.g generic skip action) specified at ZeroConfig level to be attached to Voice Ads interactivity
 
 ### Changed
-- The Adswizz SDK has been separated into 2 modules: one contains our core functionalities, the other one contains logic related to internal `AdPlayer` that relies on **ExoPlayer**. This enables us to be compatible with multiple **ExoPlayer** versions. For more details consult our [Integration Guide](README.md).
+- The Adswizz SDK has been separated into 2 modules: one contains our core functionalities, the other one contains logic related to the internal `AdPlayer`, which relies on **ExoPlayer**. This enables us to be compatible with multiple **ExoPlayer** versions. For more details, consult our [Integration Guide](SDKAndroid/GetStarted).
 - We've changed the host package for some classes:
     - `import com.ad.core.adBaseManager.AdPlayer` has changed to `import com.adswizz.common.AdPlayer`
     - `import com.ad.core.utils.phone.SDKError` has changed to `com.adswizz.common.SDKError`
@@ -211,14 +211,14 @@ Podcasting:
 
 ## [7.5.6] - 2021-09-28
 ### Changed
-- Removed the usage of `getInstalledApplications` (`QUERY_ALL_PACKAGES`) API, in order to preserve the compliance with Google's [Package Visibility policy](https://support.google.com/googleplay/android-developer/answer/10158779)
+- Removed the usage of the `getInstalledApplications` (`QUERY_ALL_PACKAGES`) API, in order to preserve the compliance with Google's [Package Visibility policy](https://support.google.com/googleplay/android-developer/answer/10158779)
 
 ### Fixed
-- Fixed an issue with Analytics Event logging when the custom params data is modified by host app
+- Fixed an issue with Analytics Event logging when the custom params data is modified by the host app
 
 ## [7.5.5] - 2021-09-10
 ### Fixed
-- Fixed an issue for the server side insertion scenarios where during the ad break the host app couldn't detect if an ad has a banner attached or not (the SDK informed incorrectly every time that there was no companion banner)
+- Fixed an issue for the server-side insertion scenarios, where, during the ad break, the host app couldn't detect if an ad has a banner attached or not (the SDK informed incorrectly every time that there was no companion banner)
 
 ## [7.5.4] - 2021-08-18
 ### Fixed
@@ -227,8 +227,8 @@ Podcasting:
 ## [7.5.3] - 2021-08-09
 ### Fixed
 - `AdCompanionView` with `extraExposureTime` and multiple ads per pod work as intended
-- `AdVideoView`’s `SurfaceView` survives when the client app is in background and then returns on foreground
-- The error events are correctly collected even when multiple errors are triggered from the VAST file
+- `AdVideoView`’s `SurfaceView` survives when the client app is in the background and then returns to the foreground
+- Error events are correctly collected even when multiple errors are triggered from the VAST file
 
 ## [7.5.2] - 2021-07-20
 ### Added
@@ -246,26 +246,26 @@ Podcasting:
 - Improved Analytics dimensions reported for audio/video ads with companion banners
 
 ### Fixed
-- Fixed an issue where `clickThrough` functionality for some `HTML` type banner does not work as expected
+- Fixed an issue where `clickThrough` functionality for some `HTML`-type banners does not work as expected
 
 
 ## [7.5.0] - 2021-06-28
 ### Added
 - Advanced Analytics System
-- New public members in **_AdswizzSDK_**:
-    - `hasAProcessInForeground()` - returns true if one of the processes has a component in foreground
+- New public members in the **_AdswizzSDK_**:
+    - `hasAProcessInForeground()` - returns true if one of the processes has a component in the foreground
 - New _optional_ (they have a default implementation in the interface for kotlin) events in **_AdVideoView.Listener_** that match the lifecycle of a video:
     - `onVideoStarted` - triggered when the video ad starts playing
-    - `onVideoEnded` - triggered when the video ad finished playing
-    - `onVideoBufferingStart` - triggered when buffering for a video will start
-    - `onVideoBufferingEnd` - triggered when buffering for a video ended
-- New separate sdk artifact that is compiled against the protobuf full Java library instead of the lite version the current artifact uses. Choose one that suits your implementation:
+    - `onVideoEnded` - triggered when the video ad has finished playing
+    - `onVideoBufferingStart` - triggered when buffering for a video starts
+    - `onVideoBufferingEnd` - triggered when buffering for a video has ended
+- New separate SDK artifact that is compiled against the full protobuf Java library instead of the lite version that the current artifact uses. Choose one that suits your implementation:
     - `implementation "com.adswizz:adswizz-sdk:7.5.0"` for the protobuf Lite version (recommended for mobile applications)
     - `implementation "com.adswizz:adswizz-sdk-protobufJava:7.5.0"` for the protobuf Java artifact
 
 ### Fixed
 - An issue that may cause `clickThrough` not being fired for the `AdCompanionView` created after the ad playback starts
-- An issue that may prevent `AdCompanionView` being rendered in Android Emulators.
+- An issue that may prevent `AdCompanionView` being rendered in Android emulators.
 
 ## [7.4.1] - 2021-11-11
 ### Fixed
@@ -274,58 +274,58 @@ Podcasting:
 ## [7.4.0] - 2021-04-23
 
 ### Added
-- New public members in **_AdswizzSDK_**:
+- New public members in the **_AdswizzSDK_**:
     - `disableDataCollection` boolean to enable/disable data collection at device level
     - `AdswizzSDKConfig` param to `AdswizzSDK.initialize` method to be able to pass installationId and playerId at runtime
     - `xpaid` that contains the AudioGraph ID value corresponding to the active listener
     - `getPermissionStatus` and `setPermissionStatus` to control the permissions that may be used by the Adswizz SDK
 - New public members in **_AdBaseManager_**:
     - `ads` that contains the list of ads obtained after fetching
-    - `analyticsCustomData` to dynamically set/update Analytics events's custom params
+    - `analyticsCustomData` to dynamically set/update Analytics events custom params
 - New public members in **_AdData_**:
-    - `width` and `height` that contains the width and height from the currently selected vast media file
-    - `extensions` that contains a list with all `<Extension>` tag info from inline and wrappers
-    - `adParameters` that contains the `<AdParameters>` tag info, if exists, from the currently selected creative
-    - `creativeExtensions` that contains a list with all `<CreativeExtension>` tag info, from the currently selected creative
-- New public members in **_AssetQuality_** enum:
-    - `AUTO` value for the sdk to select the asset quality based on network connection
+    - `width` and `height` that contain the width and height from the currently selected VAST media file
+    - `extensions` that contains a list of all `<Extension>` tag info from inline and wrappers
+    - `adParameters` that contains the `<AdParameters>` tag info, if it exists, from the currently selected creative
+    - `creativeExtensions` that contains a list of all `<CreativeExtension>` tag info, from the currently selected creative
+- New public members in the **_AssetQuality_** enum:
+    - `AUTO` value for the SDK to select the asset quality based on the network connection
 - New members in **_AnalyticsEvent_**:
     - `customParams` for plugins to access the custom attributes
 - New member in **_AdRequest.Builder_**:
-    - `analyticsCustomData` to set Analytics events's custom params
+    - `analyticsCustomData` to set Analytics events custom params
 - New member in **_AdswizzAdRequest.Builder_**:
-    - `analyticsCustomData` to set Analytics events's custom params
-- Added `xmlString` member in all vast parsed data classes. It contains the string that was used for generating the data class during parsing.
-- Support for custom params in `AnalyticsEvent` through `AnalyticsCustomData` data class
-- New data class `AnalyticsCustomData` that contains the analytics event's custom params
-- For `AnalyticsEvent` added the following attributes, when available: `appState`, `adCount`, `volume`, `transactionId`, `skipOffset`, `adType`, `adSystem`, `adSequence`, `creativeId`, `width` and `height`.
-- More analytics events logged during the ads lifecyle
-- Added IPC support for video ads playback
-- New service class `AdVideoService` that is used for video inter process communication
-- Added functionality to support denying host app permissions to the Adswizz SDK
+    - `analyticsCustomData` to set Analytics events custom params
+- Added an `xmlString` member in all VAST parsed data classes. It contains the string that was used for generating the data class during parsing.
+- Support for custom params in `AnalyticsEvent` through the `AnalyticsCustomData` data class
+- New data class, `AnalyticsCustomData`, that contains analytics event custom params
+- For `AnalyticsEvent`, added the following attributes, when available: `appState`, `adCount`, `volume`, `transactionId`, `skipOffset`, `adType`, `adSystem`, `adSequence`, `creativeId`, `width` and `height`.
+- More analytics events logged during the ad lifecycle
+- Added IPC support for video ad playback
+- New service class, `AdVideoService`, that is used for video inter-process communication
+- Added functionality to support denying the host app permissions to the Adswizz SDK
 
 ### Removed
 - Removed the properties on the `AdManager` object: `adCount` and `totalAdsDuration`
 
 ### Changed
-- All `SDKErrorCode` values defined within the AdswizzSDK are now incremented with 2000 i.e `201` became `2201`
-- `com.adswizz.core.installationId` and `com.adswizz.core.playerId` attributes are no longer mandatory in manifest unless they were set through `AdswizzSDKConfig` when AdswizzSDK is initialized
-- Changed the android permission model. Now the sdk will ask for the bare minimum amount of permission in order to work. For most permissions that were removed the functionality will not be present if they will not be added by the host app.
+- All `SDKErrorCode` values defined within the AdswizzSDK are now incremented with 2000, i.e `201` has become `2201`
+- The `com.adswizz.core.installationId` and `com.adswizz.core.playerId` attributes are no longer mandatory in the manifest, unless they are set through `AdswizzSDKConfig` when the AdswizzSDK is initialized
+- Changed the Android permission model. Now the SDK will ask for the bare minimum set of permissions required in order to work. For most permissions that were removed the functionality will not be present if they are not added by the host app.
 
 ### Fixed
-- `AdCompanionView` will fire creativeView event only when it is visible to the user (`View.isShown` is true and `View.alpha` > 0 and `View.width` > 0 and `View.height` > 0 and the activity is in resume state)
+- `AdCompanionView` will fire the creativeView event only when it is visible to the user (`View.isShown` is true and `View.alpha` > 0 and `View.width` > 0 and `View.height` > 0 and the activity is in resume state)
 
 
 ## [7.3.6] - 2021-04-01
 
 ### Fixed
 - An issue related to the OMSDK config file.
-- An issue related to `companionZone` member in the `AfrConfig` class.
+- An issue related to the `companionZone` member in the `AfrConfig` class.
 
 ## [7.3.5] - 2021-03-15
 
 ### Changed
-- Server-Side Insertion scenarios update: added `companionZone` member in the `AfrConfig` class. The zone id provided via this member will be used in companion banner requests when the streaming server (AIS) does not provide a valid companion zone id via metadata.  
+- Server-Side Insertion scenarios update: added a `companionZone` member in the `AfrConfig` class. The zone ID provided via this member will be used in companion banner requests when the streaming server (AIS) does not provide a valid companion zone ID via metadata.  
 
 ## [7.3.4] - 2021-03-11
 
@@ -333,12 +333,12 @@ Podcasting:
 - AdCompanionView content will scale down to fit its container and will be centered in the view
 
 ### Fixed
-- A bug related to OMSDK not working on server side
+- A bug related to OMSDK not working on the server side
 
 ## [7.3.3] - 2021-03-04
 
 ### Added
-- Added concatenated metadata support for server side insertion
+- Added concatenated metadata support for server-side insertion
 
 ### Changed
 - AdCompanionView content will scale up or down to fit its container and will be centered in the view
@@ -351,69 +351,69 @@ Podcasting:
 ## [7.3.1] - 2021-02-12
 
 ### Added
-- Added support for `pause`, `resume`, `mute` and `unmute` VAST events
+- Added support for the `pause`, `resume`, `mute` and `unmute` VAST events
 - Added support for viewability (video) measurement via OMSDK
 - Two new properties on the `AdManager` object: `adCount` and `totalAdsDuration`
-- Added `AdEvent.Type.Other.EmptyAd` module event that will be triggered when a missed no-ad opportunity appears
-- Added a new `AdBaseManagerAdapter` interface to `AdBaseManager` to be used to fire additional urls for impressions, tracking events and errors
-- Added `preferredResourceType` to `AdCompanionOptions` to be used to selected the desired companion resource type
-- Url firing retry mechanism extended for timeout and drop connection situations
-- Added new flags to the permissions field used to decorate the urls. These are for: motion activity, foreground service and foreground service of type microphone
-- Added `aw_0_req.appState` param during decoration of urls
+- Added an `AdEvent.Type.Other.EmptyAd` module event that will be triggered when a missed no-ad opportunity appears
+- Added a new `AdBaseManagerAdapter` interface to `AdBaseManager` to fire additional URLs for impressions, tracking events and errors
+- Added `preferredResourceType` to `AdCompanionOptions` to select the desired companion resource type
+- URL firing retry mechanism extended for timeout and drop connection situations
+- Added new flags to the permissions field used to decorate the URLs. These are for: motion activity, foreground service and foreground service of type microphone
+- Added `aw_0_req.appState` param during decoration of URLs
 
 ### Removed
 - For the no-ads VAST response (known as the EmtpyAds scenario) the error returned by `AdRequestConnection.requestAds()` is now null. The `AdResponseCompletionHandler` will return a valid `adManager` instance (without an error object).
 
 ### Changed
 - The `AdEvent.Type.State.ReadyForPlay` module event is now triggered when the `adManager` instance contains an empty ad and the `prepare()` method has been called
-- `resize_mode` was replaced with `video_resize_mode` in order to remove an ExoPlayer dependency
-- When `ExoPlaybackException` is thrown in the `InternalAdPlayer` the error description contains now the stack trace
-- Continuous Play measurement has been changed. While pausing and resuming the SDK will not reset the continuous play duration anymore.
-- Location required flag was changed to `false` in order to be able to publish on other app stores (e.g. Amazon Appstore)
+- `resize_mode` has been replaced with `video_resize_mode` in order to remove an ExoPlayer dependency
+- When `ExoPlaybackException` is thrown in the `InternalAdPlayer` the error description now contains the stack trace
+- Continuous Play measurement has been changed. When pausing and resuming, the SDK will not reset the continuous play duration anymore.
+- The location required flag was changed to `false` in order to be able to publish on other app stores (e.g. the Amazon Appstore)
 
 ### Fixed
-- An issue related to companion click through on Android 6 (API level 23)
+- An issue related to companion click-through on Android 6 (API level 23)
 - Improved compatibility for the `HTMLResource` banners from VAST
 
 
 ## [7.3.0] - 2020-12-22
 
 ### Added
-- Added support for skippable ads, marked in VAST by `skipoffset` attribute. Ads will be skippable from the start if VAST specify a skipoffset equal to 0.
-- Added `skipOffset` in `AdData` public interface to signal after how many seconds can the ad be skipped by the user.
+- Added support for skippable ads, marked in VAST by the `skipoffset` attribute. Ads will be skippable from the start if VAST specifies a skipoffset equal to 0.
+- Added `skipOffset` in the `AdData` public interface to signal after how many seconds the ad can be skipped by the user.
 - New interactive format for voice with variable listening time.
 - Implemented OMSDK capabilities for server side
 - Video Ads capabilities added to the SDK
-- Added `videoViewId` in `AdManagerSettings` and in `AdManagerStreamingSettings` public interface to help setup video support.
-- Added `AdVideoView` public class to control rendering video content.
-- Added a basic sample on how to setup and run video ads.
+- Added `videoViewId` in `AdManagerSettings` and in the `AdManagerStreamingSettings` public interface to help setup video support.
+- Added the `AdVideoView` public class to control rendering video content.
+- Added a basic sample of how to set up and run video ads.
 
 ## [7.2.2] - 2020-11-16
-- Fixed an issue that impacts the decoration when the wearable sdk is also used
+- Fixed an issue that impacts the decoration when the wearable SDK is also used
 
 ## [7.2.1] - 2020-10-26
-- Ad Companion behaviour change: when multiple **AdCompanionView** objects are used or created for the same ad then there will be a single **createView** event that will be fired per ad
-- Updated documentation regarding Voice Detectors
+- Ad Companion behavior change: when multiple **AdCompanionView** objects are used or created for the same ad, then there will be a single **createView** event that will be fired per ad
+- Updated the documentation regarding Voice Detectors
 - Improved **BasicSample** app
 
 ## [7.2.0] - 2020-09-30
 ### Added
 - Enqueue capability for AdPlayer
 - Pre-caching functionality for ad media
-- Sdk analytics
+- SDK analytics
 - Multi-process support for AdCompanion
 - Tap-tap detector for interactive ads
-- Open measurement plugin
-- Context based targeting
-- Added **cacheAssetsHint**, **enqueueEnabledHint**, **seekToTrackEnd**, **enqueue** and **dequeue** to **AdPlayer** interface. The changes to **AdPlayer** interface are not backwards compatible.
-- Added **onSeekToTrackEnd** and **onTrackChanged** to **AdPlayer.Listener** interface. The changes to **AdPlayer.Listener** interface are not backwards compatible.
+- Open Measurement plugin
+- Context-based targeting
+- Added **cacheAssetsHint**, **enqueueEnabledHint**, **seekToTrackEnd**, **enqueue** and **dequeue** to the **AdPlayer** interface. The changes to the **AdPlayer** interface are not backwards compatible.
+- Added **onSeekToTrackEnd** and **onTrackChanged** to the **AdPlayer.Listener** interface. The changes to the **AdPlayer.Listener** interface are not backwards compatible.
 - Added **clearContent** and **reconnect** to **AdCompanionView**
 
 ## [7.1.6] - 2020-09-07
 - Fixed an issue with decoration on the server side
 
 ## [7.1.5] - 2020-08-05
-- Renamed decoration parameter "aw_0_1st.playerid" -> "aw_0_1st.playerId"
+- Renamed the decoration parameter "aw_0_1st.playerid" to "aw_0_1st.playerId"
 
 ## [7.1.4] - 2020-08-05
 - Removed Protobuf dependency
@@ -422,10 +422,10 @@ Podcasting:
 - Introduced a new obfuscation parameter to avoid "Duplicate class a.b.a.c.a" compilation errors
 
 ## [7.1.2] - 2020-07-03
-- Fixed a minor issue related to the 'Multiple Zone Request' support
+- Fixed a minor issue related to the Multiple Zone Request support
 
 ## [7.1.1] - 2020-05-20
-- Fixed a possible "ConcurrentModificationException" that may appear when using the external ad player.
+- Fixed a possible "ConcurrentModificationException" that may appear when using an external ad player.
 
 ## [7.1.0] - 2020-05-08
 ### Added
@@ -437,13 +437,13 @@ Podcasting:
  ADCOUNT, TRANSACTIONID, ADTYPE, IFA, IFATYPE, CLIENTUA, DEVICEUA, SERVERSIDE, APPBUNDLE, VASTVERSIONS, PLAYERCAPABILITIES,
  PLAYERSTATE, ADPLAYHEAD, ASSETURI, ADSERVINGID, ERRORCODE, LIMITADTRACKING
 - Support for various VAST Events: skip, error, loaded, notUsed
-- Support to list all VAST companions in AdData interface
+- Support to list all VAST companions in the AdData interface
 - Improved integration documentation
 - Added changelog
 - Added **AdswizzAdZone** class
 - Added **PlayerState** class
 - Added **PlayerCapabilities** class
-- Added **volume**, **name**, **playerState** and **playerCapabilities** to AdPlayer interface
+- Added **volume**, **name**, **playerState** and **playerCapabilities** to the AdPlayer interface
 - Added two new statuses for AdPlayer.Status: **LOADING**, **LOADING_FINISHED**
 - ```withZones(zones: Set<AdswizzAdZone>)``` to *AdswizzAdRequest.Builder*
 - Added new interface **ModuleLifecycle**
