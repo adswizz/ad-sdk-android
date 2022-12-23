@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.7.16] - 2022-12-22
+## [7.7.16] - 2022-12-23
 ### Changed
 - URL decorator
     - update logic on listenerId param to use the zero UUID format (00000000-0000-0000-0000-000000000000) when user opt out from advertising ID
