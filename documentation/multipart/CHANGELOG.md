@@ -7,10 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.7.16] - 2022-12-23
 ### Changed
-- URL decorator 
-  - update logic on listenerId param to use the zero UUID format (00000000-0000-0000-0000-000000000000) when user opt out from advertising ID
-- AdData adType
-  - determine the adType exposed by AdData protocol by checking the MIME type from the VAST MediaFile(s)
+- Ad request URL decorator:
+  - update logic on the `listenerId` param to use the zero `UUID` format (`00000000-0000-0000-0000-000000000000`) when user opt out from advertising ID
+- `AdData` object's `adType` member:
+  - determine the `adType` exposed by the `AdData` protocol by checking the MIME type from the VAST MediaFile(s)
 
 ## [7.7.15] - 2022-11-17
 ### Added
