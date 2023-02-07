@@ -206,6 +206,28 @@ Whenever the metadata is changed on the stream played by the SDK, you will be no
 ### fun onError(adStreamManager: AdStreamManager, error: Error)
 When an error occurs during your interaction with the stream manager, this callback will be called by the SDK.
 
+## Augment you url with decorateUrl function
+Starting with SDK version 7.7.17 a new static function `fun decorateUrl(url: String): Uri` was added to `AdswizzAdStreamManager` for static url augmentation, in case a need for a synchronous function to decorate initial url is needed. 
+Example
+
+```kotlin
+	val listDecorators = listOf("http://sdk.mobile.streaming.adswizz.com:8500/shakeDemo", "http://sdk.mobile.streaming.adswizz.com:8500/someWeirdLink")
+	listDecorators.forEach {
+		val uri = AdswizzAdStreamManager.decorateUrl(it)
+		println("AdswizzAdStreamManager.decorateUrl:: $it -> $uri")
+	}
+	
+	//will print a decorated url 
+	
+```
+
+```kotlin
+http://sdk.mobile.streaming.adswizz.com:8500/shakeDemo
+
+will be transformed in
+
+http://sdk.mobile.streaming.adswizz.com:8500/shakeDemo?companionAds=true&aw_0_1st.gpslat=44.32147278&aw_0_1st.gpslong=26.18935183&aw_0_awz.appVers=1.0.0(ExoPlayer%202.10)%3A1&aw_0_1st.version=7.6.0%3Aandroid33&aw_0_1st.ts=1675766721933&aw_0_req.permissions=11111111111100&calendar=1&aw_0_1st.playerId=ArtemisKotlinPlayerId&aw_0_1st.cb=1675766721.-94109&aw_0_1st.sessionid=1675766721938.277118&aw_0_req.appState=fg&speech=1&sdkiad=1&photoLib=1&call=1&pkpass=1&mic=1&aw_0_req.bundleId=com.adswizz.artemis&aw_0_req.tapOpp=true&aw_0_awz.listenerid=735e3556-e032-4f6f-8382-b83ff789f895&aw_0_req.lmt=0&aw_0_1st.ifaType=androidGMS
+```
 
 ## AdStreamManager life cycle
 

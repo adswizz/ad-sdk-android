@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.17] - 2023-02-07
+### Added
+- Ad static function `fun decorateUrl(url: String): Uri` to AdswizzAdStreamManager URL decorator which decorate url string with needed parameters
+- Ad static function `fun decorateUrl(url: String): Uri` to AdswizzAdPodcastManager URL decorator which decorate url string with needed parameters
+Both functions use a cached version of AdvertisingID 
+
+### Fixed
+- fixes a crash happening on SDK initialization when Android System Webview is disabled, stopped or is currently being updated.	
+
 ## [7.7.16] - 2022-12-23
 ### Changed
 - Ad request URL decorator:
