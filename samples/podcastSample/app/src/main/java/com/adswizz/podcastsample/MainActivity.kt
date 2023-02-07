@@ -84,6 +84,7 @@ class MainActivity : AppCompatActivity() {
             elapsedSec: Double,
             durationSec: Double
         ) {
+            println("onPlayHeadReport $elapsedSec")
             binding.podcastSlider.valueTo = durationSec.toFloat()
             binding.podcastSlider.value = elapsedSec.toFloat()
             binding.playHead.text =
@@ -134,7 +135,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-        AdswizzSDK.initialize(this)
+        AdswizzSDK.initialize(this.applicationContext)
         AdswizzSDK.afrConfig = AfrConfig(
             protocol = AdswizzAdRequest.HttpProtocol.HTTP,
             server = "demo.deliveryengine.adswizz.com",
