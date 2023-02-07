@@ -221,9 +221,9 @@ Called when the asset finished downloading all of its data.
 Called when a network error occurred while trying to download the asset.
 
 
-## Augment you url with decorateUrl function
-Starting with SDK version 7.7.17 a new static function `fun decorateUrl(url: String): Uri` was added to `AdswizzAdPodcastManager` for static url augmentation, in case a need for a synchronous function to decorate initial url is needed. 
-Example
+## Augment the podcastURL using decorateUrl static function
+Starting with SDK version 7.7.17 a new static function named `fun decorateUrl(url: String): Uri` was added to the `AdswizzAdPodcastManager` class, in case you need to use it in a synchronous context.
+<br>Example of usage:
 
 ```kotlin
        val listURl = listOf("http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_1.mp3",

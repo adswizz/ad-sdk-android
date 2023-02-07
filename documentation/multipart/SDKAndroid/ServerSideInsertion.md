@@ -206,9 +206,9 @@ Whenever the metadata is changed on the stream played by the SDK, you will be no
 ### fun onError(adStreamManager: AdStreamManager, error: Error)
 When an error occurs during your interaction with the stream manager, this callback will be called by the SDK.
 
-## Augment you url with decorateUrl function
-Starting with SDK version 7.7.17 a new static function `fun decorateUrl(url: String): Uri` was added to `AdswizzAdStreamManager` for static url augmentation, in case a need for a synchronous function to decorate initial url is needed. 
-Example
+## Augment the streamURL using decorateUrl static function
+Starting with SDK version 7.7.17 a new static function named `fun decorateUrl(url: String): Uri` was added to the `AdswizzAdStreamManager` class, in case you need to use it in a synchronous context. 
+<br>Example of usage:
 
 ```kotlin
 	val listDecorators = listOf("http://sdk.mobile.streaming.adswizz.com:8500/shakeDemo", "http://sdk.mobile.streaming.adswizz.com:8500/someWeirdLink")
