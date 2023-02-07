@@ -219,3 +219,37 @@ Called when the asset finished downloading all of its data.
 ### fun didReceive(adPodcastManager: AdPodcastManager,  error:Error, asset: DownloadableAsset){
 
 Called when a network error occurred while trying to download the asset.
+
+
+## Augment the podcastURL using decorateUrl static function
+Starting with SDK version 7.7.17 a new static function named `fun decorateUrl(url: String): Uri` was added to the `AdswizzAdPodcastManager` class, in case you need to use it in a synchronous context.
+<br>Example of usage:
+
+```kotlin
+       val listURl = listOf("http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_1.mp3",
+                "http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_QueenBohemian.mp3",
+                "http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_brokenTS.mp3",
+                "http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_muchosEvents.mp3",
+                "http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_npr.mp3",
+                "http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_npr1.mp3",
+                "http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_roCountDown.mp3",
+                "http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_rusky.mp3",
+                "http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_sampleFile.mp3")
+        val bDecoration = prefs.getBoolean("settings_podcast_static_decoration_preference", false)
+        if (bDecoration){
+            listURl.forEach {
+                val uri = AdswizzAdPodcastManager.decorateUrl(it)
+                println("AdswizzAdStreamManager.decorateUrl:: $it -> $uri")
+            }
+        }
+
+	
+```
+
+```kotlin
+http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_QueenBohemian.mp3
+
+will be transformed in
+
+http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_QueenBohemian.mp3?companionAds=true&aw_0_1st.gpslat=44.32147278&aw_0_1st.gpslong=26.18935183&aw_0_awz.appVers=1.0.0(ExoPlayer%202.10)%3A1&aw_0_1st.version=7.6.0%3Aandroid33&aw_0_1st.ts=1675766788266&aw_0_req.permissions=11111111111110&calendar=1&aw_0_1st.playerId=ArtemisKotlinPlayerId&aw_0_1st.cb=1675766788.-24331&aw_0_1st.sessionid=1675766721938.277118&aw_0_req.appState=fg&speech=1&sdkiad=1&photoLib=1&call=1&pkpass=1&mic=1&aw_0_req.bundleId=com.adswizz.artemis&aw_0_req.tapOpp=true&repokey=MjkxNDc1NTMzNw%3D%3D&playLive=true&aw_0_awz.listenerid=735e3556-e032-4f6f-8382-b83ff789f895&aw_0_req.lmt=0&aw_0_1st.ifaType=androidGMS&aw_0_req.wopp=0
+```
