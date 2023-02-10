@@ -4,15 +4,20 @@ Properties localProperties = new Properties()
 localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 buildscript {
-    ext.kotlin_version = "1.4.32"
+    ext {
+        kotlin_version = "1.4.32"
+        protobufVersion = '0.8.13'
+    }
+
     repositories {
         google()
         jcenter()
     }
-    dependencies {
-        classpath "com.android.tools.build:gradle:4.1.1"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
+    dependencies {
+        classpath "com.android.tools.build:gradle:7.0.4"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.protobuf:protobuf-gradle-plugin:$protobufVersion"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -22,6 +27,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+
         maven {
             url "https://raw.githubusercontent.com/adswizz/ad-sdk-android/master/releases"
             credentials(HttpHeaderCredentials) {
@@ -32,6 +38,19 @@ allprojects {
                 header(HttpHeaderAuthentication)
             }
         }
+
+
+        maven {
+            url "https://raw.githubusercontent.com/adswizz/ad-sdk-android-dev/master/releases"
+            credentials(HttpHeaderCredentials) {
+                name = "Authorization"
+                value = properties['adswizzDevMavenToken']
+            }
+            authentication {
+                header(HttpHeaderAuthentication)
+            }
+        }
+
     }
 }
 

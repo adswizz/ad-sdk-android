@@ -9,8 +9,10 @@ import com.ad.core.podcast.AdPodcastManager
 import com.ad.core.podcast.AdPodcastManagerDownloadListener
 import com.ad.core.podcast.DownloadState
 import com.ad.core.podcast.DownloadableAsset
+import com.ad.core.video.VideoResizeMode
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.podcast.AdswizzAdPodcastManager
+import com.adswizz.core.streaming.AdswizzAdStreamManager
 import com.adswizz.core.streaming.AfrConfig
 import com.adswizz.podcastsample.databinding.ActivityMainBinding
 import com.adswizz.sdk.AdswizzSDK
@@ -140,7 +142,7 @@ class MainActivity : AppCompatActivity() {
             server = "demo.deliveryengine.adswizz.com",
             endpoint = "www/delivery/afr.php"
         )
-
+        
         podcastManager = AdswizzAdPodcastManager()
         podcastManager.addListener(podcastListener)
         podcastManager.addDownloadListener(downloadListener)
