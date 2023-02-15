@@ -55,8 +55,8 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3"
     implementation "com.google.android.exoplayer:exoplayer:2.10.0"
 
-    implementation 'com.adswizz:adswizz-sdk-dev:7.7.18.004'
-    implementation 'com.adswizz:exoplayer2-10-dev:7.7.18.004'
+    implementation 'com.adswizz:adswizz-sdk-dev:7.7.18.012'
+    implementation 'com.adswizz:exoplayer2-10-dev:7.7.18.012'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
