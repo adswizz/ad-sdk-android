@@ -19,9 +19,10 @@ import com.adswizz.sdk.AdswizzSDK
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
-
+    //
+    //http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_QueenBohemian.mp3
     private val podcastUri: Uri =
-        Uri.parse("http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_QueenBohemian.mp3")
+        Uri.parse("http://sdk.mobile.streaming.adswizz.com:8501/podcast_UNUS_countdown.mp3")
 
     private var downloadedLocation: Uri? = null
     private var downloadingAsset: DownloadableAsset? = null

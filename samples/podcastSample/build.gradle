@@ -32,7 +32,7 @@ allprojects {
             url "https://raw.githubusercontent.com/adswizz/ad-sdk-android/master/releases"
             credentials(HttpHeaderCredentials) {
                 name = "Authorization"
-                value = localProperties["adswizzToken"] ?: System.getenv("ADSWIZZ_TOKEN")
+                value = localProperties["adswizzMavenToken"]
             }
             authentication {
                 header(HttpHeaderAuthentication)
@@ -44,7 +44,7 @@ allprojects {
             url "https://raw.githubusercontent.com/adswizz/ad-sdk-android-dev/master/releases"
             credentials(HttpHeaderCredentials) {
                 name = "Authorization"
-                value = properties['adswizzDevMavenToken']
+                value = localProperties['adswizzDevMavenToken']
             }
             authentication {
                 header(HttpHeaderAuthentication)
