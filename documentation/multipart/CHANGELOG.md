@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.18] - 2023-02-16
+### Fixed
+- Fixed a problem in the `AdswizzAdPodcastManager` class that manifested as a broken communication between ExoPlayer and adManager's listener callbacks that were not called. 
+
+
 ## [7.7.17] - 2023-02-07
 ### Added
 - Static function `fun decorateUrl(url: String): Uri` exposed in the `AdswizzAdStreamManager` class to decorate any streamURL with targetability parameters
