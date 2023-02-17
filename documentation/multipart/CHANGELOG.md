@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.7.18] - 2023-02-16
 ### Fixed
-- Fixed a problem inside `AdswizzAdPodcastManager` class that manifest as a broken communication between exo player and admanager listener callbacks that were not called. 
+- Fixed a problem in the `AdswizzAdPodcastManager` class that manifested as a broken communication between ExoPlayer and adManager's listener callbacks that were not called. 
 
 
 ## [7.7.17] - 2023-02-07
