@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.ad.core.adBaseManager.AdBaseManager
+import com.ad.core.adBaseManager.AdBaseManagerListener
+import com.ad.core.adBaseManager.AdData
+import com.ad.core.adBaseManager.AdEvent
 import com.ad.core.podcast.AdPodcastManager
 import com.ad.core.podcast.AdPodcastManagerDownloadListener
 import com.ad.core.podcast.DownloadState
@@ -12,12 +15,17 @@ import com.ad.core.podcast.DownloadableAsset
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.podcast.AdswizzAdPodcastManager
 import com.adswizz.core.streaming.AfrConfig
+import com.adswizz.interactivead.InteractivityEvent
+import com.adswizz.interactivead.InteractivityListener
 import com.adswizz.podcastsample.databinding.ActivityMainBinding
 import com.adswizz.sdk.AdswizzSDK
 import java.io.File
+import java.net.CookieManager
+import java.net.CookiePolicy
 
 class MainActivity : AppCompatActivity() {
 
+    //Setting: PODCAST URL
     private val podcastUri: Uri =
         Uri.parse("http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_QueenBohemian.mp3")
 
@@ -26,70 +34,92 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var podcastManager: AdswizzAdPodcastManager
+    private var podcastManager: AdswizzAdPodcastManager? = null
     private var playerState = PlayerState.IDLE
     private val logAdapter = LogAdapter()
     private lateinit var saveLocation: Uri
 
+    /**
+     * AdPodcastManager.Listener
+     */
     private val podcastListener = object : AdPodcastManager.Listener {
-        override fun willStartPlayingUrl(
-            adPodcastManager: AdPodcastManager,
-            url: Uri,
-            adBaseManager: AdBaseManager?
-        ) {
+        override fun willStartPlayingUrl(adPodcastManager: AdPodcastManager, url: Uri, adBaseManager: AdBaseManager?) {
             playerState = PlayerState.PLAYING
             updateIcon()
             binding.buttonReset.isEnabled = true
             binding.podcastSlider.isEnabled = true
-            logAdapter.add("Playback started for $url")
+            addLogEntry("Playback started for $url")
+
+            adBaseManager?.setListener(adBaseManagerListener)
+            adBaseManager?.let {
+                AdswizzSDK.setInteractivityListener(it, interactivityListener)
+            }
         }
 
         override fun didFinishPlayingUrl(adPodcastManager: AdPodcastManager, url: Uri) {
             reset()
-            logAdapter.add("Playback finished")
+            addLogEntry("Playback finished")
         }
 
         override fun didPausePlayingUrl(adPodcastManager: AdPodcastManager, url: Uri) {
             playerState = PlayerState.PAUSED
             updateIcon()
-            logAdapter.add("Pause playback")
+            addLogEntry("Paused playback")
         }
 
         override fun didResumePlayingUrl(adPodcastManager: AdPodcastManager, url: Uri) {
             playerState = PlayerState.PLAYING
             updateIcon()
-            logAdapter.add("Resume playback")
+            addLogEntry("Resumed playback")
         }
 
-        override fun adBreakStarted(
-            adPodcastManager: AdPodcastManager,
-            adBaseManager: AdBaseManager
-        ) {
-            logAdapter.add("Ad break started")
+        override fun adBreakStarted(adPodcastManager: AdPodcastManager, adBaseManager: AdBaseManager) {
+            addLogEntry("Ad break started")
         }
 
-        override fun adBreakEnded(
-            adPodcastManager: AdPodcastManager,
-            adBaseManager: AdBaseManager
-        ) {
-            logAdapter.add("Ad break ended")
+        override fun adBreakEnded(adPodcastManager: AdPodcastManager, adBaseManager: AdBaseManager) {
+            addLogEntry("Ad break ended")
         }
 
         override fun onError(adPodcastManager: AdPodcastManager, error: Error) {
-            logAdapter.add("An error occurred during playback: ${error.message}")
+            addLogEntry("An error occurred during playback: ${error.message}")
         }
 
-        override fun onPlayHeadReport(
-            adPodcastManager: AdPodcastManager,
-            elapsedSec: Double,
-            durationSec: Double
-        ) {
+        override fun onPlayHeadReport(adPodcastManager: AdPodcastManager, elapsedSec: Double, durationSec: Double) {
             binding.podcastSlider.valueTo = durationSec.toFloat()
             binding.podcastSlider.value = elapsedSec.toFloat()
             binding.playHead.text =
                 "%02d:%02d".format(elapsedSec.toInt() / 60, elapsedSec.toInt() % 60)
             binding.duration.text =
                 "%02d:%02d".format(durationSec.toInt() / 60, durationSec.toInt() % 60)
+        }
+    }
+
+    /**
+     * AdBaseManagerListener
+     */
+    internal val adBaseManagerListener = object : AdBaseManagerListener {
+        override fun onEventReceived(adBaseManager: AdBaseManager, event: AdEvent) {
+            addLogEntry("[AdBaseManagerListener ${adBaseManager.hashCode()}] Received ad event for adId:${event.ad?.id}\nadType:${event.ad?.adType}\ninteractivityInfo:${event.ad?.adParameters}\neventType:${event.type}")
+        }
+
+        override fun onEventErrorReceived(adBaseManager: AdBaseManager, event: AdEvent, error: kotlin.Error /* = java.lang.Error */) {
+            addLogEntry("[AdBaseManagerListener ${adBaseManager.hashCode()}] Received error for $event. Error: $error")
+        }
+    }
+
+
+    /**
+     * InteractivityListener
+     */
+    internal val interactivityListener = object : InteractivityListener {
+        override fun shouldOverrideCouponPresenting(adBaseManager: AdBaseManager, couponUri: Uri): Boolean {
+            addLogEntry("[InteractivityListener ${adBaseManager.hashCode()}] shouldOverrideCouponPresenting returns FALSE")
+            return false
+        }
+
+        override fun onReceiveInteractivityEvent(adBaseManager: AdBaseManager, adData: AdData, event: InteractivityEvent) {
+            addLogEntry("[InteractivityListener ${adBaseManager.hashCode()}] Received event for adId:${adData?.id}\nadType:${adData?.adType}\nevent:${event}")
         }
     }
 
@@ -113,7 +143,7 @@ class MainActivity : AppCompatActivity() {
             downloadingAsset = null
             binding.downloadProgress.progress = 100
             updateDownloadState()
-            logAdapter.add("Download finished!")
+            addLogEntry("Download finished!")
         }
 
         override fun didReceive(
@@ -123,7 +153,7 @@ class MainActivity : AppCompatActivity() {
         ) {
             downloadingAsset = null
             if(asset.state == DownloadState.failed) {
-                logAdapter.add("An error occurred while downloading! (${error.message})")
+                addLogEntry("An error occurred while downloading! (${error.message})")
             }
         }
     }
@@ -134,6 +164,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
+        if (CookieManager.getDefault() == null) {
+            val cookieManager = CookieManager()
+            cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL)
+            CookieManager.setDefault(cookieManager)
+        }
+
         AdswizzSDK.initialize(this)
         AdswizzSDK.afrConfig = AfrConfig(
             protocol = AdswizzAdRequest.HttpProtocol.HTTP,
@@ -141,33 +177,39 @@ class MainActivity : AppCompatActivity() {
             endpoint = "www/delivery/afr.php"
         )
 
-        podcastManager = AdswizzAdPodcastManager()
-        podcastManager.addListener(podcastListener)
-        podcastManager.addDownloadListener(downloadListener)
-
         saveLocation = Uri.parse("${applicationContext.filesDir}/${podcastUri.lastPathSegment}")
         if(File(saveLocation.toString()).exists()) {
             downloadedLocation = saveLocation
             updateDownloadState()
         }
 
+
         binding.buttonPlay.setOnClickListener {
+
+            if (podcastManager == null) {
+                podcastManager = AdswizzAdPodcastManager()
+                podcastManager?.addListener(podcastListener)
+                podcastManager?.addDownloadListener(downloadListener)
+            }
+
             when (playerState) {
                 PlayerState.IDLE -> {
                     val localPodcast = downloadedLocation
                     if(localPodcast != null) {
-                        logAdapter.add("Will play saved podcast")
-                        podcastManager.play(localPodcast)
+                        addLogEntry("Will play saved podcast")
+                        podcastManager?.play(localPodcast)
                     } else {
-                        logAdapter.add("Will play online podcast")
-                        podcastManager.play(podcastUri)
+                        addLogEntry("Will play online podcast")
+                        podcastManager?.play(podcastUri)
                     }
                 }
                 PlayerState.PLAYING -> {
-                    podcastManager.pause()
+                    addLogEntry("\'Pause\' btn pressed")
+                    podcastManager?.pause()
                 }
                 PlayerState.PAUSED -> {
-                    podcastManager.resume()
+                    addLogEntry("\'Resume\' btn pressed")
+                    podcastManager?.resume()
                 }
             }
         }
@@ -184,7 +226,7 @@ class MainActivity : AppCompatActivity() {
         }
         binding.podcastSlider.addOnChangeListener { _, value, fromUser ->
             if (fromUser) {
-                podcastManager.seekTo(value.toDouble())
+                podcastManager?.seekTo(value.toDouble())
             }
         }
 
@@ -196,9 +238,9 @@ class MainActivity : AppCompatActivity() {
             binding.downloadProgress.visibility = View.VISIBLE
             binding.downloadProgress.progress = 0
             binding.podcastStopDownload.isEnabled = true
-            podcastManager.startDownloadPodcast(podcastUri, saveLocation) { success, exception ->
+            podcastManager?.startDownloadPodcast(podcastUri, saveLocation) { success, exception ->
                 if(!success) {
-                    logAdapter.add("Can't download podcast because ${exception?.message}")
+                    addLogEntry("Can't download podcast because ${exception?.message}")
                 }
             }
         }
@@ -220,12 +262,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        podcastManager.cleanup()
+        podcastManager?.cleanup()
         super.onDestroy()
     }
 
     private fun reset() {
-        podcastManager.stop()
+        podcastManager?.stop()
         playerState = PlayerState.IDLE
         binding.buttonReset.isEnabled = false
         binding.podcastSlider.value = 0f
@@ -271,6 +313,11 @@ class MainActivity : AppCompatActivity() {
                 binding.podcastRemoveDownload.isEnabled = false
             }
         }
+    }
+
+    private fun addLogEntry(item: String) {
+        logAdapter.add(item)
+        binding.log.scrollToPosition(0)
     }
 
     enum class PlayerState {
