@@ -1,9 +1,16 @@
 package com.adswizz.podcastsample
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.ad.core.adBaseManager.AdBaseManager
 import com.ad.core.podcast.AdPodcastManager
 import com.ad.core.podcast.AdPodcastManagerDownloadListener
@@ -14,12 +21,21 @@ import com.adswizz.core.podcast.AdswizzAdPodcastManager
 import com.adswizz.core.streaming.AfrConfig
 import com.adswizz.podcastsample.databinding.ActivityMainBinding
 import com.adswizz.sdk.AdswizzSDK
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
+import java.net.CookieManager
+import java.net.CookiePolicy
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        const val PERMISSIONS_REQUEST_ID = 1
+    }
+
+//    private val podcastUri: Uri =
+//        Uri.parse("http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_QueenBohemian.mp3")
 
     private val podcastUri: Uri =
-        Uri.parse("http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_QueenBohemian.mp3")
+        Uri.parse("https://ais.cloud-services.paris/europe1/prod/audio/emissions/dans-la-bibliotheque-de-2963855/Dans-la-bibliotheque-de-Laure-Adler-3153647.mp3")
 
     private var downloadedLocation: Uri? = null
     private var downloadingAsset: DownloadableAsset? = null
@@ -130,6 +146,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (CookieManager.getDefault() == null) {
+            val cookieManager = CookieManager()
+            cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL)
+            CookieManager.setDefault(cookieManager)
+        }
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
@@ -216,6 +237,65 @@ class MainActivity : AppCompatActivity() {
                 downloadedLocation = null
                 updateDownloadState()
             }
+        }
+
+        val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed({
+            requestPermissions()
+        }, 0L)
+
+    }
+
+    private fun requestPermissions() {
+
+        val permissionsList = mutableListOf(
+            // artemis only
+            Manifest.permission.WAKE_LOCK,
+            // permission needed by sdk for decorate & permission action
+            Manifest.permission.WRITE_CONTACTS, Manifest.permission.WRITE_CALENDAR,
+            Manifest.permission.CAMERA,
+            // sdk
+            Manifest.permission.INTERNET, Manifest.permission.VIBRATE,
+            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CALL_PHONE,
+            Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_NETWORK_STATE,
+            Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.BLUETOOTH
+        )
+
+        // artemis only
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+            permissionsList.add(Manifest.permission.FOREGROUND_SERVICE)
+
+        // sdk
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+            permissionsList.add(Manifest.permission.ACTIVITY_RECOGNITION)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+            permissionsList.add(Manifest.permission.QUERY_ALL_PACKAGES)
+
+        val neededPermissionsList = mutableListOf<String>()
+
+        for (i in 0 until permissionsList.count()) {
+            if (ContextCompat.checkSelfPermission(this, permissionsList[i]) != PackageManager.PERMISSION_GRANTED) {
+                // Permission is not granted
+//                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsList[i])) {
+//                    // Show an explanation to the user! After the user
+//                    // sees the explanation, try again to request the permission.
+//                    Snackbar.make(
+//                        binding.viewPager,
+//                        "${getString(R.string.main_permissions_popup_rationale)} ${permissionsList[i]}",
+//                        Snackbar.LENGTH_SHORT
+//                    ).show()
+//                } else {
+                    neededPermissionsList.add(permissionsList[i])
+//                }
+            }
+        }
+
+        if (neededPermissionsList.size > 0) {
+            val array = arrayOfNulls<String>(neededPermissionsList.size)
+            ArrayList(neededPermissionsList).toArray(array)
+            ActivityCompat.requestPermissions(this, array, PERMISSIONS_REQUEST_ID)
         }
     }
 
