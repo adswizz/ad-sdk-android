@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.19] - 2023-03-13
+### Added
+- Added support for [APIFRAMEWORKS] and [OMIDPARTNER] VAST Macros for OMSDK Audibility
+
+### Fixed
+- Fixed a crash happening when clicking on a companion or a video with an invalid url protocol or with no application registered to handle the specific url
+
+### Changed
+- Changed `PalNonceHandlerInterface` to reflect changes in Google PAL library which was updated from 17.0.5 to 20.0.1
+	- removed method `sendAdImpression`
+	- added two methods `sendPlaybackStart` and `sendPlaybackEnd` which are triggered in pairs for each video ad at start and at the end of video
+- Updated integration guide PAL , samples and adswizzgeneralsettings sections
+- Renamed the decoration parameter **aw_0_1st.nonce** to **aw_0_1st.pal_nonce**
+- Improved companion banner display 
+
 ## [7.7.18] - 2023-02-16
 ### Fixed
 - Fixed a problem in the `AdswizzAdPodcastManager` class that manifested as a broken communication between ExoPlayer and adManager's listener callbacks that were not called. 

@@ -35,3 +35,7 @@ This app demonstrates a client-side insertion scenario with video by showing how
 ## Video Ads Sample Full Screen External Player
 
 This app demonstrates a client-side insertion with video by showing how to add a _**videoViewId**_ to the _**AdManagerSettings**_ and also a _**AdVideoView**_ to the layout. The video is full screen, the application can change layout from portrait to landscape, and it uses an external player.
+
+## Podcast sample
+
+This sample shows how your app can integrate the **_AdswizzSDK_** podcasting support by using an **_AdswizzAdPodcastManager_**. It demonstrates how to download a podcast locally, as well as playing it from disk.

@@ -23,6 +23,19 @@ With the introduction of CCPA in US, the **_AdswizzSDK_** enables you to forward
 
 The first value represents the explicit notice for collecting consent. The next value is the opt-out of the sale of personal information. The last one is the limitation of scope to the Limited Service Provider Agreement. For all tree, possible values are: **_NOT_APPLICABLE_**, **_YES_**, **_NO_**. The default value for all of them is **_NOT_APPLICABLE_**.
 
+### GPP
+
+With the introduction of GPP standard from IAB, **_AdswizzSDK_** gives you the possibility to forward the gpp consent string accordingly.
+
+```kotlin
+AdswizzSDK.gppConsent = "My GPP Consent String"
+
+```
+
+The default value for **gppConsent** is nil, which means this parameter won't be used by **_AdswizzSDK_**. The usage of the GPP consent string is similar to the TCF V2 consent string.
+
+
+
 ## Permissions
 By default, the `AdswizzSDK` uses permissions set by host app in the AndroidManifest file to operate different modules. 
 However, it is possible, in a programamtic way, to control which permissions the SDK can use.
