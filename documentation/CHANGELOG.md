@@ -10,15 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added support for [APIFRAMEWORKS] and [OMIDPARTNER] VAST Macros for OMSDK Audibility
 
 ### Fixed
-- Fixed a crash happening when clicking on a companion or a video with an invalid url protocol or with no application registered to handle the specific url
+- Fixed a crash happening when clicking on a companion banner or a video ad with an invalid url protocol or with no application registered to handle that specific deep link url
 
 ### Changed
 - Changed `PalNonceHandlerInterface` to reflect changes in Google PAL library which was updated from 17.0.5 to 20.0.1
 	- removed method `sendAdImpression`
 	- added two methods `sendPlaybackStart` and `sendPlaybackEnd` which are triggered in pairs for each video ad at start and at the end of video
-- Updated integration guide PAL , samples and adswizzgeneralsettings sections
-- Renamed the decoration parameter **aw_0_1st.nonce** to **aw_0_1st.pal_nonce**
-- Improved companion banner display 
+- Updated the Integration Guide: _Interoperability with the PAL SDK_, _Sample projects_ and _AdsWizzSDK general settings_ sections
+- Renamed the decoration parameter `aw_0_1st.nonce` to `aw_0_1st.pal_nonce`
+- Improved companion banner display logic
 
 ## [7.7.18] - 2023-02-16
 ### Fixed
