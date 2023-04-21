@@ -15,5 +15,6 @@ AdswizzAdRequest.Builder()
     .withZones(setOf(AdswizzAdZone(ZONE_ID)))
     ...
     .withNonceHandler(palNonceHandler) //set here the palNonceHandler object previously created
-    .build()
+    .build { adswizzAdRequest ->
+     }
 ```

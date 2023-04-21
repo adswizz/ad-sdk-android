@@ -60,13 +60,19 @@ val adRequest: adRequest = AdRequest.Builder()
 Here is an example using the **_AdswizzAdRequest_**:
 
 ```kotlin
-val analyticsCustomData = AnalyticsCustomData(mutableMapOf("a" to "b", "c" to 7))
+        val analyticsCustomData = AnalyticsCustomData(mutableMapOf("a" to "b", "c" to 7))
 
-val adRequest: AdswizzAdRequest = AdswizzAdRequest.Builder()
+        AdswizzAdRequest.Builder()
             .withServer("SERVER_PROVIDED_BY_PIM")
-            .withZones(setOf(AdswizzAdZone("ZONEID_1_PROVIDED_BY_PIM"), ... AdswizzAdZone("ZONEID_n_PROVIDED_BY_PIM")))
+            .withZones(
+                setOf(
+                    AdswizzAdZone("ZONEID_1_PROVIDED_BY_PIM"),
+                    AdswizzAdZone("ZONEID_n_PROVIDED_BY_PIM")
+                )
+            )
             .withAnalyticsCustomData(analyticsCustomData)
-            .build()
+            .build { adswizzAdRequest ->
+            }
 ```
 
 ### Custom analytics data through Ad Manager
