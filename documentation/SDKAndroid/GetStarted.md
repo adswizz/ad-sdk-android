@@ -95,8 +95,8 @@ googleWearableVersion = '2.5.0'
 ---
 **NOTE**
 
-If you are excluding any tested dependency version and using another version (that doesn't ensure backward/forward compatibility with the version we have tested) you may encounter unexpected behavior.
-On this note, com.google.android.gms:play-services-location:21.0.1 is not compatible with versions below 20.0.0 and may result in a crash with this message: ** Found interface com.google.android.gms.location.ActivityRecognitionClient, but class was expected **
+If you are excluding any tested dependency version and using another version (that doesn't ensure backward/forward compatibility with the version we have tested) you may encounter unexpected behavior.<br>
+Regarding this matter, please be aware that `com.google.android.gms:play-services-location:21.0.1` is not compatible with versions prior to `20.0.0`. Attempting to use it with such earlier versions may result in a crash and display the following error message: "Found interface com.google.android.gms.location.ActivityRecognitionClient, but class was expected."
 
 ---  
 

@@ -7,8 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.7.20] - 2023-04-26
 ### Changed
-- update `com.google.android.gms:play-services-location` dependencies from 17.0.0 to 21.0.1
-- added a trailing slash `/` to internal request on client side request 
+- Updated `com.google.android.gms:play-services-location` dependency from version 17.0.0 to version 21.0.1
+- Improved **_Integration Guide_** 
 
 
 ## [7.7.19] - 2023-03-13
