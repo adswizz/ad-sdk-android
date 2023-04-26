@@ -26,11 +26,11 @@
         {
           "name": "adswizz-sdk-protobufJava-7.7.20.aar",
           "url": "adswizz-sdk-protobufJava-7.7.20.aar",
-          "size": 2766908,
-          "sha512": "1957f04780461f9616638790dfc9f2f9605b73c0392c1f12b71b67f09ff0a6f334b9947c822fc04589862f0a9798fe2e57e44669a00b43e34302e29945960c6e",
-          "sha256": "a804f40fcaf624f5b0b6f82c1ec1b61c772779ff04c00471b6b36cb33d6338fc",
-          "sha1": "3e2d6efddefd58d25ed461a5e716a789af57bb41",
-          "md5": "f9e01396ad63d28ce2a5e62321d09c2f"
+          "size": 2766914,
+          "sha512": "f4b5c2035e7fd5eee6e642f98208a239c043a1c6a66c49caa32181d32f057a79475c20cfa9a33ff345645308876be78a727f82c09b173abd36e4b10951664147",
+          "sha256": "70c77ad2d17afb254d055018fd9eb3980aa701648815dabe9299a4eeef6fe5f6",
+          "sha1": "74e09be86f4b3a567811e87c31f90a402c2ae7a5",
+          "md5": "112a1d2c81bda86b695e6efd124f4204"
         }
       ]
     },
@@ -209,11 +209,11 @@
         {
           "name": "adswizz-sdk-protobufJava-7.7.20.aar",
           "url": "adswizz-sdk-protobufJava-7.7.20.aar",
-          "size": 2766908,
-          "sha512": "1957f04780461f9616638790dfc9f2f9605b73c0392c1f12b71b67f09ff0a6f334b9947c822fc04589862f0a9798fe2e57e44669a00b43e34302e29945960c6e",
-          "sha256": "a804f40fcaf624f5b0b6f82c1ec1b61c772779ff04c00471b6b36cb33d6338fc",
-          "sha1": "3e2d6efddefd58d25ed461a5e716a789af57bb41",
-          "md5": "f9e01396ad63d28ce2a5e62321d09c2f"
+          "size": 2766914,
+          "sha512": "f4b5c2035e7fd5eee6e642f98208a239c043a1c6a66c49caa32181d32f057a79475c20cfa9a33ff345645308876be78a727f82c09b173abd36e4b10951664147",
+          "sha256": "70c77ad2d17afb254d055018fd9eb3980aa701648815dabe9299a4eeef6fe5f6",
+          "sha1": "74e09be86f4b3a567811e87c31f90a402c2ae7a5",
+          "md5": "112a1d2c81bda86b695e6efd124f4204"
         }
       ]
     }

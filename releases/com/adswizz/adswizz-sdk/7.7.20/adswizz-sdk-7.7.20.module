@@ -26,11 +26,11 @@
         {
           "name": "adswizz-sdk-7.7.20.aar",
           "url": "adswizz-sdk-7.7.20.aar",
-          "size": 2766906,
-          "sha512": "8ebdf4529f3fe9db0f0103da740199c80da37cecc00057b311441881e35eabcd61130362dc1b4bd3376356e1c3fe9d6f6105eaabe3322b0345f21b7f71177ecb",
-          "sha256": "a6852bbc009020569df358ab444dbc7a337a74c68687861f80d88b596c51eab6",
-          "sha1": "4f83618c05dacaa65f1823694b7880e26d47c3d6",
-          "md5": "59bd81a39974d4ac370e60b4d1ca07a1"
+          "size": 2766915,
+          "sha512": "c6756ffb7de3778fca0ba5c9e7a9f4c093e0e95e3b01c27ea11b1ee1bbe1b1f7c910a363010638c1dbbb4448d1a69b52cb4604743acc8685946e49fbf04a66ee",
+          "sha256": "fbacfd1304fdab35c465d1b029f01534ef86d45962329d3f79205542c4df7b85",
+          "sha1": "281688e2875eb62d7a64deb04b9629e363bd9418",
+          "md5": "a289e2495f83eef992b068ad8e46948c"
         }
       ]
     },
@@ -209,11 +209,11 @@
         {
           "name": "adswizz-sdk-7.7.20.aar",
           "url": "adswizz-sdk-7.7.20.aar",
-          "size": 2766906,
-          "sha512": "8ebdf4529f3fe9db0f0103da740199c80da37cecc00057b311441881e35eabcd61130362dc1b4bd3376356e1c3fe9d6f6105eaabe3322b0345f21b7f71177ecb",
-          "sha256": "a6852bbc009020569df358ab444dbc7a337a74c68687861f80d88b596c51eab6",
-          "sha1": "4f83618c05dacaa65f1823694b7880e26d47c3d6",
-          "md5": "59bd81a39974d4ac370e60b4d1ca07a1"
+          "size": 2766915,
+          "sha512": "c6756ffb7de3778fca0ba5c9e7a9f4c093e0e95e3b01c27ea11b1ee1bbe1b1f7c910a363010638c1dbbb4448d1a69b52cb4604743acc8685946e49fbf04a66ee",
+          "sha256": "fbacfd1304fdab35c465d1b029f01534ef86d45962329d3f79205542c4df7b85",
+          "sha1": "281688e2875eb62d7a64deb04b9629e363bd9418",
+          "md5": "a289e2495f83eef992b068ad8e46948c"
         }
       ]
     }
