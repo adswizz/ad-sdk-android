@@ -42,6 +42,9 @@ commonsMath3 = "org.apache.commons:commons-math3:$commonsMath3Version"
 gmsPlayServicesLocation = "com.google.android.gms:play-services-location:$gmsPlayServicesLocationVersion"
 awsAndroidSdkCore = "com.amazonaws:aws-android-sdk-core:$awsAndroidSdkCoreVersion"
 workManagerRuntime = "androidx.work:work-runtime-ktx:$workManagerRuntimeVersion"
+roomRuntime = "androidx.room:room-runtime:$roomVersion"
+roomCompiler = "androidx.room:room-compiler:$roomVersion"
+roomKtx = "androidx.room:room-ktx:$roomVersion"
 ```
 
 For our Wear OS SDK we use:
@@ -62,17 +65,21 @@ We have tested the above dependencies using the following version numbers:<br>
 
 ```groovy
 //Library
-appcompatVersion = '1.1.0'
+kotlin_version = '1.4.32'
+appcompatVersion = '1.3.1'
 coreKtxVersion = '1.1.0'
 exoPlayerVerison = '2.10.0' // and '2.11.3' too
 gmsPlayServicesAdsVersion = '18.2.0'
-moshiVersion = '1.8.0'
-androidMaterialVersion = "1.0.0"
-constraintLayoutVersion = "1.1.3"
-lifeCycleExtensionsVersion = "2.1.0"
-kotlinxCoroutinesVersion = "1.3.2"
-workManagerRuntimeVersion = "2.4.0"
+moshiVersion = '1.12.0'
+androidMaterialVersion = '1.4.0'
+constraintLayoutVersion = '1.1.3'
+lifeCycleExtensionsVersion = '2.1.0'
+kotlinxCoroutinesVersion = "1.4.3"
+workManagerRuntimeVersion = '2.5.0'
 protobufJavaLiteVersion = '3.11.0'
+gmsPlayServicesLocationVersion = '17.0.0'
+commonsMath3Version = '3.6.1'
+roomVersion = '2.3.0'
 
 //WearOS
 wearableSupportVersion = '2.5.0'
@@ -235,7 +242,7 @@ AdswizzWearSDK uses the following queries setup:
 To change these queries in your app, use the following line of code to remove the default setup. Afterwards, you will have to write your own.
 
 ```xml
-<queries tools:node="remove" />
+<queries tools:node="remove" /> 
 ```
 
 If you remove the queries, some of the features of our SDK might not work. The system manages these automatically, so you don't have to worry about crashes.
@@ -280,6 +287,32 @@ allprojects {
 }
 ```
 
+    If you are using a newer version of AndroidStudio project template, your settings.gradle file should look like this:
+
+```groovy
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        mavenLocal()
+        jcenter() // <-- repository should be added for ExoPlayer versions lower than 2.13.x (inclusive)
+
+        maven {
+            url "https://raw.githubusercontent.com/adswizz/ad-sdk-android/master/releases"
+            credentials(HttpHeaderCredentials) {
+                name = "Authorization"
+                value = "Bearer YOUR-AUTH-TOKEN-PROVIDED-BY-ADSWIZZ-PIM"
+            }
+            authentication {
+                header(HttpHeaderAuthentication)
+            }
+        }
+    }
+}
+```
+
+
 2. Then, inside your module level build.gradle add the following lines inside the dependencies block:
 
 ```groovy
@@ -310,7 +343,7 @@ implementation 'androidx.work:work-multiprocess:2.7.1'
 ```
 This is necessary since the because WorkManager version included in the SDK doesn't implement the PendingIntent _*FLAG_IMMUTABLE*_ requirements introduced in Android 12.
     
-3. (optional) The Adswizz Android SDK uses Google Play Services (`com.google.android.gms.ads.identifier.AdvertisingIdClient`) to get the Google Advertising ID (GAD). To do this, your application may need to have the following meta added in your `AndroidManifest.xml` file.
+3. The Adswizz Android SDK uses Google Play Services (`com.google.android.gms.ads.identifier.AdvertisingIdClient`) to get the Google Advertising ID (GAD). To do this, your application may need to have the following meta added in your `AndroidManifest.xml` file.
 ```xml
 <meta-data
     android:name="com.google.android.gms.ads.AD_MANAGER_APP"

@@ -21,10 +21,12 @@ Each `AdswizzAdZone` object is defined by a mandatory zoneId and optional maxAds
 
 The minimal request looks like the following: one or more zones and a server url 
 ```kotlin
-val adRequest: AdswizzAdRequest = AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
+	AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
             .withServer("SERVER_PROVIDED_BY_PIM")
             .withZones(setOf(AdswizzAdZone("ZONEID_1_PROVIDED_BY_PIM"), ... AdswizzAdZone("ZONEID_n_PROVIDED_BY_PIM")))
-            .build()
+            .build { adswizzAdRequest ->
+			// handle resulted adswizzAdRequest
+            }
 ```
 The ad server and the zoneId(s) will be provided to you by an AdsWizz PIM.
 
@@ -102,34 +104,33 @@ class MainActivity : AppCompatActivity(), AdManagerListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val adRequest: AdswizzAdRequest =
-            AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
-                .withServer("SERVER_PROVIDED_BY_PIM")
-                .withZones(setOf(AdswizzAdZone("ZONEID_PROVIDED_BY_PIM")))
-                .build()
+        AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
+            .withServer("SERVER_PROVIDED_BY_PIM")
+            .withZones(setOf(AdswizzAdZone("ZONEID_PROVIDED_BY_PIM")))
+            .build { adswizzAdRequest ->
 
-        val adRequestConnection =
-            AdRequestConnection(adRequest) // Create the AdRequestConnection using the above adRequest
-
-        adRequestConnection.requestAds { adManager, error ->
-            // Handle the response from server
-            if (adManager != null) {
-                //Handle success
-                adManager.adManagerSettings = AdManagerSettings.Builder() // optional
-                    .adPlayerInstance(YOUR_AD_PLAYER_GOES_HERE) // optional
-                    .addCachePolicy(CachePolicy.ASSETS)         // optional
-                    .assetQuality(AssetQuality.MEDIUM)          // optional, other possible values AssetQuality.LOW, AssetQuality.HIGH, AssetQuality.AUTO
-                    .enqueueEnabled(false)                      // optional
-                    .videoViewId(1)                             // optional
-                    .build()                                    // optional
-                adManager.setListener(this) // Get notifications from the Ad SDK
-                adManager.prepare() // Start buffering the ads in the AdManager
-                adManager.play() // Start playing when first add finish loading
-            } else {
-                //Handle failure
-                Log.e("Error", error.toString())
+                AdRequestConnection(adswizzAdRequest)
+                    .requestAds { adManager, error ->
+                        // Handle the response from server
+                        if (adManager != null) {
+                            //Handle success
+                            adManager.adManagerSettings =
+                                AdManagerSettings.Builder() // optional
+                                    .adPlayerInstance(YOUR_AD_PLAYER_GOES_HERE) // optional
+                                    .addCachePolicy(CachePolicy.ASSETS)         // optional
+                                    .assetQuality(AssetQuality.MEDIUM)          // optional, other possible values AssetQuality.LOW, AssetQuality.HIGH, AssetQuality.AUTO
+                                    .enqueueEnabled(false)                      // optional
+                                    .videoViewId(1)                             // optional
+                                    .build()                                    // optional
+                            adManager.setListener(this) // Get notifications from the Ad SDK
+                            adManager.prepare() // Start buffering the ads in the AdManager
+                            adManager.play() // Start playing when first add finish loading
+                        } else {
+                            //Handle failure
+                            Log.e("Error", error.toString())
+                        }
+                    }
             }
-        }
     }
 
     override fun onEventErrorReceived(adManager: AdManager, ad: AdData?, error: Error) {
@@ -322,12 +323,12 @@ Read more about `AdManagerDatasource` methods and behavior here: [Working with t
 **Example**
 ```kotlin
         ...
-        val adRequest: AdswizzAdRequest =
             AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
                 .withServer("SERVER_PROVIDED_BY_PIM")
                 .withExpectedAdsReporting(true)
                 .withZones(setOf(AdswizzAdZone(zoneId = "12345", maxAds = 3), AdswizzAdZone(zoneId = "122245", maxAds = 2), AdswizzAdZone(zoneId = "17865")))
-                .build()
+                .build { adswizzAdRequest ->
+		}
         ....
 ```
 In the above request, the number of ads requested is as follows:  3 (zoneId = "12345") + 2 (zoneId = "122245") + 1 (zoneId = "17865") = 6. If maxAds is not provided (like for zone "17865")

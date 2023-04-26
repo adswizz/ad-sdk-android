@@ -7,7 +7,7 @@ The AdswizzSDK enables you to configure companion banners if you are provided by
 
 The easiest way to add a companion view is from XML. You can also add the view programmatically.
 Once created, the SDK will keep track of all of your companion views and fill them with ad-related content as the
-ad is playing. By default, an **_AdCompanionView_** instance is inactive, meaning that, as long as it's not visible on screen, it won't load the content (during the ad break) or fire tracking events. You can temporarily "deactivate" a companion view at any time by either hiding it, resizing it so that the frame width or height is zero, making it transparent or removing it from the view tree. The SDK will automatically keep track of your companion state and stop or resume rendering.
+ad is playing. By default, an **_AdCompanionView_** instance is inactive, meaning that, as long as it's not visible on screen, it won't load the content (during the ad break) or fire tracking events. You can temporarily "deactivate" a companion view at any time by either hiding it, resizing it so that the frame width or height is zero, making it transparent or removing it from the view tree. The SDK will automatically keep track of your companion state and stop or resume rendering. If you want to show or hide your **_AdCompanionView_** based on incoming ad, you can easily check "hasCompanion" flag from **_AdData_** interface.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -35,11 +35,12 @@ There are two scenarios for setting up the companion banner: one for client-side
 First, when you create an **_AdswizzAdRequest_**, you must configure the **_companionZones_** with the value provided by the PIM.
 
 ```kotlin
-val adRequest = AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
-                .withServer("SERVER_PROVIDED_BY_PIM")
-                .withZones(setOf(AdswizzAdZone("ZONEID_PROVIDED_BY_PIM")))
-                .withCompanionZones("COMPANION_PROVIDED_BY_PIM")
-                .build()
+        AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
+            .withServer("SERVER_PROVIDED_BY_PIM")
+            .withZones(setOf(AdswizzAdZone("ZONEID_PROVIDED_BY_PIM")))
+            .withCompanionZones("COMPANION_PROVIDED_BY_PIM") // A comma-separated list of zone IDs from where companions will be selected. Ex: "1234,5678"
+            .build { adswizzAdRequest ->
+            }
 ```
 
 Once the request is made, if there is a companion associated with the ad, it will be loaded into your **_AdCompanionView_** object.
