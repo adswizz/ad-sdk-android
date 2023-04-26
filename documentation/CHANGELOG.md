@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.20] - 2023-04-26
+### Changed
+- update `com.google.android.gms:play-services-location` dependencies from 17.0.0 to 21.0.1
+- added a trailing slash `/` to internal request on client side request 
+
+
 ## [7.7.19] - 2023-03-13
 ### Added
 - Added support for [APIFRAMEWORKS] and [OMIDPARTNER] VAST Macros for OMSDK Audibility
