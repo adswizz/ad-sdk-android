@@ -13,7 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.7.19] - 2023-03-13
 ### Added
-- Added support for [APIFRAMEWORKS] and [OMIDPARTNER] VAST Macros for OMSDK Audibility
+- Added support for `[APIFRAMEWORKS]` and `[OMIDPARTNER]` VAST Macros for OMSDK Audibility
+- **GPP** consent:
+    - New public property in the `AdswizzSDK` shared instance:
+      - `gppConsent` for passing a GPP consent string (as per IAB's new GPP privacy standard)
 
 ### Fixed
 - Fixed a crash happening when clicking on a companion banner or a video ad with an invalid url protocol or with no application registered to handle that specific deep link url
