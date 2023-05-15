@@ -90,7 +90,7 @@ The stream object can play the url using either its internal player or an extern
         ...
     }
 ```
-###play
+### play
 To start playing the stream, do the following:
 
 ```kotlin
@@ -99,7 +99,7 @@ To start playing the stream, do the following:
 
 As a response, the **_AdswizzSDK_** will call back `fun willStartPlayingUrl(adStreamManager: AdStreamManager, url: Uri)` with the provided url which has some extra query params added.
 
-###stop
+### stop
 To stop playing the stream, call the stop function:
 
 ```kotlin
@@ -108,7 +108,7 @@ To stop playing the stream, call the stop function:
 
 The SDK will respond with the callback `fun didFinishPlayingUrl(adStreamManager: AdStreamManager, url: Uri)`. The url is the same as for `willStartPlayingUrl`.
 
-###pause and resume
+### pause and resume
 The stream can be paused and resumed:
 
 ```kotlin
@@ -205,6 +205,11 @@ Whenever the metadata is changed on the stream played by the SDK, you will be no
 
 ### fun onError(adStreamManager: AdStreamManager, error: Error)
 When an error occurs during your interaction with the stream manager, this callback will be called by the SDK.
+
+### **_Note_**
+In order to receive various ad-related events, you can set a listener by calling `setListener` method to the provided **_AdBaseManager_** object.
+Also, you can remove the specified listener by calling `removeAdBaseManagerListener`.
+
 
 ## Augment the streamURL using decorateUrl static function
 Starting with SDK version 7.7.17 a new static function named `fun decorateUrl(url: String): Uri` was added to the `AdswizzAdStreamManager` class, in case you need to use it in a synchronous context. 

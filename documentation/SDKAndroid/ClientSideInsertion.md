@@ -211,7 +211,7 @@ Set an **_AnalyticsCustomData_** data class to provide custom key-value attribut
 
 ## AdManagerListener interface
 
-Notifications sent from `AdManager` to your app are implemented in the AdManagerListener interface. After the listener is set using the `setListener(listener: AdBaseManagerListener)` method of the AdManager, your app will be called for the following cases
+Notifications sent from `AdManager` to your app are implemented in the AdManagerListener interface. After the listener is set using the `setListener(listener: AdManagerListener)` method of the AdManager, your app will be called for the following cases:
 
 ### onEventReceived 
 
@@ -220,6 +220,9 @@ Called when there is an event related to the current ad in the ad manager. Some 
 ### onEventErrorReceived
 
 Called when there was an error playing the ad.
+
+### **_Note_**
+Also, you can remove the specified listener by calling `removeAdManagerListener`.
 
 ## AdBaseManagerAdapter interface
 

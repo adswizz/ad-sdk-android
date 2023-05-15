@@ -168,6 +168,9 @@ Every time there is an error in the podcast functionality, you'll get notified t
 
 Every time the current playhead changes, your app will get notified in this function. The duration reflects the total expected podcast duration. This method can also be used to update the UI accordingly.
 
+### **_Note_**
+In order to receive various ad-related events, you can set a listener by calling `setListener` method to the provided **_AdBaseManager_** object.
+Also, you can remove the specified listener by calling `removeAdBaseManagerListener`.
 
 ## **_AdPodcastManagerDownloadListener_** interface
 
