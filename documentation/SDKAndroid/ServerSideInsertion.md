@@ -164,6 +164,23 @@ The fields of the **DvrBufferInfo** are:
 * latest - the latest moment that can be accessed (it differs from now because the server works with the stream in chunks) (epoch milliseconds timestamp)
 * maxBufferSize - the largest buffer that the server is capable of storing (milliseconds value), which gives the largest window that the client can timeshift in the past. E.g. 36.000.000ms -> 10h window
 
+### automaticallySecureConnectionForAdURL
+
+Enables secure connections when **_AdswizzAdStreamManager_** object fires additional internal requests. The default value is `true`.
+Here is an example on how to instruct the **_AdswizzAdStreamManager_** object to secure or not its internal requests:
+
+```kotlin
+    fun createStreamManager() {
+        val settings = AdManagerStreamingSettings.Builder()
+            .automaticallySecureConnectionForAdURL(false) // Optional; true by default
+            .build()
+        streamManager = AdswizzAdStreamManager(settings)
+    }
+```
+
+> The **_AdswizzAdStreamManager_** object will always attempt to use a secured connection (HTTPS protocol) when firing internal requests for fetching additional ad breaks related information from the stream metadata.
+> This approach avoids the need for whitelisting these requests in your application.
+
 ## AdStreamManager Listener interface
 
 The available callbacks that are called by the stream manager are described below:
