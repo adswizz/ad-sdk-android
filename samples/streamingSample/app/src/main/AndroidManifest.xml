@@ -36,7 +36,8 @@
         <meta-data android:name="com.adswizz.core.playerId" android:value="PUT_HERE_YOUR_PLAYER_ID_OBTAINED_FROM_YOUR_AW_TAM" />
 
         <activity android:name=".MainActivity"
-            android:theme="@style/Theme.Samples.NoActionBar">
+            android:theme="@style/Theme.Samples.NoActionBar"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

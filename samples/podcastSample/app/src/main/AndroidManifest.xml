@@ -37,7 +37,8 @@
                 android:name="com.adswizz.podcastsample.MainActivity"
                 android:label="@string/app_name"
                 android:screenOrientation="portrait"
-                android:theme="@style/Theme.PodcastSample.NoActionBar">
+                android:theme="@style/Theme.PodcastSample.NoActionBar"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
