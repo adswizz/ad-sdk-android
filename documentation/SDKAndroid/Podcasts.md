@@ -135,6 +135,23 @@ Calling the `stopDownloadPodcast(location: Uri)` method cancels a previously sta
 
 Calling the `removePodcast(location: Uri)` method removes a previously downloaded podcast at its location file Uri as destination on disk.
 
+### automaticallySecureConnectionForAdURL
+
+Enables secure connections when **_AdswizzAdPodcastManager_** object fires additional internal requests. The default value is `true`.
+Here is an example on how to instruct the **_AdswizzAdPodcastManager_** object to secure or not its internal requests:
+
+```kotlin
+    fun createPodcastManager() {
+        val settings = AdPodcastManagerSettings.Builder()
+            .automaticallySecureConnectionForAdURL(false) // Optional; true by default
+            .build()
+        podcastManager = AdswizzAdPodcastManager(settings)
+    }
+```
+
+> The **_AdswizzAdPodcastManager_** object will always attempt to use a secured connection (HTTPS protocol) when firing internal requests for fetching additional ad breaks related information from the stream metadata.
+> This approach avoids the need for whitelisting these requests in your application.
+
 ## **_AdPodcastManager.Listener_** interface
 
 Playback and ad break related notifications sent from **_AdswizzAdPodcastManager_** to your app are implemented in the **_AdPodcastManager.Listener_** interface.
@@ -168,6 +185,9 @@ Every time there is an error in the podcast functionality, you'll get notified t
 
 Every time the current playhead changes, your app will get notified in this function. The duration reflects the total expected podcast duration. This method can also be used to update the UI accordingly.
 
+### **_Note_**
+In order to receive various ad-related events, you can set a listener by calling `setListener` method to the provided **_AdBaseManager_** object.
+Also, you can remove the specified listener by calling `removeAdBaseManagerListener`.
 
 ## **_AdPodcastManagerDownloadListener_** interface
 
@@ -239,7 +259,7 @@ Starting with SDK version 7.7.17 a new static function named `fun decorateUrl(ur
         if (bDecoration){
             listURl.forEach {
                 val uri = AdswizzAdPodcastManager.decorateUrl(it)
-                println("AdswizzAdStreamManager.decorateUrl:: $it -> $uri")
+                println("AdswizzAdPodcastManager.decorateUrl:: $it -> $uri")
             }
         }
 

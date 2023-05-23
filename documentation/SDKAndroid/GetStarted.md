@@ -321,19 +321,31 @@ implementation 'com.adswizz:adswizz-sdk:version'
 implementation 'com.adswizz:exoplayer2-10:version'
 ```
 
-_NOTE_: SDK version prior to before 7.6.1 included the exoplayer dependency. Now this dependency is separate and you must include it for the SDK to function correctly. At this time (SDK 7.7.13), there are 5 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14, 2.15, 2.16)
+_NOTE_: SDK version prior to before 7.6.1 included the exoplayer dependency. Now this dependency is separate and you must include it for the SDK to function correctly. At this time (SDK 7.7.21), there are 7 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14, 2.15, 2.16, 2.17 and 2.18).
+Using different artifact version from exoplayer used in the app may result in crashing the app, thus the app need to include corresponding versions for sdk artifact and exoplayer library (i.e. add com.adswizz:exoplayer2-18:7.7.21 dependecy when using com.google.android.exoplayer:exoplayer:2.18.6 dependency)
 
-In the code snippet above, replace <strong>version</strong> with the version of the phone and tablet SDK provided by AdsWizz (i.e. 7.7.2 - the latest version). Example:
+In the code snippet above, replace <strong>version</strong> with the version of the phone and tablet SDK provided by AdsWizz (i.e. 7.7.21 - the latest version). Example:
 
 ```groovy
-implementation 'com.adswizz:adswizz-sdk:7.7.2'
-implementation 'com.adswizz:exoplayer2-10:7.7.2'
+
+implementation 'com.adswizz:adswizz-sdk:7.7.21'
+implementation 'com.adswizz:exoplayer2-10:7.7.21'
+//or
+//implementation 'com.adswizz:exoplayer2-12:7.7.21'
+//implementation 'com.adswizz:exoplayer2-14:7.7.21'
+//implementation 'com.adswizz:exoplayer2-15:7.7.21'
+//implementation 'com.adswizz:exoplayer2-16:7.7.21'
+//implementation 'com.adswizz:exoplayer2-17:7.7.21'
+//implementation 'com.adswizz:exoplayer2-18:7.7.21'
+
 ```
 
 _NOTE_: This artifact uses __protobuf java lite__ internally. If your application uses the full protobuf java library, you'll have to use another SDK artifact, as follows:
 
 ```groovy
-implementation 'com.adswizz:adswizz-sdk-protobufJava:7.7.2'
+
+implementation 'com.adswizz:adswizz-sdk-protobufJava:7.7.21'
+
 ```
 
 _NOTE_: if you are compiling with an API > 30 (*Android 11*), you must also include a newer version of the Androidx WorkManager runtime, as follows:
@@ -343,6 +355,10 @@ implementation 'androidx.work:work-runtime-ktx:2.7.1'
 implementation 'androidx.work:work-multiprocess:2.7.1'
 ```
 This is necessary since the because WorkManager version included in the SDK doesn't implement the PendingIntent _*FLAG_IMMUTABLE*_ requirements introduced in Android 12.
+
+_NOTE_: If you are using com.adswizz:exoplayer2-16 and com.adswizz:exoplayer2-17 artifact you need to target SDK to minimum API version 31  (*Android 11*). In case com.adswizz:exoplayer2-17 a minimum version of API 33 version should be target.
+For com.adswizz:exoplayer2-17 and com.adswizz:exoplayer2-18 the minSdkVersion must be 24 or higher.
+
     
 3. The Adswizz Android SDK uses Google Play Services (`com.google.android.gms.ads.identifier.AdvertisingIdClient`) to get the Google Advertising ID (GAD). To do this, your application may need to have the following meta added in your `AndroidManifest.xml` file.
 ```xml
