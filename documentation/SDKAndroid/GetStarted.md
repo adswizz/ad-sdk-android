@@ -355,6 +355,10 @@ implementation 'androidx.work:work-runtime-ktx:2.7.1'
 implementation 'androidx.work:work-multiprocess:2.7.1'
 ```
 This is necessary since the because WorkManager version included in the SDK doesn't implement the PendingIntent _*FLAG_IMMUTABLE*_ requirements introduced in Android 12.
+
+_NOTE_: If you are using com.adswizz:exoplayer2-16 and com.adswizz:exoplayer2-17 artifact you need to target SDK to minimum API version 31  (*Android 11*). In case com.adswizz:exoplayer2-17 a minimum version of API 33 version should be target.
+For com.adswizz:exoplayer2-17 and com.adswizz:exoplayer2-18 the minSdkVersion must be 24 or higher.
+
     
 3. The Adswizz Android SDK uses Google Play Services (`com.google.android.gms.ads.identifier.AdvertisingIdClient`) to get the Google Advertising ID (GAD). To do this, your application may need to have the following meta added in your `AndroidManifest.xml` file.
 ```xml
