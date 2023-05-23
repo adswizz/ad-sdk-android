@@ -7,13 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.7.21] - 2023-05-22
 ### Added
-- Added exoplayer 2.18 and 2.17 artifacts to sdk libarary release, based on exoplayer 2.17.1 and 2.18.6
-- Added in AdBaseManager `removeAdBaseManagerListener()` and `removeAdBaseManagerAdapter()` methods
-- Added in AdManager `removeAdManagerListener()` method
-- Added automaticallySecureConnectionForAdURL(isEnabled: Boolean) method in `AdPodcastManagerSettings.Builder` and `AdManagerStreamingSettings.Builder`
+- Added ExoPlayer 2.18 and 2.17 artifacts in the SDK library release.
+- Added `removeAdBaseManagerListener()` and `removeAdBaseManagerAdapter()` methods in `AdBaseManager`.
+- Added `removeAdManagerListener()` method in `AdManager`.
+- Added the `automaticallySecureConnectionForAdURL(isEnabled: Boolean)` method in `AdPodcastManagerSettings.Builder` and `AdManagerStreamingSettings.Builder`. This setting is enabled by default.
 
 ### Changed
-- Changed exoplayer artifact dependecy to last minor version (2.10.8, 2.12.3, 2.14.2, 2.15.1, 2.16.1 ) instead of (2.10.0, 2.12.0, 2.14.0, 2.15.0, 2.16.0 )
+- Updated the ExoPlayer artifact dependency to the latest minor versions (2.10.8, 2.12.3, 2.14.2, 2.15.1, 2.16.1) instead of the previous versions (2.10.0, 2.12.0, 2.14.0, 2.15.0, 2.16.0).
 - Improved **_Integration Guide_** 
 
 ## [7.7.20] - 2023-04-26
