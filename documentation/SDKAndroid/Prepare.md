@@ -1,4 +1,4 @@
-# (Optional) Prepare your application for advanced targetability capabilities
+# Prepare your application for advanced targetability capabilities
 
 ## Privacy implications
 
