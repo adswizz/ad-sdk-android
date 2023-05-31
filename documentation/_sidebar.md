@@ -2,33 +2,33 @@
 
 - Adswizz SDK Android
 
-    - [Before you start](SDKAndroid/BeforeYouStart.md)
-    - [Get started](SDKAndroid/GetStarted.md)
-    - [Client Side Insertion](SDKAndroid/ClientSideInsertion.md)
-    - [Server Side Insertion](SDKAndroid/ServerSideInsertion.md)
-    - [Podcasts](SDKAndroid/Podcasts.md)
-    - [Companion Banner](SDKAndroid/CompanionBanner.md)
-    - [Interactive Ads](SDKAndroid/InteractiveAds.md)
-    - [Video ads](SDKAndroid/VideoAds.md)
-    - [Playing ads using your player](SDKAndroid/Playingyourplayer.md)
-    - [AdswizzSDK general settings](SDKAndroid/AdswizzGeneralSettings.md)
-    - [Open Measurement in AdswizzSDK](SDKAndroid/OpenMeasurement.md)
-    - [(Optional) Prepare your application for advanced targetability capabilities](SDKAndroid/Prepare.md)
-    - [Vast Macros](SDKAndroid/VastMacros.md)
-    - [AdData interface](SDKAndroid/AdDataInterface.md)
-    - [Ad Base Manager adapters](SDKAndroid/AdBaseManagerAdapters.md)
-    - [AdswizzSDK Analytics](SDKAndroid/AdswizzSDKAnalytics.md)
-    - [(Optional) Interoperability with PAL SDK](SDKAndroid/PALSDK.md)
-    - [AdswizzSDK for Fire OS](SDKAndroid/AdswizzSDKFireOS.md)
-    - [Sample projects](SDKAndroid/SampleProjects.md)
+    - [Before you start](Android/SDKAndroid/BeforeYouStart.md)
+    - [Get started](Android/SDKAndroid/GetStarted.md)
+    - [Client Side Insertion](Android/SDKAndroid/ClientSideInsertion.md)
+    - [Server Side Insertion](Android/SDKAndroid/ServerSideInsertion.md)
+    - [Podcasts](Android/SDKAndroid/Podcasts.md)
+    - [Companion Banner](Android/SDKAndroid/CompanionBanner.md)
+    - [Interactive Ads](Android/SDKAndroid/InteractiveAds.md)
+    - [Video ads](Android/SDKAndroid/VideoAds.md)
+    - [Playing ads using your player](Android/SDKAndroid/Playingyourplayer.md)
+    - [AdswizzSDK general settings](Android/SDKAndroid/AdswizzGeneralSettings.md)
+    - [Open Measurement in AdswizzSDK](Android/SDKAndroid/OpenMeasurement.md)
+    - [Advanced targetability capabilities](Android/SDKAndroid/Prepare.md)
+    - [Vast Macros](Android/SDKAndroid/VastMacros.md)
+    - [AdData interface](Android/SDKAndroid/AdDataInterface.md)
+    - [Ad Base Manager adapters](Android/SDKAndroid/AdBaseManagerAdapters.md)
+    - [AdswizzSDK Analytics](Android/SDKAndroid/AdswizzSDKAnalytics.md)
+    - [Interoperability with PAL SDK](Android/SDKAndroid/PALSDK.md)
+    - [AdswizzSDK for Fire OS](Android/SDKAndroid/AdswizzSDKFireOS.md)
+    - [Sample projects](Android/SDKAndroid/SampleProjects.md)   
 
 
 - Integrate into Wear OS apps
 
-    - [Integrate into Wear OS apps](WearOS/WearOS.md)
+	- [Integrate into Wear OS apps](Android/WearOS/WearOS.md)
 
 - Changelog
-	- [Changelog](CHANGELOG.md)
+    - [Changelog](Android/CHANGELOG.md)
 
 - API Docs
-  - <a href="https://streaming.adswizz.com/fcf6c1b8749cf98/ad-sdk-android-documentation/apidoc/" target="_blank" rel="noopener" title="API Docs"><img src="img/doc.text.png" data-origin="img/doc.text.png" alt="Code" style="text-color:red"> API Docs</a>
+    - <a id="android_api_url" target="_blank" rel="noopener" title="API Docs"><img src="img/doc.text.png" data-origin="img/doc.text.png" alt="Code" style="text-color:red">API Docs</a>
