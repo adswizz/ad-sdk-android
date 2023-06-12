@@ -1,4 +1,4 @@
-# (Optional) Interoperability with the PAL SDK
+# Interoperability with the PAL SDK
 
 The AdswizzSDK can work with Google's PAL SDK to access video demand from DV360. The AdswizzSDK is not directly linked to the PAL SDK but exposes a public API to facilitate the communication.
 
