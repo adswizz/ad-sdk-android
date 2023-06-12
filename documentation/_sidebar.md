@@ -31,4 +31,5 @@
     - [Changelog](Android/CHANGELOG.md)
 
 - API Docs
-    - <a id="android_api_url" target="_blank" rel="noopener" title="API Docs"><img src="img/doc.text.png" data-origin="img/doc.text.png" alt="Code" style="text-color:red">API Docs</a>
+	- <a href="https://streaming.adswizz.com/fcf6c1b8749cf98/ad-sdk-android-documentation/apidoc/" target="_blank" rel="noopener" title="API Docs"><img src="img/doc.text.png" data-origin="img/doc.text.png" alt="Code" style="text-color:red"> API Docs</a>
+
