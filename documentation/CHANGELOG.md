@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.22] - 2023-06-14
+### Added
+ - Added `optimizeCompanionDisplay` parameter in `AdCompanionOptions` class which fixes a ReactNative issue when using AdCompanionView in a layout
+
+### Fixed
+ - Fixed companion display issue in ReactNative
+ - Improved voice detection when users seeks in podcast
+ - Fixed VideoView PercentageInView analytics that breaks after orientation change
+ 
+### Changed
+- Updated `com.google.android.gms:play-services-ads` dependency from version 18.2.0 to version 20.0.0
+- Improved **_Integration Guide_** 
+
 ## [7.7.21] - 2023-05-22
 ### Added
 - Added ExoPlayer 2.18 and 2.17 artifacts in the SDK library release.

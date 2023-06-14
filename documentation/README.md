@@ -1,6 +1,6 @@
-# AdswizzSDK for iOS
+# AdswizzSDK for Android
 
-This documentation will guide you on how to integrate and use the AdswizzSDK for iOS to monetize your application.
+This documentation will guide you on how to integrate and use the AdswizzSDK for Android to monetize your application.
 Learn the basics of how to request and play (interactive) ads from the Adswizz Server, how to play and interact with streaming URLs or podcasts and how to generally use the public APIs for these specific scenarios in order to fit your application needs.
 
 ## Documentation Contents
