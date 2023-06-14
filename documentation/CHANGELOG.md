@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
  - Fixed companion display issue in ReactNative
- - Fixed a problem with voice detection not activated when users seeks in downloaded podcast
+ - Improved voice detection when users seeks in podcast
  - Fixed VideoView PercentageInView analytics that breaks after orientation change
  
 ### Changed
