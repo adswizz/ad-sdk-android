@@ -7,15 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.7.22] - 2023-06-14
 ### Added
- - Added `optimizeCompanionDisplay` parameter in `AdCompanionOptions` class which fixes a ReactNative issue when using AdCompanionView in a layout
+ - Added the `optimizeCompanionDisplay` parameter in the `AdCompanionOptions` class, resolving a ReactNative problem when utilizing `AdCompanionView` within a layout.
 
 ### Fixed
- - Fixed companion display issue in ReactNative
- - Improved voice detection when users seeks in podcast
- - Fixed VideoView PercentageInView analytics that breaks after orientation change
+ - Fixed an issue with companion display when using the SDK within a ReactNative environment.
+ - Improved voice detection when users seek in podcasts
+ - Fixed the issue with OMSDK's `PercentageInView` analytics not functioning correctly after a change in orientation for video ads. 
  
 ### Changed
-- Updated `com.google.android.gms:play-services-ads` dependency from version 18.2.0 to version 20.0.0
+- Updated `com.google.android.gms:play-services-ads` dependency from version `18.2.0` to version `20.0.0`
 - Improved **_Integration Guide_** 
 
 ## [7.7.21] - 2023-05-22

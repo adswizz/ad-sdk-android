@@ -91,6 +91,15 @@ AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
 If not set, the default value is first resource available.
 If the preferred resource type is not found, first resource available will be selected by default.
 
-**NOTE**
+## Optimize companion display
 
-Starting with version 7.7.22, `AdCompanionOptions` has a new parameter `optimizeCompanionDisplay` with a default value of true, which is used to toggle between two different ways of loading content in companion banner. When set to true, the companion object dynamically add and remove some child views which can cause display issues in ReactNative. When is set to false, the child views are present all the companion lifecycle which solves the display issues in ReactNative but introduce a small memory overhead.
+Starting with version 7.7.22, a new parameter called `optimizeCompanionDisplay` has been added to `AdCompanionOptions` class. 
+
+```kotlin
+val adCompanionOptions = AdCompanionOptions()
+adCompanionOptions.optimizeCompanionDisplay = false //change to false only for ReactNative environments
+AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
+```
+
+By default, it is set to `true`, allowing for toggling between two distinct approaches for loading content in companion banners. When set to `true`, the `AdCompanionView` object dynamically adds and removes `WebView` child views, which may lead to display problems in ReactNative. However, when set to `false`, the child views remain throughout the entire companion lifecycle, resolving the display issues in ReactNative but resulting in a slight increase in memory usage.
+
