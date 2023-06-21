@@ -3,13 +3,13 @@ apply plugin: 'kotlin-android'
 //apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.adswizz.videosamplefullscreen"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -30,7 +30,6 @@ android {
     }
 
     buildFeatures {
-        dataBinding true
         viewBinding true
     }
 }
@@ -41,9 +40,10 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.adswizz:adswizz-sdk:7.7.7'
-    implementation 'com.adswizz:exoplayer2-16:7.7.7'
+    implementation 'com.adswizz:adswizz-sdk:7.7.23'
+    implementation 'com.adswizz:exoplayer2-16:7.7.23'
     implementation 'com.google.android.material:material:1.4.0'
+    implementation "androidx.work:work-runtime-ktx:2.7.0"
 
     testImplementation 'junit:junit:4.12'
 
