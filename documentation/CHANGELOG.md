@@ -106,7 +106,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 	property of the **_AadswizzAdZone_** object.
 
 ### Changed:
-- The [Integration Guide](SDKAndroid/ClientSideInsertion#(Advanced)-Enable-expected-ads-reporting) was updated to explain how to use the new **_AdswizzAdRequest.Builder_**'s public method named `withExpectedAdsReporting(enable: Boolean)`
+- The [Integration Guide](Android/SDKAndroid/ClientSideInsertion#(Advanced)-Enable-expected-ads-reporting) was updated to explain how to use the new **_AdswizzAdRequest.Builder_**'s public method named `withExpectedAdsReporting(enable: Boolean)`
 
 ## [7.7.12] - 2022-09-21
 ### Changed:
@@ -122,7 +122,7 @@ Podcasting:
 - fixes afrRequest where a banner mismatch occurs. When this happens, the `didFailToDisplayAd` method of `AdCompanionClient.Listener` is called
 
 ### Changed:
-- The [Integration Guide](SDKAndroid/AdswizzGeneralSettings#preferredMaxBitrate) was modified to explain how to use the new **_AdManagerSettings_**'s public function named `preferredMaxBitrate(bitrate: Int)`
+- The [Integration Guide](Android/SDKAndroid/AdswizzGeneralSettings#preferredMaxBitrate) was modified to explain how to use the new **_AdManagerSettings_**'s public function named `preferredMaxBitrate(bitrate: Int)`
 
 ## [7.7.9-7.7.10]
 ### Fixed
