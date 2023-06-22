@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.adswizz.dvrstreamingsample"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -46,8 +46,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
-    implementation 'com.adswizz:adswizz-sdk:7.7.7'
-    implementation 'com.adswizz:exoplayer2-10:7.7.7'
+    implementation 'com.adswizz:adswizz-sdk:7.7.23'
+    implementation 'com.adswizz:exoplayer2-10:7.7.23'
+    implementation "androidx.work:work-runtime-ktx:2.7.0"
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

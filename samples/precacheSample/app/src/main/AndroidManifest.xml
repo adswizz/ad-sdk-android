@@ -41,6 +41,7 @@
             android:value="PUT_HERE_YOUR_PLAYER_ID_OBTAINED_FROM_YOUR_AW_TAM" />
 
         <activity android:name=".MainActivity"
+            android:exported="true"
             android:theme="@style/Theme.Samples.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
