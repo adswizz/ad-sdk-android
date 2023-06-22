@@ -8,8 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.7.23] - 2023-06-21
 
 ### Fixed
- - Improved voice detection when users seek in podcasts.
- - Fixed speech detector on silent mode when user pauses the playback.
+ - Improved voice detection for voice ads when users seek in podcasts.
+ - Fixed an issue with the voice ad detection system in silent mode when users pause the playback.
 
 ## [7.7.22] - 2023-06-14
 ### Added
