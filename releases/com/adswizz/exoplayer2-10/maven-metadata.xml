@@ -3,8 +3,8 @@
   <groupId>com.adswizz</groupId>
   <artifactId>exoplayer2-10</artifactId>
   <versioning>
-    <latest>7.7.23</latest>
-    <release>7.7.23</release>
+    <latest>7.7.23-uni</latest>
+    <release>7.7.23-uni</release>
     <versions>
       <version>7.6.0</version>
       <version>7.6.1</version>
@@ -33,7 +33,8 @@
       <version>7.7.21</version>
       <version>7.7.22</version>
       <version>7.7.23</version>
+      <version>7.7.23-uni</version>
     </versions>
-    <lastUpdated>20230621140607</lastUpdated>
+    <lastUpdated>20230712085642</lastUpdated>
   </versioning>
 </metadata>
