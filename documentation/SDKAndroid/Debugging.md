@@ -1,9 +1,8 @@
 # Debugging the AdswizzSDK
 
-The AdswizzSDK uses an internal logger called **_AdLogger_** which routes different debug messages either trough default Log system or trough 
-a custom **_Logger__** interface implemented by the AdswizzSDK consumer. 
-If AdswizzSDK.logger property is set with a **_Logger__* implementation then the messages are sent back trough `log` callback 
+The AdswizzSDK uses an internal logger called **_AdLogger_**. This logger handles various debug messages by either using the default Log system or by utilizing a custom `Logger` interface implemented by the consumer of AdswizzSDK. 
 
+If the **_AdswizzSDK.logger_** property is assigned with an implementation of the **_Logger_** interface, the messages are sent back through the `log` callback.
 
 ```kotlin
 interface Logger {

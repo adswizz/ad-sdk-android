@@ -8,10 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.7.24] - 2023-07-17
 
 ### Added
- - Added `Logger` interface which allows AdswizzSDK consumer to receive log messages through `log` callback
+ - Added an interface called `Logger`. This enables consumers of the AdswizzSDK to receive log messages by utilizing the `log` callback. It is primarily intended for debugging purposes.
  
 ### Changed
- - Update integration guide; added a debug section which explain the logger mechanism.
+ - The **_Integration Guide_** has been revised to incorporate a new section dedicated to debugging. [This section](Android/SDKAndroid/Debugging.md) provides detailed information on the logger mechanism.
 
 ## [7.7.23] - 2023-06-21
 
