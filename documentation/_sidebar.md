@@ -20,6 +20,7 @@
     - [AdswizzSDK Analytics](Android/SDKAndroid/AdswizzSDKAnalytics.md)
     - [Interoperability with PAL SDK](Android/SDKAndroid/PALSDK.md)
     - [AdswizzSDK for Fire OS](Android/SDKAndroid/AdswizzSDKFireOS.md)
+    - [Debugging](Android/SDKAndroid/Debugging.md)
     - [Sample projects](Android/SDKAndroid/SampleProjects.md)   
 
 
