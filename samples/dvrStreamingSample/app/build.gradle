@@ -46,8 +46,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
-    implementation 'com.adswizz:adswizz-sdk:7.7.23'
-    implementation 'com.adswizz:exoplayer2-10:7.7.23'
+    implementation 'com.adswizz:adswizz-sdk:7.7.24'
+    implementation 'com.adswizz:exoplayer2-10:7.7.24'
     implementation "androidx.work:work-runtime-ktx:2.7.0"
 
     testImplementation 'junit:junit:4.+'
