@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.7.25] - 2023-07-25
 ### Fixed
- - Fixed a bug appeared in 7.7.24 that crashes SDK when events from exoplayer are sent to sdk.
+ - Resolved a crash introduced in version `7.7.24` that caused the SDK to crash when receiving events from ExoPlayer.
 
 ## [7.7.24] - 2023-07-19
 
