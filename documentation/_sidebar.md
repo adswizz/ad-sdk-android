@@ -22,7 +22,16 @@
     - [AdswizzSDK for Fire OS](Android/SDKAndroid/AdswizzSDKFireOS.md)
     - [Debugging](Android/SDKAndroid/Debugging.md)
     - [Sample projects](Android/SDKAndroid/SampleProjects.md)   
+    
+- AdswizzSDK Pinpoint Analytics
 
+	- [AdswizzSDK Pinpoint Analytics](Android/PinpointAnalytics/AdswizzSDKPinpointAnalytics.md)
+	- [Integrating AdswizzSDKPinpointAnalytics](Android/PinpointAnalytics/IntegratingAdswizzSDKPinpointAnalytics.md)
+	- [Privacy](Android/PinpointAnalytics/Privacy.md)
+
+- Migrations
+
+	- [How to migrate to AdswizzSDK v7.8.0+](Android/Migrations/v7_8_0.md)
 
 - Integrate into Wear OS apps
 
