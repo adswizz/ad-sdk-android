@@ -9,8 +9,8 @@ In a server-side insertion scenario, it takes the pressure off your app by makin
 
 ## Prerequisites
 
-* AndroidStudio 3.4+
-* Gradle build system
+* Android Studio Giraffe | 2022.3.1 (or later)
+* (AGP) Gradle Build Tools 8.0.2 (or later)
 
 ## Changelog
 
@@ -28,7 +28,7 @@ coreKtx = "androidx.core:core-ktx:${coreKtxVersion}"
 exoPlayer = "com.google.android.exoplayer:exoplayer:$exoPlayerVerison"
 gmsPlayServicesAds = "com.google.android.gms:play-services-ads:$gmsPlayServicesAdsVersion"
 constraintLayout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
-lifeCycleExtensions = "androidx.lifecycle:lifecycle-extensions:$lifeCycleExtensionsVersion"
+processLifecycle = "androidx.lifecycle:lifecycle-process:$lifecycleRuntimeKtxVersion"
 kotlinxCoroutines= "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion"
 kotlinxCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinxCoroutinesVersion"
 moshi = "com.squareup.moshi:moshi:$moshiVersion"
@@ -65,21 +65,21 @@ We have tested the above dependencies using the following version numbers:<br>
 
 ```groovy
 //Library
-kotlin_version = '1.4.32'
-appcompatVersion = '1.3.1'
-coreKtxVersion = '1.1.0'
+kotlin_version = '1.7.21'
+appcompatVersion = '1.6.1'
+coreKtxVersion = '1.9.0'
 exoPlayerVerison = '2.10.0' // and '2.11.3' too
 gmsPlayServicesAdsVersion = '20.0.0'
-moshiVersion = '1.12.0'
-androidMaterialVersion = '1.4.0'
-constraintLayoutVersion = '1.1.3'
-lifeCycleExtensionsVersion = '2.1.0'
-kotlinxCoroutinesVersion = "1.4.3"
-workManagerRuntimeVersion = '2.5.0'
-protobufJavaLiteVersion = '3.11.0'
+moshiVersion = '1.14.0'
+androidMaterialVersion = '1.9.0'
+constraintLayoutVersion = '2.1.4'
+lifecycleRuntimeKtxVersion = '2.5.1'
+kotlinxCoroutinesVersion = '1.6.4'
+workManagerRuntimeVersion = '2.8.1'
+protobufJavaLiteVersion = '3.23.3'
 gmsPlayServicesLocationVersion = '21.0.1'
 commonsMath3Version = '3.6.1'
-roomVersion = '2.3.0'
+roomVersion = '2.5.2'
 
 //WearOS
 wearableSupportVersion = '2.5.0'
@@ -87,7 +87,7 @@ playServicesWearableVersion = '17.0.0'
 percentLayoutVersion = '1.0.0'
 legacySupportVersion = '1.0.0'
 recyclerViewVersion = '1.1.0'
-lifecycleRuntimeKtxVersion = '2.2.0'
+lifecycleRuntimeKtxVersion = '2.5.1'
 androidXWearVersion = '1.0.0'
 googleWearableVersion = '2.5.0'
 ```
@@ -111,6 +111,7 @@ The AdswizzSDK uses the following permissions:
 ....
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 ....
 </manifest>
 ```
@@ -134,26 +135,37 @@ The AdswizzSDK additional permissions are:
 ```xml
 <manifest>
 ....
-    <!-- used in sonar tracking endpoint for the gps location. Used in analytics when sending the batch to the server -->
+    <!-- Used in sonar tracking endpoint for the gps location. Used in analytics when sending the batch to the server -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- used for polling and profile sonar endpoints to get the microphone status. Used for speech recognition during voice ads -->
+    <!-- Used for polling and profile sonar endpoints to get the microphone status. Used for speech recognition during voice ads -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <!-- used in interactivity for the download file and download pass file actions -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- Used in interactivity for the download file and download pass file actions -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
     <!-- used in interactivity call action -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <!-- used during creative selection based on network conditions. Used in interactivity call action -->
+    <!-- Used during creative selection based on network conditions. Used in interactivity call action. -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!-- used during creative selection based on network conditions -->
+    <!-- Used during creative selection based on network conditions. -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- used for sonar profile and polling endpoints when it populates the wifi info -->
+    <!-- Used for sonar profile and polling endpoints when it populates the wifi info -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <!-- used in sonar tracking endpoint for the gps location -->
+    <!-- Used for decoration. Used in sonar tracking endpoint for the gps location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- used for profile and polling sonar endpoints -->
-    <uses-permission android:name="android.permission.BLUETOOTH" />
     <!-- we use it in sonar to add the list of installed apps and bundleVersion to the profile endpoint -->
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <!-- Required for 31+. -->
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+    <!-- Required for 33+. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+
+    <!-- Request legacy Bluetooth permissions on older devices. -->
+    <uses-permission android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
 
     <!-- used for sonar polling endpoint where it sends the list of user activities -->
     <!-- Required for 28 and below. -->
@@ -324,27 +336,19 @@ implementation 'com.adswizz:exoplayer2-10:version'
 _NOTE_: SDK version prior to before 7.6.1 included the exoplayer dependency. Now this dependency is separate and you must include it for the SDK to function correctly. At this time (SDK 7.7.21), there are 7 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14, 2.15, 2.16, 2.17 and 2.18).
 Using different artifact version from exoplayer used in the app may result in crashing the app, thus the app need to include corresponding versions for sdk artifact and exoplayer library (i.e. add com.adswizz:exoplayer2-18:7.7.21 dependecy when using com.google.android.exoplayer:exoplayer:2.18.6 dependency)
 
-In the code snippet above, replace <strong>version</strong> with the version of the phone and tablet SDK provided by AdsWizz (i.e. 7.7.21 - the latest version). Example:
+In the code snippet above, replace <strong>version</strong> with the version of the phone and tablet SDK provided by AdsWizz (i.e. 7.8.0 - the latest version). Example:
 
 ```groovy
 
-implementation 'com.adswizz:adswizz-sdk:7.7.21'
-implementation 'com.adswizz:exoplayer2-10:7.7.21'
+implementation 'com.adswizz:adswizz-sdk:7.8.0'
+implementation 'com.adswizz:exoplayer2-10:7.8.0'
 //or
-//implementation 'com.adswizz:exoplayer2-12:7.7.21'
-//implementation 'com.adswizz:exoplayer2-14:7.7.21'
-//implementation 'com.adswizz:exoplayer2-15:7.7.21'
-//implementation 'com.adswizz:exoplayer2-16:7.7.21'
-//implementation 'com.adswizz:exoplayer2-17:7.7.21'
-//implementation 'com.adswizz:exoplayer2-18:7.7.21'
-
-```
-
-_NOTE_: This artifact uses __protobuf java lite__ internally. If your application uses the full protobuf java library, you'll have to use another SDK artifact, as follows:
-
-```groovy
-
-implementation 'com.adswizz:adswizz-sdk-protobufJava:7.7.21'
+//implementation 'com.adswizz:exoplayer2-12:7.8.0'
+//implementation 'com.adswizz:exoplayer2-14:7.8.0'
+//implementation 'com.adswizz:exoplayer2-15:7.8.0'
+//implementation 'com.adswizz:exoplayer2-16:7.8.0'
+//implementation 'com.adswizz:exoplayer2-17:7.8.0'
+//implementation 'com.adswizz:exoplayer2-18:7.8.0'
 
 ```
 
