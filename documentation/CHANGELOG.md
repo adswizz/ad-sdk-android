@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.8.0] - 2023-08-21
+### Changed
+ - Updated Kotlin version to 1.7.21
+ - Updated SDK libraries
+ - Updated Android targetSdkVersion to API version 33
+ - The **_Integration Guide_** has been revised to incorporate new sections dedicated to PinpointAnalytics and Migrations.
+ - Breaking changes described in PinpointAnalytics and Migrations sections
+
 ## [7.7.25] - 2023-07-25
 ### Fixed
  - Resolved a crash introduced in version `7.7.24` that caused the SDK to crash when receiving events from ExoPlayer.
