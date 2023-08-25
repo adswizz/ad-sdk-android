@@ -21,10 +21,12 @@ import com.ad.core.adBaseManager.AdEvent
 import com.ad.core.adFetcher.AdRequestConnection
 import com.ad.core.adManager.AdManager
 import com.ad.core.adManager.AdManagerListener
+import com.ad.core.adManager.AdManagerSettings
 import com.adswizz.basicsample.databinding.ActivityMainBinding
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.adFetcher.AdswizzAdZone
 import com.adswizz.sdk.AdswizzSDK
+import com.adswizz.streamingsample.ExternalAdPlayer
 //import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -47,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private var adManager: AdManager? = null
+    private var externalAdPlayer: ExternalAdPlayer? = null
     private var adRequestConnection: AdRequestConnection? = null
 
     private var adManagerState: AdManagerState = AdManagerState.Unknown
@@ -175,15 +178,18 @@ class MainActivity : AppCompatActivity() {
         AdswizzSDK.initialize(this)
 
         binding.sdkVersion.text = "${getString(R.string.adswizz_version_prefix)}${com.adswizz.sdk.BuildConfig.VERSION_NAME}"
-
+        externalAdPlayer = ExternalAdPlayer(this.applicationContext)
         //Build the Ad Request with the needed parameters
         AdswizzAdRequest.Builder()
             .withServer(SERVER_URL)
-            .withZones(setOf(AdswizzAdZone(ZONE_ID)))
+            .withZones(setOf(AdswizzAdZone(ZONE_ID), AdswizzAdZone("13381"), AdswizzAdZone("17018"), AdswizzAdZone("17012")))
             .build() { adRequest ->
                 // Create the AdRequestConnection using the above adRequest
                 adRequestConnection = AdRequestConnection(adRequest)
                 adRequestConnection?.requestAds { adManager, error ->
+                    externalAdPlayer?.let {
+                        adManager?.adManagerSettings = AdManagerSettings.Builder().adPlayerInstance(it).build()
+                    }
                     handleResponse(error, adManager)
                 }
             }
@@ -205,21 +211,24 @@ class MainActivity : AppCompatActivity() {
                             binding.appLogs.addEntry("Recommendation: just to be sure that the ad playback will start immediately wait for the <<AdEvent.Type.State.ReadyForPlay>> event")
                         }
                         //it.setBackgroundResource(R.drawable.ic_pause_arrow_black_24dp)
-                        adManager?.play()
+                        //adManager?.play()
+                        externalAdPlayer?.play()
                     }
                     AdManagerState.Paused -> {
                         //it.setBackgroundResource(R.drawable.ic_pause_arrow_black_24dp)
-                        adManager?.resume()
+                        //adManager?.resume()
+                        externalAdPlayer?.resume()
                     }
                     AdManagerState.Playing -> {
                         //it.setBackgroundResource(R.drawable.ic_play_arrow_black_24dp)
-                        adManager?.pause()
+//                        adManager?.pause()
+                        externalAdPlayer?.pause()
                     }
                     AdManagerState.AllAdsCompleted -> {
                         //it.setBackgroundResource(R.drawable.ic_pause_arrow_black_24dp)
-                        adManager?.reset()
-                        adManager?.prepare()
-                        adManager?.play()
+//                        adManager?.reset()
+//                        adManager?.prepare()
+//                        adManager?.play()
                     }
                 }
             }
@@ -236,6 +245,9 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.menuPause -> {
                 adManager?.pause()
+            }
+            R.id.menuSkip -> {
+                externalAdPlayer?.skip()
             }
         }
         return super.onOptionsItemSelected(item)

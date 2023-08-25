@@ -200,6 +200,9 @@ class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener
         player.playWhenReady = true
     }
 
+    fun stop(){
+        player.stop()
+    }
     override fun pause() {
         player.playWhenReady = false
     }

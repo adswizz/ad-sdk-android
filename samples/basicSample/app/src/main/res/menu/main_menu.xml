@@ -15,6 +15,12 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/menuSkip"
+        android:icon="@drawable/ic_forward_white_24dp"
+        android:title="Skip"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/menuReplay"
         android:icon="@drawable/ic_replay_white_24dp"
         android:title=""

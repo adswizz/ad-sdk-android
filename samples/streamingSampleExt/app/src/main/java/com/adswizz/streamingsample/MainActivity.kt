@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     companion object {
-        const val SERVER_URL = "http://sdk.mobile.streaming.adswizz.com:8500/shakeDemo"
+        const val SERVER_URL = "http://sdk.mobile.streaming.adswizz.com:8500/shakeRadio"
     }
 
     private var streamManager: AdswizzAdStreamManager? = null
@@ -130,7 +130,9 @@ class MainActivity : AppCompatActivity() {
         }
         streamManager = AdswizzAdStreamManager(adManagerStreamingSettingsBuilder.build())
         streamManager?.addListener(listener)
-        streamManager?.play(SERVER_URL)
+        //streamManager?.play(SERVER_URL)
+        externalAdPlayer?.load(SERVER_URL)
+        externalAdPlayer?.play()
 
     }
 
@@ -142,13 +144,20 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menuReplay -> {
-                streamManager?.stop()
+                externalAdPlayer?.stop()
+                //streamManager?.stop()
                 streamManager?.removeListener(listener)
                 binding.appLogs.text = ""
 
-                streamManager = AdswizzAdStreamManager(null)
-                streamManager?.play(SERVER_URL)
+                val adManagerStreamingSettingsBuilder = AdManagerStreamingSettings.Builder()
+                externalAdPlayer?.let {
+                    adManagerStreamingSettingsBuilder.adPlayerInstance(it)
+                }
+                streamManager = AdswizzAdStreamManager(adManagerStreamingSettingsBuilder.build())
+                //streamManager?.play(SERVER_URL)
                 streamManager?.addListener(listener)
+                externalAdPlayer?.load(SERVER_URL)
+                externalAdPlayer?.play()
             }
         }
         return super.onOptionsItemSelected(item)
