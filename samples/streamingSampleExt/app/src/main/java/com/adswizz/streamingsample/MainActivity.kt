@@ -154,9 +154,9 @@ class MainActivity : AppCompatActivity() {
                     adManagerStreamingSettingsBuilder.adPlayerInstance(it)
                 }
                 streamManager = AdswizzAdStreamManager(adManagerStreamingSettingsBuilder.build())
-                //streamManager?.play(SERVER_URL)
+                streamManager?.play(SERVER_URL)
                 streamManager?.addListener(listener)
-                externalAdPlayer?.load(SERVER_URL)
+                //externalAdPlayer?.load(SERVER_URL)
                 externalAdPlayer?.play()
             }
         }

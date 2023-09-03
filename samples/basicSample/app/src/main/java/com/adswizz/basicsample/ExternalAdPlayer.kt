@@ -132,6 +132,7 @@ class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener
             seekInProgress = true
             player.setMediaSource(mediaSources)
             player.prepare()
+            player.play()
         }
     }
 
@@ -217,7 +218,9 @@ class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener
     }
 
     override fun reset() {
-        player.stop(true)
+        //player.stop(true)
+        player.stop()
+        player.clearMediaItems()
         player.playWhenReady = false
         status = AdPlayer.Status.INITIALIZED
         duration = null
