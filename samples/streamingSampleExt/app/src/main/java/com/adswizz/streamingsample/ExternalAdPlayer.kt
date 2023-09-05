@@ -529,7 +529,13 @@ class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener
                 }
             }
         }
-        listenerList.forEach { it.get()?.onMetadata(metadataList) }
+        metadataList.forEach {
+            println("*** ${it.key} = > ${it.value}")
+        }
+        listenerList.forEach {
+            println("*** ${it.get()}")
+            it.get()?.onMetadata(metadataList)
+        }
     }
 
     //endregion

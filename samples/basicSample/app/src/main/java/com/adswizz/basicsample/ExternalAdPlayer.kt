@@ -227,6 +227,7 @@ class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener
 
         mediaSources.clear()
         playlist.clear()
+        listenerList.clear()
         playingIndex = -1
         seekInProgress = false
     }

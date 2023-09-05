@@ -233,18 +233,24 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             R.id.menuReplay -> {
-                adManager?.reset()
-                adManager = null
+                //adManager?.reset()
+                adManager?.removeAdManagerListener()
+                //adManager = null
+                externalAdPlayer?.reset()
                 adManagerState = AdManagerState.Unknown
 
                 binding.appLogs.text = ""
 
                 adRequestConnection?.requestAds { adManager, error ->
+                    externalAdPlayer?.let {
+                        adManager?.adManagerSettings = AdManagerSettings.Builder().adPlayerInstance(it).build()
+                    }
                     handleResponse(error, adManager)
                 }
             }
             R.id.menuPause -> {
-                adManager?.pause()
+                //adManager?.pause()
+                externalAdPlayer?.pause()
             }
             R.id.menuSkip -> {
                 externalAdPlayer?.skip()

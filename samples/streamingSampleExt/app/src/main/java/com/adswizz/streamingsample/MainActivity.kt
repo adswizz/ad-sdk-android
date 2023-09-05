@@ -123,6 +123,13 @@ class MainActivity : AppCompatActivity() {
             companionZone = "12193"
         )
 
+        AdswizzSDK.afrConfig = AfrConfig(
+            protocol = AdswizzAdRequest.HttpProtocol.HTTP,
+            server = "demo.deliveryengine.adswizz.com/",
+            endpoint = "www/delivery/afr.php",
+            companionZone = "12009"
+        )
+
         externalAdPlayer = ExternalAdPlayer(this)
         val adManagerStreamingSettingsBuilder = AdManagerStreamingSettings.Builder()
         externalAdPlayer?.let {
@@ -130,8 +137,10 @@ class MainActivity : AppCompatActivity() {
         }
         streamManager = AdswizzAdStreamManager(adManagerStreamingSettingsBuilder.build())
         streamManager?.addListener(listener)
-        //streamManager?.play(SERVER_URL)
-        externalAdPlayer?.load(SERVER_URL)
+//        streamManager?.play(SERVER_URL)
+        val decoratedUrl = AdswizzAdStreamManager.decorateUrl(SERVER_URL)
+        externalAdPlayer?.load(decoratedUrl.toString())
+        println("******$decoratedUrl")
         externalAdPlayer?.play()
 
     }
@@ -154,9 +163,16 @@ class MainActivity : AppCompatActivity() {
                     adManagerStreamingSettingsBuilder.adPlayerInstance(it)
                 }
                 streamManager = AdswizzAdStreamManager(adManagerStreamingSettingsBuilder.build())
-                streamManager?.play(SERVER_URL)
+                //streamManager?.play(SERVER_URL)
+                val decoratedUrl = AdswizzAdStreamManager.decorateUrl(SERVER_URL)
                 streamManager?.addListener(listener)
-                //externalAdPlayer?.load(SERVER_URL)
+                externalAdPlayer?.load(decoratedUrl.toString())
+                externalAdPlayer?.play()
+            }
+            R.id.menuPause ->{
+                externalAdPlayer?.pause()
+            }
+            R.id.menuPlay ->{
                 externalAdPlayer?.play()
             }
         }
