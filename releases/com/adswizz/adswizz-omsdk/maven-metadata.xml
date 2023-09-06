@@ -3,11 +3,12 @@
   <groupId>com.adswizz</groupId>
   <artifactId>adswizz-omsdk</artifactId>
   <versioning>
-    <latest>7.8.0</latest>
-    <release>7.8.0</release>
+    <latest>7.8.1</latest>
+    <release>7.8.1</release>
     <versions>
       <version>7.8.0</version>
+      <version>7.8.1</version>
     </versions>
-    <lastUpdated>20230830122953</lastUpdated>
+    <lastUpdated>20230906095438</lastUpdated>
   </versioning>
 </metadata>
