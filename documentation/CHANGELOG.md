@@ -5,10 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.8.1] - 2023-09-06
+### Changed
+ - Renamed the decoration parameter `aw_0_1st.adEvents` to `aw_0_req.adEvents`
+### Fixed
+ - Resolved decoration parameter `aw_0_1st.version` to work properly when obfuscation is applied.
+
 ## [7.8.0] - 2023-08-30
 ### Changed
  - Updated Kotlin version to 1.7.21 
- - Updated SDK libraries [Library dependencies updates](Android/Migrations/v7_8_0#prerequisites)
+ - Updated SDK libraries. For additional information, refer to [Library dependencies updates](Android/Migrations/v7_8_0#prerequisites)
  - Updated Android targetSdkVersion to API version 33, see also [7.8.0 Migration](Android/Migrations/v7_8_0)
  - The **_Integration Guide_** has been revised to incorporate new sections dedicated to PinpointAnalytics and Migrations.
  - Breaking changes described in PinpointAnalytics and Migrations sections
