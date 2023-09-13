@@ -4,13 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:layout_margin="2dp">
 
     <ImageView
         android:id="@+id/albumArt"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="60dp"
         android:scaleType="centerCrop"
+        android:src="@drawable/cover1"
         app:srcCompat="@android:color/transparent" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -42,6 +45,7 @@
         android:layout_marginEnd="16dp"
         android:ellipsize="end"
         android:maxLines="1"
+        android:textColor="@color/black"
         app:layout_constraintLeft_toRightOf="@id/media_button"
         app:layout_constraintRight_toLeftOf="@id/position"
         app:layout_constraintTop_toBottomOf="@id/divider"
@@ -55,6 +59,7 @@
         android:layout_marginEnd="16dp"
         android:ellipsize="end"
         android:maxLines="1"
+        android:textColor="@color/black"
         app:layout_constraintLeft_toRightOf="@id/media_button"
         app:layout_constraintRight_toLeftOf="@id/position"
         app:layout_constraintTop_toBottomOf="@+id/title"
@@ -69,6 +74,7 @@
         android:layout_marginEnd="16dp"
         android:ellipsize="end"
         android:maxLines="1"
+        android:textColor="@color/black"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider"
         tools:text="0:00" />
@@ -81,6 +87,7 @@
         android:layout_marginEnd="16dp"
         android:ellipsize="end"
         android:maxLines="1"
+        android:textColor="@color/black"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/position"
         tools:text="0:00" />

@@ -15,19 +15,32 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import android.Manifest
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.media.session.PlaybackState
 import android.net.Uri
+import android.os.SystemClock
+import android.support.v4.media.session.MediaSessionCompat
 import androidx.activity.viewModels
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.adswizz.sdk.AdswizzSDK
 import com.georgedum.adswizzuniversalplayer.databinding.ActivityMainBinding
 import com.georgedum.adswizzuniversalplayer.fragments.ListMediaFragment
 import com.georgedum.adswizzuniversalplayer.fragments.PlayingItemFragment
 import com.georgedum.adswizzuniversalplayer.models.MediaData
+import com.georgedum.adswizzuniversalplayer.receivers.MyBroadcastReceiver
 import com.georgedum.adswizzuniversalplayer.utils.Factory
 import com.georgedum.adswizzuniversalplayer.utils.MusicServiceConnections
 import com.georgedum.adswizzuniversalplayer.viewmodels.MainActivityModel
+import java.net.CookieManager
+import java.net.CookiePolicy
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,6 +50,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mediaBrowser: MediaBrowserCompat
 
     private val viewModel = Factory.getMainModelInstance()
+
+    private var currentFragment: Fragment? = null
 
     private val clickable = object : MainActivityModel.ItemClickInterface{
         override fun onItemClick(item: MediaData) {
@@ -58,20 +73,112 @@ class MainActivity : AppCompatActivity() {
 
 //        setSupportActionBar(binding.toolbar)
         MusicServiceConnections.initializeWithAppContext(this)
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.POST_NOTIFICATIONS)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            )
+        ) {
             println("Show permission")
         }
-        ActivityCompat.requestPermissions(this,  listOf(Manifest.permission.POST_NOTIFICATIONS).toTypedArray(), 1024)
+        ActivityCompat.requestPermissions(
+            this,
+            listOf(Manifest.permission.POST_NOTIFICATIONS).toTypedArray(),
+            1024
+        )
+        /*
+        if (CookieManager.getDefault() == null) {
+            val cookieManager = CookieManager()
+            cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL)
+            CookieManager.setDefault(cookieManager)
+        }
 
+        val br = MyBroadcastReceiver()
+        val filter = IntentFilter("android.intent.action.ACTION_POWER_DISCONNECTED")
+        ContextCompat.registerReceiver(this, br, filter, ContextCompat.RECEIVER_NOT_EXPORTED)
+        ContextCompat.registerReceiver(
+            this,
+            br,
+            IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED),
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
+        ContextCompat.registerReceiver(
+            this,
+            br,
+            IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"),
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
+        ContextCompat.registerReceiver(
+            this,
+            br,
+            IntentFilter(Intent.ACTION_BOOT_COMPLETED),
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
+        ContextCompat.registerReceiver(
+            this,
+            br,
+            IntentFilter(Intent.ACTION_LOCKED_BOOT_COMPLETED),
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
+
+        val alarmManager =
+            this.applicationContext.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+        val pendingIntent =
+            PendingIntent.getService(
+                this.applicationContext, 100, intent,
+                PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
+            )
+        if (pendingIntent != null && alarmManager != null) {
+            alarmManager.cancel(pendingIntent)
+        }
+        alarmManager?.setInexactRepeating(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HALF_HOUR,
+            AlarmManager.INTERVAL_HALF_HOUR,
+            pendingIntent
+        )
+        */
         viewModel.rootMediaId.observe(this,
             Observer<String> { rootMediaId ->
                 rootMediaId?.let { navigateToMediaItem(it) }
             })
+
+        MusicServiceConnections.playbackState.observe(this) {
+            if (it.state == PlaybackState.STATE_PLAYING) {
+                MusicServiceConnections.nowPlaying.value?.let {
+                    if (currentFragment is PlayingItemFragment) {
+                        (currentFragment as PlayingItemFragment).updateToMediaItem(
+                            MediaData(
+                                it.getString(
+                                    MediaMetadataCompat.METADATA_KEY_MEDIA_ID
+                                ),
+                                it.getString(MediaMetadataCompat.METADATA_KEY_TITLE),
+                                it.getString(MediaMetadataCompat.METADATA_KEY_ARTIST),
+                                "",
+                                Uri.parse(""),
+                                false
+                            )
+                        )
+                    } else {
+                        navigateToDetailScreen(
+                            MediaData(
+                                it.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID),
+                                it.getString(MediaMetadataCompat.METADATA_KEY_TITLE),
+                                it.getString(MediaMetadataCompat.METADATA_KEY_ARTIST),
+                                "",
+                                Uri.parse(""),
+                                false
+                            )
+                        )
+                    //update interface to currentPlayingItem
+                    }
+                }
+                //if ( currentFragment is PlayingItemFragment)
+            }
 //        val navController = findNavController(R.id.nav_host_fragment_content_main)
 //        appBarConfiguration = AppBarConfiguration(navController.graph)
 //        setupActionBarWithNavController(navController, appBarConfiguration)
 
-        //Uri.parse(null) - java.lang.NullPointerException
+            //Uri.parse(null) - java.lang.NullPointerException
 //        println("Uri nasol 1 : ${Uri.parse("http:/ceva")}")
 //        println("Uri nasol 2 : ${Uri.parse("http/altceva")}")
 
@@ -87,6 +194,7 @@ class MainActivity : AppCompatActivity() {
 //            null )// optional Bundle
 
 
+        }
     }
 
     private fun navigateToMediaItem(mediaId: String) {
@@ -97,9 +205,10 @@ class MainActivity : AppCompatActivity() {
         )
         transaction.addToBackStack(mediaId)
         transaction.commit()
+        currentFragment = fragment
     }
 
-    private fun navigateToDetailScreen(item:MediaData){
+    private fun navigateToDetailScreen(item: MediaData){
         val fragment = PlayingItemFragment(item)
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(
@@ -107,7 +216,7 @@ class MainActivity : AppCompatActivity() {
         )
         transaction.addToBackStack(item.mediaId)
         transaction.commit()
-
+        currentFragment = fragment
     }
 
     public override fun onStart() {

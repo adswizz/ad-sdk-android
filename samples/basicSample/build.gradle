@@ -33,6 +33,17 @@ allprojects {
                 header(HttpHeaderAuthentication)
             }
         }
+
+        maven{
+            url "https://raw.githubusercontent.com/adswizz/ad-sdk-android-dev/master/releases"
+            credentials(HttpHeaderCredentials) {
+                name = "Authorization"
+                value = localProperties["adswizzDevToken"] ?: System.getenv("ADSWIZZ_TOKEN")
+            }
+            authentication {
+                header(HttpHeaderAuthentication)
+            }
+        }
     }
 }
 

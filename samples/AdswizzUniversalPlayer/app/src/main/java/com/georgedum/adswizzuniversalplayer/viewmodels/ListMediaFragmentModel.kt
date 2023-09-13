@@ -20,6 +20,7 @@ class ListMediaFragmentModel(private val mediaId: String) {
                     child.mediaId!!,
                     child.description.title.toString(),
                     subtitle.toString(),
+                    "",
                     child.description.iconUri ?: Uri.parse(""),
                     child.isBrowsable
                 )

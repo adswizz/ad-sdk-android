@@ -2,6 +2,7 @@ package com.georgedum.adswizzuniversalplayer.utils
 
 import android.content.ComponentName
 import android.content.Context
+import android.media.session.MediaSession.QueueItem
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
@@ -52,6 +53,12 @@ object MusicServiceConnections {
         mediaBrowser.unsubscribe(parentId, callback)
     }
 
+
+    fun getMediaItemFromQueue(queueId: Long): MediaSessionCompat.QueueItem?{
+        return mediaController.queue.firstOrNull{
+            it.queueId == queueId
+        }
+    }
 
     private class MediaBrowserConnectionCallback(private val context: Context) :
         MediaBrowserCompat.ConnectionCallback() {

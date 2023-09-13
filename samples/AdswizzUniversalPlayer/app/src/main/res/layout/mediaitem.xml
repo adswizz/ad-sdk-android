@@ -25,6 +25,7 @@
         android:id="@+id/albumArt"
         android:layout_width="64dp"
         android:layout_height="64dp"
+        android:padding="12dp"
         android:scaleType="centerCrop"
         android:src="@drawable/cover1"
         app:layout_constraintLeft_toLeftOf="parent"

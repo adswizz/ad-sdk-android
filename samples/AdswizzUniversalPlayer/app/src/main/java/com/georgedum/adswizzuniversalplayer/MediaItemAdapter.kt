@@ -22,6 +22,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.georgedum.adswizzuniversalplayer.R
 
 import com.georgedum.adswizzuniversalplayer.databinding.MediaitemBinding
 import com.georgedum.adswizzuniversalplayer.models.MediaData
@@ -65,6 +66,12 @@ class MediaItemAdapter(
             holder.item = mediaItem
             holder.titleView.text = mediaItem.title
             holder.subtitleView.text = mediaItem.subtitle
+            if ( mediaItem.browsable){
+                holder.albumArt.setImageResource(R.drawable.queue_music_24px)
+            }
+            else{
+                holder.albumArt.setImageResource(R.drawable.music_note_24px)
+            }
             //holder.playbackState.setImageResource(mediaItem.playbackRes)
             /*
             Glide.with(holder.albumArt)
@@ -72,6 +79,12 @@ class MediaItemAdapter(
                 .placeholder(R.drawable.default_art)
                 .into(holder.albumArt)
              */
+        }
+        if ( position%2 == 0){
+            holder.rootView.setBackgroundColor(0xFFF8F8F8.toInt())
+        }
+        else{
+            holder.rootView.setBackgroundColor(0xFFFFFFFF.toInt())
         }
     }
 
@@ -84,7 +97,7 @@ class MediaViewHolder(
     binding: MediaitemBinding,
     itemClickedListener: (MediaData) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
-
+    val rootView = binding.root
     val titleView: TextView = binding.title
     val subtitleView: TextView = binding.subtitle
     val albumArt: ImageView = binding.albumArt
