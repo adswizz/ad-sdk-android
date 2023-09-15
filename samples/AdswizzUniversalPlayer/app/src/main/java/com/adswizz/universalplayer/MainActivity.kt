@@ -22,6 +22,7 @@ import androidx.lifecycle.Observer
 import com.adswizz.universalplayer.databinding.ActivityMainBinding
 import com.adswizz.universalplayer.fragments.ListMediaFragment
 import com.adswizz.universalplayer.fragments.PlayingItemFragment
+import com.adswizz.universalplayer.fragments.PlayingItemFragment.Companion.MEDIA_ITEM_ARG
 import com.adswizz.universalplayer.models.MediaData
 import com.adswizz.universalplayer.utils.Factory
 import com.adswizz.universalplayer.utils.MusicServiceConnections
@@ -185,7 +186,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateToMediaItem(mediaId: String) {
-        val fragment = ListMediaFragment(mediaId)
+        val fragment = ListMediaFragment().apply {
+            arguments = Bundle().apply {
+                putString(ListMediaFragment.MEDIA_ID_ARG, mediaId)
+            }
+        }
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(
             R.id.fragmentContainer, fragment, mediaId
@@ -196,7 +201,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateToDetailScreen(item: MediaData){
-        val fragment = PlayingItemFragment(item)
+        val fragment = PlayingItemFragment().apply{
+            val itemBundle = Bundle().apply {
+                putString("mediaId", item.mediaId)
+                putString("title", item.title)
+                putString("subtitle", item.subtitle)
+                putString("uri", item.uri)
+                putString("albumArtUri", item.albumArtUri.toString())
+                putBoolean("browsable", item.browsable)
+            }
+            arguments = Bundle().apply {
+                putBundle(MEDIA_ITEM_ARG, itemBundle)
+            }
+        }
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(
             R.id.fragmentContainer, fragment, item.mediaId

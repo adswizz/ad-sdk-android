@@ -1,5 +1,6 @@
 package com.adswizz.universalplayer.fragments
 
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
@@ -12,16 +13,34 @@ import com.adswizz.universalplayer.databinding.PlayingitemLayoutBinding
 import com.adswizz.universalplayer.models.MediaData
 import com.adswizz.universalplayer.utils.MusicServiceConnections
 
-class PlayingItemFragment(val mediaItem: MediaData) : Fragment() {
+class PlayingItemFragment() : Fragment() {
+    companion object{
+        const val MEDIA_ITEM_ARG = "com.adswizz.universalplayer.fragments.PlayingItemFragment.MEDIA_ITEM"
+    }
+
     private lateinit var binding: PlayingitemLayoutBinding
+    private lateinit var mediaItem: MediaData
     private var playbackState = PlaybackStateCompat.STATE_NONE
     private var started = true
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = PlayingitemLayoutBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val bundle = arguments?.getBundle(MEDIA_ITEM_ARG) ?: return
+        mediaItem = MediaData(bundle.getString("mediaId") ?: "",
+            bundle.getString("title") ?: "",
+            bundle.getString("subtitle") ?: "",
+            bundle.getString("uri") ?: "",
+            Uri.parse(bundle.getString("albumArtUri") ?: ""),
+            bundle.getBoolean("browsable"))
         binding.mediaButton.setOnClickListener{
             when (playbackState){
                 PlaybackStateCompat.STATE_PAUSED -> {
@@ -51,7 +70,6 @@ class PlayingItemFragment(val mediaItem: MediaData) : Fragment() {
                     binding.mediaButton.setImageResource(R.drawable.ic_pause_black_24dp)
                 }
                 PlaybackStateCompat.STATE_PLAYING -> {
-                    started = false
                     MusicServiceConnections.transportControls.pause()
                     binding.mediaButton.setImageResource(R.drawable.ic_play_arrow_black_24dp)
 
@@ -60,6 +78,7 @@ class PlayingItemFragment(val mediaItem: MediaData) : Fragment() {
 
                 }
             }
+            started = false
         }
         if (mediaItem.title.isNotEmpty()) {
             binding.title.text = mediaItem.title
@@ -69,11 +88,6 @@ class PlayingItemFragment(val mediaItem: MediaData) : Fragment() {
         }
         binding.position.text = "00:00"
         binding.duration.text = "00:00"
-        return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
 
         MusicServiceConnections.playbackState.observe(viewLifecycleOwner){
             val duration = (it.extras?.getDouble("duration") ?: 0).toLong()

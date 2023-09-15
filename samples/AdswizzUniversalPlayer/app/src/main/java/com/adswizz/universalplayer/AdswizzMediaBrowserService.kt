@@ -329,6 +329,7 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
         val index = list.indexOfFirst { it.mediaId == currentMediaId }
         if ( index < list.size -1 ){
             val item = list[index+1]
+            updateMediaMetadata(item)
             when (serviceType){
                 "client" -> playClient(item.mediaId)
                 "sever" -> playServer(item.uri)
@@ -349,6 +350,7 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
         val index = list.indexOfFirst { it.mediaId == currentMediaId }
         if ( index -1 >= 0 ){
             val item = list[index-1]
+            updateMediaMetadata(item)
             when (serviceType){
                 "client" -> playClient(item.mediaId)
                 "sever" -> playServer(item.uri)
@@ -417,6 +419,31 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
             }
             else if (event.type == AdEvent.Type.State.AllAdsCompleted){
                 playNext("client")
+            }
+            else{
+                when(event.type){
+                    AdEvent.Type.Position.FirstQuartile -> {
+                        val position = adManager.ads.sumOf { it.duration ?: 0.0 } * 0.25
+                        stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, position.toLong(), 1.0f)
+                        mediaSession?.setPlaybackState(stateBuilder.build())
+                    }
+                    AdEvent.Type.Position.Midpoint -> {
+                        val position = adManager.ads.sumOf { it.duration ?: 0.0 } * 0.5
+                        stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, position.toLong(), 1.0f)
+                        mediaSession?.setPlaybackState(stateBuilder.build())
+                    }
+                    AdEvent.Type.Position.ThirdQuartile -> {
+                        val position = adManager.ads.sumOf { it.duration ?: 0.0 } * 0.75
+                        stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, position.toLong(), 1.0f)
+                        mediaSession?.setPlaybackState(stateBuilder.build())
+                    }
+                    AdEvent.Type.Position.Complete -> {
+                        val position = adManager.ads.sumOf { it.duration ?: 0.0 }
+                        stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, position.toLong(), 1.0f)
+                        mediaSession?.setPlaybackState(stateBuilder.build())
+                    }
+                    else -> Unit
+                }
             }
         }
     }
@@ -519,17 +546,19 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
     */
 
     private fun startServiceWithMedia(serviceType:String, media: MediaData){
+        updateMediaMetadata(media)
+        startService(serviceType, media.mediaId, Uri.parse(media.uri))
+    }
+
+    private fun updateMediaMetadata(media: MediaData){
         val metadata = MediaMetadataCompat.Builder()
             .putText(MediaMetadataCompat.METADATA_KEY_TITLE, media.title)
             .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, media.subtitle)
             .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, media.mediaId)
             .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, bitmap)
-            .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, 120*1000)
             .build()
         mediaSession?.setMetadata(metadata)
-        startService(serviceType, media.mediaId, Uri.parse(media.uri))
     }
-
     /*
         region MediaSessionCompat callbacks
     */

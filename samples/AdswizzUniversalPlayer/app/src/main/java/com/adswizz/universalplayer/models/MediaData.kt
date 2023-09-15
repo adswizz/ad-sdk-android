@@ -8,7 +8,7 @@ data class MediaData(val mediaId: String,
                      val subtitle: String,
                      val uri: String,
                      val albumArtUri: Uri,
-                     val browsable: Boolean){
+                     val browsable: Boolean) {
 
     companion object {
         val diffCallback = object : DiffUtil.ItemCallback<MediaData>() {
