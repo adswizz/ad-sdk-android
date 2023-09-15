@@ -39,3 +39,7 @@ This app demonstrates a client-side insertion with video by showing how to add a
 ## Podcast sample
 
 This sample shows how your app can integrate the **_AdswizzSDK_** podcasting support by using an **_AdswizzAdPodcastManager_**. It demonstrates how to download a podcast locally, as well as playing it from disk.
+
+## Adswizz Universal media player
+
+This sample shows how your app can integrate the **_AdswizzSDK_** client side, server side and podcasting in a UAMP like architecture. It demonstrates how to play podcasts from a playlist using **_AdswizzAdPodcastManager_**, play different ads from a list of ad types using an **_AdManager_** or streaming different streams in a list using **_AdswizzAdStream_**. It is based on UAMP architecture (look for more on  https://github.com/android/uamp/blob/main/docs/FullGuide.md)
