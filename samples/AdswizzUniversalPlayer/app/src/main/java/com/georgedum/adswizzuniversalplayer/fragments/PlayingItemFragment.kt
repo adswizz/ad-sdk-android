@@ -85,11 +85,17 @@ class PlayingItemFragment(val mediaItem: MediaData) : Fragment() {
         }
 
         MusicServiceConnections.nowPlaying.observe(viewLifecycleOwner){
-            it.getText(MediaMetadataCompat.METADATA_KEY_TITLE)?.let { str ->
-                if (str.isNotEmpty()){ binding.title.text = str }
-            }
-            it.getString(MediaMetadataCompat.METADATA_KEY_ARTIST)?.let{ str ->
-                if (str.isNotEmpty()){ binding.subtitle.text = str }
+            if ( !started) {
+                it.getText(MediaMetadataCompat.METADATA_KEY_TITLE)?.let { str ->
+                    if (str.isNotEmpty()) {
+                        binding.title.text = str
+                    }
+                }
+                it.getString(MediaMetadataCompat.METADATA_KEY_ARTIST)?.let { str ->
+                    if (str.isNotEmpty()) {
+                        binding.subtitle.text = str
+                    }
+                }
             }
         }
 
@@ -102,6 +108,7 @@ class PlayingItemFragment(val mediaItem: MediaData) : Fragment() {
         MusicServiceConnections.transportControls.pause()
         super.onDestroy()
     }
+    
     fun updateToMediaItem(media: MediaData){
         if (mediaItem.mediaId != media.mediaId){
             //do nothing
