@@ -70,8 +70,9 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.title = "Adswizz UAMP (SDK ${BuildConfig.SDK_VERSION})"
 
-//        setSupportActionBar(binding.toolbar)
         MusicServiceConnections.initializeWithAppContext(this)
         if (ActivityCompat.shouldShowRequestPermissionRationale(
                 this,
@@ -85,58 +86,7 @@ class MainActivity : AppCompatActivity() {
             listOf(Manifest.permission.POST_NOTIFICATIONS).toTypedArray(),
             1024
         )
-        /*
-        if (CookieManager.getDefault() == null) {
-            val cookieManager = CookieManager()
-            cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL)
-            CookieManager.setDefault(cookieManager)
-        }
 
-        val br = MyBroadcastReceiver()
-        val filter = IntentFilter("android.intent.action.ACTION_POWER_DISCONNECTED")
-        ContextCompat.registerReceiver(this, br, filter, ContextCompat.RECEIVER_NOT_EXPORTED)
-        ContextCompat.registerReceiver(
-            this,
-            br,
-            IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED),
-            ContextCompat.RECEIVER_NOT_EXPORTED
-        )
-        ContextCompat.registerReceiver(
-            this,
-            br,
-            IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"),
-            ContextCompat.RECEIVER_NOT_EXPORTED
-        )
-        ContextCompat.registerReceiver(
-            this,
-            br,
-            IntentFilter(Intent.ACTION_BOOT_COMPLETED),
-            ContextCompat.RECEIVER_NOT_EXPORTED
-        )
-        ContextCompat.registerReceiver(
-            this,
-            br,
-            IntentFilter(Intent.ACTION_LOCKED_BOOT_COMPLETED),
-            ContextCompat.RECEIVER_NOT_EXPORTED
-        )
-
-        val alarmManager =
-            this.applicationContext.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
-        val pendingIntent =
-            PendingIntent.getService(
-                this.applicationContext, 100, intent,
-                PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
-            )
-        if (pendingIntent != null && alarmManager != null) {
-            alarmManager.cancel(pendingIntent)
-        }
-        alarmManager?.setInexactRepeating(
-            AlarmManager.ELAPSED_REALTIME_WAKEUP,
-            SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HALF_HOUR,
-            AlarmManager.INTERVAL_HALF_HOUR,
-            pendingIntent
-        )
-        */
         viewModel.rootMediaId.observe(this,
             Observer<String> { rootMediaId ->
                 rootMediaId?.let { navigateToMediaItem(it) }
@@ -233,84 +183,17 @@ class MainActivity : AppCompatActivity() {
         //mediaBrowser.disconnect()
     }
 
-    fun buildTransportControls() {
-        val mediaController = MediaControllerCompat.getMediaController(this@MainActivity)
-        // Grab the view for the play/pause button
-
-
-        // Display the initial state
-        val metadata = mediaController.metadata
-        val pbState = mediaController.playbackState
-
-        // Register a Callback to stay in sync
-        mediaController.registerCallback(controllerCallback)
-    }
-
-    private var controllerCallback = object : MediaControllerCompat.Callback() {
-
-        override fun onMetadataChanged(metadata: MediaMetadataCompat?) {
-            println("On Metadata Changed $metadata")
-        }
-
-        override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
-            println("On Playback Changed: $state")
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount>1) {
+            super.onBackPressed()
         }
     }
 
-    private val connectionCallbacks = object : MediaBrowserCompat.ConnectionCallback() {
-        override fun onConnected() {
-//            println("ConnectionCallback:: onConnected")
-            // Get the token for the MediaSession
-            mediaBrowser.sessionToken.also { token ->
-
-                // Create a MediaControllerCompat
-                val mediaController = MediaControllerCompat(
-                    this@MainActivity, // Context
-                    token
-                ).apply {
-                    registerCallback(controllerCallback)
-                }
-
-                // Save the controller
-                MediaControllerCompat.setMediaController(this@MainActivity, mediaController)
-            }
-            println("Media browser root: ${mediaBrowser.root}")
-            val subscriptionCallback = object : MediaBrowserCompat.SubscriptionCallback(){
-                override fun onChildrenLoaded(
-                    parentId: String,
-                    children: MutableList<MediaBrowserCompat.MediaItem>
-                ) {
-                    children.forEach {
-                        println("Subscription: $parentId ${it.mediaId}")
-                        if (it.isBrowsable){
-                            println("Browsable: ${it.isBrowsable}")
-                            it.mediaId?.let{ ID ->
-                                mediaBrowser.subscribe(ID, this)
-                            }
-                        }
-                    }
-                    super.onChildrenLoaded(parentId, children)
-                }
-
-            }
-            mediaBrowser.subscribe(mediaBrowser.root, subscriptionCallback)
-            // Finish building the UI
-            buildTransportControls()
-        }
-
-        override fun onConnectionSuspended() {
-            println("ConnectionCallback:: onConnectionSuspended")
-
-            // The Service has crashed. Disable transport controls until it automatically reconnects
-        }
-
-        override fun onConnectionFailed() {
-            println("ConnectionCallback:: onConnectionFailed")
-
-            // The Service has refused our connection
-        }
+    public override fun onDestroy() {
+        val intent = Intent(this, AdswizzMediaBrowserService::class.java)
+        stopService(intent)
+        super.onDestroy()
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.

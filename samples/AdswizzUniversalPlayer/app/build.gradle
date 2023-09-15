@@ -3,6 +3,10 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+ext{
+    adswizzSdkDevVersion = "7.8.1"
+}
+
 android {
     compileSdk 33
 
@@ -14,6 +18,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "SDK_VERSION", "\"$adswizzSdkDevVersion\""
+
     }
 
     buildTypes {
@@ -31,6 +38,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
 }
 
@@ -43,10 +51,9 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
     implementation 'androidx.work:work-runtime-ktx:2.7.1'
-    implementation 'com.google.android.exoplayer:exoplayer:2.16.0'
     implementation 'com.google.android.exoplayer:extension-mediasession:2.16.0'
-    implementation 'com.adswizz:adswizz-sdk:7.7.16'
-    implementation 'com.adswizz:exoplayer2-16:7.7.16'
+    implementation "com.adswizz:adswizz-sdk:$adswizzSdkDevVersion"
+    implementation "com.adswizz:exoplayer2-16:$adswizzSdkDevVersion"
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

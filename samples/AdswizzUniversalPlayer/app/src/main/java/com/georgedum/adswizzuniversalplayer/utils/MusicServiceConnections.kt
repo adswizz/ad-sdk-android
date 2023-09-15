@@ -14,8 +14,6 @@ import androidx.media.MediaBrowserServiceCompat
 import com.georgedum.adswizzuniversalplayer.AdswizzMediaBrowserService
 
 object MusicServiceConnections {
-    private lateinit var _context: Context
-
     val isConnected = MutableLiveData<Boolean>()
         .apply { postValue(false) }
     val networkFailure = MutableLiveData<Boolean>()
@@ -27,6 +25,7 @@ object MusicServiceConnections {
         .apply { postValue(EMPTY_PLAYBACK_STATE) }
     val nowPlaying = MutableLiveData<MediaMetadataCompat>()
         .apply { postValue(NOTHING_PLAYING) }
+    val sessionEvents = MutableLiveData<Bundle>()
 
     val transportControls: MediaControllerCompat.TransportControls
         get() = mediaController.transportControls
@@ -36,7 +35,6 @@ object MusicServiceConnections {
     private lateinit var mediaController: MediaControllerCompat
 
     fun initializeWithAppContext(context: Context){
-        _context = context
         mediaBrowserConnectionCallback =  MediaBrowserConnectionCallback(context)
         mediaBrowser = MediaBrowserCompat(
                 context,
@@ -97,17 +95,7 @@ object MusicServiceConnections {
         }
 
         override fun onMetadataChanged(metadata: MediaMetadataCompat?) {
-            // When ExoPlayer stops we will receive a callback with "empty" metadata. This is a
-            // metadata object which has been instantiated with default values. The default value
-            // for media ID is null so we assume that if this value is null we are not playing
-            // anything.
-            nowPlaying.postValue(
-//                if (metadata?.id == null) {
-//                    NOTHING_PLAYING
-//                } else {
-                    metadata
-//                }
-            )
+            nowPlaying.postValue(metadata)
         }
 
         override fun onQueueChanged(queue: MutableList<MediaSessionCompat.QueueItem>?) {
@@ -118,6 +106,11 @@ object MusicServiceConnections {
             when (event) {
                 NETWORK_FAILURE -> networkFailure.postValue(true)
             }
+            extras?.let{
+                it.putString("Action", event)
+                sessionEvents.postValue(it)
+            }
+
         }
 
         /**

@@ -23,8 +23,6 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_end="64dp" />
 
-
-
     <ImageButton
         android:id="@+id/media_button"
         android:layout_width="@dimen/exo_media_button_width"
@@ -46,6 +44,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/black"
+        android:text="Title"
         app:layout_constraintLeft_toRightOf="@id/media_button"
         app:layout_constraintRight_toLeftOf="@id/position"
         app:layout_constraintTop_toBottomOf="@id/divider"
@@ -60,6 +59,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/black"
+        android:text="Description"
         app:layout_constraintLeft_toRightOf="@id/media_button"
         app:layout_constraintRight_toLeftOf="@id/position"
         app:layout_constraintTop_toBottomOf="@+id/title"

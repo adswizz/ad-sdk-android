@@ -64,7 +64,12 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
     private var myAdstreamManager: AdswizzAdStreamManager? = null
 
     private var currentPlayList = ""
+    private var currentMediaId = ""
+    private var currentServiceType = ""
+
     private lateinit var player: ExternalExoPlayer
+    private var notificationDescription =  "AdswizzUniversalPlayer"
+
 
 
     private lateinit var stateBuilder: PlaybackStateCompat.Builder
@@ -82,22 +87,14 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
 
         AdswizzSDK.initialize(applicationContext,null)
         player = ExternalExoPlayer(applicationContext)
-        bitmap = ContextCompat.getDrawable(applicationContext, R.drawable.cover1)?.toBitmap()!!//BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.cover3)
-//        val sessionActivityPendingIntent =
-//            packageManager?.getLaunchIntentForPackage(packageName)?.let { sessionIntent ->
-//                PendingIntent.getActivity(this, 0, sessionIntent, PENDING_INTENT_FLAG_MUTABLE)
-//            }
-//        handler =
-//            Handler((if (Looper.myLooper() != null) Looper.myLooper() else Looper.getMainLooper())!!)
+        bitmap = ContextCompat.getDrawable(applicationContext, R.drawable.cover1)?.toBitmap()!!
 
-        // Create a MediaSessionCompat
         mediaSession = MediaSessionCompat(this, "AdswizzService").apply {
 
             // Enable callbacks from MediaButtons and TransportControls
             setFlags(MediaSessionCompat.FLAG_HANDLES_QUEUE_COMMANDS)
             setRepeatMode(PlaybackStateCompat.REPEAT_MODE_NONE)
             setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_NONE)
-//             Set an initial PlaybackState with ACTION_PLAY, so media buttons can start the player
 
             stateBuilder = PlaybackStateCompat.Builder()
                 .setActions(
@@ -105,6 +102,7 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
                         PlaybackStateCompat.ACTION_STOP or
                         PlaybackStateCompat.ACTION_PLAY_PAUSE or
                         PlaybackStateCompat.ACTION_SKIP_TO_NEXT or
+                        PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS or
                         PlaybackStateCompat.ACTION_PREPARE or
                         PlaybackStateCompat.ACTION_PREPARE_FROM_URI or
                         PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID or
@@ -112,37 +110,15 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
                         PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH or
                         PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH)
                 .setState(PlaybackStateCompat.STATE_STOPPED,0,1.0f)
-            //setSessionActivity(sessionActivityPendingIntent)
+
             isActive = true
             setPlaybackState(stateBuilder.build())
-
-            val metadata = MediaMetadataCompat.Builder()
-                .putText(MediaMetadataCompat.METADATA_KEY_TITLE, "Running ads")
-                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, "Adswizz")
-                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID,"podcast_RAD_1")
-                .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, bitmap)
-                .putBitmap(MediaMetadataCompat.METADATA_KEY_ART, bitmap)
-                .build()
-
-            setMetadata(metadata)
-            val mediaSessionCompatList = mutableListOf<MediaSessionCompat.QueueItem>()
-            mediaSessionCompatList.add(MediaSessionCompat.QueueItem(MediaDescriptionCompat.Builder().setTitle("podcast_RAD_1").setMediaUri(Uri.parse("http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_1.mp3")).setMediaId("podcast_RAD_1").build(),
-                1))
-            mediaSessionCompatList.add(MediaSessionCompat.QueueItem(MediaDescriptionCompat.Builder().setTitle("podcast_RAD_QueenBohemian.mp3").setMediaUri(Uri.parse("http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_QueenBohemian.mp3")).setMediaId("podcast_RAD_QueenBohemian").build(),
-               2))
-            mediaSessionCompatList.add(MediaSessionCompat.QueueItem(MediaDescriptionCompat.Builder().setTitle("podcast_RAD_brokenTS.mp3").setMediaUri(Uri.parse("http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_brokenTS.mp3")).setMediaId("podcast_RAD_brokenTS").build(),
-                3))
-            mediaSessionCompatList.add(MediaSessionCompat.QueueItem(MediaDescriptionCompat.Builder().setTitle("podcast_RAD_muchosEvents.mp3").setMediaUri(Uri.parse("http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_muchosEvents.mp3")).setMediaId("podcast_RAD_muchosEvents").build(),
-                4))
-            setQueue(mediaSessionCompatList)
 
             setCallback(callback)
 
             setSessionToken(sessionToken)
         }
 
-        //mediaSessionConnector.setQueueNavigator(UampQueueNavigator(mediaSession))
-        //startService(Intent(this, AdswizzMediaBrowserService::class.java))
         requestAudioFocus()
     }
 
@@ -164,6 +140,16 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
     override fun onDestroy() {
         println("AdswizzMediaBrowserService:: onDestroy")
         releaseAudioFocus()
+
+        //cleanup adswizz managers
+        myAdManager?.reset()
+        myAdManager = null
+
+        myPodcastManager?.stop()
+        myPodcastManager = null
+
+        myAdstreamManager?.stop()
+        myAdstreamManager = null
     }
 
     private val CONTENT_STYLE_BROWSABLE_HINT = "android.media.browse.CONTENT_STYLE_BROWSABLE_HINT"
@@ -172,6 +158,9 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
     private val CONTENT_STYLE_LIST = 1
     private val CONTENT_STYLE_GRID = 2
 
+    /*
+        region media browser (content discovery)
+    */
     override fun onGetRoot(clientPackageName: String, clientUid: Int, rootHints: Bundle?): BrowserRoot {
         val rootExtras = Bundle().apply {
             putBoolean(MediaConstants.BROWSER_SERVICE_EXTRAS_KEY_SEARCH_SUPPORTED, true)
@@ -269,25 +258,19 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
 
     private fun startService(serviceType:String, mediaId:String, url:Uri?) {
         mediaSession?.let{
-            val description =  "AdswizzUniversalPlayer"
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                channel =
-                NotificationChannel(
-                    "channelId",
-                    "My Foreground Service",
-                    NotificationManager.IMPORTANCE_LOW
-                )
-                val manager = getSystemService(
-                    NotificationManager::class.java
-                )
+                channel = NotificationChannel("channelId", "My Foreground Service", NotificationManager.IMPORTANCE_LOW)
+                val manager = getSystemService(NotificationManager::class.java)
                 manager.createNotificationChannel(channel)
             } else {
                 TODO("VERSION.SDK_INT < O")
             }
 
             val builder = NotificationCompat.Builder(this, "channelId").apply {
-                // Add the metadata for the currently playing track
-                setContentTitle(description)
+                setContentTitle(notificationDescription)
+
+                /* click on notification restart the main activity */
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 val activityPI = PendingIntent.getActivity(applicationContext, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
                 setContentIntent(activityPI)
@@ -295,101 +278,132 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
                 setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
                 // Stop the service when the notification is swiped away
-                val initActionIntent = Intent(this@AdswizzMediaBrowserService, this@AdswizzMediaBrowserService.javaClass)
-                initActionIntent.action = "delete"
-                val pendingInitActionIntent = PendingIntent.getService(this@AdswizzMediaBrowserService, 0, initActionIntent,
-                    PendingIntent.FLAG_MUTABLE)
-
-
+                val initActionIntent = Intent(applicationContext, AdswizzMediaBrowserService::class.java).apply {
+                    action = "delete"
+                }
+                val pendingInitActionIntent = PendingIntent.getService(applicationContext, 0, initActionIntent, PendingIntent.FLAG_MUTABLE)
                 setDeleteIntent(pendingInitActionIntent)
 
                 // Make the transport controls visible on the lockscreen
                 setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
                 // Add an app icon and set its accent color
-                // Be careful about the color
                 setSmallIcon(R.drawable.ic_launcher)
-                color = ContextCompat.getColor(this@AdswizzMediaBrowserService, R.color.primaryDark)
 
-                val pendingActionIntent = Intent(this@AdswizzMediaBrowserService, this@AdswizzMediaBrowserService.javaClass)
-                pendingActionIntent.action = "pause"
-                val pendingPauseIntent = PendingIntent.getService(this@AdswizzMediaBrowserService, 0, pendingActionIntent, PendingIntent.FLAG_MUTABLE)
-                // Add a pause button
-                addAction(
-                    NotificationCompat.Action(
-                        R.drawable.ic_notification_pause_24dp,
-                        "Pause",
-                        pendingPauseIntent
-                    )
-                )
                 setStyle(androidx.media.app.NotificationCompat.MediaStyle().setMediaSession(it.sessionToken))
             }
 
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                NotificationManagerCompat.from(this).notify(10, builder.build())
-                return
-            }
-            ContextCompat.startForegroundService(
-                applicationContext,
-                Intent(applicationContext, this.javaClass)
-            )
+            ContextCompat.startForegroundService(applicationContext, Intent(applicationContext, this.javaClass))
             startForeground(1234, builder.build())
-            it.isActive = true
+
             stateBuilder.setState(PlaybackStateCompat.STATE_BUFFERING, 0, 1.0f)
             it.setPlaybackState(stateBuilder.build())
-
+            currentMediaId = mediaId
+            stopPlayers()
+            currentServiceType = serviceType
             if ( serviceType == "client") {
-                CoroutineScope(Dispatchers.Main).launch {
-                    val adRequestBuilder =
-                        AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
-                            .withServer("demo.deliveryengine.adswizz.com")
-                            .withHttpProtocol(AdswizzAdRequest.HttpProtocol.HTTPS)
-                            .withZones(setOf(AdswizzAdZone(mediaId)))
-                    adRequestBuilder.build {
-                        println("Url: ${it.uri}")
-                        val adRequestConnection = AdRequestConnection(it)
-
-                        adRequestConnection.requestAds { adManager, error ->
-                            // Handle the response from server
-                            adManager?.prepare()
-                            adManager?.play()
-                            adManager?.setListener(adManagerListener)
-                            myAdManager = adManager
-                        }
-                    }
-                }
+                playClient(mediaId)
             }
             else if ( serviceType == "podcast"){
-                CoroutineScope(Dispatchers.Main).launch {
-                    val podcastManager = AdswizzAdPodcastManager(AdPodcastManagerSettings.Builder().adPlayerInstance(player).build())
-                    myPodcastManager = podcastManager
-                    podcastManager.addListener(adPodcastManagerListener)
-                    url?.let {  uri ->
-                        podcastManager.play(uri)
-                    }
-
-                }
+                playPodcast(url.toString())
             }
             else if (serviceType == "server"){
-                CoroutineScope(Dispatchers.Main).launch {
-                    val adStreamManager = AdswizzAdStreamManager(AdManagerStreamingSettings.Builder().adPlayerInstance(player).build())
-                    myAdstreamManager = adStreamManager
-                    adStreamManager.addListener(adStreamManagerListener)
-                    url?.let{   uri ->
-                        adStreamManager.play(uri.toString())
-                    }
-                }
+                playServer(url.toString())
             }
-            else{
-
+            else {
+                println("AdswizzMediaBrowserService:: startService: unknown")
             }
         }
     }
 
+    private fun stopPlayers(){
+        myAdManager?.reset()
+        myPodcastManager?.stop()
+        myAdstreamManager?.stop()
+    }
+
+    private fun playNext(serviceType: String){
+        println("AdswizzMediaBrowserService:: Play next type: $serviceType")
+
+        var list = listOf<MediaData>()
+        when (serviceType){
+            "client" -> list = DB.getClientSideList()
+            "sever" -> list = DB.getServerSideList()
+            "podcast" -> list = DB.getPodcastList()
+        }
+        val index = list.indexOfFirst { it.mediaId == currentMediaId }
+        if ( index < list.size -1 ){
+            val item = list[index+1]
+            when (serviceType){
+                "client" -> playClient(item.mediaId)
+                "sever" -> playServer(item.uri)
+                "podcast" -> playPodcast(item.uri)
+            }
+        }
+    }
+
+    private fun playPrev(serviceType: String){
+        println("AdswizzMediaBrowserService:: Play next type: $serviceType")
+
+        var list = listOf<MediaData>()
+        when (serviceType){
+            "client" -> list = DB.getClientSideList()
+            "sever" -> list = DB.getServerSideList()
+            "podcast" -> list = DB.getPodcastList()
+        }
+        val index = list.indexOfFirst { it.mediaId == currentMediaId }
+        if ( index -1 >= 0 ){
+            val item = list[index-1]
+            when (serviceType){
+                "client" -> playClient(item.mediaId)
+                "sever" -> playServer(item.uri)
+                "podcast" -> playPodcast(item.uri)
+            }
+        }
+    }
+
+    private fun playClient(zoneId: String){
+        CoroutineScope(Dispatchers.Main).launch {
+            val adRequestBuilder =
+                AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
+                    .withServer("demo.deliveryengine.adswizz.com")
+                    .withHttpProtocol(AdswizzAdRequest.HttpProtocol.HTTPS)
+                    .withZones(setOf(AdswizzAdZone(zoneId)))
+            adRequestBuilder.build {
+                println("Url: ${it.uri}")
+                val adRequestConnection = AdRequestConnection(it)
+
+                adRequestConnection.requestAds { adManager, error ->
+                    // Handle the response from server
+                    adManager?.prepare()
+                    adManager?.play()
+                    adManager?.setListener(adManagerListener)
+                    myAdManager = adManager
+                }
+            }
+        }
+    }
+
+    private fun playPodcast(uri: String){
+        println("AdswizzMediaBrowserService:: Play next podcast: $uri")
+        CoroutineScope(Dispatchers.Main).launch {
+            val podcastManager = AdswizzAdPodcastManager(AdPodcastManagerSettings.Builder().adPlayerInstance(player).build())
+            myPodcastManager = podcastManager
+            podcastManager.addListener(adPodcastManagerListener)
+            podcastManager.play(Uri.parse(uri))
+        }
+    }
+
+    private fun playServer(uri: String) {
+        CoroutineScope(Dispatchers.Main).launch {
+            val adStreamManager = AdswizzAdStreamManager(
+                AdManagerStreamingSettings.Builder().adPlayerInstance(player).build()
+            )
+            myAdstreamManager = adStreamManager
+            adStreamManager.addListener(adStreamManagerListener)
+            adStreamManager.play(uri)
+        }
+    }
 
     /*
         region SDK callbacks
@@ -401,10 +415,13 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
         override fun onEventReceived(adManager: AdManager, event: AdEvent) {
             if (event.type == AdEvent.Type.State.DidStartPlaying ){
                 stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, 0, 1.0f)
+                val bundle = Bundle()
+                bundle.putDouble("duration", adManager.ads.sumOf { it.duration ?: 0.0 } )
+                stateBuilder.setExtras(bundle)
                 mediaSession?.setPlaybackState(stateBuilder.build())
             }
             else if (event.type == AdEvent.Type.State.AllAdsCompleted){
-                //playNext("client")
+                playNext("client")
             }
         }
     }
@@ -425,7 +442,7 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
         override fun didFinishPlayingUrl(adPodcastManager: AdPodcastManager, url: Uri) {
             stateBuilder.setState(PlaybackStateCompat.STATE_NONE, 0, 1.0f)
             mediaSession?.setPlaybackState(stateBuilder.build())
-            //playNext("podcast")
+            playNext("podcast")
         }
 
         override fun didPausePlayingUrl(adPodcastManager: AdPodcastManager, url: Uri) {
@@ -445,6 +462,8 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
                 bundle.putDouble("duration", durationSec)
                 stateBuilder.setExtras(bundle)
                 mediaSession?.setPlaybackState(stateBuilder.build())
+                bundle.putLong("elapsed", elapsedSec.toLong())
+                mediaSession?.sendSessionEvent("playHeadUpdate", Bundle())
             }
         }
 
@@ -458,48 +477,44 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
 
     private val adStreamManagerListener = object : AdStreamManager.Listener{
         override fun adBreakEnded(adStreamManager: AdStreamManager, adBaseManager: AdBaseManager) {
-            TODO("Not yet implemented")
+            //TODO("Not yet implemented")
         }
 
-        override fun adBreakStarted(
-            adStreamManager: AdStreamManager,
-            adBaseManager: AdBaseManager
-        ) {
-            TODO("Not yet implemented")
+        override fun adBreakStarted(adStreamManager: AdStreamManager, adBaseManager: AdBaseManager) {
+            //TODO("Not yet implemented")
         }
 
         override fun didFinishPlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
-            TODO("Not yet implemented")
+            playNext("server")
         }
 
         override fun didPausePlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
-            TODO("Not yet implemented")
+            //TODO("Not yet implemented")
         }
 
         override fun didResumePlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
             TODO("Not yet implemented")
         }
 
-        override fun onDvrMetadataReceived(
-            adStreamManager: AdStreamManager,
-            dvrBufferInfo: DvrBufferInfo?
-        ) {
-            TODO("Not yet implemented")
+        override fun onDvrMetadataReceived(adStreamManager: AdStreamManager, dvrBufferInfo: DvrBufferInfo?) {
+            //TODO("Not yet implemented")
         }
 
         override fun onError(adStreamManager: AdStreamManager, error: Error) {
-            TODO("Not yet implemented")
+            //TODO("Not yet implemented")
         }
 
         override fun onMetadataChanged(
             adStreamManager: AdStreamManager,
             metadataItem: AdPlayer.MetadataItem
         ) {
-            TODO("Not yet implemented")
+            //TODO("Not yet implemented")
         }
 
         override fun willStartPlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
-            TODO("Not yet implemented")
+            //TODO("Not yet implemented")
+            stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, 0, 1.0f)
+            mediaSession?.setPlaybackState(stateBuilder.build())
         }
 
     }
@@ -514,6 +529,7 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
             .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, media.subtitle)
             .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, media.mediaId)
             .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, bitmap)
+            .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, 120*1000)
             .build()
         mediaSession?.setMetadata(metadata)
         startService(serviceType, media.mediaId, Uri.parse(media.uri))
@@ -538,13 +554,6 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
         override fun onPlayFromMediaId(mediaId: String?, extras: Bundle?) {
             println("AdswizzMediaBrowserService:: onPlayFromMediaId $mediaId")
             var found = false
-//            val metadata = MediaMetadataCompat.Builder()
-//                .putText(MediaMetadataCompat.METADATA_KEY_TITLE, "Rad queen")
-//                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, "Bohemina")
-//                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, "Podcast RAD_QueenBohemian")
-//                .build()
-//            mediaSession?.setMetadata(metadata)
-//            startService("podcast", Uri.parse("http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_QueenBohemian.mp3"))
 
             DB.getPodcastList().firstOrNull() {
                 it.mediaId == mediaId
@@ -612,18 +621,6 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
             myPodcastManager?.stop()
             stateBuilder.setState(PlaybackStateCompat.STATE_STOPPED, 0, 1.0f)
             mediaSession?.setPlaybackState(stateBuilder.build())
-//            val am = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-//            // Abandon audio focus
-//            am.abandonAudioFocusRequest(audioFocusRequest)
-//            unregisterReceiver(myNoisyAudioStreamReceiver)
-//            // Stop the service
-//            service.stopSelf()
-//            // Set the session inactive  (and update metadata and state)
-//            mediaSession.isActive = false
-//            // stop the player (custom call)
-//            player.stop()
-//            // Take the service out of the foreground
-//            service.stopForeground(false)
         }
 
         override fun onPause() {
@@ -632,23 +629,17 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
             myPodcastManager?.pause()
             stateBuilder.setState(PlaybackStateCompat.STATE_PAUSED, 0, 1.0f)
             mediaSession?.setPlaybackState(stateBuilder.build())
-//            val am = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-//            // Update metadata and state
-//            // pause the player (custom call)
-//            player.pause()
-//            // unregister BECOME_NOISY BroadcastReceiver
-//            unregisterReceiver(myNoisyAudioStreamReceiver)
-//            // Take the service out of the foreground, retain the notification
-//            service.stopForeground(false)
         }
 
         override fun onSkipToNext() {
             println("AdswizzMediaBrowserService:: onSkipToNext")
+            playNext(currentServiceType)
             super.onSkipToNext()
         }
 
         override fun onSkipToPrevious() {
             println("AdswizzMediaBrowserService:: onSkipToPrevious")
+            playPrev(currentServiceType)
             super.onSkipToPrevious()
         }
 
