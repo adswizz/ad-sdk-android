@@ -108,7 +108,7 @@ class PlayingItemFragment(val mediaItem: MediaData) : Fragment() {
         MusicServiceConnections.transportControls.pause()
         super.onDestroy()
     }
-    
+
     fun updateToMediaItem(media: MediaData){
         if (mediaItem.mediaId != media.mediaId){
             //do nothing

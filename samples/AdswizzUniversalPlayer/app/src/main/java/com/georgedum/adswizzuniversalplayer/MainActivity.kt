@@ -1,7 +1,6 @@
 package com.georgedum.adswizzuniversalplayer
 
 import android.content.ComponentName
-import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
@@ -20,9 +19,10 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.media.session.PlaybackState
 import android.net.Uri
-import android.os.SystemClock
+import android.os.*
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.activity.viewModels
 import androidx.annotation.NonNull
@@ -30,17 +30,13 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.adswizz.sdk.AdswizzSDK
 import com.georgedum.adswizzuniversalplayer.databinding.ActivityMainBinding
 import com.georgedum.adswizzuniversalplayer.fragments.ListMediaFragment
 import com.georgedum.adswizzuniversalplayer.fragments.PlayingItemFragment
 import com.georgedum.adswizzuniversalplayer.models.MediaData
-import com.georgedum.adswizzuniversalplayer.receivers.MyBroadcastReceiver
 import com.georgedum.adswizzuniversalplayer.utils.Factory
 import com.georgedum.adswizzuniversalplayer.utils.MusicServiceConnections
 import com.georgedum.adswizzuniversalplayer.viewmodels.MainActivityModel
-import java.net.CookieManager
-import java.net.CookiePolicy
 
 class MainActivity : AppCompatActivity() {
 
@@ -81,11 +77,11 @@ class MainActivity : AppCompatActivity() {
         ) {
             println("Show permission")
         }
-        ActivityCompat.requestPermissions(
-            this,
-            listOf(Manifest.permission.POST_NOTIFICATIONS).toTypedArray(),
-            1024
-        )
+//        ActivityCompat.requestPermissions(
+//            this,
+//            listOf(Manifest.permission.POST_NOTIFICATIONS).toTypedArray(),
+//            1024
+//        )
 
         viewModel.rootMediaId.observe(this,
             Observer<String> { rootMediaId ->
@@ -144,6 +140,58 @@ class MainActivity : AppCompatActivity() {
 //            null )// optional Bundle
 
 
+        }
+
+        val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed({
+            requestPermissions()
+        }, 0L)
+
+    }
+
+    private fun requestPermissions() {
+
+        val permissionsList = mutableListOf(
+            // artemis only
+            Manifest.permission.WAKE_LOCK,
+            // permission needed by sdk for decorate & permission action
+            Manifest.permission.WRITE_CONTACTS,
+            Manifest.permission.WRITE_CALENDAR,
+            // sdk
+            Manifest.permission.INTERNET, Manifest.permission.VIBRATE,
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.CALL_PHONE,
+            Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_NETWORK_STATE,
+            Manifest.permission.POST_NOTIFICATIONS
+        )
+
+        //app only
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+            permissionsList.add(Manifest.permission.FOREGROUND_SERVICE)
+
+        val neededPermissionsList = mutableListOf<String>()
+
+        for (i in 0 until permissionsList.count()) {
+            if (ContextCompat.checkSelfPermission(this, permissionsList[i]) != PackageManager.PERMISSION_GRANTED) {
+                // Permission is not granted
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsList[i])) {
+                    // Show an explanation to the user! After the user
+                    // sees the explanation, try again to request the permission.
+                    Snackbar.make(
+                        binding.root,
+                        "The app needs the permission ${permissionsList[i]}",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                } else {
+                    neededPermissionsList.add(permissionsList[i])
+                }
+            }
+        }
+
+        if (neededPermissionsList.size > 0) {
+            val array = arrayOfNulls<String>(neededPermissionsList.size)
+            ArrayList(neededPermissionsList).toArray(array)
+            ActivityCompat.requestPermissions(this, array, 1000)
         }
     }
 
