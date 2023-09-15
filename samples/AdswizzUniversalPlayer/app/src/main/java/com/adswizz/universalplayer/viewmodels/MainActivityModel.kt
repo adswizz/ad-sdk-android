@@ -1,10 +1,9 @@
-package com.georgedum.adswizzuniversalplayer.viewmodels
+package com.adswizz.universalplayer.viewmodels
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.georgedum.adswizzuniversalplayer.models.MediaData
-import com.georgedum.adswizzuniversalplayer.utils.MusicServiceConnections
+import com.adswizz.universalplayer.models.MediaData
+import com.adswizz.universalplayer.utils.MusicServiceConnections
 
 class MainActivityModel {
 

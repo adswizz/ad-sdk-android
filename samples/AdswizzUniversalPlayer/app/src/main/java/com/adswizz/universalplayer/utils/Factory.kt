@@ -1,7 +1,6 @@
-package com.georgedum.adswizzuniversalplayer.utils
+package com.adswizz.universalplayer.utils
 
-import android.content.Context
-import com.georgedum.adswizzuniversalplayer.viewmodels.MainActivityModel
+import com.adswizz.universalplayer.viewmodels.MainActivityModel
 
 object Factory {
     private var _mainModel: MainActivityModel? = null

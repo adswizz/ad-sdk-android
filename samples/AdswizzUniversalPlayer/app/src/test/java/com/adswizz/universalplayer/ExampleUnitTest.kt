@@ -1,4 +1,4 @@
-package com.georgedum.adswizzuniversalplayer
+package com.georgedum.universalplayer
 
 import org.junit.Test
 

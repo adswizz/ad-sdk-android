@@ -1,4 +1,4 @@
-package com.georgedum.adswizzuniversalplayer.models
+package com.adswizz.universalplayer.models
 
 import android.net.Uri
 

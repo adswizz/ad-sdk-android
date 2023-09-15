@@ -11,7 +11,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.georgedum.adswizzuniversalplayer"
+        applicationId "com.adswizz.universalplayer"
         minSdk 23
         targetSdk 33
         versionCode 1

@@ -1,27 +1,22 @@
-package com.georgedum.adswizzuniversalplayer
+package com.adswizz.universalplayer
 
-import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.media.AudioAttributes
 import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.net.Uri
 import android.os.*
-import android.service.media.MediaBrowserService
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.media.MediaBrowserServiceCompat
@@ -43,8 +38,8 @@ import com.adswizz.core.adFetcher.AdswizzAdZone
 import com.adswizz.core.podcast.AdswizzAdPodcastManager
 import com.adswizz.core.streaming.AdswizzAdStreamManager
 import com.adswizz.sdk.AdswizzSDK
-import com.georgedum.adswizzuniversalplayer.models.DB
-import com.georgedum.adswizzuniversalplayer.models.MediaData
+import com.adswizz.universalplayer.models.DB
+import com.adswizz.universalplayer.models.MediaData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -602,6 +597,7 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
         override fun onPlay() {
             myAdManager?.resume()
             myPodcastManager?.resume()
+            myAdstreamManager?.resume()
             println("AdswizzMediaBrowserService:: onPlay")
         }
 
@@ -619,6 +615,7 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
             println("AdswizzMediaBrowserService:: onStop")
             myAdManager?.reset()
             myPodcastManager?.stop()
+            myAdstreamManager?.stop()
             stateBuilder.setState(PlaybackStateCompat.STATE_STOPPED, 0, 1.0f)
             mediaSession?.setPlaybackState(stateBuilder.build())
         }
@@ -627,6 +624,7 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
             println("AdswizzMediaBrowserService:: onPause")
             myAdManager?.pause()
             myPodcastManager?.pause()
+            myAdstreamManager?.pause()
             stateBuilder.setState(PlaybackStateCompat.STATE_PAUSED, 0, 1.0f)
             mediaSession?.setPlaybackState(stateBuilder.build())
         }

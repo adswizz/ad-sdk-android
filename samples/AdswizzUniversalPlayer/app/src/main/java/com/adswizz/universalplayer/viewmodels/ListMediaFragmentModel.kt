@@ -1,11 +1,11 @@
-package com.georgedum.adswizzuniversalplayer.viewmodels
+package com.adswizz.universalplayer.viewmodels
 
 import android.net.Uri
 import android.support.v4.media.MediaBrowserCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.georgedum.adswizzuniversalplayer.models.MediaData
-import com.georgedum.adswizzuniversalplayer.utils.MusicServiceConnections
+import com.adswizz.universalplayer.models.MediaData
+import com.adswizz.universalplayer.utils.MusicServiceConnections
 
 class ListMediaFragmentModel(private val mediaId: String) {
 

@@ -1,8 +1,7 @@
-package com.georgedum.adswizzuniversalplayer.utils
+package com.adswizz.universalplayer.utils
 
 import android.content.ComponentName
 import android.content.Context
-import android.media.session.MediaSession.QueueItem
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
@@ -11,7 +10,7 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.media.MediaBrowserServiceCompat
-import com.georgedum.adswizzuniversalplayer.AdswizzMediaBrowserService
+import com.adswizz.universalplayer.AdswizzMediaBrowserService
 
 object MusicServiceConnections {
     val isConnected = MutableLiveData<Boolean>()

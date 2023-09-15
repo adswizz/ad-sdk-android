@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.android.uamp
+package com.adswizz.universalplayer
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -22,10 +22,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.georgedum.adswizzuniversalplayer.R
+import com.adswizz.universalplayer.R
 
-import com.georgedum.adswizzuniversalplayer.databinding.MediaitemBinding
-import com.georgedum.adswizzuniversalplayer.models.MediaData
+import com.adswizz.universalplayer.databinding.MediaitemBinding
+import com.adswizz.universalplayer.models.MediaData
 
 
 class MediaItemAdapter(

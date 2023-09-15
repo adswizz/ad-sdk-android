@@ -1,42 +1,31 @@
-package com.georgedum.adswizzuniversalplayer
+package com.adswizz.universalplayer
 
-import android.content.ComponentName
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
-import android.support.v4.media.session.MediaControllerCompat
-import android.support.v4.media.session.PlaybackStateCompat
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import android.Manifest
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.media.session.PlaybackState
 import android.net.Uri
 import android.os.*
-import android.support.v4.media.session.MediaSessionCompat
-import androidx.activity.viewModels
-import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.georgedum.adswizzuniversalplayer.databinding.ActivityMainBinding
-import com.georgedum.adswizzuniversalplayer.fragments.ListMediaFragment
-import com.georgedum.adswizzuniversalplayer.fragments.PlayingItemFragment
-import com.georgedum.adswizzuniversalplayer.models.MediaData
-import com.georgedum.adswizzuniversalplayer.utils.Factory
-import com.georgedum.adswizzuniversalplayer.utils.MusicServiceConnections
-import com.georgedum.adswizzuniversalplayer.viewmodels.MainActivityModel
+import com.adswizz.universalplayer.databinding.ActivityMainBinding
+import com.adswizz.universalplayer.fragments.ListMediaFragment
+import com.adswizz.universalplayer.fragments.PlayingItemFragment
+import com.adswizz.universalplayer.models.MediaData
+import com.adswizz.universalplayer.utils.Factory
+import com.adswizz.universalplayer.utils.MusicServiceConnections
+import com.adswizz.universalplayer.viewmodels.MainActivityModel
 
 class MainActivity : AppCompatActivity() {
 

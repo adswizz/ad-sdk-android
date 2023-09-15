@@ -1,6 +1,5 @@
-package com.georgedum.adswizzuniversalplayer.fragments
+package com.adswizz.universalplayer.fragments
 
-import android.media.session.PlaybackState
 import android.os.Bundle
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
@@ -8,11 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.georgedum.adswizzuniversalplayer.R
-import com.georgedum.adswizzuniversalplayer.databinding.ListMediaLayoutBinding
-import com.georgedum.adswizzuniversalplayer.databinding.PlayingitemLayoutBinding
-import com.georgedum.adswizzuniversalplayer.models.MediaData
-import com.georgedum.adswizzuniversalplayer.utils.MusicServiceConnections
+import com.adswizz.universalplayer.R
+import com.adswizz.universalplayer.databinding.PlayingitemLayoutBinding
+import com.adswizz.universalplayer.models.MediaData
+import com.adswizz.universalplayer.utils.MusicServiceConnections
 
 class PlayingItemFragment(val mediaItem: MediaData) : Fragment() {
     private lateinit var binding: PlayingitemLayoutBinding

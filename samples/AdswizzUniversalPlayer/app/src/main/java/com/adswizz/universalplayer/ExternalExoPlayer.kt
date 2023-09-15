@@ -1,4 +1,4 @@
-package com.georgedum.adswizzuniversalplayer
+package com.adswizz.universalplayer
 
 import android.content.Context
 import android.net.Uri

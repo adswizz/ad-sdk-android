@@ -1,4 +1,4 @@
-package com.georgedum.adswizzuniversalplayer.fragments
+package com.adswizz.universalplayer.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.example.android.uamp.MediaItemAdapter
-import com.georgedum.adswizzuniversalplayer.databinding.ListMediaLayoutBinding
-import com.georgedum.adswizzuniversalplayer.utils.Factory
-import com.georgedum.adswizzuniversalplayer.viewmodels.ListMediaFragmentModel
+import com.adswizz.universalplayer.MediaItemAdapter
+import com.adswizz.universalplayer.databinding.ListMediaLayoutBinding
+import com.adswizz.universalplayer.utils.Factory
+import com.adswizz.universalplayer.viewmodels.ListMediaFragmentModel
 
 class ListMediaFragment(val mediaId:String) : Fragment()  {
 
