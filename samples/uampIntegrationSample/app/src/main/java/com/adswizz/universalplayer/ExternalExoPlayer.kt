@@ -140,42 +140,6 @@ class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, Analy
         }
     }
 
-    private val transferListener = object: TransferListener {
-        override fun onTransferInitializing(
-            source: DataSource,
-            dataSpec: DataSpec,
-            isNetwork: Boolean
-        ) {
-            //TODO("Not yet implemented")
-
-            println("AdswizzMediaBrowserService PLAYER onTransferInitializing : ${source.uri} ${dataSpec.httpRequestHeaders.values.joinToString()}")
-
-            dataSpec.httpRequestHeaders.forEach {
-                println("AdswizzMediaBrowserService PLAYER onTransferInitializing ${it.key} ${it.value}")
-            }
-        }
-
-        override fun onTransferStart(source: DataSource, dataSpec: DataSpec, isNetwork: Boolean) {
-            TODO("Not yet implemented")
-            println("AdswizzMediaBrowserService PLAYER onTransferStart : ${source.uri} ${dataSpec.httpRequestHeaders.values.joinToString()}")
-        }
-
-        override fun onBytesTransferred(
-            source: DataSource,
-            dataSpec: DataSpec,
-            isNetwork: Boolean,
-            bytesTransferred: Int
-        ) {
-           // TODO("Not yet implemented")
-        }
-
-        override fun onTransferEnd(source: DataSource, dataSpec: DataSpec, isNetwork: Boolean) {
-            //TODO("Not yet implemented")
-            println("AdswizzMediaBrowserService PLAYER onTransferEnd : ${source.uri} ${dataSpec.httpRequestHeaders.values.joinToString()}")
-        }
-
-    }
-
     private fun buildMediaSource(urlString: String): MediaSource {
         val uri = Uri.parse(urlString)
         val undecoratedUri = Uri.parse(urlString).buildUpon().clearQuery().build()
@@ -411,21 +375,6 @@ class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, Analy
 
 
     //region Player Event Listener
-    override fun onTimelineChanged(timeline: Timeline, reason: Int) {
-        //super.onTimelineChanged(timeline, reason)
-        println("AdswizzMediaBrowserService PLAYER onTimelineChanged $timeline $reason")
-    }
-
-
-    override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-        println("AdswizzMediaBrowserService PLAYER item transition ${mediaItem?.mediaId} ${mediaItem?.mediaMetadata}")
-        val cookies = CookieManager().cookieStore.get(URI.create("http://sdk.mobile.streaming.adswizz.com"))
-        cookies.forEach {
-            println("AdswizzMediaBrowserService PLAYER cookie ${it.name} => ${it.value}")
-        }
-
-    }
-
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
         when (playbackState) {
             Player.STATE_BUFFERING -> {

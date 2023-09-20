@@ -50,7 +50,9 @@ private const val CLIENT_ROOT_ID = "_client_side_id_"
 private const val SERVER_ROOT_ID = "_server_side_id_"
 private const val PODCAST_ROOT_ID = "_podcast_side_id_"
 
+private const val channelId = "com.adswizz.universalplayer.notification"
 
+@Suppress("SpellCheckingInspection")
 class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
 
     private var mediaSession: MediaSessionCompat? = null
@@ -58,14 +60,11 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
     private var myPodcastManager: AdswizzAdPodcastManager? = null
     private var myAdstreamManager: AdswizzAdStreamManager? = null
 
-    private var currentPlayList = ""
     private var currentMediaId = ""
     private var currentServiceType = ""
 
     private lateinit var player: ExternalExoPlayer
     private var notificationDescription =  "AdswizzUniversalPlayer"
-
-
 
     private lateinit var stateBuilder: PlaybackStateCompat.Builder
     private lateinit var channel: NotificationChannel
@@ -128,7 +127,7 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        println("AdswizzMediaBrowserService:: onStartCommand ${intent} :: ${intent?.action}")
+        println("AdswizzMediaBrowserService:: onStartCommand $intent :: ${intent?.action}")
         return super.onStartCommand(intent, flags, startId)
     }
 
@@ -255,18 +254,20 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
         mediaSession?.let{
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                channel = NotificationChannel("channelId", "My Foreground Service", NotificationManager.IMPORTANCE_LOW)
+                channel = NotificationChannel(channelId, "Uamp Service", NotificationManager.IMPORTANCE_LOW)
                 val manager = getSystemService(NotificationManager::class.java)
                 manager.createNotificationChannel(channel)
             } else {
                 TODO("VERSION.SDK_INT < O")
             }
 
-            val builder = NotificationCompat.Builder(this, "channelId").apply {
+            val builder = NotificationCompat.Builder(this, channelId).apply {
                 setContentTitle(notificationDescription)
-
+                setOngoing(true)
                 /* click on notification restart the main activity */
-                val intent = Intent(applicationContext, MainActivity::class.java)
+                val intent = Intent(applicationContext, MainActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                }
                 val activityPI = PendingIntent.getActivity(applicationContext, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
                 setContentIntent(activityPI)
 
@@ -296,25 +297,23 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
             currentMediaId = mediaId
             stopPlayers()
             currentServiceType = serviceType
-            if ( serviceType == "client") {
-                playClient(mediaId)
-            }
-            else if ( serviceType == "podcast"){
-                playPodcast(url.toString())
-            }
-            else if (serviceType == "server"){
-                playServer(url.toString())
-            }
-            else {
-                println("AdswizzMediaBrowserService:: startService: unknown")
+            when(serviceType){
+                "client" -> playClient(mediaId)
+                "podcast" -> playPodcast(url.toString())
+                "server" -> playServer(url.toString())
+                else -> Unit
             }
         }
     }
 
     private fun stopPlayers(){
-        myAdManager?.reset()
+        myAdManager?.removeAdManagerListener()
+        myAdManager = null
+
         myPodcastManager?.stop()
+        myPodcastManager?.removeListener(adPodcastManagerListener)
         myAdstreamManager?.stop()
+        myAdstreamManager?.removeListener(adStreamManagerListener)
     }
 
     private fun playNext(serviceType: String){
@@ -370,7 +369,7 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
                 println("Url: ${it.uri}")
                 val adRequestConnection = AdRequestConnection(it)
 
-                adRequestConnection.requestAds { adManager, error ->
+                adRequestConnection.requestAds { adManager, _ ->
                     // Handle the response from server
                     adManager?.prepare()
                     adManager?.play()
@@ -410,40 +409,38 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
         }
 
         override fun onEventReceived(adManager: AdManager, event: AdEvent) {
-            if (event.type == AdEvent.Type.State.DidStartPlaying ){
-                stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, 0, 1.0f)
-                val bundle = Bundle()
-                bundle.putDouble("duration", adManager.ads.sumOf { it.duration ?: 0.0 } )
-                stateBuilder.setExtras(bundle)
-                mediaSession?.setPlaybackState(stateBuilder.build())
-            }
-            else if (event.type == AdEvent.Type.State.AllAdsCompleted){
-                playNext("client")
-            }
-            else{
-                when(event.type){
-                    AdEvent.Type.Position.FirstQuartile -> {
-                        val position = adManager.ads.sumOf { it.duration ?: 0.0 } * 0.25
-                        stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, position.toLong(), 1.0f)
-                        mediaSession?.setPlaybackState(stateBuilder.build())
-                    }
-                    AdEvent.Type.Position.Midpoint -> {
-                        val position = adManager.ads.sumOf { it.duration ?: 0.0 } * 0.5
-                        stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, position.toLong(), 1.0f)
-                        mediaSession?.setPlaybackState(stateBuilder.build())
-                    }
-                    AdEvent.Type.Position.ThirdQuartile -> {
-                        val position = adManager.ads.sumOf { it.duration ?: 0.0 } * 0.75
-                        stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, position.toLong(), 1.0f)
-                        mediaSession?.setPlaybackState(stateBuilder.build())
-                    }
-                    AdEvent.Type.Position.Complete -> {
-                        val position = adManager.ads.sumOf { it.duration ?: 0.0 }
-                        stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, position.toLong(), 1.0f)
-                        mediaSession?.setPlaybackState(stateBuilder.build())
-                    }
-                    else -> Unit
+            println("AdswizzMediaBrowserService:: onEventReceived: ${event.type}")
+
+            when (event.type){
+                AdEvent.Type.State.DidStartPlaying -> {
+                    stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, 0, 1.0f)
+                    val bundle = Bundle()
+                    bundle.putDouble("duration", adManager.ads.sumOf { it.duration ?: 0.0 } )
+                    stateBuilder.setExtras(bundle)
+                    mediaSession?.setPlaybackState(stateBuilder.build())
                 }
+                AdEvent.Type.State.AllAdsCompleted -> playNext("client")
+                AdEvent.Type.Position.FirstQuartile -> {
+                    val position = adManager.ads.sumOf { it.duration ?: 0.0 } * 0.25
+                    stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, position.toLong(), 1.0f)
+                    mediaSession?.setPlaybackState(stateBuilder.build())
+                }
+                AdEvent.Type.Position.Midpoint -> {
+                    val position = adManager.ads.sumOf { it.duration ?: 0.0 } * 0.5
+                    stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, position.toLong(), 1.0f)
+                    mediaSession?.setPlaybackState(stateBuilder.build())
+                }
+                AdEvent.Type.Position.ThirdQuartile -> {
+                    val position = adManager.ads.sumOf { it.duration ?: 0.0 } * 0.75
+                    stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, position.toLong(), 1.0f)
+                    mediaSession?.setPlaybackState(stateBuilder.build())
+                }
+                AdEvent.Type.Position.Complete -> {
+                    val position = adManager.ads.sumOf { it.duration ?: 0.0 }
+                    stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, position.toLong(), 1.0f)
+                    mediaSession?.setPlaybackState(stateBuilder.build())
+                }
+                else -> Unit
             }
         }
     }
@@ -512,10 +509,14 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
 
         override fun didPausePlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
             //TODO("Not yet implemented")
+            stateBuilder.setState(PlaybackStateCompat.STATE_PAUSED, 0, 1.0f)
+            mediaSession?.setPlaybackState(stateBuilder.build())
         }
 
         override fun didResumePlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
-            TODO("Not yet implemented")
+            //TODO("Not yet implemented")
+            stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, 0, 1.0f)
+            mediaSession?.setPlaybackState(stateBuilder.build())
         }
 
         override fun onDvrMetadataReceived(adStreamManager: AdStreamManager, dvrBufferInfo: DvrBufferInfo?) {
@@ -579,7 +580,7 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
             println("AdswizzMediaBrowserService:: onPlayFromMediaId $mediaId")
             var found = false
 
-            DB.getPodcastList().firstOrNull() {
+            DB.getPodcastList().firstOrNull{
                 it.mediaId == mediaId
             } ?.apply {
                 found = true
@@ -588,7 +589,7 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
 
 
             if (!found){
-                DB.getClientSideList().firstOrNull() {
+                DB.getClientSideList().firstOrNull{
                     it.mediaId == mediaId
                 } ?.apply {
                     found = true
@@ -597,7 +598,7 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
             }
 
             if ( !found){
-                DB.getServerSideList().firstOrNull() {
+                DB.getServerSideList().firstOrNull{
                     it.mediaId == mediaId
                 } ?.apply {
                     found = true

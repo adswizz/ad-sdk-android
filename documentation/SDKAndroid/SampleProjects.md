@@ -42,4 +42,4 @@ This sample shows how your app can integrate the **_AdswizzSDK_** podcasting sup
 
 ## Adswizz Universal media player
 
-This sample shows how your app can integrate the **_AdswizzSDK_** client side, server side and podcasting in a UAMP like architecture. It demonstrates how to play podcasts from a playlist using **_AdswizzAdPodcastManager_**, play different ads from a list of ad types using an **_AdManager_** or streaming different streams in a list using **_AdswizzAdStream_**. It is based on UAMP architecture (look for more on  https://github.com/android/uamp/blob/main/docs/FullGuide.md)
+This sample shows how your app can integrate the **_AdswizzSDK_** client side, server side and podcasting in a UAMP like architecture. It demonstrates how to play podcasts from a playlist using **_AdswizzAdPodcastManager_**, play different ads from a list of ad types using an **_AdManager_** or streaming different streams in a list using **_AdswizzAdStream_**. It is based on UAMP architecture (for more information visit  https://github.com/android/uamp/blob/main/docs/FullGuide.md)
