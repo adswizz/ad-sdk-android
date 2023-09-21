@@ -329,6 +329,7 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
         if ( index < list.size -1 ){
             val item = list[index+1]
             updateMediaMetadata(item)
+            currentMediaId = item.mediaId
             when (serviceType){
                 "client" -> playClient(item.mediaId)
                 "sever" -> playServer(item.uri)
@@ -350,6 +351,7 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
         if ( index -1 >= 0 ){
             val item = list[index-1]
             updateMediaMetadata(item)
+            currentMediaId = item.mediaId
             when (serviceType){
                 "client" -> playClient(item.mediaId)
                 "sever" -> playServer(item.uri)
@@ -496,11 +498,11 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
 
     private val adStreamManagerListener = object : AdStreamManager.Listener{
         override fun adBreakEnded(adStreamManager: AdStreamManager, adBaseManager: AdBaseManager) {
-            //TODO("Not yet implemented")
+            println("AdswizzMediaBackground::adStreamManagerListener adBreakEnded")
         }
 
         override fun adBreakStarted(adStreamManager: AdStreamManager, adBaseManager: AdBaseManager) {
-            //TODO("Not yet implemented")
+            println("AdswizzMediaBackground::adStreamManagerListener adBreakStarted")
         }
 
         override fun didFinishPlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
@@ -508,34 +510,32 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
         }
 
         override fun didPausePlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
-            //TODO("Not yet implemented")
             stateBuilder.setState(PlaybackStateCompat.STATE_PAUSED, 0, 1.0f)
             mediaSession?.setPlaybackState(stateBuilder.build())
         }
 
         override fun didResumePlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
-            //TODO("Not yet implemented")
             stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, 0, 1.0f)
             mediaSession?.setPlaybackState(stateBuilder.build())
         }
 
         override fun onDvrMetadataReceived(adStreamManager: AdStreamManager, dvrBufferInfo: DvrBufferInfo?) {
-            //TODO("Not yet implemented")
+            println("AdswizzMediaBackground::adStreamManagerListener onDvrMetadataReceived")
         }
 
         override fun onError(adStreamManager: AdStreamManager, error: Error) {
-            //TODO("Not yet implemented")
+            println("AdswizzMediaBackground::adStreamManagerListener onError")
+            playNext("server")
         }
 
         override fun onMetadataChanged(
             adStreamManager: AdStreamManager,
             metadataItem: AdPlayer.MetadataItem
         ) {
-            //TODO("Not yet implemented")
+            println("AdswizzMediaBackground::adStreamManagerListener onMetadataChanged")
         }
 
         override fun willStartPlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
-            //TODO("Not yet implemented")
             stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, 0, 1.0f)
             mediaSession?.setPlaybackState(stateBuilder.build())
         }
