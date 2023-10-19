@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.8.2] - 2023-10-19
 ### Added
  - Added ExoPlayer 2.19 artifact in the SDK library release.
- - Added `adswizz-wear-sdk` artifact in the SDK library release.
+ - Update `adswizz-wear-sdk` artifact to latest version in the SDK library release.
 
 ### Changed
  - Updated Android targetSdkVersion to API version 34 (Android 14).
