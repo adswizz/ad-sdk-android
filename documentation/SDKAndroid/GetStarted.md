@@ -65,6 +65,10 @@ We have tested the above dependencies using the following version numbers:<br>
 
 ```groovy
 //Library
+androidMinSdkVersion = 23
+androidTargetSdkVersion = 34
+androidCompileSdkVersion = 34
+
 kotlin_version = '1.7.21'
 appcompatVersion = '1.6.1'
 coreKtxVersion = '1.9.0'
@@ -82,14 +86,14 @@ commonsMath3Version = '3.6.1'
 roomVersion = '2.5.2'
 
 //WearOS
-wearableSupportVersion = '2.5.0'
-playServicesWearableVersion = '17.0.0'
+wearableSupportVersion = '2.9.0'
+playServicesWearableVersion = '18.1.0'
 percentLayoutVersion = '1.0.0'
 legacySupportVersion = '1.0.0'
 recyclerViewVersion = '1.1.0'
 lifecycleRuntimeKtxVersion = '2.5.1'
-androidXWearVersion = '1.0.0'
-googleWearableVersion = '2.5.0'
+androidXWearVersion = '1.3.0'
+googleWearableVersion = '2.9.0'
 ```
 
 ---

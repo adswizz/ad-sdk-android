@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.8.2] - 2023-10-19
+### Added
+ - Added ExoPlayer 2.19 artifact in the SDK library release.
+ - Added `adswizz-wear-sdk` artifact in the SDK library release.
+
+### Changed
+ - Updated Android targetSdkVersion to API version 34 (Android 14).
+ - Removed WeakRefference wrapper from public listeners due to inconsistency that may occur. Now, **_AdswizzSDK_** keeps strong references for the given listeners.
+
 ## [7.8.1] - 2023-09-06
 ### Changed
  - Renamed the decoration parameter `aw_0_1st.adEvents` to `aw_0_req.adEvents`
