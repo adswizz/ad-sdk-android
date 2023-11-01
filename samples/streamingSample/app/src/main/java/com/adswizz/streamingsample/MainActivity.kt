@@ -1,6 +1,5 @@
 package com.adswizz.streamingsample
 
-import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
@@ -87,9 +86,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-       // supportActionBar?.hide()
 
         val window = this.window
         getWindow().decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
