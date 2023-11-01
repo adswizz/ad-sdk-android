@@ -36,7 +36,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 /**
  * Based on exoplayer
  */
-class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener, AnalyticsListener, CacheManager.Listener, MetadataOutput {
+class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsListener, CacheManager.Listener, MetadataOutput {
 
     private enum class AssetState {
         INITIALIZED,
