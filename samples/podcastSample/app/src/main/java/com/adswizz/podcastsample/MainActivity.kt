@@ -1,5 +1,6 @@
 package com.adswizz.podcastsample
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -85,6 +86,7 @@ class MainActivity : AppCompatActivity() {
             addLogEntry("An error occurred during playback: ${error.message}")
         }
 
+        @SuppressLint("SetTextI18n")
         override fun onPlayHeadReport(adPodcastManager: AdPodcastManager, elapsedSec: Double, durationSec: Double) {
             binding.podcastSlider.valueTo = durationSec.toFloat()
             binding.podcastSlider.value = elapsedSec.toFloat()
@@ -103,7 +105,7 @@ class MainActivity : AppCompatActivity() {
             addLogEntry("[AdBaseManagerListener ${adBaseManager.hashCode()}] Received ad event for adId:${event.ad?.id}\nadType:${event.ad?.adType}\ninteractivityInfo:${event.ad?.adParameters}\neventType:${event.type}")
         }
 
-        override fun onEventErrorReceived(adBaseManager: AdBaseManager, event: AdEvent, error: kotlin.Error /* = java.lang.Error */) {
+        override fun onEventErrorReceived(adBaseManager: AdBaseManager, event: AdEvent, error: Error /* = java.lang.Error */) {
             addLogEntry("[AdBaseManagerListener ${adBaseManager.hashCode()}] Received error for $event. Error: $error")
         }
     }
@@ -119,7 +121,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onReceiveInteractivityEvent(adBaseManager: AdBaseManager, adData: AdData, event: InteractivityEvent) {
-            addLogEntry("[InteractivityListener ${adBaseManager.hashCode()}] Received event for adId:${adData?.id}\nadType:${adData?.adType}\nevent:${event}")
+            addLogEntry("[InteractivityListener ${adBaseManager.hashCode()}] Received event for adId:${adData.id}\nadType:${adData.adType}\nevent:${event}")
         }
     }
 
@@ -266,6 +268,7 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun reset() {
         podcastManager?.stop()
         playerState = PlayerState.IDLE
