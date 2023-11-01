@@ -67,16 +67,10 @@ class MainActivity : AppCompatActivity() {
         ) {
             println("Show permission")
         }
-//        ActivityCompat.requestPermissions(
-//            this,
-//            listOf(Manifest.permission.POST_NOTIFICATIONS).toTypedArray(),
-//            1024
-//        )
 
-        viewModel.rootMediaId.observe(this,
-            Observer<String> { rootMediaId ->
-                rootMediaId?.let { navigateToMediaItem(it) }
-            })
+        viewModel.rootMediaId.observe(this) { rootMediaId ->
+            rootMediaId?.let { navigateToMediaItem(it) }
+        }
 
         MusicServiceConnections.playbackState.observe(this) {
             if (it.state == PlaybackState.STATE_PLAYING) {
