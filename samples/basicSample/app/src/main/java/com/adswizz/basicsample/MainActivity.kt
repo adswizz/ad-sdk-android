@@ -145,6 +145,7 @@ class MainActivity : AppCompatActivity() {
                 AdEvent.Type.Position.Complete -> {
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - 100% complete")
                 }
+                else -> Unit
             }
         }
 
