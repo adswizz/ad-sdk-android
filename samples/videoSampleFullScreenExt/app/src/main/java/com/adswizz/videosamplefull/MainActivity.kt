@@ -12,15 +12,10 @@ import com.ad.core.adFetcher.AdRequestConnection
 import com.ad.core.adManager.AdManager
 import com.ad.core.adManager.AdManagerListener
 import com.ad.core.adManager.AdManagerSettings
-import com.adswizz.videosamplefull.databinding.ActivityMainBinding
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.adFetcher.AdswizzAdZone
 import com.adswizz.sdk.AdswizzSDK
-import com.adswizz.videosamplefull.ExternalAdPlayer
-import com.adswizz.videosamplefull.R
-//import kotlinx.android.synthetic.main.activity_main.*
-import java.text.SimpleDateFormat
-import java.util.*
+import com.adswizz.videosamplefull.databinding.ActivityMainBinding
 
 // Basic app shows minimal client side functionality
 
@@ -30,12 +25,11 @@ class MainActivity : AppCompatActivity() {
         const val SERVER_URL = "demo.deliveryengine.adswizz.com"
         const val ZONE_ID = "17161"
         //const val ZONE_ID = "14578"
-        private var adManager: AdManager? = null
-        private var externalAdPlayer: ExternalAdPlayer? = null
     }
 
     private lateinit var binding: ActivityMainBinding
-
+    private var adManager: AdManager? = null
+    private var externalAdPlayer: ExternalAdPlayer? = null
 
     private enum class AdManagerState {
         Unknown, ReadyForPlay, Playing, Paused, AllAdsCompleted
@@ -137,6 +131,8 @@ class MainActivity : AppCompatActivity() {
                 AdEvent.Type.Position.Complete -> {
                     println("Ad ${event.ad?.id} - 100% complete")
                 }
+
+                else -> Unit
             }
         }
 
@@ -147,15 +143,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
 
         AdswizzSDK.initialize(this)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-//        supportActionBar?.hide()
 
         val window = this.window
         getWindow().decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
