@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.adswizz.basicsample">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <dist:module dist:instant="true" />
 
@@ -28,7 +27,7 @@
         <meta-data android:name="com.adswizz.core.installationId" android:value="adswizz_android_exoPlayer_v2" />
         <meta-data android:name="com.adswizz.core.playerId" android:value="PUT_HERE_YOUR_PLAYER_ID_OBTAINED_FROM_YOUR_AW_TAM" />
 
-        <activity android:name=".MainActivity"
+        <activity android:name="com.adswizz.basicsample.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Samples.NoActionBar">
             <intent-filter>

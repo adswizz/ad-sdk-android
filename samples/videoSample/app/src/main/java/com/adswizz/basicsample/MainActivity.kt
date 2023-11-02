@@ -1,6 +1,5 @@
 package com.adswizz.basicsample
 
-import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -21,13 +20,11 @@ import com.ad.core.adFetcher.AdRequestConnection
 import com.ad.core.adManager.AdManager
 import com.ad.core.adManager.AdManagerListener
 import com.ad.core.adManager.AdManagerSettings
-import com.ad.core.video.AdVideoView
-import com.ad.core.video.VideoResizeMode
-import com.adswizz.basicsample.databinding.ActivityMainBinding
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.adFetcher.AdswizzAdZone
 import com.adswizz.sdk.AdswizzSDK
-//import kotlinx.android.synthetic.main.activity_main.*
+import com.adswizz.videosample.R
+import com.adswizz.videosample.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -146,6 +143,8 @@ class MainActivity : AppCompatActivity() {
                 AdEvent.Type.Position.Complete -> {
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - 100% complete")
                 }
+
+                else -> Unit
             }
         }
 
@@ -162,9 +161,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-
-        //requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        //supportActionBar?.hide()
 
         val window = this.window
         getWindow().decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
