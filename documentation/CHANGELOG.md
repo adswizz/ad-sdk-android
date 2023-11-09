@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
  - Updated Android targetSdkVersion to API version 34 (Android 14).
- - Removed `WeakReference` internal wrapper from public listeners due to some inconsistencies that may occur. **_AdswizzSDK_** keeps now strong references for the given listeners. These changes include the following classes/interfaces: `AdBaseManager`, `AdManager`, `AdStreamManager`, `AdPodcastManager`, `AdVideoView`. Visit [7.8.2 Migration](Android/Migrations/v7_8_2) for details on how to adapt to these updates.
+ - Removed `WeakReference` internal wrapper from public listeners due to some inconsistencies that may occur. **_AdswizzSDK_** keeps now strong references for the given listeners. These changes include the following classes/interfaces: `AdBaseManager`, `AdManager`, `AdStreamManager`, `AdPodcastManager`, `AdVideoView`. Visit [7.8.2 Migration](Android/Migrations/v7_8_2) page for details on how to adapt to these updates.
 
 ## [7.8.1] - 2023-09-06
 ### Changed
