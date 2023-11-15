@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.8.3] - 2023-11-20
+### Added
+ - Added [Global Privacy Control](https://privacycg.github.io/gpc-spec/#abstract) functionality. From now on, **_AdswizzSDK_** added support to set `Sec-GPC` header to all AdRequests. It can be enabled/disabled through newly added field like follows: `AdswizzSDK.consentConfig.gpcConsent = true`
+
+### Changed
+ - Due to an increasing number of user consents supported by **_AdswizzSDK_** like: `gdprConsent`, `ccpaConfig`, `gppConsent` and recently added `gpcConsent`, therefore 7.8.3 version of **_AdswizzSDK_** added a new method in order to handle user consents. This method is exposed through `consentConfig` member located in **_AdswizzSDK_** object and is used to group all consents (actual and new ones) into a single place. ConsentConfig method is backwards compatible with older versions and old fields are now deprecated.
+ - The initialize method in **_AdswizzSDK_** supports now a completion handler defined: `fun initialize(context: Context, adswizzSDKConfig: AdswizzSDKConfig? = null, completion: ((Result<String>) -> Unit)? = null)`. Starting from 7.8.3, synchronous startup time will become shorter. Using all **_AdswizzSDK_** functionalities after receiving the completion callback becomes the recommended way now.
+
+### Fixed
+ - Improved memory footprint and synchronous startup time due to asynchronous initialisation.
+
 ## [7.8.2] - 2023-10-19
 ### Added
  - Added ExoPlayer 2.19 artifact in the SDK library release.
