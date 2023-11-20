@@ -1,0 +1,167 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "adswizz-mercury",
+    "version": "7.8.3",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-core",
+          "version": {
+            "requires": "7.8.3"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-mercury-7.8.3.aar",
+          "url": "adswizz-mercury-7.8.3.aar",
+          "size": 254459,
+          "sha512": "6fffb230c2d3e7001be889f990f834e2cab6dbe7f64effbe04db4a171e549d5c1dad8fe0ca777f6e483de458707cfff2a126e316e2901cb78b252b55816fc496",
+          "sha256": "e236d75bb54e2f360ec8d5d707aff2b3b12e29a8df5ef34be3b91dd6b3dd87a8",
+          "sha1": "67d3988c2e4fa5f6f8da969bb4c410bc42e62cf7",
+          "md5": "c92fba45c6d944b2e290513cc655b932"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-core",
+          "version": {
+            "requires": "7.8.3"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk7",
+          "version": {
+            "requires": "1.7.21"
+          }
+        },
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat",
+          "version": {
+            "requires": "1.6.1"
+          }
+        },
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.6.4"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-android",
+          "version": {
+            "requires": "1.6.4"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-reflect",
+          "version": {
+            "requires": "1.7.21"
+          }
+        },
+        {
+          "group": "androidx.annotation",
+          "module": "annotation",
+          "version": {
+            "requires": "1.5.0"
+          }
+        },
+        {
+          "group": "com.squareup.moshi",
+          "module": "moshi",
+          "version": {
+            "requires": "1.14.0"
+          }
+        },
+        {
+          "group": "com.squareup.moshi",
+          "module": "moshi-adapters",
+          "version": {
+            "requires": "1.14.0"
+          }
+        },
+        {
+          "group": "com.google.protobuf",
+          "module": "protobuf-javalite",
+          "version": {
+            "requires": "3.23.3"
+          }
+        },
+        {
+          "group": "androidx.work",
+          "module": "work-runtime-ktx",
+          "version": {
+            "requires": "2.8.1"
+          }
+        },
+        {
+          "group": "androidx.room",
+          "module": "room-runtime",
+          "version": {
+            "requires": "2.5.2"
+          }
+        },
+        {
+          "group": "androidx.room",
+          "module": "room-ktx",
+          "version": {
+            "requires": "2.5.2"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-mercury-7.8.3.aar",
+          "url": "adswizz-mercury-7.8.3.aar",
+          "size": 254459,
+          "sha512": "6fffb230c2d3e7001be889f990f834e2cab6dbe7f64effbe04db4a171e549d5c1dad8fe0ca777f6e483de458707cfff2a126e316e2901cb78b252b55816fc496",
+          "sha256": "e236d75bb54e2f360ec8d5d707aff2b3b12e29a8df5ef34be3b91dd6b3dd87a8",
+          "sha1": "67d3988c2e4fa5f6f8da969bb4c410bc42e62cf7",
+          "md5": "c92fba45c6d944b2e290513cc655b932"
+        }
+      ]
+    }
+  ]
+}
