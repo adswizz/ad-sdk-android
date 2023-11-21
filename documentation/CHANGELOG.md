@@ -7,14 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.8.3] - 2023-11-20
 ### Added
- - Added [Global Privacy Control](https://privacycg.github.io/gpc-spec/#abstract) functionality. From now on, **_AdswizzSDK_** added support to set `Sec-GPC` header to all AdRequests. It can be enabled/disabled through newly added field like follows: `AdswizzSDK.consent.gpc = true`
+ - Added [Global Privacy Control](https://privacycg.github.io/gpc-spec/#abstract) functionality. From now on, **_AdswizzSDK_** added support to set `Sec-GPC` header to all AdRequests. It can be enabled/disabled through newly added field like follows: `AdswizzSDK.consent.gpc = true`. If this field is not populated, then the default value is disabled. 
 
 ### Changed
  - Due to an increasing number of user consents supported by **_AdswizzSDK_** like: `gdprConsent`, `ccpaConfig`, `gppConsent` and recently added `gpcConsent`, therefore 7.8.3 version of **_AdswizzSDK_** added a new method in order to handle user consents. This is exposed through `consent` member located in **_AdswizzSDK_** object and is used to group all consents (actual and new ones) into a single place. `AdswizzPrivacyConsent` field is backwards compatible with older versions and old fields are now deprecated.
  - The initialize method in **_AdswizzSDK_** supports now a completion handler defined: `fun initialize(context: Context, adswizzSDKConfig: AdswizzSDKConfig? = null, completion: (() -> Unit)? = null)`. Starting from 7.8.3, synchronous startup time will become shorter. Using all **_AdswizzSDK_** functionalities after receiving the completion callback becomes the recommended way now.
-
-### Fixed
- - Improved memory footprint and synchronous startup time due to asynchronous initialisation.
+ - Improved memory footprint and reduced startup time.
 
 ## [7.8.2] - 2023-10-19
 ### Added
