@@ -32,6 +32,7 @@
 - Migrations
 
 	- [How to migrate to AdswizzSDK v7.8.0+](Android/Migrations/v7_8_0.md)
+	- [How to migrate to AdswizzSDK v7.8.2+](Android/Migrations/v7_8_2.md)
 
 - Integrate into Wear OS apps
 
