@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#ffffff">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.Samples.AppBarOverlay">
+        android:theme="@style/Theme.Samples.AppBarOverlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -23,48 +28,48 @@
         android:id="@+id/sdkVersion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:text="AdsWizzSDK v7.2.30"
-        android:textColor="#434343"
+        android:layout_marginStart="10dp"
+        tools:text="AdsWizzSDK v7.2.30"
         android:textAlignment="viewStart"
+        android:textColor="#434343"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
+        app:layout_constraintTop_toBottomOf="@id/app_bar" />
 
 
-<!--    <androidx.cardview.widget.CardView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_weight="1"-->
-<!--        android:layout_margin="10dp"-->
-<!--        app:cardCornerRadius="6dp">-->
-        <com.ad.core.video.AdVideoView
-            android:id="@+id/adVideoView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:video_resize_mode="fit"
-            app:video_surface_type="surface_view"
-            app:video_view_id="1" />
-<!--    </androidx.cardview.widget.CardView>-->
+    <com.ad.core.video.AdVideoView
+        android:id="@+id/adVideoView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/app_bar"
+        app:video_resize_mode="fit"
+        app:video_surface_type="surface_view"
+        app:video_view_id="1" />
 
     <TextView
         android:id="@+id/appLogsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:text="@string/app_logs"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@color/black"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sdkVersion" />
+        app:layout_constraintTop_toBottomOf="@id/adVideoView" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/app_logs_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.4"
         android:layout_margin="10dp"
-        app:cardCornerRadius="6dp">
+        app:cardCornerRadius="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appLogsLabel">
+
         <TextView
             android:id="@+id/appLogs"
             android:layout_width="match_parent"
@@ -76,4 +81,4 @@
             android:textSize="14sp" />
     </androidx.cardview.widget.CardView>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

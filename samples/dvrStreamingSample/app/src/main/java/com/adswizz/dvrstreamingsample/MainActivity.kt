@@ -1,5 +1,6 @@
 package com.adswizz.dvrstreamingsample
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     private var streamManager: AdswizzAdStreamManager? = null
     private var playerState = PlayerState.IDLE
 
-    private val dateFormat = SimpleDateFormat("dd/MM HH:mm:ss")
+    private val dateFormat = SimpleDateFormat("dd/MM HH:mm:ss", Locale.US)
 
     private val streamListener = object: AdStreamManager.Listener {
         override fun willStartPlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
@@ -60,8 +61,9 @@ class MainActivity : AppCompatActivity() {
             println("dvrstreamingsample::onError $error")
         }
 
-        override fun onDvrMetadataReceived(adStreamManager: AdStreamManager, dvrInfo: DvrBufferInfo?) {
-            dvrInfo?.let {
+        @SuppressLint("SetTextI18n")
+        override fun onDvrMetadataReceived(adStreamManager: AdStreamManager, dvrBufferInfo: DvrBufferInfo?) {
+            dvrBufferInfo?.let {
                 println("dvrstreamingsample::onDvrMetadataReceived")
                 binding.dvrStartTimestamp.text = it.start.toString()
                 binding.dvrStartDateTime.text = dateFormat.format(Date(it.start))
@@ -148,7 +150,7 @@ class MainActivity : AppCompatActivity() {
             }
             return@setOnEditorActionListener false
         }
-        binding.dvrPlayTimestamp.editText?.setOnFocusChangeListener { v, hasFocus ->
+        binding.dvrPlayTimestamp.editText?.setOnFocusChangeListener { _, hasFocus ->
             if(!hasFocus) {
                 binding.dvrPlayTimestamp.editText?.text?.let {
                     it.toString().toFloatOrNull()?.let { timestamp ->

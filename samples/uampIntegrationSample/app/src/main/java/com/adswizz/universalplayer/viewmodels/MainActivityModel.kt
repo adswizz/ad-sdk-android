@@ -1,7 +1,7 @@
 package com.adswizz.universalplayer.viewmodels
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.adswizz.universalplayer.models.MediaData
 import com.adswizz.universalplayer.utils.MusicServiceConnections
 
@@ -13,8 +13,8 @@ class MainActivityModel {
 
     private var listener: ItemClickInterface? = null
 
-    val rootMediaId: LiveData<String> =
-        Transformations.map(MusicServiceConnections.isConnected) { isConnected ->
+    val rootMediaId: LiveData<String?> =
+        MusicServiceConnections.isConnected.map { isConnected ->
             if (isConnected) {
                 MusicServiceConnections.rootMediaId
             } else {

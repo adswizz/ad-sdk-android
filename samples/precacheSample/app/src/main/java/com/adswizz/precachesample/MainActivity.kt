@@ -1,10 +1,8 @@
 package com.adswizz.precachesample
 
-import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -125,6 +123,8 @@ class MainActivity : AppCompatActivity(), CacheManager.Listener {
                 AdEvent.Type.Position.Complete -> {
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - 100% complete")
                 }
+
+                else -> Unit
             }
         }
 
@@ -135,12 +135,9 @@ class MainActivity : AppCompatActivity(), CacheManager.Listener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-//        supportActionBar?.hide()
 
         val window = this.window
         getWindow().decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -171,20 +168,6 @@ class MainActivity : AppCompatActivity(), CacheManager.Listener {
                     // Handle the response from server
                     handleResponse(error, adManager)
                 }
-
-//                playButton.setOnClickListener {
-//                    adManager?.play()
-//                }
-//                replayButton.setOnClickListener {
-//                    adManager?.reset()
-//                    adManager = null
-//
-//                    appLogs.text = ""
-//
-//                    adRequestConnection.requestAds { adManager, error ->
-//                        handleResponse(error, adManager)
-//                    }
-//                }
             }
     }
 
