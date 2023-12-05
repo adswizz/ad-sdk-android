@@ -328,16 +328,12 @@ class PlayerActivity: AppCompatActivity() {
     }
 
     private fun startPlaying(){
-        AdswizzSDK.initialize(applicationContext, AdswizzSDKConfig("GenericDemo", Request.playerId))
-        CoroutineScope(Dispatchers.IO).launch {
-            delay(3000)
-            withContext(Dispatchers.Main){
-                when( Request.requestType ){
-                    "ClientSide" -> startPlayingClient()
-                    "ServerSide" -> startPlayingServer()
-                    "Podcasting" -> startPodcasting()
-                    "else" -> println("*** unknown request type")
-                }
+        AdswizzSDK.initialize(applicationContext, AdswizzSDKConfig("GenericDemo", Request.playerId)){
+            when( Request.requestType ){
+                "ClientSide" -> startPlayingClient()
+                "ServerSide" -> startPlayingServer()
+                "Podcasting" -> startPodcasting()
+                "else" -> println("*** unknown request type")
             }
         }
     }
