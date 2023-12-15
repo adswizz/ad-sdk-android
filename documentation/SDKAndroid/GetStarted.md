@@ -45,6 +45,9 @@ workManagerRuntime = "androidx.work:work-runtime-ktx:$workManagerRuntimeVersion"
 roomRuntime = "androidx.room:room-runtime:$roomVersion"
 roomCompiler = "androidx.room:room-compiler:$roomVersion"
 roomKtx = "androidx.room:room-ktx:$roomVersion"
+privacysandboxAdServices = "androidx.privacysandbox.ads:ads-adservices:$privacysandboxAdServicesVersion"
+kotlinCoroutinesPlayServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$kotlinCoroutinesPlayServicesVersion"
+
 ```
 
 For our Wear OS SDK we use:
@@ -84,6 +87,8 @@ protobufJavaLiteVersion = '3.23.3'
 gmsPlayServicesLocationVersion = '21.0.1'
 commonsMath3Version = '3.6.1'
 roomVersion = '2.5.2'
+privacysandboxAdServicesVersion = '1.1.0-beta03'
+kotlinCoroutinesPlayServicesVersion = '1.6.4'
 
 //WearOS
 wearableSupportVersion = '2.9.0'
