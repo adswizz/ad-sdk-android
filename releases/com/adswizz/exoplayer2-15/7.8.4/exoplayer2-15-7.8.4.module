@@ -1,0 +1,97 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "exoplayer2-15",
+    "version": "7.8.4",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "com.google.android.exoplayer",
+          "module": "exoplayer",
+          "version": {
+            "requires": "2.15.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.21"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "exoplayer2-15-7.8.4.aar",
+          "url": "exoplayer2-15-7.8.4.aar",
+          "size": 45107,
+          "sha512": "8240dea4581647cd7fab0a9969ee2422e18a7b3a9a0b5d885f4343364f491734dda543b6a7bb31bd60d253168c5e5e3900e73f8130717b7fed19cba87dcfcab8",
+          "sha256": "7c5cd12966c63cddda067dc4e08f915da8d419938f21ea3839880c73718b0e0e",
+          "sha1": "a78aef40fe346163a9d9893b70d108422bbb7552",
+          "md5": "4ff8d9753e89a0599b65e5dab27a44c6"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.google.android.exoplayer",
+          "module": "exoplayer",
+          "version": {
+            "requires": "2.15.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.21"
+          }
+        },
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat",
+          "version": {
+            "requires": "1.6.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "exoplayer2-15-7.8.4.aar",
+          "url": "exoplayer2-15-7.8.4.aar",
+          "size": 45107,
+          "sha512": "8240dea4581647cd7fab0a9969ee2422e18a7b3a9a0b5d885f4343364f491734dda543b6a7bb31bd60d253168c5e5e3900e73f8130717b7fed19cba87dcfcab8",
+          "sha256": "7c5cd12966c63cddda067dc4e08f915da8d419938f21ea3839880c73718b0e0e",
+          "sha1": "a78aef40fe346163a9d9893b70d108422bbb7552",
+          "md5": "4ff8d9753e89a0599b65e5dab27a44c6"
+        }
+      ]
+    }
+  ]
+}
