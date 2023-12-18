@@ -122,11 +122,6 @@ The AdswizzSDK uses the following permissions:
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <!--    permissions added since 7.8.4 version -->
-
-    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_TOPICS" />
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
-    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID" />
 ....
 </manifest>
 ```
@@ -168,11 +163,10 @@ The AdswizzSDK additional permissions are:
     <!-- Used for decoration. Used in sonar tracking endpoint for the gps location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- we use it in sonar to add the list of installed apps and bundleVersion to the profile endpoint -->
+
     <!-- Required for 31+. -->
     <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
-    <!-- Required for Topics API -->
-    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_TOPICS" />
-    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID" />
+
     <!-- Required for 33+. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
@@ -190,6 +184,12 @@ The AdswizzSDK additional permissions are:
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
     <!-- Required for 29+. -->
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+
+    <!--    permissions added since 7.8.4 version -->
+    <!-- Required for Topics API -->
+    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_TOPICS" />
+
+
 ....
 </manifest>
 ```

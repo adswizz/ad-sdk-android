@@ -8,7 +8,7 @@ This guide is addressed to Android developers that are interested to integrate [
 * `ad_services_config.xml` file created in your project
 
 ## Android Manifest changes
-In order to access this feature **_AdswizzSDK_** will add non dangerous permissions (without a prompt dialog) to your `manifest` file.
+In order to access this feature with **_AdswizzSDK_** you need to add non dangerous permissions (without a prompt dialog) to your `manifest` file.
 
 ```xml
 
@@ -18,25 +18,28 @@ In order to access this feature **_AdswizzSDK_** will add non dangerous permissi
     <!--    permissions added since 7.8.4  -->
     <uses-permission android:name="android.permission.ACCESS_ADSERVICES_TOPICS" />
     <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
-    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID" />
 
 
 ```
 
-_NOTE_: If you want to exclude the permissions added, you need to include the `remove` node marker.
+_NOTE_: If you want to exclude any permissions added, you need to include the `remove` node marker.
 
 ```xml
 
     <uses-permission android:name="android.permission.ACCESS_ADSERVICES_TOPICS"
         tools:node="remove" />
 
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID"
-        tools:node="remove" />
-
-    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID"
-        tools:node="remove" />
 
 ```
+## Exclude permissions programatically
+
+**_AdswizzSDK_** allows you to exclude permissions added, so if you want to keep the declared permissions in your `AndroidManifest.xml` only for the Host APP you need to use the following method:
+```kotlin
+
+        AdswizzSDK.setPermissionStatus(permission = "android.permission.ACCESS_ADSERVICES_TOPICS", value = false)
+
+```
+
 
 ## Ad Services Config
 Through this configuration file the HostApp controls what `AdService` is enabled per each included SDK in their codebase.
