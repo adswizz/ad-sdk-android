@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.8.4] - 2023-12-18
 ### Added
- - Add early support for [Topics API](https://developer.android.com/design-for-safety/privacy-sandbox/topics). For more details visit [AdswizzSDK Topics API](Android/TopicsAPI/AdswizzSDKTopicsAPI) page.
+ - Added early support for [Topics API](https://developer.android.com/design-for-safety/privacy-sandbox/topics). For more details visit [AdswizzSDK Topics API](Android/TopicsAPI/AdswizzSDKTopicsAPI) page.
 ### Changed
  - OMSDK library updates. Now, **_AdswizzSDK_** will use 1.4+ version. See what's new in Open Measurement SDK [here](https://iabtechlab.com/wp-content/uploads/2022/08/OMSDK_What-is-new-in-1.4_master.pdf).
 ### Fixed
