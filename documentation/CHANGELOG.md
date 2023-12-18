@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.8.4] - 2023-12-18
+### Added
+ - Added early support for [Topics API](https://developer.android.com/design-for-safety/privacy-sandbox/topics). For more details visit [AdswizzSDK Topics API](Android/TopicsAPI/AdswizzSDKTopicsAPI) page.
+### Changed
+ - OMSDK library updates. Now, **_AdswizzSDK_** will use 1.4+ version. See what's new in Open Measurement SDK [here](https://iabtechlab.com/wp-content/uploads/2022/08/OMSDK_What-is-new-in-1.4_master.pdf).
+### Fixed
+ - Fixed Kotlin - Java compatibility issue with Interfaces' default methods implementation.
+
 ## [7.8.3] - 2023-11-20
 ### Added
  - Added [Global Privacy Control](https://privacycg.github.io/gpc-spec/#abstract) functionality. From now on, **_AdswizzSDK_** added support to set `Sec-GPC` header to all AdRequests. It can be enabled/disabled through newly added field like follows: `AdswizzSDK.consent.gpc = true`. If this field is not populated, then the default value is disabled. 

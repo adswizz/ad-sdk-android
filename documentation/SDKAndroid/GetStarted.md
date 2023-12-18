@@ -45,6 +45,9 @@ workManagerRuntime = "androidx.work:work-runtime-ktx:$workManagerRuntimeVersion"
 roomRuntime = "androidx.room:room-runtime:$roomVersion"
 roomCompiler = "androidx.room:room-compiler:$roomVersion"
 roomKtx = "androidx.room:room-ktx:$roomVersion"
+privacysandboxAdServices = "androidx.privacysandbox.ads:ads-adservices:$privacysandboxAdServicesVersion"
+kotlinCoroutinesPlayServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$kotlinCoroutinesPlayServicesVersion"
+
 ```
 
 For our Wear OS SDK we use:
@@ -84,6 +87,8 @@ protobufJavaLiteVersion = '3.23.3'
 gmsPlayServicesLocationVersion = '21.0.1'
 commonsMath3Version = '3.6.1'
 roomVersion = '2.5.2'
+privacysandboxAdServicesVersion = '1.1.0-beta03'
+kotlinCoroutinesPlayServicesVersion = '1.6.4'
 
 //WearOS
 wearableSupportVersion = '2.9.0'
@@ -116,6 +121,7 @@ The AdswizzSDK uses the following permissions:
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
 ....
 </manifest>
 ```
@@ -157,8 +163,10 @@ The AdswizzSDK additional permissions are:
     <!-- Used for decoration. Used in sonar tracking endpoint for the gps location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- we use it in sonar to add the list of installed apps and bundleVersion to the profile endpoint -->
+
     <!-- Required for 31+. -->
     <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+
     <!-- Required for 33+. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
@@ -176,6 +184,12 @@ The AdswizzSDK additional permissions are:
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
     <!-- Required for 29+. -->
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+
+    <!--    permissions added since 7.8.4 version -->
+    <!-- Required for Topics API -->
+    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_TOPICS" />
+
+
 ....
 </manifest>
 ```
