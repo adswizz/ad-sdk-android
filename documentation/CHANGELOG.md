@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.8.5] - 2024-01-18
+### Added
+- Added `advertiser` field in the `AdData` public interface in order to expose the received data from VAST response. The `Advertiser` class contains `advertiserId` and `value` attributes that can be decoded from VAST tag having the following format: `<Advertiser id="the_advertiser_id">YourAdvertiserValue</Advertiser>`
+
 ## [7.8.4] - 2023-12-18
 ### Added
  - Added early support for [Topics API](https://developer.android.com/design-for-safety/privacy-sandbox/topics). For more details visit [AdswizzSDK Topics API](Android/TopicsAPI/AdswizzSDKTopicsAPI) page.
