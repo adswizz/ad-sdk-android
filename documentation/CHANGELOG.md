@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.8.5] - 2024-01-18
+## [7.8.5] - 2024-01-19
 ### Added
 - Added `advertiser` field in the `AdData` public interface in order to expose the received data from VAST response. The `Advertiser` class contains `advertiserId` and `value` attributes that can be decoded from VAST tag having the following format: `<Advertiser id="the_advertiser_id">YourAdvertiserValue</Advertiser>`
 
