@@ -47,7 +47,11 @@ roomCompiler = "androidx.room:room-compiler:$roomVersion"
 roomKtx = "androidx.room:room-ktx:$roomVersion"
 privacysandboxAdServices = "androidx.privacysandbox.ads:ads-adservices:$privacysandboxAdServicesVersion"
 kotlinCoroutinesPlayServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$kotlinCoroutinesPlayServicesVersion"
-
+// used only in media3 flavor
+media3Exoplayer = "androidx.media3:media3-exoplayer:$media3Version"
+media3ExoplayerDash = "androidx.media3:media3-exoplayer-dash:$media3Version"
+media3ExoplayerHLS = "androidx.media3:media3-exoplayer-hls:$media3Version"
+media3ExoplayerSS = "androidx.media3:media3-exoplayer-smoothstreaming:$media3Version"
 ```
 
 For our Wear OS SDK we use:
@@ -89,6 +93,7 @@ commonsMath3Version = '3.6.1'
 roomVersion = '2.5.2'
 privacysandboxAdServicesVersion = '1.1.0-beta03'
 kotlinCoroutinesPlayServicesVersion = '1.6.4'
+media3Version = '1.2.1'
 
 //WearOS
 wearableSupportVersion = '2.9.0'
@@ -367,6 +372,7 @@ implementation 'com.adswizz:exoplayer2-10:7.8.0'
 //implementation 'com.adswizz:exoplayer2-16:7.8.0'
 //implementation 'com.adswizz:exoplayer2-17:7.8.0'
 //implementation 'com.adswizz:exoplayer2-18:7.8.0'
+//implementation 'com.adswizz:exoplayer-media3:7.8.6'
 
 ```
 
