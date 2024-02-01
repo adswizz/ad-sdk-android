@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.8.6] - 2024-02-05
 ### Added
-- Added ExoPlayer Media3 in the SDK library release with artefact id `com.adswizz:exoplayer-media3`. Starting from 7.8.6 **_AdswizzSDK_** will be bundled with `androidx.media3:media3-exoplayer` support. The current media3 version is `1.2.1` including helpers for: `media3-exoplayer-dash`, `media3-exoplayer-hls` and `media3-exoplayer-smoothstreaming`.
+- Added ExoPlayer Media3 in the SDK library release with artefact id `com.adswizz:exoplayer-media3`. Starting from 7.8.6 **_AdswizzSDK_** will be bundled with `androidx.media3:media3-exoplayer` support. The current media3 version is `1.2.0` including helpers for: `media3-exoplayer-dash`, `media3-exoplayer-hls` and `media3-exoplayer-smoothstreaming`.
 ### Fixed
 - Removed an exoplayer transitive dependency in `com.adswizz:sdk` module.
 

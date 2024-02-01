@@ -93,7 +93,7 @@ commonsMath3Version = '3.6.1'
 roomVersion = '2.5.2'
 privacysandboxAdServicesVersion = '1.1.0-beta03'
 kotlinCoroutinesPlayServicesVersion = '1.6.4'
-media3Version = '1.2.1'
+media3Version = '1.2.0'
 
 //WearOS
 wearableSupportVersion = '2.9.0'
