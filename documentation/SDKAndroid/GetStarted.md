@@ -47,6 +47,7 @@ roomCompiler = "androidx.room:room-compiler:$roomVersion"
 roomKtx = "androidx.room:room-ktx:$roomVersion"
 privacysandboxAdServices = "androidx.privacysandbox.ads:ads-adservices:$privacysandboxAdServicesVersion"
 kotlinCoroutinesPlayServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$kotlinCoroutinesPlayServicesVersion"
+
 ```
 
 For our Wear OS SDK we use:
