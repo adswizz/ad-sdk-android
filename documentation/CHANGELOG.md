@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The support for `com.adswizz:exoplayer2-10` and `com.adswizz:exoplayer2-12` artefacts is discontinued due to `jCenter` repository deprecation. The old versions are still available in `adswizz` github repository.
 ### Fixed
 - Removed an exoplayer transitive dependency in `com.adswizz:sdk` module.
+- Fixed a `NullPointerException` due to a race condition when logging `AnalyticsEvent`. 
 
 ## [7.8.6] - 2024-02-09
 ### Fixed
