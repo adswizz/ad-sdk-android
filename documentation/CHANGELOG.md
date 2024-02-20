@@ -18,13 +18,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fixed an internal `ConcurrentModificationException` occurred when the public fields of **_AdswizzSDK_** were set ahead of initialisation block or without waiting the `completion` callback.
 
-## ~~[7.8.5] - 2024-01-19~~
+## [7.8.5] - 2024-01-19
 > **Note**
 > Usage not recommended, due to some issues introduced in `7.8.3`. Update to at least version `7.8.7`.
 ### Added
 - Added `advertiser` field to the `AdData` public interface, enabling access to the advertiser data obtained from the VAST response. The `Advertiser` class contains `id` and `value` members. These members are populated from the following VAST tag: `<Advertiser id="the_advertiser_id">the_advertiser_value</Advertiser>`.
 
-## ~~[7.8.4] - 2023-12-18~~
+## [7.8.4] - 2023-12-18
 > **Note**
 > Usage not recommended, due to some issues introduced in `7.8.3`. Update to at least version `7.8.7`.
 ### Added
@@ -34,7 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
  - Fixed Kotlin - Java compatibility issue with Interfaces' default methods implementation.
 
-## ~~[7.8.3] - 2023-11-20~~
+## [7.8.3] - 2023-11-20
 > **Note**
 > Usage not recommended, due to some issues introduced in this release. Update to at least version `7.8.7`.
 ### Added
