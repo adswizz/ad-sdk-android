@@ -88,7 +88,7 @@ If you need to keep the companion on the screen for a longer time(or indefinitel
 
 ```kotlin
 val adCompanionOptions = AdCompanionOptions()
-adCompanionOptions.extraExposureTime = 1.2// these are seconds.
+adCompanionOptions.extraExposureTime = 1.2 // seconds.
 AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
 ```
 
@@ -117,3 +117,12 @@ AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
 
 By default, it is set to `true`, allowing for toggling between two distinct approaches for loading content in companion banners. When set to `true`, the `AdCompanionView` object dynamically adds and removes `WebView` child views, which may lead to display problems in ReactNative. However, when set to `false`, the child views remain throughout the entire companion lifecycle, resolving the display issues in ReactNative but resulting in a slight increase in memory usage.
 
+## Request timeout
+Starting with version 7.8.8, a new parameter called `requestTimeout` has been added to `AdCompanionOptions` class.
+```kotlin
+val yourTimeoutValue = 5.0 // seconds
+val adCompanionOptions = AdCompanionOptions(requestTimeout = yourTimeoutValue)
+AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
+```
+This field will be used as a global timeout by `AdCompanionView`'s when trying to load companion resources. The default value is 3.5 seconds and its boundaries will be defined by [2, 10] seconds interval.
+`AdCompanionView` will fire `didFailToDisplayAd` callback when the selected resource is not reachable after the timeout defined by `requestTimeout` field.

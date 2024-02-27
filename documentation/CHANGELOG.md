@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Removed `androidx.constraintlayout` and `com.google.android.material` transitive dependencies from **_AdswizzSDK_** artefacts.
 ### Fixed
-- `AdCompanionView` will fire `didFailToDisplayAd` callback when the selected resource is not reachable after timeout defined by `requestTimeout` field.
+- `AdCompanionView` will fire `didFailToDisplayAd` callback when the selected resource is not reachable after the timeout defined by `requestTimeout` field.
 
 ## [7.8.7] - 2024-02-14
 ### Added
