@@ -344,10 +344,12 @@ After requesting your first ad from the Adswizz ad server, you are ready to play
 
 Based on enqueEnabled properties there are two different AdManager lifecycle and ad events are triggered slightly different
 
-### Enqueue enabled false. Ads are not queued in a playlist and preparing/buffering of ads are done sequentially. See following diagram
+### Enqueue enabled false. 
+Ads are not queued in a playlist and preparing/buffering of ads are done sequentially. See following diagram
 
 <img src="../img/AdManagerState.png" width="1000" />
 
-### Enqueue enabled false. Ads are queued in a playlist and the preparing/buffering is done in parallel with playing. See following diagram
+### Enqueue enabled false. 
+Ads are queued in a playlist and the preparing/buffering is done in parallel with playing. See following diagram
 
 <img src="../img/AdManager-state-enqueue-on.jpg" width="1000" />
