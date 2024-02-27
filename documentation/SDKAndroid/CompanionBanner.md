@@ -8,7 +8,7 @@ The AdswizzSDK enables you to configure companion banners if you are provided by
 The easiest way to add a companion view is from XML. You can also add the view programmatically.
 Once created, the SDK will keep track of all of your companion views and fill them with ad-related content as the
 ad is playing. By default, an **_AdCompanionView_** instance is inactive, meaning that, as long as it's not visible on screen, it won't load the content (during the ad break) or fire tracking events. You can temporarily "deactivate" a companion view at any time by either hiding it, resizing it so that the frame width or height is zero, making it transparent or removing it from the view tree. The SDK will automatically keep track of your companion state and stop or resume rendering. If you want to show or hide your **_AdCompanionView_** based on incoming ad, you can easily check "hasCompanion" flag from **_AdData_** interface.
-
+### Adding AdCompanionView in XML
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,8 +18,10 @@ ad is playing. By default, an **_AdCompanionView_** instance is inactive, meanin
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 ....
-    <com.ads.coresdk.companion.AdCompanionView
+    <com.ad.core.companion.AdCompanionView
             android:id="@+id/companionView1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -27,6 +29,18 @@ ad is playing. By default, an **_AdCompanionView_** instance is inactive, meanin
 ....
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
+### Adding AdCompanionView programmatically
+```kotlin
+        val companionView = AdCompanionView(context)
+        yourContainer.addView(companionView, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+```
+
+### AdCompanionView background color
+**_AdCompanionView_** will set by default its background color to `Color.WHITE` if the background attribute is not previously set.
+In order to change this behaviour you can set background attribute to transparent or any other color, as follows: 
+ - `android:background="@android:color/transparent"`
+ - `companionView.setBackgroundColor(Color.TRANSPARENT)`
+
 ## Setting up
 
 There are two scenarios for setting up the companion banner: one for client-side insertion and one for server-side insertion or podcasting.
