@@ -342,5 +342,12 @@ or is equal to 0, this means that 1 ad is requested. In this example the `number
 
 After requesting your first ad from the Adswizz ad server, you are ready to play the ads from the AdManager object. Keep in mind that you may receive more than one ad from the server, but you are not required to play them all. If you decide to play multiple ads in your app, you need to listen to the events that the AdManager sends to your app and decide what is the appropriate action to take. Here is a diagram of the AdManager state.
 
+Based on enqueEnabled properties there are two different AdManager lifecycle and ad events are triggered slightly different
+
+### Enqueue enabled false. Ads are not queued in a playlist and preparing/buffering of ads are done sequentially. See following diagram
+
 <img src="../img/AdManagerState.png" width="1000" />
 
+### Enqueue enabled false. Ads are queued in a playlist and the preparing/buffering is done in parallel with playing. See following diagram
+
+<img src="../img/AdManager-state-enqueue-on.jpg" width="1000" />
