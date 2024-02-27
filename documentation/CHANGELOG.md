@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.8.8] - TBD
+### Added
+- Added `requestTimeout` field in `AdCompanionOptions` that can be passed to **_AdswizzSDK_** instance through `setAdCompanionOptions` method. This field will be used as a global timeout by `AdCompanionView`'s when trying to load companion resources. The default value is 3.5 seconds and its boundaries will be defined by [2, 10] seconds interval.
+- Exoplayer global timeout - TBD
+### Changed
+- Removed `androidx.constraintlayout` and `com.google.android.material` transitive dependencies from **_AdswizzSDK_** artefacts.
+### Fixed
+- `AdCompanionView` will fire `didFailToDisplayAd` callback when the selected resource is not reachable after timeout defined by `requestTimeout` field.
+
 ## [7.8.7] - 2024-02-14
 ### Added
 - Added ExoPlayer Media3 in the SDK library release with artefact id `com.adswizz:exoplayer-media3`. Starting from 7.8.7 **_AdswizzSDK_** will be bundled with `androidx.media3:media3-exoplayer` support. The current media3 version is `1.2.0` including helpers for: `media3-exoplayer-dash`, `media3-exoplayer-hls` and `media3-exoplayer-smoothstreaming`.
