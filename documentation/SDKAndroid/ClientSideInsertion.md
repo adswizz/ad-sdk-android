@@ -318,7 +318,6 @@ The **_PlaybackError__** event signals an error occurred during current ad playb
 The **_Unknown__** event signals something unexpected happened during playback which cannot be mapped to other ad events state.
 
 
-
 #### AdEvent.Type.position group (VASTE events)
 
 
@@ -348,6 +347,15 @@ The **_ThirdQuartile_** event signals that the current ad reached the third quar
 The **_Complete_** event signals that the current ad reached the complete quartile from the VAST linear node.
 
 ##### Progress
+
+
+## Ad events edge cases
+
+Note that **_AllAdsCompleted_** event signals that the **_AdManager_** has finished all the ads either by playing them or skiping them due to errors or other unknown events.
+In the following example AllAdsCompleted is sent after two failed to play ads. 
+
+<img src="../img/edge-cases-events.jpg" width="1000" />
+
 
 ## AdBaseManagerAdapter interface
 
