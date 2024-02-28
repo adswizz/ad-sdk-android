@@ -224,6 +224,131 @@ Called when there was an error playing the ad.
 ### **_Note_**
 Also, you can remove the specified listener by calling `removeAdManagerListener`.
 
+### Ad events explained
+
+Once you've obtained an **_AdManager_** instance, set the delegate and called `prepare()`, that **_AdManager_** instance will communicate back to your application through the **AdManagerListener** interface. 
+
+The `fun onEventReceived(adManager: AdManager, event: AdEvent)` interface method informs your application that the current ad triggered an event of interest.
+Through the **_AdEvent_** interface, the following information can be accessed:
+  * **_ad_**: the ad `AdData` for which the event was triggered
+  * **_event_**: the actual event `AdEventType` that was triggered
+
+#### AdEvent types
+Remember that, regardless if enqueue is enabled or not, an **_AdManager_** handles and plays ads sequentially starting with the first ad until the last ad (including "empty" ads). Hence, the order of the events is predictable to be able to consistently adhere to a state machine model.
+There is though some differences when enqueue is on and some events for the second add can be interlaced with some events from the first, while events for each of the ads remaning sequential. 
+AdEvents are grouped into three classes: admanager events (of type AdEvent.Type.State) which informs about current admanger state changes, vast events (of type AdEvent.Type.Position) which informs the listener about playback progress and other events (of type AdEvent.Type.Other) which consist of events not grouped in the first two categories.
+Next, let's explore the types of events that the **_AdManager_**  can trigger by inspecting the **_AdEventType_** enum.
+
+#### AdEvent.Type.State group (AdManager state changes)
+
+##### FirstAdWillInitialize
+
+The **_FirstAdWillInitializee_** event signals the admanager will start initialising first ad in ad pod
+
+##### Initialized
+
+The **_Initialized_** the default state of admanager
+
+
+##### PreparingForPlay
+
+The **_PreparingForPlayy_** event signals that the current ad will start loading its creative. You can expect that the **_preparingForPlay_** event to be triggered for each ad managed by the **_AdManager_** (including "empty" ads). This event marks the beginning of the current ad creative lifecycle and that the internal player will start buffering.
+
+##### ReadyForPlay
+
+The **_ReadyForPlay_** event is triggered when the player playing the ad has finished loading (buffering) the creative and has enough buffer likely to keep up. Useful when playing ads with the internal player so that you can instruct the **_AdManager_** to start playing by calling the `play()` method. 
+Note that this event does not guarantee that it will play without buffering mid ad if network conditions change.
+
+##### DidStartPlaying
+
+The **_DidStartPlaying_** event signals that the current ad started playing its creative.
+
+##### DidPausePlaying
+
+The **_DidPausePlaying__** event signals that the current ad was paused. Upon resuming the ad, the **didResumePlaying** event will be triggered.
+
+##### DidResumePlaying
+
+The **_DidResumePlaying__** event signals that the current ad has resumed. 
+
+##### WillStartBuffering
+
+The **_WillStartBuffering__** event signal an interrupt in playback of the current ad due to slow network condition and buffering was started by the player
+
+
+##### DidFinishBuffering
+
+The **_DidFinishBuffering__** event signal buffering has completed and playback is resumed
+
+
+##### DidFinishPlaying
+
+The **_DidFinishPlaying_** event signals that the current ad has finished playing its creative. Note that this event is not triggered if the **_didStartPlaying_** event has not been previously triggered as well.
+
+##### Completed
+
+The **_Completed_** event signals that the current ad has finished. It is sent also for "empty" ads.
+
+##### AllAdsCompleted
+
+The **_AllAdsCompleted_** event signals that the **_AdManager_** has finished all the ads. After **_allAdsCompleted_** event is received, the **_AdManager_** is no longer able to play any ad. To reuse the **_AdManager_** after this point (although not recommended), you would need to first call the [reset()](#reset) method described in the [AdManager protocol](#admanager-protocol) section, and call `prepare()` again.
+
+##### DidSkip
+
+The **_DidSkip_** event signals current ad has been skipped
+
+
+##### NotUsed
+
+The **_NotUsed_** event signals ad has not been used
+
+
+##### AdUpdated
+
+The **_AdUpdated__** event signals ad has been updated.
+
+
+##### PlaybackError
+
+The **_PlaybackError__** event signals an error occurred during current ad playback.
+
+
+##### Unknown
+
+The **_Unknown__** event signals something unexpected happened during playback which cannot be mapped to other ad events state.
+
+
+
+#### AdEvent.Type.position group (VASTE events)
+
+
+##### Loaded
+
+The **_Loaded_** event signals that the current was loaded and buffered and ready to play.
+
+
+##### Start
+
+The **_Start_** event signals that the current was loaded and playback began.
+
+##### FirstQuartile
+
+The **_FirstQuartile_** event signals that the current ad reached the first quartile from the VAST linear node.
+
+##### Midpoint
+
+The **_Midpoint_** event signals that the current ad reached its midpoint from the VAST linear node.
+
+##### ThirdQuartile
+
+The **_ThirdQuartile_** event signals that the current ad reached the third quartile from the VAST linear node.
+
+##### Complete
+
+The **_Complete_** event signals that the current ad reached the complete quartile from the VAST linear node.
+
+##### Progress
+
 ## AdBaseManagerAdapter interface
 
 Starting with version 7.3.1, the SDK is also able to request data in order for your application to benefit from additional customization while working with the AdManager object. To be able to customize the behavior, you need to set up an adapter with `setAdapter` for the AdBaseManagerAdapter that conforms to the `AdBaseManagerAdapter` interface.
