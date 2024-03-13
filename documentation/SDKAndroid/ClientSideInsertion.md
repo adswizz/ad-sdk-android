@@ -348,6 +348,8 @@ The **_Complete_** event signals that the current ad reached the complete quarti
 
 ##### Progress
 
+The **_Progress_** event signals that the current ad reached the progress value defined in the VAST linear node.
+
 
 ## Ad events edge cases
 
