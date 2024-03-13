@@ -5,14 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.8.8] - TBD
+## [7.8.8] - 2024-03-14
 ### Added
-- Added `requestTimeout` field in `AdCompanionOptions` that can be passed to **_AdswizzSDK_** instance through `setAdCompanionOptions` method. This field will be used as a global timeout by `AdCompanionView`'s when trying to load companion resources. The default value is 3.5 seconds and its boundaries will be defined by [2, 10] seconds interval.
-- Exoplayer global timeout - TBD
+- Update **_AdswizzSDK_** initialisation process in [GetStarted](Android/SDKAndroid/GetStarted) page with code snippets that covers media service playback.
+- Added [Ad events explained](Android/SDKAndroid/ClientSideInsertion#Ad-events-explained) new section, which brings better overview for the `AdEvent`'s received after an ad request was created.
+- Added [Enqueue](Android/SDKAndroid/ClientSideInsertion#Enqueue-enabled-false) new section, with additional information and diagrams for both `enqueue=enabled/disabled` use cases.
+- Update [CompanionBanner](Android/SDKAndroid/CompanionBanner) page with code snippets that covers following scenarios:
+    - adding `AdCompanionView` programmatically
+    - adding `AdCompanionView` in XML
+    - `AdCompanionView` background color usages
+
 ### Changed
-- Removed `androidx.constraintlayout` and `com.google.android.material` transitive dependencies from **_AdswizzSDK_** artefacts.
+- **_AdswizzSDK_** Profile Collector will fire on each sdk initialisation.
 ### Fixed
-- `AdCompanionView` will fire `didFailToDisplayAd` callback when the selected resource is not reachable after the timeout defined by `requestTimeout` field.
+- `Mute`/`Unmute` VAST events will be fired for the requested ads who entered into playing state at least once.
+- Fixed a `IndexOutOfBoundsException` occurred when the `AdManager`'s `reset()` method is called on `DidStartPlayingEvent` callback.
 
 ## [7.8.7] - 2024-02-14
 ### Added
