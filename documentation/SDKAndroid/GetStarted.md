@@ -451,11 +451,15 @@ Second, you need to add the playerId to your manifest. This is also obtained fro
 
 If adding the installation id and player id at compile time is not an option, then read [SDK initialization when installationId and playerId are unknown at compile time](#sdk-initialization-when-installationid-and-playerid-are-unknown-at-compile-time).
 
-Next, you need to initialize the AdswizzSDK. The recommended way to do this is in the onCreate of your application. If you've already extended
+### SDK initialisation in Android Application Component
+
+You can initialize the AdswizzSDK in the `onCreate` method of your application component. If you've already extended
 the application class, just add the following line inside the onCreate method:
 
 ```kotlin
-AdswizzSDK.initialize(this)
+AdswizzSDK.initialize(context = this, completion = {
+    // AdswizzSDK is completely initialised and you can safely use it's functionalities
+})
 ```
 
 If you haven't already extend the Application class you can do it now. It should look something like this:
@@ -465,7 +469,9 @@ class MyApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        AdswizzSDK.initialize(this)
+        AdswizzSDK.initialize(context = this, completion = {
+            // AdswizzSDK is completely initialised and you can safely use it's functionalities
+        })
     }
 }
 ```
@@ -492,6 +498,42 @@ AdswizzSDK.cleanup()
 ```
 
 Call it when you no longer need the SDK.
+
+### SDK initialisation in Android Service Component
+
+If you want to control **_AdswizzSDK_** lifecycle through an Android Service Component (eg. MediaBrowserServiceCompat, MediaSessionService, MediaLibraryService or others), you have to call initialise/cleanup methods exclusively in the Service lifecycle.
+> **Note**
+> Mixing initialise/cleanup method calls in different Android Components may introduce unexpected behaviour because some component can outlive others.
+> An example would be: calling `AdswizzSDK.initialise()` in `Application.onCreate()` and `AdswizzSDK.cleanup()` in Playback service `onTaskRemoved()` or `onDestroy()`.
+
+For initialisation you can use:
+```kotlin
+class YourMediaBrowserService: MediaBrowserServiceCompat() {
+    //...
+    override fun onCreate() {
+        //...
+        AdswizzSDK.initialize(context = this, completion = {
+            // AdswizzSDK is completely initialised and you can safely use it's functionalities
+        })
+    }
+}
+```
+For cleanup, you should use:
+
+```kotlin
+override fun onTaskRemoved(rootIntent: Intent?) {
+    AdswizzSDK.cleanup()
+    super.onTaskRemoved(rootIntent)
+}
+```
+or (depending of your use case)
+
+```kotlin
+override fun onDestroy() {
+    AdswizzSDK.cleanup()
+    super.onDestroy()
+}
+```
 
 ## SDK initialization when installationId and playerId are unknown at compile time
 
