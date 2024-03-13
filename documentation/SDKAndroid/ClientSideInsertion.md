@@ -482,7 +482,7 @@ Ads are not queued in a playlist and preparing/buffering of ads are done sequent
 
 <img src="../img/AdManagerState.png" width="1000" />
 
-### Enqueue enabled false. 
+### Enqueue enabled true. 
 Ads are queued in a playlist and the preparing/buffering is done in parallel with playing. PreparingForPlaying and ReadyToPlay for each ad are sent after previous ad has been prepared and PreparingForPlaying and ReadyToPlay for previous ad has been sent but before it has completed.
 In this case PreparingForPlaying and ReadyToPlay for second ad can be triggered anywhere in the timeline of previous ad.
 
