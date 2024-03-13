@@ -15,8 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - adding `AdCompanionView` in XML
     - `AdCompanionView` background color usages
 ### Fixed
-- `Mute`/`Unmute` VAST events will be fired for the requested ads who entered into playing state at least once.
-- Fixed a `IndexOutOfBoundsException` occurred when the `AdManager`'s `reset()` method is called on `DidStartPlayingEvent` callback.
+- `Mute`/`Unmute` VAST events will be triggered only for ads that have entered the playing state.
+- Fixed an `IndexOutOfBoundsException` that occurred when the `AdManager`'s `reset()` method was called from the `DidStartPlayingEvent` callback in the `AdManagerListener`.
 
 ## [7.8.7] - 2024-02-14
 ### Added
