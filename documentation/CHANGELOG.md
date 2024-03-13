@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.8.8] - 2024-03-14
+## [7.8.8] - 2024-03-13
 ### Added
 - Update **_AdswizzSDK_** initialisation process in [GetStarted](Android/SDKAndroid/GetStarted) page with code snippets that covers media service playback.
 - Added [Ad events explained](Android/SDKAndroid/ClientSideInsertion#Ad-events-explained) new section, which brings better overview for the `AdEvent`'s received after an ad request was created.
@@ -14,9 +14,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - adding `AdCompanionView` programmatically
     - adding `AdCompanionView` in XML
     - `AdCompanionView` background color usages
-
-### Changed
-- **_AdswizzSDK_** Profile Collector will fire on each sdk initialisation.
 ### Fixed
 - `Mute`/`Unmute` VAST events will be fired for the requested ads who entered into playing state at least once.
 - Fixed a `IndexOutOfBoundsException` occurred when the `AdManager`'s `reset()` method is called on `DidStartPlayingEvent` callback.
