@@ -318,7 +318,7 @@ The **_PlaybackError_** event signals an error occurred during current ad playba
 The **_Unknown_** event signals something unexpected happened during playback which cannot be mapped to other ad events state.
 
 
-#### AdEvent.Type.position group (VASTE events)
+#### AdEvent.Type.position group (VAST events)
 
 
 ##### Loaded
