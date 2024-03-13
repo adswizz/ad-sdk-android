@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.8.8] - 2024-03-13
+### Added
+- Update **_AdswizzSDK_** initialisation process in [GetStarted](Android/SDKAndroid/GetStarted) page with code snippets that covers media service playback.
+- Added [Ad events explained](Android/SDKAndroid/ClientSideInsertion#Ad-events-explained) new section, which brings better overview for the `AdEvent`'s received after an ad request was created.
+- Added [Enqueue](Android/SDKAndroid/ClientSideInsertion#Enqueue-enabled-false) new section, with additional information and diagrams for both `enqueue=enabled/disabled` use cases.
+- Update [CompanionBanner](Android/SDKAndroid/CompanionBanner) page with code snippets that covers following scenarios:
+    - adding `AdCompanionView` programmatically
+    - adding `AdCompanionView` in XML
+    - `AdCompanionView` background color usages
+### Fixed
+- `Mute`/`Unmute` VAST events will be triggered only for ads that have entered the playing state.
+- Fixed an `IndexOutOfBoundsException` that occurred when calling the `AdManager`'s `reset()` method from the `DidStartPlaying` event in the `AdManagerListener` callback.
+
 ## [7.8.7] - 2024-02-14
 ### Added
 - Added ExoPlayer Media3 in the SDK library release with artefact id `com.adswizz:exoplayer-media3`. Starting from 7.8.7 **_AdswizzSDK_** will be bundled with `androidx.media3:media3-exoplayer` support. The current media3 version is `1.2.0` including helpers for: `media3-exoplayer-dash`, `media3-exoplayer-hls` and `media3-exoplayer-smoothstreaming`.
