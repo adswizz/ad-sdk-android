@@ -1,0 +1,146 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "adswizz-sdk-pinpoint-analytics",
+    "version": "7.8.8",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.21"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-sdk-pinpoint-analytics-7.8.8.aar",
+          "url": "adswizz-sdk-pinpoint-analytics-7.8.8.aar",
+          "size": 124060,
+          "sha512": "25a9711568883a193a71295308736cfcff85adf0b5641970ebe181399a2253608d8b4c46c3c34f03ef2c6abd89d7237c00181bdf586cf76db86a17be7822bf58",
+          "sha256": "967242f6a879c8897a9d0bb6927a59088d4a2a80256d951f047482afa9f8233d",
+          "sha1": "8fb25504043800a24e7a93cab7259ad181aa3546",
+          "md5": "7ec2f20d0d8f7ca84c647994da69e911"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.21"
+          }
+        },
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.9.0"
+          }
+        },
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat",
+          "version": {
+            "requires": "1.6.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.6.4"
+          }
+        },
+        {
+          "group": "com.squareup.moshi",
+          "module": "moshi",
+          "version": {
+            "requires": "1.14.0"
+          }
+        },
+        {
+          "group": "com.squareup.moshi",
+          "module": "moshi-adapters",
+          "version": {
+            "requires": "1.14.0"
+          }
+        },
+        {
+          "group": "androidx.room",
+          "module": "room-runtime",
+          "version": {
+            "requires": "2.5.2"
+          }
+        },
+        {
+          "group": "androidx.work",
+          "module": "work-runtime-ktx",
+          "version": {
+            "requires": "2.8.1"
+          }
+        },
+        {
+          "group": "androidx.work",
+          "module": "work-multiprocess",
+          "version": {
+            "requires": "2.8.1"
+          }
+        },
+        {
+          "group": "androidx.room",
+          "module": "room-ktx",
+          "version": {
+            "requires": "2.5.2"
+          }
+        },
+        {
+          "group": "com.amazonaws",
+          "module": "aws-android-sdk-core",
+          "version": {
+            "requires": "2.72.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-sdk-pinpoint-analytics-7.8.8.aar",
+          "url": "adswizz-sdk-pinpoint-analytics-7.8.8.aar",
+          "size": 124060,
+          "sha512": "25a9711568883a193a71295308736cfcff85adf0b5641970ebe181399a2253608d8b4c46c3c34f03ef2c6abd89d7237c00181bdf586cf76db86a17be7822bf58",
+          "sha256": "967242f6a879c8897a9d0bb6927a59088d4a2a80256d951f047482afa9f8233d",
+          "sha1": "8fb25504043800a24e7a93cab7259ad181aa3546",
+          "md5": "7ec2f20d0d8f7ca84c647994da69e911"
+        }
+      ]
+    }
+  ]
+}
