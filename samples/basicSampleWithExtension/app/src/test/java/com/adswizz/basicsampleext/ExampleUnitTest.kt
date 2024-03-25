@@ -1,4 +1,4 @@
-package com.adswizz.basicsample
+package com.adswizz.basicsampleext
 
 import org.junit.Test
 

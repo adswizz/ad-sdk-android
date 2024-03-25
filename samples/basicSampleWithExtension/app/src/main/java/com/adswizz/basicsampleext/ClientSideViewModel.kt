@@ -1,10 +1,8 @@
-package com.adswizz.basicsample
+package com.adswizz.basicsampleext
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.ad.core.adManager.AdManager
 import com.adswizz.core.adFetcher.AdswizzAdZone

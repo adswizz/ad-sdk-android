@@ -1,4 +1,4 @@
-package com.adswizz.basicsample
+package com.adswizz.basicsampleext
 
 import android.app.Application
 import android.net.Uri

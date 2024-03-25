@@ -1,4 +1,4 @@
-package com.adswizz.basicsample
+package com.adswizz.basicsampleext
 
 import android.content.pm.ActivityInfo
 import android.graphics.Color
@@ -16,7 +16,7 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.adswizz.basicsample.databinding.ActivityMainBinding
+import com.adswizz.basicsampleext.databinding.ActivityMainBinding
 import com.adswizz.sdk.AdswizzSDK
 import com.google.android.material.tabs.TabLayout
 import java.text.SimpleDateFormat
