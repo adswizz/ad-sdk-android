@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.8.9] - 2024-04-10
 ### Added
 - New default method `release` in **_AdPlayer_** interface with empty implementation. This method will be called when any instance of: `AdManager`, `AdswizzAdStreamManager`,`AdswizzAdPodcastManager` wants to free up the resources used is their lifecycle. For more details visit [AdPlayer Interface Implementation](Android/SDKAndroid/Playingyourplayer#sample-adplayer-interface-implementation) section.
+> This new method won’t affect you if you’re using the SDK’s internal player. Moreover, if you’re using an external player, this new method may have no impact on you, depending on how you’ve implemented the AdPlayer interface.
 ### Fixed
 - Fixed an internal player memory leak due to Exoplayer's retained instance in DefaultBandwidthMeter singleton.
 
