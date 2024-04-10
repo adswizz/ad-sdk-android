@@ -3,8 +3,8 @@
   <groupId>com.adswizz</groupId>
   <artifactId>adswizz-sdk-pinpoint-analytics</artifactId>
   <versioning>
-    <latest>7.8.8</latest>
-    <release>7.8.8</release>
+    <latest>7.8.9</latest>
+    <release>7.8.9</release>
     <versions>
       <version>7.8.0</version>
       <version>7.8.1</version>
@@ -15,7 +15,8 @@
       <version>7.8.6</version>
       <version>7.8.7</version>
       <version>7.8.8</version>
+      <version>7.8.9</version>
     </versions>
-    <lastUpdated>20240314135252</lastUpdated>
+    <lastUpdated>20240410154701</lastUpdated>
   </versioning>
 </metadata>

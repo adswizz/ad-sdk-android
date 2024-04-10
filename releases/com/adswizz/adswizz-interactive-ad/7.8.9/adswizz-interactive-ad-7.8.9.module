@@ -1,0 +1,160 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "adswizz-interactive-ad",
+    "version": "7.8.9",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-core",
+          "version": {
+            "requires": "7.8.9"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-interactive-ad-7.8.9.aar",
+          "url": "adswizz-interactive-ad-7.8.9.aar",
+          "size": 695266,
+          "sha512": "c95346d95432f04baa43570e8b65c37db67ca032cad5c69d4acee939db566914ecf79209f3a7d908543885c77a2db3b9c6b61c01df4f513492f13660b4f8e28a",
+          "sha256": "1b9c52dab15b15ded0943d862f5fa92b431294101ccd9ea3f176e31d6444efa6",
+          "sha1": "dd4a3c869dd31a3e2b3da320f9461d8604934ecc",
+          "md5": "daa6f7c094a70d8118ecf9f61cb4a69b"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-core",
+          "version": {
+            "requires": "7.8.9"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk7",
+          "version": {
+            "requires": "1.7.21"
+          }
+        },
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat",
+          "version": {
+            "requires": "1.6.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.6.4"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-android",
+          "version": {
+            "requires": "1.6.4"
+          }
+        },
+        {
+          "group": "com.squareup.moshi",
+          "module": "moshi",
+          "version": {
+            "requires": "1.14.0"
+          }
+        },
+        {
+          "group": "com.squareup.moshi",
+          "module": "moshi-adapters",
+          "version": {
+            "requires": "1.14.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-reflect",
+          "version": {
+            "requires": "1.7.21"
+          }
+        },
+        {
+          "group": "androidx.constraintlayout",
+          "module": "constraintlayout",
+          "version": {
+            "requires": "2.1.4"
+          }
+        },
+        {
+          "group": "com.google.android.gms",
+          "module": "play-services-wearable",
+          "version": {
+            "requires": "18.1.0"
+          }
+        },
+        {
+          "group": "androidx.lifecycle",
+          "module": "lifecycle-runtime-ktx",
+          "version": {
+            "requires": "2.5.1"
+          }
+        },
+        {
+          "group": "com.google.android.material",
+          "module": "material",
+          "version": {
+            "requires": "1.9.0"
+          }
+        },
+        {
+          "group": "org.apache.commons",
+          "module": "commons-math3",
+          "version": {
+            "requires": "3.6.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-interactive-ad-7.8.9.aar",
+          "url": "adswizz-interactive-ad-7.8.9.aar",
+          "size": 695266,
+          "sha512": "c95346d95432f04baa43570e8b65c37db67ca032cad5c69d4acee939db566914ecf79209f3a7d908543885c77a2db3b9c6b61c01df4f513492f13660b4f8e28a",
+          "sha256": "1b9c52dab15b15ded0943d862f5fa92b431294101ccd9ea3f176e31d6444efa6",
+          "sha1": "dd4a3c869dd31a3e2b3da320f9461d8604934ecc",
+          "md5": "daa6f7c094a70d8118ecf9f61cb4a69b"
+        }
+      ]
+    }
+  ]
+}
