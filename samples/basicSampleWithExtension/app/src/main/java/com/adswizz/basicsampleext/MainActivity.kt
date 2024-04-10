@@ -108,14 +108,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-                when (tab?.text){
-                    "ClientSide" -> println("**** Reselect ClientSide ****")
-                    "ServerSide" -> println("**** Reselect ServerSide ****")
-                    "Podcast" -> println("**** Reselect Podcast ****")
-                    else -> Unit
-                }
-            }
+            override fun onTabReselected(tab: TabLayout.Tab?) = Unit
 
         })
         //Build the Ad Request with the needed parameters

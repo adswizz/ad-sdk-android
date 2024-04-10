@@ -64,16 +64,12 @@ class ClientSideViewModel(application: Application) : AndroidViewModel(applicati
                 adManager?.resume()
             }
 
-            AdManagerState.Playing -> {
-                adManager?.pause()
-            }
-
             AdManagerState.AllAdsCompleted -> {
-
                 adManager?.reset()
                 adManager?.prepare()
                 adManager?.play()
             }
+            else -> Unit
         }
     }
 

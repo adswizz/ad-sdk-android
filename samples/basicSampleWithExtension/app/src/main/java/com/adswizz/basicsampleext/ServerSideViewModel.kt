@@ -50,6 +50,7 @@ class ServerSideViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun resume(){
+        println("*** resume stream $adManagerState")
         if (adManagerState == AdManagerState.Paused) {
             adStreamManager?.resume()
         }
@@ -60,7 +61,12 @@ class ServerSideViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun play(){
-        adStreamManager?.play(SERVER_STREAMING_URL)
+        if ( adManagerState == AdManagerState.Paused ){
+            adStreamManager?.resume()
+        }
+        else {
+            adStreamManager?.play(SERVER_STREAMING_URL)
+        }
     }
 
     fun pause(){

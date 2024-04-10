@@ -21,6 +21,7 @@ import com.ad.core.adBaseManager.AdEvent
 import com.ad.core.adFetcher.AdRequestConnection
 import com.ad.core.adManager.AdManager
 import com.ad.core.adManager.AdManagerListener
+import com.ad.core.adManager.AdManagerSettings
 import com.adswizz.basicsample.databinding.ActivityMainBinding
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.adFetcher.AdswizzAdZone
@@ -36,8 +37,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val SERVER_URL = "demo.deliveryengine.adswizz.com"
-        const val ZONE_ID = "13396"
-        //const val ZONE_ID = "14578"
+//        const val ZONE_ID = "12556"
+        const val ZONE_ID = "14578"
     }
 
     private enum class AdManagerState {
@@ -162,7 +163,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        //supportActionBar?.hide()
 
         val window = this.window
         getWindow().decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -199,29 +199,22 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menuPlay -> {
-                //startActivity(Intent(this, SettingsActivity::class.java))
                 when (adManagerState) {
                     AdManagerState.Unknown, AdManagerState.ReadyForPlay -> {
                         if (adManagerState == AdManagerState.Unknown) {
                             binding.appLogs.addEntry("Recommendation: just to be sure that the ad playback will start immediately wait for the <<AdEvent.Type.State.ReadyForPlay>> event")
                         }
-                        //it.setBackgroundResource(R.drawable.ic_pause_arrow_black_24dp)
                         adManager?.play()
                     }
                     AdManagerState.Paused -> {
-                        //it.setBackgroundResource(R.drawable.ic_pause_arrow_black_24dp)
                         adManager?.resume()
                     }
-                    AdManagerState.Playing -> {
-                        //it.setBackgroundResource(R.drawable.ic_play_arrow_black_24dp)
-                        adManager?.pause()
-                    }
                     AdManagerState.AllAdsCompleted -> {
-                        //it.setBackgroundResource(R.drawable.ic_pause_arrow_black_24dp)
                         adManager?.reset()
                         adManager?.prepare()
                         adManager?.play()
                     }
+                    else -> Unit
                 }
             }
             R.id.menuReplay -> {
@@ -230,6 +223,8 @@ class MainActivity : AppCompatActivity() {
                 adManagerState = AdManagerState.Unknown
 
                 binding.appLogs.text = ""
+                binding.appLogs.addEntry("Make new ad request")
+
 
                 adRequestConnection?.requestAds { adManager, error ->
                     handleResponse(error, adManager)
@@ -252,6 +247,7 @@ class MainActivity : AppCompatActivity() {
         if (adManager != null) {
             this.adManager = adManager
             binding.appLogs.addEntry("Received ad manager")
+            adManager.adManagerSettings = AdManagerSettings.Builder().timeoutIntervalForResource(2.5).build()
             adManager.setListener(listener)
             adManager.prepare()
         }
