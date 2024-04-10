@@ -79,7 +79,7 @@ For podcast setup, to use the external player you have to provide an **_AdPodcas
 	val player = ExternalExoPlayer(context)
 
 
-	val adPodcastManagerSettings = AdPodcastManagerSettings.Builder().
+	val adPodcastManagerSettings = AdPodcastManagerSettings.Builder()
 			 .adPlayerInstance(player)
 		 
 	val adPodcastManager = AdswizzAdPodcastManager(adPodcastManagerSettings.build())
@@ -138,6 +138,8 @@ interface AdPlayer {
     fun pause()
 
     fun reset()
+
+    fun release() = Unit
 
     fun seekToTrackEnd()
 
@@ -423,6 +425,10 @@ There may be a time when the user wants to pause the AdManager. When this happen
 
 The ```fun reset()``` function is called when the AdManager wants to stop everything and bring the AdPlayer to its initial state.
 
+### release function
+
+The ```fun release() = Unit``` function is called when any instance of: `AdManager`, `AdswizzAdStreamManager`,`AdswizzAdPodcastManager` wants to free up the resources used is their lifecycle.
+
 ### seekToTrackEnd function
 
 The ```fun seekToTrackEnd()``` function is called when the AdManager wants the player to seek to the current track's end.
@@ -644,14 +650,6 @@ Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)```
 			player.addAnalyticsListener(this)
 			player.addVideoListener(this)
 		}
-
-		fun cleanup() {
-			player.removeVideoListener(this)
-			player.removeAnalyticsListener(this)
-			player.removeAudioListener(this)
-			player.removeMetadataOutput(this)
-			player.removeListener(this)
-		}
 		
 		// region Player Controls
 		override fun load(creativeUrlString: String) {
@@ -750,6 +748,16 @@ Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)```
 			playingIndex = -1
 			seekInProgress = false
 		}
+
+        override fun release(){
+            reset()
+            player.removeVideoListener(this)
+            player.removeAnalyticsListener(this)
+            player.removeAudioListener(this)
+            player.removeMetadataOutput(this)
+            player.removeListener(this)
+            player.release() 
+        }
 
 		override fun seekToTrackEnd() {
 			try {

@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.8.9] - 2024-04-10
+### Added
+- New default method `release` in **_AdPlayer_** interface with empty implementation. This method will be called when any instance of: `AdManager`, `AdswizzAdStreamManager`,`AdswizzAdPodcastManager` wants to free up the resources used is their lifecycle. For more details visit [AdPlayer Interface Implementation](Android/SDKAndroid/Playingyourplayer#sample-adplayer-interface-implementation) section.
+### Fixed
+- Fixed an internal player memory leak due to Exoplayer's retained instance in DefaultBandwidthMeter singleton.
+
 ## [7.8.8] - 2024-03-13
 ### Added
 - Update **_AdswizzSDK_** initialisation process in [GetStarted](Android/SDKAndroid/GetStarted) page with code snippets that covers media service playback.
