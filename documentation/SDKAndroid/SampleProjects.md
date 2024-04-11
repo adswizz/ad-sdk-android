@@ -43,3 +43,7 @@ This sample shows how your app can integrate the **_AdswizzSDK_** podcasting sup
 ## UAMP Integration Sample
 
 This sample demonstrates how your app can integrate with the **_AdswizzSDK_** on both the client side and server side, as well as for podcasting, using a UAMP-like architecture. It illustrates how to play podcasts from a playlist with **_AdswizzAdPodcastManager_**, how to play various ads from a selection of ad types using **_AdManager_**, and how to stream different streams from a list with **_AdswizzAdStream_**. The design is grounded in the UAMP architecture. For further details, please visit https://github.com/android/uamp/blob/main/docs/FullGuide.md.
+
+## Basic Sample using extension artefact
+
+This sample demonstrates a basic client-side, server-side and podcast insertion scenario using the **_com.adswizz.adswizz-sdk-extension_** artefact which simplifies creation and consumption of ads by the use of coroutines and sharedflows.

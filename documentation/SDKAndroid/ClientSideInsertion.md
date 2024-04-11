@@ -121,6 +121,7 @@ class MainActivity : AppCompatActivity(), AdManagerListener {
                                     .assetQuality(AssetQuality.MEDIUM)          // optional, other possible values AssetQuality.LOW, AssetQuality.HIGH, AssetQuality.AUTO
                                     .enqueueEnabled(false)                      // optional
                                     .videoViewId(1)                             // optional
+                                    .timeoutIntervalForResource(10.0)			// optional, defaults to internal exoplayer timeout (8 sec)
                                     .build()                                    // optional
                             adManager.setListener(this) // Get notifications from the Ad SDK
                             adManager.prepare() // Start buffering the ads in the AdManager

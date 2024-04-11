@@ -5,10 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.9.0] - 2024-04-12
+### Added
+- Added **_timeoutIntervalForResources__**  optional parameter in **_AdManagerSettings_** constructor to be used for connection timeout when playing and ad with internal player. If not set exoplayer timeout is used ( 8 seconds )
+- Added a new artefact **_com.adswizz.adswizz-sdk-extension_** which expose a simple API using `coroutines` and `sharedflows` to simplify the process of creating ad requests and manage their playback 
+- Added a new sample project which showcases the new artefact  **_com.adswizz.adswizz-sdk-extension_**
+
+### Changed
+- Removed some legacy dependencies like google material and constraint layout, no longer used in sdk.
+- Update integration guide
+
 ## [7.8.9] - 2024-04-10
 ### Added
 - New default method `release` in **_AdPlayer_** interface with empty implementation. This method will be called when any instance of: `AdManager`, `AdswizzAdStreamManager`,`AdswizzAdPodcastManager` wants to free up the resources used is their lifecycle. For more details visit [AdPlayer Interface Implementation](Android/SDKAndroid/Playingyourplayer#sample-adplayer-interface-implementation) section.
 > This new method won’t affect you if you’re using the SDK’s internal player. Moreover, if you’re using an external player, this new method may have no impact on you, depending on how you’ve implemented the **_AdPlayer_** interface.
+
 ### Fixed
 - Fixed an internal player memory leak due to Exoplayer's retained instance in DefaultBandwidthMeter singleton.
 
@@ -28,8 +39,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.8.7] - 2024-02-14
 ### Added
 - Added ExoPlayer Media3 in the SDK library release with artefact id `com.adswizz:exoplayer-media3`. Starting from 7.8.7 **_AdswizzSDK_** will be bundled with `androidx.media3:media3-exoplayer` support. The current media3 version is `1.2.0` including helpers for: `media3-exoplayer-dash`, `media3-exoplayer-hls` and `media3-exoplayer-smoothstreaming`.
+
 ### Changed
 - The support for `com.adswizz:exoplayer2-10` and `com.adswizz:exoplayer2-12` artefacts is discontinued due to `jCenter` repository deprecation. The old versions are still available in `adswizz` github repository.
+
 ### Fixed
 - Removed an exoplayer transitive dependency in `com.adswizz:sdk` module.
 - Fixed a `NullPointerException` due to a race condition when logging `AnalyticsEvent`. 
@@ -41,22 +54,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.8.5] - 2024-01-19
 > **Note**
 > Usage not recommended, due to some issues introduced in `7.8.3`. Update to at least version `7.8.7`.
+
 ### Added
 - Added `advertiser` field to the `AdData` public interface, enabling access to the advertiser data obtained from the VAST response. The `Advertiser` class contains `id` and `value` members. These members are populated from the following VAST tag: `<Advertiser id="the_advertiser_id">the_advertiser_value</Advertiser>`.
 
 ## [7.8.4] - 2023-12-18
 > **Note**
 > Usage not recommended, due to some issues introduced in `7.8.3`. Update to at least version `7.8.7`.
+
 ### Added
  - Added early support for [Topics API](https://developer.android.com/design-for-safety/privacy-sandbox/topics). For more details visit [AdswizzSDK Topics API](Android/TopicsAPI/AdswizzSDKTopicsAPI) page.
+
 ### Changed
  - OMSDK library updates. Now, **_AdswizzSDK_** will use 1.4+ version. See what's new in Open Measurement SDK [here](https://iabtechlab.com/wp-content/uploads/2022/08/OMSDK_What-is-new-in-1.4_master.pdf).
+
 ### Fixed
  - Fixed Kotlin - Java compatibility issue with Interfaces' default methods implementation.
 
 ## [7.8.3] - 2023-11-20
 > **Note**
 > Usage not recommended, due to some issues introduced in this release. Update to at least version `7.8.7`.
+
 ### Added
  - Added [Global Privacy Control](https://privacycg.github.io/gpc-spec/#abstract) functionality. From now on, **_AdswizzSDK_** added support to set `Sec-GPC` header to all AdRequests. It can be enabled/disabled through newly added field like follows: `AdswizzSDK.consent.gpc = true`. If this field is not populated, then the default value is disabled. 
 
@@ -87,6 +105,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Updated Android targetSdkVersion to API version 33, see also [7.8.0 Migration](Android/Migrations/v7_8_0)
  - The **_Integration Guide_** has been revised to incorporate new sections dedicated to PinpointAnalytics and Migrations.
  - Breaking changes described in PinpointAnalytics and Migrations sections
+
 ### Fixed
  - Notification channel improvements
 
