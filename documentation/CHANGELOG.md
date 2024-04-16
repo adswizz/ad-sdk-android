@@ -5,14 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.9.0] - 2024-04-12
+## [7.9.0] - 2024-04-16
 ### Added
-- Added **_timeoutIntervalForResources__**  optional parameter in **_AdManagerSettings_** constructor to be used for connection timeout when playing and ad with internal player. If not set exoplayer timeout is used ( 8 seconds )
-- Added a new artefact **_com.adswizz.adswizz-sdk-extension_** which expose a simple API using `coroutines` and `sharedflows` to simplify the process of creating ad requests and manage their playback 
+- Added new method `timeoutIntervalForResources(timeout: Double)` to `AdManagerSettings.Builder`. This method is used by internal players in order to control http connection timeouts. If not set exoplayer timeout is used ( 8 seconds )
+- Added new coroutines friendly artefact in the SDK library release with id `com.adswizz:adswizz-sdk-extensions` as an optional dependency and needs to be declared explicitly in `build.gradle` files. This includes helpers to the main functionalities in **_AdswizzSDK_**, for more details visit [AdsiwzzSDK-Extensions](Android/AdswizzSDKExtensions/ClientSideInsertion) section.
 - Added a new sample project which showcases the new artefact  **_com.adswizz.adswizz-sdk-extension_**
-
 ### Changed
-- Removed some legacy dependencies like google material and constraint layout, no longer used in sdk.
+- Removed `androidx.constraintlayout` and `com.google.android.material` transitive dependencies from **_AdswizzSDK_** artefacts.
+- **_AdswizzSDK_** Profile Collector will fire on each sdk initialisation.
 - Update integration guide
 
 ## [7.8.9] - 2024-04-10
