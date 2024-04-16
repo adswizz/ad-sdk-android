@@ -65,7 +65,7 @@ sealed class AdswizzStreamEvent {
 
 ## AdswizzAdStreamManager Actions
 
-AdswizzAdStreamManager public methods needs to be called primarily on the MainThread, therefore exposing the coroutine support on different dispatchers may lead to unpredictable behaviour. Although, calling `AdManager` methods on different dispatchers can be done now using `AdswizzStreamManagerAction`.
+AdswizzAdStreamManager public methods needs to be called primarily on the MainThread, therefore exposing the coroutine support on different dispatchers may lead to unpredictable behaviour. Although, calling `StreamManager` methods on different dispatchers can be done now using `AdswizzStreamManagerAction`.
 
 ```kotlin
 sealed class AdswizzStreamManagerAction {
@@ -76,7 +76,7 @@ sealed class AdswizzStreamManagerAction {
     object Cleanup : AdswizzStreamManagerAction()
 }
 ...
-// after receiving the AdManager instance you can use:
+// after receiving the StreamManager instance you can use:
 streamManager.postAction(AdswizzStreamManagerAction.Play(Your_STREAM_URL))
 
 ```
