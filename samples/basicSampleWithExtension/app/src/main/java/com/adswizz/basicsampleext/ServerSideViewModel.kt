@@ -4,11 +4,12 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.ad.core.adBaseManager.AdEvent
 import com.adswizz.core.streaming.AdswizzAdStreamManager
-import com.adswizz.sdk.extensions.result.AdswizzResult
 import com.adswizz.sdk.extensions.streaming.observeAdEvents
 import com.adswizz.sdk.extensions.streaming.observeStreamEvents
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -22,30 +23,41 @@ class ServerSideViewModel(application: Application) : AndroidViewModel(applicati
     private var adManagerState =  AdManagerState.Unknown
 
 
-    fun setup(){
+    fun setup() {
         adStreamManager = AdswizzAdStreamManager(null)
         viewModelScope.launch {
-            adStreamManager?.observeAdEvents()?.collect { res ->
-                if (res is AdswizzResult.Success) {
+            val manager = adStreamManager ?: return@launch
+            manager.observeAdEvents(viewModelScope)
+                .mapNotNull { it.value }
+                .collect { adEvent ->
                     withContext(Dispatchers.Main) {
-                        when (res.value.type.value){
-                            "ready_for_play" -> adManagerState = AdManagerState.ReadyForPlay
-                            "did_start_playing" -> adManagerState = AdManagerState.Playing
-                            "all_ads_completed" -> adManagerState = AdManagerState.AllAdsCompleted
-                            "did_pause_playing" -> adManagerState = AdManagerState.Paused
-                            else -> Unit
+                        adManagerState = when (adEvent.type) {
+                            AdEvent.Type.State.ReadyForPlay ->
+                                AdManagerState.ReadyForPlay
+
+                            AdEvent.Type.State.DidStartPlaying ->
+                                AdManagerState.Playing
+
+                            AdEvent.Type.State.DidPausePlaying ->
+                                AdManagerState.Paused
+
+                            AdEvent.Type.State.AllAdsCompleted ->
+                                AdManagerState.AllAdsCompleted
+
+                            else -> AdManagerState.Unknown
                         }
-                        liveState.value = res.value.type.value
                     }
                 }
-            }
         }
+
         viewModelScope.launch {
-            adStreamManager?.observeStreamEvents()?.collect{  res ->
-                withContext(Dispatchers.Main) {
-                    liveState.value = res.toString()
+            val manager = adStreamManager ?: return@launch
+            manager.observeStreamEvents(this)
+                .collect { res ->
+                    withContext(Dispatchers.Main) {
+                        liveState.value = res.toString()
+                    }
                 }
-            }
         }
     }
 

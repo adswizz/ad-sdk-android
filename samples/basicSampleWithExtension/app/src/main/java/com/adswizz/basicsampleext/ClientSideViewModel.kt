@@ -4,12 +4,17 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.ad.core.adBaseManager.AdEvent
 import com.ad.core.adManager.AdManager
 import com.adswizz.core.adFetcher.AdswizzAdZone
+import com.adswizz.sdk.extensions.admanager.actions.AdManagerAction
+import com.adswizz.sdk.extensions.admanager.actions.postAction
 import com.adswizz.sdk.extensions.admanager.observeAdEvents
 import com.adswizz.sdk.extensions.adrequest.requestAdManagerWith
 import com.adswizz.sdk.extensions.result.AdswizzResult
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -25,51 +30,53 @@ class ClientSideViewModel(application: Application) : AndroidViewModel(applicati
     private var adManagerState =  AdManagerState.Unknown
 
     fun setupManager(){
-        requestAdManagerWith({
-            zones = setOf(AdswizzAdZone(ZONE_ID))
-            server = SERVER_URL
-        } ){
-            if ( it.value != null ){
-                adManager = it.value
-                adManager?.prepare()
-                viewModelScope.launch {
-                    adManager?.observeAdEvents()?.collect{  res ->
-                        if (res is AdswizzResult.Success){
-                            withContext(Dispatchers.Main) {
-                                when (res.value.type.value){
-                                    "ready_for_play" -> adManagerState = AdManagerState.ReadyForPlay
-                                    "did_start_playing" -> adManagerState = AdManagerState.Playing
-                                    "all_ads_completed" -> adManagerState = AdManagerState.AllAdsCompleted
-                                    "did_pause_playing" -> adManagerState = AdManagerState.Paused
-                                    else -> Unit
-                                }
-                                liveState.value = res.value.type.value
-                            }
-                        }
-                    }
-                }
 
+        viewModelScope.launch {
+            val manager =  requestAdManagerWith {
+                zones = setOf(AdswizzAdZone(ZONE_ID))
+                server = SERVER_URL
+            }.value ?: return@launch
+            adManager = manager
+
+
+            manager.observeAdEvents(this)
+                .mapNotNull { it.value }
+                .onStart { manager.postAction(AdManagerAction.Prepare) }
+                .collect { res ->
+                    withContext(Dispatchers.Main) {
+                        when (res.type) {
+                            AdEvent.Type.State.ReadyForPlay -> adManagerState = AdManagerState.ReadyForPlay
+                            AdEvent.Type.State.DidStartPlaying -> adManagerState = AdManagerState.Playing
+                            AdEvent.Type.State.AllAdsCompleted -> adManagerState = AdManagerState.AllAdsCompleted
+                            AdEvent.Type.State.DidPausePlaying -> adManagerState = AdManagerState.Paused
+                            else -> Unit
+                        }
+                        liveState.value = res.type.value
+                    }
             }
         }
     }
 
     fun play(){
         //depending on state
-        when (adManagerState) {
-            AdManagerState.Unknown, AdManagerState.ReadyForPlay -> {
-                adManager?.play()
-            }
+        viewModelScope.launch {
+            val adManager = adManager ?: return@launch
 
-            AdManagerState.Paused -> {
-                adManager?.resume()
-            }
+            when (adManagerState) {
+                AdManagerState.Unknown, AdManagerState.ReadyForPlay ->
+                    adManager.postAction(AdManagerAction.Play)
 
-            AdManagerState.AllAdsCompleted -> {
-                adManager?.reset()
-                adManager?.prepare()
-                adManager?.play()
+                AdManagerState.Paused -> adManager.postAction(AdManagerAction.Resume)
+
+                AdManagerState.Playing ->
+                    adManager.postAction(AdManagerAction.Pause)
+
+                AdManagerState.AllAdsCompleted -> {
+                    adManager.postAction(AdManagerAction.Reset)
+                    adManager.postAction(AdManagerAction.Prepare)
+                    adManager.postAction(AdManagerAction.Play)
+                }
             }
-            else -> Unit
         }
     }
 

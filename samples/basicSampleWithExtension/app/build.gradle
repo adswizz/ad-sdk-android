@@ -44,9 +44,9 @@ dependencies {
     implementation 'androidx.activity:activity-ktx:1.8.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.android.material:material:1.11.0'
-    implementation 'com.adswizz:adswizz-sdk:7.8.9.001'
-    implementation 'com.adswizz:exoplayer2-18:7.8.9.001'
-    implementation 'com.adswizz:adswizz-sdk-extensions:7.8.9.001'
+    implementation 'com.adswizz:adswizz-sdk:7.9.0.003'
+    implementation 'com.adswizz:exoplayer2-18:7.9.0.003'
+    implementation 'com.adswizz:adswizz-sdk-extensions:7.9.0.003'
 
 
     testImplementation 'junit:junit:4.13.2'

@@ -30,8 +30,8 @@ class PodcastViewModel(application: Application) : AndroidViewModel(application)
     fun setup(){
         podcastManager = AdswizzAdPodcastManager()
 
-        jobListenAdEvents = viewModelScope.launch {
-            podcastManager?.observeAdEvents()?.collect { res ->
+         jobListenAdEvents = viewModelScope.launch {
+            podcastManager?.observeAdEvents(this)?.collect { res ->
                 if (res is AdswizzResult.Success) {
                     withContext(Dispatchers.Main) {
                         liveState.value = res.value.type.value
@@ -41,8 +41,8 @@ class PodcastViewModel(application: Application) : AndroidViewModel(application)
         }
 
         jobListenPodcastEvents = viewModelScope.launch {
-            podcastManager?.observePodcastEvents()?.collect{ res->
-                if ( !(res is AdswizzPodcastEvent.OnPlayHeadReport)) {
+            podcastManager?.observePodcastEvents(this)?.collect{ res->
+                if (res !is AdswizzPodcastEvent.OnPlayHeadReport) {
                     withContext(Dispatchers.Main) {
                         liveState.value = res.toString()
                     }
@@ -65,11 +65,9 @@ class PodcastViewModel(application: Application) : AndroidViewModel(application)
 
     fun reset(){
         podcastManager?.stop()
-        runBlocking(Dispatchers.IO) {
-            podcastManager?.cleanup()
-            jobListenAdEvents?.cancel()
-            jobListenPodcastEvents?.cancel()
-        }
+        podcastManager?.cleanup()
+        jobListenAdEvents?.cancel()
+        jobListenPodcastEvents?.cancel()
         setup()
     }
 }
