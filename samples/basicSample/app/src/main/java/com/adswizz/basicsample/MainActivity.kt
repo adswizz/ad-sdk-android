@@ -37,8 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val SERVER_URL = "demo.deliveryengine.adswizz.com"
-//        const val ZONE_ID = "12556"
-        const val ZONE_ID = "14578"
+        const val ZONE_ID = "13381"
     }
 
     private enum class AdManagerState {
