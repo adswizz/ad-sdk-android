@@ -7,13 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.9.0] - 2024-04-16
 ### Added
-- Added new method `timeoutIntervalForResources(timeout: Double)` to `AdManagerSettings.Builder`. This method is used by internal players in order to control http connection timeouts. If not set exoplayer timeout is used ( 8 seconds )
-- Added new coroutines friendly artefact in the SDK library release with id `com.adswizz:adswizz-sdk-extensions` as an optional dependency and needs to be declared explicitly in `build.gradle` files. This includes helpers to the main functionalities in **_AdswizzSDK_**, for more details visit [AdsiwzzSDK-Extensions](Android/AdswizzSDKExtensions/ClientSideInsertion) section.
-- Added a new sample project which showcases the new artefact  **_com.adswizz.adswizz-sdk-extension_**
+- Added a new method `timeoutIntervalForResources(timeout: Double)` to the `AdManagerSettings.Builder`. This method is utilized by internal players to manage network connection timeouts for media files (ad creatives). If not set, the default ExoPlayer timeout of 8 seconds is used.
+- Added a new coroutine-friendly artifact in the SDK library release with the ID `com.adswizz:adswizz-sdk-extensions` as an optional dependency. It needs to be explicitly declared in `build.gradle` files. This includes helpers for the main functionalities in **_AdswizzSDK_**. For more details, visit the [AdswizzSDK-Extensions](Android/AdswizzSDKExtensions/ClientSideInsertion) section.
+- Added a new sample project named **_AdswizzSDK Extensions_** to the [Sample Project section](Android/SDKAndroid/SampleProjects) showcasing the new artifact **_com.adswizz.adswizz-sdk-extension_**
 ### Changed
-- Removed `androidx.constraintlayout` and `com.google.android.material` transitive dependencies from **_AdswizzSDK_** artefacts.
-- **_AdswizzSDK_** Profile Collector will fire on each sdk initialisation.
-- Update integration guide
+- Removed `androidx.constraintlayout` and `com.google.android.material` transitive dependencies from **_AdswizzSDK_** artifacts.
+- The **_AdswizzSDK_** Profile Collector will be triggered upon each SDK initialization.
+- Improved the [Integration Guide](Android)
 
 ## [7.8.9] - 2024-04-10
 ### Added
