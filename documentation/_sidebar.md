@@ -34,9 +34,20 @@
 	- [How to migrate to AdswizzSDK v7.8.0+](Android/Migrations/v7_8_0.md)
 	- [How to migrate to AdswizzSDK v7.8.2+](Android/Migrations/v7_8_2.md)
 
+- AdswizzSDK Extensions
+
+	- [How to use SDK-Extensions in Client Side Insertion scenario](Android/AdswizzSDKExtensions/ClientSideInsertion.md)
+	- [How to use SDK-Extensions in Server Side Insertion scenario](Android/AdswizzSDKExtensions/ServerSideInsertion.md)
+	- [How to use SDK-Extensions in Podcast scenario](Android/AdswizzSDKExtensions/Podcasts.md)
+
+
 - Integrate into Wear OS apps
 
 	- [Integrate into Wear OS apps](Android/WearOS/WearOS.md)
+
+- Topics API support
+
+	- [Topics API](Android/TopicsAPI/AdswizzSDKTopicsAPI.md)
 
 - Changelog
     - [Changelog](Android/CHANGELOG.md)
