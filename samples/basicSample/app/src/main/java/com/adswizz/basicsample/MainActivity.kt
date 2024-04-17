@@ -199,29 +199,22 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menuPlay -> {
-                //startActivity(Intent(this, SettingsActivity::class.java))
                 when (adManagerState) {
                     AdManagerState.Unknown, AdManagerState.ReadyForPlay -> {
                         if (adManagerState == AdManagerState.Unknown) {
                             binding.appLogs.addEntry("Recommendation: just to be sure that the ad playback will start immediately wait for the <<AdEvent.Type.State.ReadyForPlay>> event")
                         }
-                        //it.setBackgroundResource(R.drawable.ic_pause_arrow_black_24dp)
                         adManager?.play()
                     }
                     AdManagerState.Paused -> {
-                        //it.setBackgroundResource(R.drawable.ic_pause_arrow_black_24dp)
                         adManager?.resume()
                     }
-                    AdManagerState.Playing -> {
-                        //it.setBackgroundResource(R.drawable.ic_play_arrow_black_24dp)
-                        adManager?.pause()
-                    }
                     AdManagerState.AllAdsCompleted -> {
-                        //it.setBackgroundResource(R.drawable.ic_pause_arrow_black_24dp)
                         adManager?.reset()
                         adManager?.prepare()
                         adManager?.play()
                     }
+                    else -> Unit
                 }
             }
             R.id.menuReplay -> {

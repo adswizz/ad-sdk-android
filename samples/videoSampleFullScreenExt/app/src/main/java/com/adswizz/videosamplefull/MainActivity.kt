@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val SERVER_URL = "demo.deliveryengine.adswizz.com"
         const val ZONE_ID = "17161"
-        //const val ZONE_ID = "14578"
     }
 
     private lateinit var binding: ActivityMainBinding
