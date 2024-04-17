@@ -1,9 +1,9 @@
 # AdswizzSDK Extensions Server Side Insertion
 
-This guide is addressed to developers that are interested to integrate `com.adswizz:adswizz-sdk-extensions` in their Android application in order to take full advantage of `kotlin coroutines` using **_AdswizzSDK_**.
+This guide is addressed to developers that are interested to integrate `com.adswizz:adswizz-sdk-extensions` in their Android application in order to take full advantage of [Kotlin Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) using **_AdswizzSDK_**.
 
 
-`AdswizzAdStreamManager` exposes several extension function in order receive Ad/Stream updates using a `kotlin flow` and it can be filtered, collected, mapped using standard operators.
+`AdswizzAdStreamManager` exposes several extension function in order receive AdStream updates using a `Kotlin flow` and it can be filtered, collected, mapped using standard operators.
 
 ## observeAdEvents
 

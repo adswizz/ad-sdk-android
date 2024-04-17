@@ -1,6 +1,6 @@
 # AdswizzSDK Extensions Podcast
 
-This guide is addressed to developers that are interested to integrate `com.adswizz:adswizz-sdk-extensions` in their Android application in order to take full advantage of `kotlin coroutines` using **_AdswizzSDK_**.
+This guide is addressed to developers that are interested to integrate `com.adswizz:adswizz-sdk-extensions` in their Android application in order to take full advantage of [Kotlin Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) using **_AdswizzSDK_**.
 
 `AdswizzAdPodcastManager` exposes several extension function in order receive Ad/Playback/Download updates using a `kotlin flow` and it can be filtered, collected, mapped using standard operators.
 

@@ -1,6 +1,6 @@
 # AdswizzSDK Extensions Client Side Insertion
 
-This guide is addressed to developers that are interested to integrate `com.adswizz:adswizz-sdk-extensions` in their Android application in order to take full advantage of `kotlin coroutines` using **_AdswizzSDK_**.
+This guide is addressed to developers that are interested to integrate `com.adswizz:adswizz-sdk-extensions` in their Android application in order to take full advantage of [Kotlin Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) using **_AdswizzSDK_**.
 
 ## Ad Request
 
@@ -20,7 +20,7 @@ Since **_AdswizzSDK_** 7.9.0 you can request ads using a suspend function as fol
     adManager = manager
     }
 ```
-`requestAdManagerWith` method takes a lambda function where you can customise the Ad request with same parameters as `AdswizzAdRequest.Builder()`.
+`requestAdManagerWith` method takes a lambda function where you can customise the ad request with same parameters as `AdswizzAdRequest.Builder()`.
 > **Note**
 > Cancellation support is provided by the received `job` when launching the suspendable function. 
 
