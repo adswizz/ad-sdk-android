@@ -21,6 +21,7 @@ import com.ad.core.adBaseManager.AdEvent
 import com.ad.core.adFetcher.AdRequestConnection
 import com.ad.core.adManager.AdManager
 import com.ad.core.adManager.AdManagerListener
+import com.ad.core.adManager.AdManagerSettings
 import com.adswizz.basicsample.databinding.ActivityMainBinding
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.adFetcher.AdswizzAdZone
@@ -36,8 +37,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val SERVER_URL = "demo.deliveryengine.adswizz.com"
-        const val ZONE_ID = "13396"
-        //const val ZONE_ID = "14578"
+//        const val ZONE_ID = "12556"
+        const val ZONE_ID = "14578"
     }
 
     private enum class AdManagerState {
@@ -162,7 +163,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        //supportActionBar?.hide()
 
         val window = this.window
         getWindow().decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -223,6 +223,8 @@ class MainActivity : AppCompatActivity() {
                 adManagerState = AdManagerState.Unknown
 
                 binding.appLogs.text = ""
+                binding.appLogs.addEntry("Make new ad request")
+
 
                 adRequestConnection?.requestAds { adManager, error ->
                     handleResponse(error, adManager)
@@ -245,6 +247,7 @@ class MainActivity : AppCompatActivity() {
         if (adManager != null) {
             this.adManager = adManager
             binding.appLogs.addEntry("Received ad manager")
+            adManager.adManagerSettings = AdManagerSettings.Builder().timeoutIntervalForResource(2.5).build()
             adManager.setListener(listener)
             adManager.prepare()
         }
