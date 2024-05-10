@@ -473,6 +473,23 @@ Read more about `AdManagerDatasource` methods and behavior here: [Working with t
 In the above request, the number of ads requested is as follows:  3 (zoneId = "12345") + 2 (zoneId = "122245") + 1 (zoneId = "17865") = 6. If maxAds is not provided (like for zone "17865")
 or is equal to 0, this means that 1 ad is requested. In this example the `numberOfEmptyAds` is `6 - numberOfAdsFromVASTResponse`.
 
+## AdManager best practices
+
+After you obtain an **_AdManager_** instance object and call `prepare()`, that **_AdManager_** starts its lifecycle to render the ad(s) and begins to communicate to its listeners via `AdManagerListener` interface. The communication is based on [Ad events](#ad-events-explained) and your model should listen for any such incoming signals and act accordingly.
+
+Here are a few things to consider when working with the **_AdManager_**:
+* your application is not required to process all the states for the current ad in the **_AdManager_** via the `onEventReceived(adManager: AdManager, event: AdEvent)` method. Setting a listener on the **_AdManager_** instance is completely optional, however, keep in mind that this is your only communication channel with the **_AdManager_**.
+* in some cases, the **_AdManager_** may inform your app that an error occurred via the `onEventErrorReceived(adManager: AdManager, ad: AdData?, error: Error)` method. It is considered best practice to implement this method so that your application is well aware of any such error. However, when an error is received, we do not recommend the following:
+    - manually stop or release the reference to the **_AdManager_** unless it is a hard requirement in your application business logic. To clear the **_AdManager_** reference, it is best to wait for the [AllAdsCompleted](#alladscompleted) ad event which signals that the **_AdManager_** has finished all the ads. This way, the **_AdManager_** is able to finish its lifecycle properly and that all edge cases are correctly handled (e.g any pending [empty ads](#handling-admanager-with-no-ads))
+    - skip the current ad for which the error was received. If there are more ads to be played, the **_AdManager_** will automatically advance to the next ad by sending the [PreparingForPlay](#preparingforplay) ad event.
+* wait for the [AllAdsCompleted](#alladscompleted) ad event to clear and deallocate the **_AdManager_**, typically by calling the [reset()](#reset) method and setting it to `null`.
+* when you are done with the **_AdManager_** and before deallocate-ing it, calling [reset()](#reset) is **mandatory**. Consider [reset()](#reset) as an "invalidation" before setting the reference to null. See the code snippet below:
+```kotlin
+ ...
+adManager.reset() //mandatory
+adManager = null
+
+```
 
 ## AdManager life cycle
 
