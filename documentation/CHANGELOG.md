@@ -7,13 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.9.1] - 2024-06-06
 ### Added
-- Added support for STOREID VAST macro, for more details please visit [StoreID page](https://interactiveadvertisingbureau.github.io/vast/vast4macros/vast4-macros-latest.html#macro-spec-storeid)
+- Added support for `[STOREID]` VAST macro. For more details please visit [IAB VAST 4.x Macros page](https://interactiveadvertisingbureau.github.io/vast/vast4macros/vast4-macros-latest.html#macro-spec-storeid)
 ### Changed
 - Improved **_AdswizzSDK_** memory usage on internal allocated objects when GC is applied.
 ### Fixed
-- Fixed `AdCompanionView` resource to be displayed when static decoration is applied on Server Side Insertion scenario with external player.
-- Fixed `AdCompanionView` resource to be displayed if app loses focus (backgrounded or other) while companion resource is about to be fetched.
-- Fixed url decoration `call` parameter value to be independent of `android.permission.CALL_PHONE` permission.
+- Fixed the issue where the `AdCompanionView` resource was not displayed when a static decoration was applied in a Server Side Insertion scenario with an external player.
+- Fixed the issue where the `AdCompanionView` resource was not displayed if the app lost focus (backgrounded or other) while the companion banner resource is about to be fetched.
+- Fixed the `call` parameter value in the URL decoration to make it independent of the `android.permission.CALL_PHONE` permission.
+
 
 ## [7.9.0] - 2024-04-16
 ### Added
