@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.9.1] - 2024-06-06
+### Added
+- Added support for `[STOREID]` VAST macro. For more details please visit [IAB VAST 4.x Macros page](https://interactiveadvertisingbureau.github.io/vast/vast4macros/vast4-macros-latest.html#macro-spec-storeid)
+### Changed
+- Improved **_AdswizzSDK_** memory usage on internal allocated objects when GC is applied.
+### Fixed
+- Fixed the issue where the `AdCompanionView` resource was not displayed when a static decoration was applied in a Server Side Insertion scenario with an external player.
+- Fixed the issue where the `AdCompanionView` resource was not displayed if the app lost focus (backgrounded or other) while the companion banner resource is about to be fetched.
+- Fixed the `call` parameter value in the URL decoration to make it independent of the `android.permission.CALL_PHONE` permission.
+
+
 ## [7.9.0] - 2024-04-16
 ### Added
 - Added a new method `timeoutIntervalForResources(timeout: Double)` to the `AdManagerSettings.Builder`. This method is utilized by internal players to manage network connection timeouts for media files (ad creatives). If not set, the default ExoPlayer timeout of 8 seconds is used.
