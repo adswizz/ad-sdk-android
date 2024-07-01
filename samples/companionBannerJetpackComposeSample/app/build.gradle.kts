@@ -62,6 +62,7 @@ dependencies {
 
     implementation(libs.adswizz.sdk)
     implementation(libs.adswizz.exoplayer)
+    implementation (libs.androidx.navigation.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
