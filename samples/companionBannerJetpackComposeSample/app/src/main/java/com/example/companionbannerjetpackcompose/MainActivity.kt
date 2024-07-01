@@ -145,7 +145,7 @@ fun App(
                         viewModel.playOrPauseContent()
                     }) {
                         Icon(
-                            painter = painterResource(id = if (state == PlayState.PLAYING) R.drawable.ic_play else R.drawable.ic_pause),
+                            painter = painterResource(id = if (state == PlayState.PLAYING) R.drawable.ic_pause else R.drawable.ic_play),
                             contentDescription = "",
                             tint = Color.Blue
                         )
@@ -163,21 +163,21 @@ fun App(
 
             NavHost(
                 navController = navController,
-                startDestination = "main",
+                startDestination = "MainScreen",
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
             ) {
 
-                composable("main") {
-                    MainScreen(onDetailsClick = { navController.navigate("details") },
-                        onAnimationScreen = { navController.navigate("animation_screen") })
+                composable("MainScreen") {
+                    MainScreen(onDetailsClick = { navController.navigate("FullScreenCompanion") },
+                        onAnimationScreen = { navController.navigate("Advanced") })
                 }
 
-                composable("details") {
+                composable("FullScreenCompanion") {
                     DetailsScreen()
                 }
-                composable("animation_screen") {
+                composable("Advanced") {
                     AnimationScreen()
                 }
             }
@@ -228,11 +228,11 @@ fun MainScreen(onDetailsClick: () -> Unit, onAnimationScreen: () -> Unit) {
         }
 
         Button(onClick = onDetailsClick) {
-            Text(text = "Go to details")
+            Text(text = "Go to Full Screen")
         }
 
         Button(onClick = onAnimationScreen) {
-            Text(text = "Go to animation")
+            Text(text = "Advanced")
         }
     }
 

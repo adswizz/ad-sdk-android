@@ -9,7 +9,6 @@ import com.ad.core.adManager.AdManagerListener
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.adFetcher.AdswizzAdZone
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 enum class PlayState {
@@ -29,6 +28,9 @@ class MainViewModel : ViewModel() {
     fun playOrPauseContent() {
         if (_playingState.value == PlayState.PLAYING){
             currentManager?.pause()
+        }
+        else if (_playingState.value == PlayState.PAUSED){
+            currentManager?.resume()
         }
         else {
             requestCompanionAd()
@@ -53,9 +55,17 @@ class MainViewModel : ViewModel() {
                         ) = Unit
 
                         override fun onEventReceived(adManager: AdManager, event: AdEvent) {
-                            println("------- ev ${event.ad?.hasCompanion}")
                             if (event.type == AdEvent.Type.State.AllAdsCompleted){
-                                // todo
+                                _playingState.tryEmit(PlayState.STOPPED)
+                            }
+                            if (event.type == AdEvent.Type.State.DidStartPlaying){
+                                _playingState.tryEmit(PlayState.PLAYING)
+                            }
+                            if (event.type == AdEvent.Type.State.DidPausePlaying){
+                                _playingState.tryEmit(PlayState.PAUSED)
+                            }
+                            if (event.type == AdEvent.Type.State.DidResumePlaying){
+                                _playingState.tryEmit(PlayState.PLAYING)
                             }
                         }
                     })
