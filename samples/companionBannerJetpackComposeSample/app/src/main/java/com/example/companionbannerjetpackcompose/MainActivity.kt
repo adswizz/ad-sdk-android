@@ -17,14 +17,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +38,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavHostController
@@ -39,16 +47,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.ad.core.adBaseManager.AdData
-import com.ad.core.adBaseManager.AdEvent
-import com.ad.core.adFetcher.AdRequestConnection
-import com.ad.core.adManager.AdManager
-import com.ad.core.adManager.AdManagerListener
 import com.ad.core.companion.AdCompanionView
-import com.adswizz.core.adFetcher.AdswizzAdRequest
-import com.adswizz.core.adFetcher.AdswizzAdZone
 import com.adswizz.sdk.AdswizzSDK
 import com.example.companionbannerjetpackcompose.ui.theme.CompanionBannerJetpackComposeTheme
+import com.example.companionbannerjetpackcompose.ui.theme.Purple40
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,29 +67,6 @@ private fun setupAdswizzSDK(context: Context) {
         isSDKInitialised = true
         Toast.makeText(context, "AdswizzSDK is initialised", Toast.LENGTH_SHORT).show()
     }
-}
-
-private fun requestCompanionAd() {
-    AdswizzAdRequest.Builder().withZones(setOf(AdswizzAdZone(zoneId = "17862")))
-        .withCompanionZones("17863").withServer("demo.deliveryengine.adswizz.com").build {
-            AdRequestConnection(it).requestAds { adManager, _ ->
-                adManager ?: return@requestAds
-
-                adManager.setListener(object : AdManagerListener {
-                    override fun onEventErrorReceived(
-                        adManager: AdManager, ad: AdData?, error: Error
-                    ) = Unit
-
-                    override fun onEventReceived(adManager: AdManager, event: AdEvent) {
-                        println("------- ev ${event.ad?.hasCompanion}")
-                    }
-                })
-
-                adManager.prepare()
-                adManager.play()
-            }
-
-        }
 }
 
 @Composable
@@ -135,15 +114,51 @@ fun ComposableCompanionView(modifier: Modifier) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
+    var canNavigateBack by remember { mutableStateOf(false) }
+    navController.addOnDestinationChangedListener { controller, _, _ ->
+        canNavigateBack = controller.previousBackStackEntry != null
+    }
+
+    val state by viewModel.playingState.collectAsState()
+
     CompanionBannerJetpackComposeTheme {
 
         Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
-            TopAppBar(
-                title = { Text(text = backStackEntry?.destination?.route.orEmpty()) }
-            )
+            TopAppBar(colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Purple40),
+                navigationIcon = {
+                    if (canNavigateBack) {
+                        IconButton(onClick = {
+                            navController.navigateUp()
+                        }) {
+                            Icon(
+                                imageVector = Icons.Filled.ArrowBack, contentDescription = "back"
+                            )
+                        }
+                    }
+                },
+                actions = {
+                    IconButton(onClick = {
+                        viewModel.playOrPauseContent()
+                    }) {
+                        Icon(
+                            painter = painterResource(id = if (state == PlayState.PLAYING) R.drawable.ic_play else R.drawable.ic_pause),
+                            contentDescription = "",
+                            tint = Color.Blue
+                        )
+                    }
+                    IconButton(onClick = { viewModel.resetContent() }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_replay),
+                            contentDescription = "",
+                            tint = Color.Blue
+                        )
+                    }
+                },
+                title = { Text(text = backStackEntry?.destination?.route.orEmpty()) })
         }) { innerPadding ->
 
             NavHost(
@@ -155,10 +170,8 @@ fun App(
             ) {
 
                 composable("main") {
-                    MainScreen(
-                        onDetailsClick = { navController.navigate("details") },
-                        onAnimationScreen = { navController.navigate("animation_screen") }
-                    )
+                    MainScreen(onDetailsClick = { navController.navigate("details") },
+                        onAnimationScreen = { navController.navigate("animation_screen") })
                 }
 
                 composable("details") {
@@ -197,15 +210,11 @@ fun MainScreen(onDetailsClick: () -> Unit, onAnimationScreen: () -> Unit) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(400.dp), contentAlignment = Alignment.Center
+                    .height(400.dp),
+                contentAlignment = Alignment.Center
             ) {
                 Text(text = "Companion PlaceHolder")
             }
-        }
-        Button(onClick = {
-            if (isSDKInitialised) requestCompanionAd()
-        }) {
-            Text(text = "Play companion Ad")
         }
 
         Row(
@@ -234,8 +243,7 @@ fun MainScreen(onDetailsClick: () -> Unit, onAnimationScreen: () -> Unit) {
 fun DetailsScreen() {
     Text(text = "Hello details")
     ComposableCompanionView(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     )
 }
 
@@ -253,15 +261,15 @@ fun AnimationScreen() {
         .fillMaxWidth()
         .fillMaxHeight(0.5f)
     Column {
-        Box(modifier = modifier){
+        Box(modifier = modifier) {
             ComposableCompanionView(
                 modifier = Modifier
-                    .animateContentSize()
                     .fillMaxWidth(width)
                     .fillMaxHeight(height)
+                    .animateContentSize()
             )
         }
-        Column(modifier = modifier){
+        Column(modifier = modifier) {
 
             Spacer(modifier = Modifier.height(20.dp))
             Text(text = "Change width")
