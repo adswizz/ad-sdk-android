@@ -18,18 +18,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -38,13 +44,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -54,6 +63,8 @@ import com.ad.core.companion.AdCompanionView
 import com.adswizz.sdk.AdswizzSDK
 import com.example.companionbannerjetpackcompose.ui.theme.CompanionBannerJetpackComposeTheme
 import com.example.companionbannerjetpackcompose.ui.theme.Purple40
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -136,6 +147,8 @@ fun App(
 
     val logs by viewModel.logs.collectAsState()
 
+    val selectedResourceText by viewModel.selectedResourceText.collectAsState()
+
     CompanionBannerJetpackComposeTheme {
 
         Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
@@ -202,7 +215,12 @@ fun App(
                     DetailsScreen()
                 }
                 composable("Advanced") {
-                    AnimationScreen(logs = logs, onCompanionEvent = viewModel::addLog)
+                    AnimationScreen(
+                        logs = logs,
+                        selectedResource = selectedResourceText,
+                        onCompanionEvent = viewModel::addLog,
+                        onResourceSelected = viewModel::onResourceSelected
+                    )
                 }
             }
 
@@ -271,10 +289,16 @@ fun DetailsScreen() {
 }
 
 @Composable
-fun AnimationScreen(logs: List<String>, onCompanionEvent: (String, String) -> Unit) {
+fun AnimationScreen(
+    logs: List<String>,
+    selectedResource: String,
+    onCompanionEvent: (String, String) -> Unit,
+    onResourceSelected: (String) -> Unit
+) {
 
     var width by remember { mutableFloatStateOf(1f) }
     var height by remember { mutableFloatStateOf(1f) }
+    var shouldShowResourceDialog by remember { mutableStateOf(false) }
 
     val modifier = Modifier
         .fillMaxWidth()
@@ -294,14 +318,29 @@ fun AnimationScreen(logs: List<String>, onCompanionEvent: (String, String) -> Un
 
         Spacer(modifier = Modifier.height(20.dp))
         Text(text = "Change width")
-        Slider(value = width, valueRange = 0f..1f, onValueChange = {
-            width = it
-        })
+        Slider(
+            modifier = Modifier.padding(horizontal = 10.dp),
+            value = width,
+            valueRange = 0f..1f,
+            onValueChange = {
+                width = it
+            })
         Spacer(modifier = Modifier.height(20.dp))
         Text(text = "Change height")
-        Slider(value = height, valueRange = 0f..1f, onValueChange = {
-            height = it
-        })
+        Slider(
+            modifier = Modifier.padding(horizontal = 10.dp),
+            value = height,
+            valueRange = 0f..1f,
+            onValueChange = {
+                height = it
+            })
+
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            TextButton(onClick = { shouldShowResourceDialog = true }) {
+                Text(text = "$selectedResource Selected")
+            }
+        }
+
 
         LazyColumn(
             modifier = Modifier
@@ -321,7 +360,72 @@ fun AnimationScreen(logs: List<String>, onCompanionEvent: (String, String) -> Un
                 )
             }
         }
+
+        if (shouldShowResourceDialog) {
+            SelectResourceDialog(onDismissRequest = {
+                shouldShowResourceDialog = false
+                onResourceSelected(it)
+            })
+        }
     }
-
-
 }
+
+@Composable
+fun SelectResourceDialog(onDismissRequest: (String) -> Unit) {
+
+    val resources = listOf("Static Resource", "HtmlResource")
+    var selectedOption by remember { mutableStateOf(resources[0]) }
+    val scope = rememberCoroutineScope()
+
+    Dialog(onDismissRequest = { onDismissRequest(selectedOption) }) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .padding(16.dp),
+            shape = RoundedCornerShape(16.dp),
+        ) {
+            Text(
+                text = "Select Companion Resource",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Start)
+                    .padding(vertical = 10.dp),
+                textAlign = TextAlign.Center,
+            )
+            resources.forEach { text ->
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .selectable(
+                            selected = (text == selectedOption),
+                            onClick = {
+                                selectedOption = text
+                                scope.launch {
+                                    delay(250)
+                                    onDismissRequest(text)
+                                }
+                            }
+                        )
+                        .padding(horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    RadioButton(
+                        selected = (text == selectedOption),
+                        onClick = {
+                            selectedOption = text
+                            scope.launch {
+                                delay(250)
+                                onDismissRequest(text)
+                            }
+                        }
+                    )
+                    Text(text = text)
+                }
+            }
+
+
+        }
+    }
+}
+

@@ -28,6 +28,10 @@ class MainViewModel : ViewModel() {
     private val _logs = MutableStateFlow(emptyList<String>())
     val logs = _logs.asStateFlow()
 
+    private var zoneIdAndCompanion = Pair("17862", "17863")
+
+    private var _selectedResourceText = MutableStateFlow("Static Resource")
+    val selectedResourceText = _selectedResourceText.asStateFlow()
 
     private var currentManager: AdManager? = null
 
@@ -36,16 +40,18 @@ class MainViewModel : ViewModel() {
             PlayState.PLAYING -> {
                 currentManager?.pause()
             }
+
             PlayState.PAUSED -> {
                 currentManager?.resume()
             }
+
             else -> {
                 requestCompanionAd()
             }
         }
     }
 
-    fun resetContent(){
+    fun resetContent() {
         currentManager?.reset()
         currentManager = null
         requestCompanionAd()
@@ -56,8 +62,10 @@ class MainViewModel : ViewModel() {
     }
 
     private fun requestCompanionAd() {
-        AdswizzAdRequest.Builder().withZones(setOf(AdswizzAdZone(zoneId = "17862")))
-            .withCompanionZones("17863").withServer("demo.deliveryengine.adswizz.com").build {
+        AdswizzAdRequest.Builder()
+            .withZones(setOf(AdswizzAdZone(zoneId = zoneIdAndCompanion.first)))
+            .withCompanionZones(zoneIdAndCompanion.second)
+            .withServer("demo.deliveryengine.adswizz.com").build {
                 AdRequestConnection(it).requestAds { adManager, _ ->
                     adManager ?: return@requestAds
 
@@ -67,16 +75,16 @@ class MainViewModel : ViewModel() {
                         ) = Unit
 
                         override fun onEventReceived(adManager: AdManager, event: AdEvent) {
-                            if (event.type == AdEvent.Type.State.AllAdsCompleted){
+                            if (event.type == AdEvent.Type.State.AllAdsCompleted) {
                                 _playingState.tryEmit(PlayState.STOPPED)
                             }
-                            if (event.type == AdEvent.Type.State.DidStartPlaying){
+                            if (event.type == AdEvent.Type.State.DidStartPlaying) {
                                 _playingState.tryEmit(PlayState.PLAYING)
                             }
-                            if (event.type == AdEvent.Type.State.DidPausePlaying){
+                            if (event.type == AdEvent.Type.State.DidPausePlaying) {
                                 _playingState.tryEmit(PlayState.PAUSED)
                             }
-                            if (event.type == AdEvent.Type.State.DidResumePlaying){
+                            if (event.type == AdEvent.Type.State.DidResumePlaying) {
                                 _playingState.tryEmit(PlayState.PLAYING)
                             }
                         }
@@ -91,8 +99,21 @@ class MainViewModel : ViewModel() {
     }
 
     fun addLog(companionViewTag: String, message: String) =
-    viewModelScope.launch {
-        val newList = _logs.value.toMutableList().also { it.add("Companion:$companionViewTag $message") }
-        _logs.emit(newList)
+        viewModelScope.launch {
+            val newList =
+                _logs.value.toMutableList().also { it.add("Companion:$companionViewTag $message") }
+            _logs.emit(newList)
+        }
+
+    fun onResourceSelected(resourceType: String) {
+        zoneIdAndCompanion = if (resourceType.contains("HtmlResource", ignoreCase = true)) {
+            _selectedResourceText.tryEmit("HtmlResource")
+            "12561" to "12562"
+        } else {
+            _selectedResourceText.tryEmit("Static Resource")
+            Pair("17862", "17863")
+        }
+        currentManager?.reset()
+        currentManager = null
     }
 }
