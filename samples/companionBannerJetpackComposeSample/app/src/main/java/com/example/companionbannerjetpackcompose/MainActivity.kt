@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -70,40 +73,46 @@ private fun setupAdswizzSDK(context: Context) {
 }
 
 @Composable
-fun ComposableCompanionView(modifier: Modifier) {
+fun ComposableCompanionView(
+    modifier: Modifier,
+    willLoadAd: (String) -> Unit = {},
+    didDisplayAd: (String) -> Unit = {},
+    didEndDisplay: (String) -> Unit = {},
+    willLeaveApplication: (String) -> Unit = {},
+    didFailToDisplayAd: (String, Error) -> Unit = { _, _ -> Unit },
+    onRenderProcessGone: (String, Boolean) -> Unit = { _, _ -> Unit },
+    shouldOverrideClickThrough: (String, Uri) -> Boolean = { _, _ -> false },
+) {
 
     AndroidView(modifier = Modifier.then(modifier), factory = {
         AdCompanionView(context = it).apply {
             setBackgroundColor(it.getColor(R.color.purple_500))
-            listener = object : AdCompanionView.Listener {
-                override fun didDisplayAd(adCompanionView: AdCompanionView) {
-                    println("------ did display")
-                }
+            this.listener = object : AdCompanionView.Listener {
+                override fun didDisplayAd(adCompanionView: AdCompanionView) =
+                    didDisplayAd(this@apply.toString())
 
-                override fun didEndDisplay(adCompanionView: AdCompanionView) {
-                }
+                override fun didEndDisplay(adCompanionView: AdCompanionView) =
+                    didEndDisplay(this@apply.toString())
 
-                override fun didFailToDisplayAd(
-                    adCompanionView: AdCompanionView, error: Error
-                ) {
-                }
+                override fun didFailToDisplayAd(adCompanionView: AdCompanionView, error: Error) =
+                    didFailToDisplayAd(this@apply.toString(), error)
 
                 override fun onRenderProcessGone(
-                    adCompanionView: AdCompanionView, didCrash: Boolean
-                ) {
-                }
+                    adCompanionView: AdCompanionView,
+                    didCrash: Boolean
+                ) = onRenderProcessGone(this@apply.toString(), didCrash)
 
                 override fun shouldOverrideClickThrough(
-                    adCompanionView: AdCompanionView, uri: Uri
-                ): Boolean {
-                    return false
-                }
+                    adCompanionView: AdCompanionView,
+                    uri: Uri
+                ): Boolean = shouldOverrideClickThrough(this@apply.toString(), uri)
 
-                override fun willLeaveApplication(adCompanionView: AdCompanionView) {
-                }
+                override fun willLeaveApplication(adCompanionView: AdCompanionView) =
+                    willLeaveApplication(this@apply.toString())
 
-                override fun willLoadAd(adCompanionView: AdCompanionView) {
-                }
+                override fun willLoadAd(adCompanionView: AdCompanionView) =
+                    willLoadAd(this@apply.toString())
+
             }
         }
     })
@@ -125,6 +134,8 @@ fun App(
 
     val state by viewModel.playingState.collectAsState()
 
+    val logs by viewModel.logs.collectAsState()
+
     CompanionBannerJetpackComposeTheme {
 
         Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
@@ -141,6 +152,17 @@ fun App(
                     }
                 },
                 actions = {
+
+                    if (backStackEntry?.destination?.route == "Advanced") {
+                        IconButton(onClick = { viewModel.clearLogs() }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_delete),
+                                contentDescription = "",
+                                tint = Color.Blue
+                            )
+                        }
+                    }
+
                     IconButton(onClick = {
                         viewModel.playOrPauseContent()
                     }) {
@@ -170,18 +192,19 @@ fun App(
             ) {
 
                 composable("MainScreen") {
-                    MainScreen(onDetailsClick = { navController.navigate("FullScreenCompanion") },
-                        onAnimationScreen = { navController.navigate("Advanced") })
+                    MainScreen(
+                        onDetailsClick = { navController.navigate("FullScreenCompanion") },
+                        onAnimationScreen = { navController.navigate("Advanced") },
+                    )
                 }
 
                 composable("FullScreenCompanion") {
                     DetailsScreen()
                 }
                 composable("Advanced") {
-                    AnimationScreen()
+                    AnimationScreen(logs = logs, onCompanionEvent = viewModel::addLog)
                 }
             }
-
 
         }
 
@@ -248,15 +271,11 @@ fun DetailsScreen() {
 }
 
 @Composable
-fun AnimationScreen() {
+fun AnimationScreen(logs: List<String>, onCompanionEvent: (String, String) -> Unit) {
 
-    var width by remember {
-        mutableFloatStateOf(1f)
-    }
+    var width by remember { mutableFloatStateOf(1f) }
+    var height by remember { mutableFloatStateOf(1f) }
 
-    var height by remember {
-        mutableFloatStateOf(1f)
-    }
     val modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight(0.5f)
@@ -266,21 +285,41 @@ fun AnimationScreen() {
                 modifier = Modifier
                     .fillMaxWidth(width)
                     .fillMaxHeight(height)
-                    .animateContentSize()
+                    .animateContentSize(),
+                didDisplayAd = { onCompanionEvent(it, "DidDisplay") },
+                didEndDisplay = { onCompanionEvent(it, "DidEndDisplay") },
+                willLoadAd = { onCompanionEvent(it, "WillLoadAd") },
             )
         }
-        Column(modifier = modifier) {
 
-            Spacer(modifier = Modifier.height(20.dp))
-            Text(text = "Change width")
-            Slider(value = width, valueRange = 0f..1f, onValueChange = {
-                width = it
-            })
-            Spacer(modifier = Modifier.height(20.dp))
-            Text(text = "Change height")
-            Slider(value = height, valueRange = 0f..1f, onValueChange = {
-                height = it
-            })
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(text = "Change width")
+        Slider(value = width, valueRange = 0f..1f, onValueChange = {
+            width = it
+        })
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(text = "Change height")
+        Slider(value = height, valueRange = 0f..1f, onValueChange = {
+            height = it
+        })
+
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(8.dp)
+        ) {
+            items(logs) {
+                Text(
+                    text = it,
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                        .padding(top = 10.dp, bottom = 5.dp)
+                        .background(Color.Black)
+                        .padding(1.dp)
+                        .background(Color.White)
+                )
+            }
         }
     }
 
