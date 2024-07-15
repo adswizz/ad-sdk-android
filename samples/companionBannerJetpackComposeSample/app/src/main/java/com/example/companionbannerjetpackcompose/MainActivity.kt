@@ -60,53 +60,6 @@ private fun setupAdswizzSDK(context: Context) {
     }
 }
 
-@Composable
-fun ComposableCompanionView(
-    modifier: Modifier,
-    willLoadAd: (String) -> Unit = {},
-    didDisplayAd: (String) -> Unit = {},
-    didEndDisplay: (String) -> Unit = {},
-    willLeaveApplication: (String) -> Unit = {},
-    didFailToDisplayAd: (String, Error) -> Unit = { _, _ -> Unit },
-    onRenderProcessGone: (String, Boolean) -> Unit = { _, _ -> Unit },
-    shouldOverrideClickThrough: (String, Uri) -> Boolean = { _, _ -> false },
-) {
-
-    AndroidView(modifier = Modifier.then(modifier), factory = {
-        AdCompanionView(context = it).apply {
-            setBackgroundColor(it.getColor(R.color.purple_500))
-            this.listener = object : AdCompanionView.Listener {
-                override fun didDisplayAd(adCompanionView: AdCompanionView) =
-                    didDisplayAd(this@apply.toString())
-
-                override fun didEndDisplay(adCompanionView: AdCompanionView) =
-                    didEndDisplay(this@apply.toString())
-
-                override fun didFailToDisplayAd(adCompanionView: AdCompanionView, error: Error) =
-                    didFailToDisplayAd(this@apply.toString(), error)
-
-                override fun onRenderProcessGone(
-                    adCompanionView: AdCompanionView,
-                    didCrash: Boolean
-                ) = onRenderProcessGone(this@apply.toString(), didCrash)
-
-                override fun shouldOverrideClickThrough(
-                    adCompanionView: AdCompanionView,
-                    uri: Uri
-                ): Boolean = shouldOverrideClickThrough(this@apply.toString(), uri)
-
-                override fun willLeaveApplication(adCompanionView: AdCompanionView) =
-                    willLeaveApplication(this@apply.toString())
-
-                override fun willLoadAd(adCompanionView: AdCompanionView) =
-                    willLoadAd(this@apply.toString())
-
-            }
-        }
-    })
-
-}
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -121,6 +74,7 @@ fun App(
         canNavigateBack = controller.previousBackStackEntry != null && controller.currentBackStackEntry?.destination?.route != "AdVideoViewScreen"
         showNavigation = controller.currentBackStackEntry?.destination?.route == "CompanionMainScreen"
                 || controller.currentBackStackEntry?.destination?.route == "AdVideoViewScreen"
+        viewModel.adType = if (controller.currentBackStackEntry?.destination?.route.orEmpty().contains("companion", ignoreCase = true)) AdType.Companion else AdType.Video
     }
 
     val state by viewModel.playingState.collectAsState()

@@ -7,6 +7,7 @@ import com.ad.core.adBaseManager.AdEvent
 import com.ad.core.adFetcher.AdRequestConnection
 import com.ad.core.adManager.AdManager
 import com.ad.core.adManager.AdManagerListener
+import com.ad.core.adManager.AdManagerSettings
 import com.ad.core.companion.AdCompanionView
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.adFetcher.AdswizzAdZone
@@ -20,8 +21,14 @@ enum class PlayState {
     STOPPED
 }
 
+enum class AdType {
+    Video,
+    Companion
+}
+
 class MainViewModel : ViewModel() {
 
+    var adType = AdType.Companion
     private val _playingState = MutableStateFlow(PlayState.STOPPED)
     val playingState = _playingState.asStateFlow()
 
@@ -46,7 +53,11 @@ class MainViewModel : ViewModel() {
             }
 
             else -> {
-                requestCompanionAd()
+                if (adType == AdType.Companion)
+                    requestCompanionAd()
+                else {
+                    requestVideoAd()
+                }
             }
         }
     }
@@ -54,7 +65,11 @@ class MainViewModel : ViewModel() {
     fun resetContent() {
         currentManager?.reset()
         currentManager = null
-        requestCompanionAd()
+        if (adType == AdType.Companion)
+            requestCompanionAd()
+        else {
+            requestVideoAd()
+        }
     }
 
     fun clearLogs() = viewModelScope.launch {
@@ -69,6 +84,43 @@ class MainViewModel : ViewModel() {
                 AdRequestConnection(it).requestAds { adManager, _ ->
                     adManager ?: return@requestAds
 
+                    adManager.setListener(object : AdManagerListener {
+                        override fun onEventErrorReceived(
+                            adManager: AdManager, ad: AdData?, error: Error
+                        ) = Unit
+
+                        override fun onEventReceived(adManager: AdManager, event: AdEvent) {
+                            if (event.type == AdEvent.Type.State.AllAdsCompleted) {
+                                _playingState.tryEmit(PlayState.STOPPED)
+                            }
+                            if (event.type == AdEvent.Type.State.DidStartPlaying) {
+                                _playingState.tryEmit(PlayState.PLAYING)
+                            }
+                            if (event.type == AdEvent.Type.State.DidPausePlaying) {
+                                _playingState.tryEmit(PlayState.PAUSED)
+                            }
+                            if (event.type == AdEvent.Type.State.DidResumePlaying) {
+                                _playingState.tryEmit(PlayState.PLAYING)
+                            }
+                        }
+                    })
+
+                    currentManager = adManager
+                    adManager.prepare()
+                    adManager.play()
+                }
+
+            }
+    }
+
+    private fun requestVideoAd(){
+        AdswizzAdRequest.Builder()
+            .withZones(setOf(AdswizzAdZone(zoneId ="17161")))
+            .withServer("demo.deliveryengine.adswizz.com").build {
+                AdRequestConnection(it).requestAds { adManager, _ ->
+                    adManager ?: return@requestAds
+
+                    adManager.adManagerSettings = AdManagerSettings.Builder().videoViewId(123).build()
                     adManager.setListener(object : AdManagerListener {
                         override fun onEventErrorReceived(
                             adManager: AdManager, ad: AdData?, error: Error
