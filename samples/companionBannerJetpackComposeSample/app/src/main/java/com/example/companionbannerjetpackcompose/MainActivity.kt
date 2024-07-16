@@ -192,7 +192,9 @@ fun App(
                     )
                 }
                 composable("AdVideoViewScreen") {
-                    AdVideoViewScreen()
+                    AdVideoViewScreen(onSkipAd = {
+                        viewModel.skipAd()
+                    })
                 }
 
                 composable("FullScreenCompanion") {

@@ -76,6 +76,9 @@ class MainViewModel : ViewModel() {
         _logs.emit(emptyList())
     }
 
+    fun skipAd(){
+        currentManager?.skipAd()
+    }
     private fun requestCompanionAd() {
         AdswizzAdRequest.Builder()
             .withZones(setOf(AdswizzAdZone(zoneId = zoneIdAndCompanion.first)))

@@ -1,5 +1,8 @@
 package com.example.companionbannerjetpackcompose
 
+import android.view.Gravity
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,23 +13,24 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.ad.core.video.AdVideoFriendlyObstruction
+import com.ad.core.video.AdVideoFriendlyObstructionPurpose
 import com.ad.core.video.AdVideoView
 import kotlin.random.Random
 
@@ -36,11 +40,25 @@ fun ComposableAdVideoView(
     videoViewID: Int,
     onVideoStarted: () -> Unit = {},
     onVideoEnded: () -> Unit = {},
-    obstructions : @Composable () -> Unit = {}
+    skipButton : @Composable () -> Unit = {}
 ) {
 
-    AndroidView(factory = {
-        AdVideoView(context = it).apply {
+    AndroidView(modifier = Modifier.then(modifier), factory = {
+
+        val container = FrameLayout(it)
+        val skipButtonView = ComposeView(it)
+            .apply {
+                setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+                setContent { skipButton() }
+                setPadding(0, 20, 20, 0)
+                layoutParams =
+                    FrameLayout.LayoutParams(ViewGroup.MarginLayoutParams.WRAP_CONTENT, ViewGroup.MarginLayoutParams.WRAP_CONTENT)
+                        .apply {
+                            this.gravity = Gravity.END or Gravity.TOP
+                        }
+            }
+
+        val adVideoView = AdVideoView(context = it, ).apply {
             this.setVideoViewId(videoViewID)
             this.setListener(object : AdVideoView.Listener {
 
@@ -48,23 +66,28 @@ fun ComposableAdVideoView(
                     false
 
                 override fun willLeaveApplication(adVideoView: AdVideoView) = Unit
-                override fun onVideoStarted(adVideoView: AdVideoView) = onVideoStarted()
-                override fun onVideoEnded(adVideoView: AdVideoView) = onVideoEnded()
+                override fun onVideoStarted(adVideoView: AdVideoView)  = onVideoStarted()
+                override fun onVideoEnded(adVideoView: AdVideoView) {
+                    clearContent()
+                    onVideoEnded()
+                }
 
             })
         }
+        container.addView(adVideoView)
+        container.addView(skipButtonView)
+        adVideoView.registerFriendlyObstruction(AdVideoFriendlyObstruction(skipButtonView, AdVideoFriendlyObstructionPurpose.CLOSE_AD))
+
+        return@AndroidView container
 
     },
-        update = {
-            // todo
-//            it.registerFriendlyObstruction(AdVideoFriendlyObstruction())
-        })
+ )
 }
 
 data class ObstructionPoint(val x: Int, val y: Int, val color: Color)
 
 @Composable
-fun AdVideoViewScreen() {
+fun AdVideoViewScreen(onSkipAd: () -> Unit) {
     val obstructions = remember {
         mutableStateListOf<ObstructionPoint>()
     }
@@ -77,7 +100,13 @@ fun AdVideoViewScreen() {
             ComposableAdVideoView(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(400.dp), videoViewID = 123
+                    .height(400.dp),
+                videoViewID = 123,
+                skipButton = {
+                    Button(onClick = onSkipAd) {
+                        Text(text = "Skip Ad")
+                    }
+                }
             )
 
             obstructions.forEach {
@@ -92,7 +121,7 @@ fun AdVideoViewScreen() {
         }
 
 
-        Text(text = "Add Friendly obstructions")
+        Text(text = "Add Non Friendly obstructions")
 
         Row {
             IconButton(onClick = {
