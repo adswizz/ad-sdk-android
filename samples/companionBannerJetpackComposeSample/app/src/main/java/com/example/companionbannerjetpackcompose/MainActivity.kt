@@ -71,10 +71,14 @@ fun App(
     var canNavigateBack by remember { mutableStateOf(false) }
     var showNavigation by remember { mutableStateOf(true) }
     navController.addOnDestinationChangedListener { controller, _, _ ->
-        canNavigateBack = controller.previousBackStackEntry != null && controller.currentBackStackEntry?.destination?.route != "AdVideoViewScreen"
-        showNavigation = controller.currentBackStackEntry?.destination?.route == "CompanionMainScreen"
-                || controller.currentBackStackEntry?.destination?.route == "AdVideoViewScreen"
-        viewModel.adType = if (controller.currentBackStackEntry?.destination?.route.orEmpty().contains("companion", ignoreCase = true)) AdType.Companion else AdType.Video
+        canNavigateBack =
+            controller.previousBackStackEntry != null && controller.currentBackStackEntry?.destination?.route != "AdVideoViewScreen"
+        showNavigation =
+            controller.currentBackStackEntry?.destination?.route == "CompanionMainScreen"
+                    || controller.currentBackStackEntry?.destination?.route == "AdVideoViewScreen"
+        viewModel.adType = if (controller.currentBackStackEntry?.destination?.route.orEmpty()
+                .contains("companion", ignoreCase = true)
+        ) AdType.Companion else AdType.Video
     }
 
     val state by viewModel.playingState.collectAsState()
@@ -192,26 +196,32 @@ fun App(
                     )
                 }
                 composable("AdVideoViewScreen") {
-                    AdVideoViewScreen(onSkipAd = {
-                        viewModel.skipAd()
-                    })
+                    AdVideoViewScreen(
+                        isPlaying = when (state) {
+                            PlayState.PLAYING -> true
+                            PlayState.PAUSED -> true
+                            PlayState.STOPPED -> false
+                        },
+                        onSkipAd = {
+                            viewModel.skipAd()
+                        })
                 }
 
-                composable("FullScreenCompanion") {
-                    CompanionDetailsScreen()
-                }
-                composable("CompanionAdvanced") {
-                    CompanionAnimationScreen(
-                        logs = logs,
-                        selectedResource = selectedResourceText,
-                        onCompanionEvent = viewModel::addLog,
-                        onResourceSelected = viewModel::onResourceSelected
-                    )
-                }
+            composable("FullScreenCompanion") {
+                CompanionDetailsScreen()
             }
-
+            composable("CompanionAdvanced") {
+                CompanionAnimationScreen(
+                    logs = logs,
+                    selectedResource = selectedResourceText,
+                    onCompanionEvent = viewModel::addLog,
+                    onResourceSelected = viewModel::onResourceSelected
+                )
+            }
         }
 
     }
+
+}
 
 }
