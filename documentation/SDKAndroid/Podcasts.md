@@ -152,6 +152,19 @@ Here is an example on how to instruct the **_AdswizzAdPodcastManager_** object t
 > The **_AdswizzAdPodcastManager_** object will always attempt to use a secured connection (HTTPS protocol) when firing internal requests for fetching additional ad breaks related information from the stream metadata.
 > This approach avoids the need for whitelisting these requests in your application.
 
+### automaticallyManageAudioFocus
+
+This method is used by internal players in order to handle [Audio Focus](https://developer.android.com/media/optimize/audio-focus), the default value is `false`. If enabled, `AdswizzAdPodcastManager`'s audio focus will be handled by the Exoplayer audio focus handling mechanism.
+
+```kotlin
+fun createPodcastManager() {
+    val settings = AdPodcastManagerSettings.Builder()
+        .automaticallyManageAudioFocus(true)		// optional, used by internal players, defaults to internal exoplayer audio focus handling
+        .build()
+    podcastManager = AdswizzAdPodcastManager(settings)
+}
+```
+
 ## **_AdPodcastManager.Listener_** interface
 
 Playback and ad break related notifications sent from **_AdswizzAdPodcastManager_** to your app are implemented in the **_AdPodcastManager.Listener_** interface.
