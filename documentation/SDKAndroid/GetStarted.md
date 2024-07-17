@@ -387,12 +387,12 @@ _NOTE_: If you are using com.adswizz:exoplayer2-16 and com.adswizz:exoplayer2-17
 For com.adswizz:exoplayer2-17 and com.adswizz:exoplayer2-18 the minSdkVersion must be 24 or higher.
 
     
-3. The Adswizz Android SDK uses Google Play Services (`com.google.android.gms.ads.identifier.AdvertisingIdClient`) to get the Google Advertising ID (GAD). To do this, your application will have the following permission in your `AndroidManifest.xml` file.
+3. The Adswizz Android SDK uses Google Play Services (`com.google.android.gms.ads.identifier.AdvertisingIdClient`) to get the Google Advertising ID (GAD). To do this, your application will need the following permission in your `AndroidManifest.xml` file.
 ```xml
     <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
 ```
 > **Note**
-> If this permission is explicitly removed, that will lead to limited ad targeting. 
+> If this permission is explicitly removed, it will lead to limited ad targeting. 
 
 ## SDK initialization and cleanup
 
