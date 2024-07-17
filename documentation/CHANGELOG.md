@@ -5,12 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.9.2] - 2024-07-17
+## [7.9.2] - 2024-07-18
 ### Added
 - Added new public boolean property `AdswizzSDK.initialised` that allows to monitor whether **_AdswizzSDK_** is initialised or not.
 - Added console warnings when **_AdswizzSDK_** properties/methods are accessed before initialisation block.
 - Added a new method `automaticallyManageAudioFocus(automaticallyManageAudioFocus: Boolean)` to the: `AdManagerSettings.Builder`, `AdManagerStreamingSettings.Builder`,`AdPodcastManagerSettings.Builder`. This method is used by internal players in order to handle [Audio Focus](https://developer.android.com/media/optimize/audio-focus), the default value is `false`. If enabled, the management will be automatically handled by internal players.
 ### Changed
+- Removed deprecated library version of `com.google.android.gms:play-services-ads` and replaced with `com.google.android.gms:play-services-ads-identifier:18.0.1` 
 - Improved quartile reporting behaviour on certain network conditions.
 ### Fixed
 - Fixed an internal player playback issue when assets failed to download.
