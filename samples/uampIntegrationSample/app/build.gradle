@@ -4,7 +4,7 @@ plugins {
 }
 
 ext{
-    adswizzSdkDevVersion = "7.9.0"
+    adswizzSdkDevVersion = "7.9.2"
 }
 
 android {

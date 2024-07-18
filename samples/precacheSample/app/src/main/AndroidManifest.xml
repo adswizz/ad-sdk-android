@@ -37,9 +37,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Samples">
         <meta-data
-            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
-            android:value="true" />
-        <meta-data
             android:name="com.adswizz.core.installationId"
             android:value="adswizz_android_exoPlayer_v3" />
         <meta-data
