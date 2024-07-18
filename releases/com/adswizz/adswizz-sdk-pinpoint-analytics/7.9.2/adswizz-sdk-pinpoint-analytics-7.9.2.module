@@ -1,0 +1,146 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "adswizz-sdk-pinpoint-analytics",
+    "version": "7.9.2",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.4"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.21"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-sdk-pinpoint-analytics-7.9.2.aar",
+          "url": "adswizz-sdk-pinpoint-analytics-7.9.2.aar",
+          "size": 92266,
+          "sha512": "7f0b1db8688f78bab1dc0c009a334d4949c293507ec7602fbb8dba923e9c833ae3dbc847c79b30df04ba60cc5d996ed9f16a89c8d0df5a91b50870aea36a0cc2",
+          "sha256": "72c31ea31efb8d8f26c4f04c55f10b54c9a4b6f33160e92cf1098d90d547d988",
+          "sha1": "26cd4c53ddae8736cc5c232766b1ae97100287a7",
+          "md5": "d25570f5fd84f00b316cedaec63ab482"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.21"
+          }
+        },
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.9.0"
+          }
+        },
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat",
+          "version": {
+            "requires": "1.6.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.6.4"
+          }
+        },
+        {
+          "group": "com.squareup.moshi",
+          "module": "moshi",
+          "version": {
+            "requires": "1.14.0"
+          }
+        },
+        {
+          "group": "com.squareup.moshi",
+          "module": "moshi-adapters",
+          "version": {
+            "requires": "1.14.0"
+          }
+        },
+        {
+          "group": "androidx.room",
+          "module": "room-runtime",
+          "version": {
+            "requires": "2.5.2"
+          }
+        },
+        {
+          "group": "androidx.work",
+          "module": "work-runtime-ktx",
+          "version": {
+            "requires": "2.8.1"
+          }
+        },
+        {
+          "group": "androidx.work",
+          "module": "work-multiprocess",
+          "version": {
+            "requires": "2.8.1"
+          }
+        },
+        {
+          "group": "androidx.room",
+          "module": "room-ktx",
+          "version": {
+            "requires": "2.5.2"
+          }
+        },
+        {
+          "group": "com.amazonaws",
+          "module": "aws-android-sdk-core",
+          "version": {
+            "requires": "2.72.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-sdk-pinpoint-analytics-7.9.2.aar",
+          "url": "adswizz-sdk-pinpoint-analytics-7.9.2.aar",
+          "size": 92266,
+          "sha512": "7f0b1db8688f78bab1dc0c009a334d4949c293507ec7602fbb8dba923e9c833ae3dbc847c79b30df04ba60cc5d996ed9f16a89c8d0df5a91b50870aea36a0cc2",
+          "sha256": "72c31ea31efb8d8f26c4f04c55f10b54c9a4b6f33160e92cf1098d90d547d988",
+          "sha1": "26cd4c53ddae8736cc5c232766b1ae97100287a7",
+          "md5": "d25570f5fd84f00b316cedaec63ab482"
+        }
+      ]
+    }
+  ]
+}
