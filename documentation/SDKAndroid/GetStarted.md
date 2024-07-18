@@ -26,7 +26,7 @@ kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 appcompat = "androidx.appcompat:appcompat:${appcompatVersion}"
 coreKtx = "androidx.core:core-ktx:${coreKtxVersion}"
 exoPlayer = "com.google.android.exoplayer:exoplayer:$exoPlayerVerison"
-gmsPlayServicesAds = "com.google.android.gms:play-services-ads:$gmsPlayServicesAdsVersion"
+gmsPlayServicesAdsIdentifier = "com.google.android.gms:play-services-ads-identifier:$gmsPlayServicesAdsIdentifierVersion"
 constraintLayout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 processLifecycle = "androidx.lifecycle:lifecycle-process:$lifecycleRuntimeKtxVersion"
 kotlinxCoroutines= "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion"
@@ -81,7 +81,7 @@ kotlin_version = '1.7.21'
 appcompatVersion = '1.6.1'
 coreKtxVersion = '1.9.0'
 exoPlayerVerison = '2.10.0' // and '2.11.3' too
-gmsPlayServicesAdsVersion = '20.0.0'
+gmsPlayServicesAdsIdentifierVersion = '18.0.1'
 moshiVersion = '1.14.0'
 lifecycleRuntimeKtxVersion = '2.5.1'
 kotlinxCoroutinesVersion = '1.6.4'
@@ -387,28 +387,12 @@ _NOTE_: If you are using com.adswizz:exoplayer2-16 and com.adswizz:exoplayer2-17
 For com.adswizz:exoplayer2-17 and com.adswizz:exoplayer2-18 the minSdkVersion must be 24 or higher.
 
     
-3. The Adswizz Android SDK uses Google Play Services (`com.google.android.gms.ads.identifier.AdvertisingIdClient`) to get the Google Advertising ID (GAD). To do this, your application may need to have the following meta added in your `AndroidManifest.xml` file.
+3. The Adswizz Android SDK uses Google Play Services (`com.google.android.gms.ads.identifier.AdvertisingIdClient`) to get the Google Advertising ID (GAD). To do this, your application will need the following permission in your `AndroidManifest.xml` file.
 ```xml
-<meta-data
-    android:name="com.google.android.gms.ads.AD_MANAGER_APP"
-    android:value="true" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
 ```
-
-The above meta should be placed inside the `application` tag, like in the below example:
- ```xml
-<application
-    android:allowBackup="true"
-    android:icon="@mipmap/ic_launcher"
-    ...
-    <meta-data
-        android:name="com.google.android.gms.ads.AD_MANAGER_APP"
-        android:value="true" />
-    ...
-</application>
- ```
-
-_NOTE_: If the above `meta` is not added in your `AndroidManifest.xml` file, you will receive an error message in Logcat like this one `"The Google Mobile Ads SDK was initialized incorrectly."` and your application will crash during initialization.
-
+> **Note**
+> If this permission is explicitly removed, it will lead to limited ad targeting. 
 
 ## SDK initialization and cleanup
 

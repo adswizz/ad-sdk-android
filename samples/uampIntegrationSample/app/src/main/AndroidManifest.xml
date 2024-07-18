@@ -47,9 +47,6 @@
             android:name="com.google.android.gms.car.application"
             android:resource="@xml/automotive_app_desc" />
 
-        <meta-data
-            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
-            android:value="true" />
         <meta-data android:name="com.adswizz.core.installationId" android:value="adswizz_android_exoPlayer_v2" />
         <meta-data android:name="com.adswizz.core.playerId" android:value="UampPlayerId" />
 

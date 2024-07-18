@@ -178,6 +178,18 @@ Here is an example on how to instruct the **_AdswizzAdStreamManager_** object to
     }
 ```
 
+### automaticallyManageAudioFocus
+
+This method is used by internal players in order to handle [Audio Focus](https://developer.android.com/media/optimize/audio-focus), the default value is `false`. If enabled, `AdswizzAdStreamManager`'s audio focus will be handled by the Exoplayer audio focus handling mechanism.
+
+```kotlin
+    fun createStreamManager() {
+        val settings = AdManagerStreamingSettings.Builder()
+            .automaticallyManageAudioFocus(true)		// optional, used by internal players, defaults to internal exoplayer audio focus handling
+            .build()
+        streamManager = AdswizzAdStreamManager(settings)
+    }
+```
 > The **_AdswizzAdStreamManager_** object will always attempt to use a secured connection (HTTPS protocol) when firing internal requests for fetching additional ad breaks related information from the stream metadata.
 > This approach avoids the need for whitelisting these requests in your application.
 
