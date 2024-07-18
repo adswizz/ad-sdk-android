@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.companionbannerjetpackcompose"
+    namespace = "com.example.jetpackcomposesample"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.companionbannerjetpackcompose"
+        applicationId = "com.example.jetpackcomposesample"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

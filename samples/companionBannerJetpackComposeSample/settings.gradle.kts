@@ -41,6 +41,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "CompanionBannerJetpackCompose"
+rootProject.name = "JetpackComposeSample"
 include(":app")
  

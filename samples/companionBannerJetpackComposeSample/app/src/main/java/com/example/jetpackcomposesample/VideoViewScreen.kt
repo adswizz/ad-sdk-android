@@ -1,11 +1,8 @@
-package com.example.companionbannerjetpackcompose
+package com.example.jetpackcomposesample
 
-import android.animation.ValueAnimator
 import android.view.Gravity
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
 import android.widget.FrameLayout
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
@@ -20,9 +17,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -99,21 +93,6 @@ fun ComposableAdVideoView(
                     AdVideoFriendlyObstructionPurpose.CLOSE_AD
                 )
             )
-//            adVideoView.alpha = 0f
-//
-//            adVideoView.animate().alpha(1f)
-//                .setDuration(3000)
-//                .start()
-//
-//            ValueAnimator.ofFloat(0.0f, 1.0f).apply {
-//                duration = 600
-//                addUpdateListener {
-//                    adVideoView.alpha = it.animatedValue as Float
-//                }
-//                start()
-//            }
-//            adVideoView.alpha = 0f
-//            skipButtonView.startAnimation(AlphaAnimation(0.0f, 1.0f).apply { duration = 4000 })
 
             return@AndroidView container
 

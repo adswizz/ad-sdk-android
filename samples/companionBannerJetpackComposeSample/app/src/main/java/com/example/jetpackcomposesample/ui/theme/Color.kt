@@ -1,4 +1,4 @@
-package com.example.companionbannerjetpackcompose.ui.theme
+package com.example.jetpackcomposesample.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

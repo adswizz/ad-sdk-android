@@ -1,4 +1,4 @@
-package com.example.companionbannerjetpackcompose
+package com.example.jetpackcomposesample
 
 import android.net.Uri
 import androidx.compose.animation.animateContentSize

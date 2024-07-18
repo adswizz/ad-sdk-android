@@ -1,4 +1,4 @@
-package com.example.companionbannerjetpackcompose
+package com.example.jetpackcomposesample
 
 import org.junit.Test
 

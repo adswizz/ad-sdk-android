@@ -1,7 +1,6 @@
-package com.example.companionbannerjetpackcompose
+package com.example.jetpackcomposesample
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -31,17 +30,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.ad.core.companion.AdCompanionView
 import com.adswizz.sdk.AdswizzSDK
-import com.example.companionbannerjetpackcompose.ui.theme.CompanionBannerJetpackComposeTheme
-import com.example.companionbannerjetpackcompose.ui.theme.Purple40
+import com.example.jetpackcomposesample.ui.theme.CompanionBannerJetpackComposeTheme
+import com.example.jetpackcomposesample.ui.theme.Purple40
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -154,7 +151,7 @@ fun App(
                             },
                             icon = {
                                 Icon(
-                                    imageVector = Icons.Default.Home,
+                                    painter = painterResource(id = R.drawable.ic_companion),
                                     contentDescription = "CompanionView"
                                 )
                             })
@@ -172,7 +169,7 @@ fun App(
                             },
                             icon = {
                                 Icon(
-                                    imageVector = Icons.Default.Favorite,
+                                    painter = painterResource(id = R.drawable.ic_video),
                                     contentDescription = "VideoView"
                                 )
                             })

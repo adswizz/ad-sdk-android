@@ -1,4 +1,4 @@
-package com.example.companionbannerjetpackcompose.ui.theme
+package com.example.jetpackcomposesample.ui.theme
 
 import android.app.Activity
 import android.os.Build

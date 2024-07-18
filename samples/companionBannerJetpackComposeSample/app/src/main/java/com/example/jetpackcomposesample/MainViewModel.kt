@@ -1,4 +1,4 @@
-package com.example.companionbannerjetpackcompose
+package com.example.jetpackcomposesample
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,7 +8,6 @@ import com.ad.core.adFetcher.AdRequestConnection
 import com.ad.core.adManager.AdManager
 import com.ad.core.adManager.AdManagerListener
 import com.ad.core.adManager.AdManagerSettings
-import com.ad.core.companion.AdCompanionView
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.adFetcher.AdswizzAdZone
 import kotlinx.coroutines.flow.MutableStateFlow
