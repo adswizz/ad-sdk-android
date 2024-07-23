@@ -18,9 +18,6 @@
         <meta-data
             android:name="com.adswizz.core.playerId"
             android:value="PlayerId" />
-        <meta-data
-            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
-            android:value="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
