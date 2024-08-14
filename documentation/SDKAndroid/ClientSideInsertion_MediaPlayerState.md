@@ -226,4 +226,4 @@ might be missing (LoadingFinished, BufferFinished, Resume)
 ## Events diagram
 Here is a diagram showcasing order of events that should be triggered by MediaPlayerState implementation
 
-<img src="../img/MediaPlayerState events.png" width="500" />
+<img src="../img/MediaPlayerState-events.png" width="500" />
