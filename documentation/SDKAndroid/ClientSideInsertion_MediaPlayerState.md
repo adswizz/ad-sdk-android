@@ -86,7 +86,7 @@ interface MediaPlayerState {
 
     // Reports the volume for the player. This value should be between [0..1].
     // A value of 0.0 indicates silence; a value of 1.0 (the default) indicates full audio volume for the player instance.
-    val volume: Float
+    val playerVolume: Float
 
     // Tells if the player continues buffering after it was paused. Usefull only for 
     // streaming to determint if resuming the stream resumes the ad
