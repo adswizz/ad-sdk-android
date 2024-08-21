@@ -218,18 +218,19 @@ class MainActivity : AppCompatActivity() {
                         player.playWhenReady = true
                         //adManager?.resume()
                     }
-                    AdManagerState.AllAdsCompleted -> {
-                        player.stop()
-                        adManager?.reset()
-                        adManager?.prepare()
-                        player.playWhenReady = true
-                        //adManager?.play()
-                    }
+//                    AdManagerState.AllAdsCompleted -> {
+//                        player.stop()
+//                        adManager?.reset()
+//                        adManager?.prepare()
+//                        player.playWhenReady = true
+//                        //adManager?.play()
+//                    }
                     else -> Unit
                 }
             }
             R.id.menuReplay -> {
-                player.stop()
+                externalMediaPlayerState.resetPlayer()
+
                 adManager?.reset()
                 adManager = null
                 adManagerState = AdManagerState.Unknown
@@ -264,6 +265,7 @@ class MainActivity : AppCompatActivity() {
             adManager.setListener(listener)
             adManager.adManagerSettings = AdManagerSettings.Builder().adMediaPlayerStatsInstance(externalMediaPlayerState).build()
             adManager.mediaItems.forEachIndexed { idx, item ->
+                println("*** load media item: $item $idx")
                 externalMediaPlayerState.loadMediaItem(item, idx )
             }
 

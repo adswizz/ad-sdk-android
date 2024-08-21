@@ -105,10 +105,19 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
 
     fun loadMediaItem(item: AdMediaItem, index: Int){
         seekInProgress = true
+//        println("*** loadMediaItem $item $index ${items.size}")
         items.add(index, item)
         creativeMap[item.url.toString()] = index
         player.addMediaItem(index, MediaItem.Builder().setUri(item.url).setMediaId(item.id)
             .build())
+    }
+
+    fun resetPlayer(){
+        player.stop()
+        player.clearMediaItems()
+        player.playWhenReady = false
+        creativeMap.clear()
+        items.clear()
     }
 
     private fun emitHelper(event: MediaPlayerState.PlayerEvent){
