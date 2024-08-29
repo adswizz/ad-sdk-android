@@ -1,16 +1,16 @@
-# Client-Side Insertion using MediaPlayerState with your player
+# Playing ads using your player using MediaPlayerState interface [BETA]
 
-## Client-Side insertions using MediaPlayerState interface
+Since 7.9.3 release, the **_AdswizzSDK_** will provide a new event driven integration method. The `MediaPlayerState` interface will use a more Kotlin friendly approach in order to pass your player events to the `AdManager`s
 
-Similar with AdPlayer interface, once the manager has been received as an object after requesting ads, it can receive a MediaPlayerState object
-like in the following code snippet:
+> **Note**
+> This MediaPlayerState approach is currently in beta release and it may be changed during the following releases after processing your feedback.
+> For now, the MediaPlayerState will be available only in Client Side insertion scenarios without video ads capabilities.
 
-You can retrieve also the media items from the AdManager which can be used to create you player playlist
 
+## Client-side setup 
 
-```kotlin
-	data class AdMediaItem(val id: String, val url: Uri)
-```
+Similar with `AdPlayer` interface, once you receive the `AdManager` instance through an `AdswizzAdRequest`, you will be able to set your MediaPlayerState implementation to the **_AdManagerSettings_** builder like follows:
+
 
 ```kotlin
 	AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
@@ -26,27 +26,23 @@ You can retrieve also the media items from the AdManager which can be used to cr
 				if (adManager != null) {
                             //Handle success
                             adManager.adManagerSettings =
-                                AdManagerSettings.Builder() // optional
-                                    .adMediaPlayerStatsInstance(YOUR_MEDIA_PLAYER_STATE_INSTANCE_GOES_HERE) // optional
-                                    .addCachePolicy(CachePolicy.ASSETS)         // optional
+                                AdManagerSettings.Builder() 
+                                    .adMediaPlayerStatsInstance(YOUR_MEDIA_PLAYER_STATE_INSTANCE_GOES_HERE) 
                                     .assetQuality(AssetQuality.MEDIUM)          // optional, other possible values AssetQuality.LOW, AssetQuality.HIGH, AssetQuality.AUTO
-                                    .enqueueEnabled(false)                      // optional
-                                    .videoViewId(1)                             // optional
-                                    .timeoutIntervalForResource(10.0)			// optional, used by internal players, defaults to internal exoplayer timeout (8 sec)
-                                    .automaticallyManageAudioFocus(true)		// optional, used by internal players, defaults to internal exoplayer audio focus handling
                                     .build()                                    // optional
                             adManager.setListener(this) // Get notifications from the Ad SDK
                             
                             
                             /*
-                            	Retrieve ads as MediaItems
+                                Here you can iterate the ads array and set them in your player.
                             */
-                            adManager.mediaItems.foreach{ item ->
+                            adManager.ads.foreach{ adData ->
+                                 loadAdInYourPlayer(adData.mediaUrlString)
                             	// load item.url with item.id as unique media item id
                             	// and after loading all items prepare the player
                             }
                                                         
-                            adManager.prepare() // Start buffering the ads in the AdManager
+                            adManager.prepare() // The AdManager will start observe the MediaPlayerState events
                         
                             
                             /*
@@ -66,10 +62,9 @@ You can retrieve also the media items from the AdManager which can be used to cr
 ```
 
 
-
 ## MediaPlayerState interface
 
-**MediaPlayerState** aims to replace AdPlayer interface providing a simpler interface and some modern kotlin improvements like flows or duration.
+**MediaPlayerState** aims to provide a simpler communication mechanism based on `kotlinx.coroutines.SharedFlow` by emitting `PlayerEvent`s resulted during the ads playback.
 
 ```kotlin
 interface MediaPlayerState {
@@ -88,8 +83,8 @@ interface MediaPlayerState {
     // A value of 0.0 indicates silence; a value of 1.0 (the default) indicates full audio volume for the player instance.
     val playerVolume: Float
 
-    // Tells if the player continues buffering after it was paused. Usefull only for 
-    // streaming to determint if resuming the stream resumes the ad
+    // Tells if the player continues buffering after it was paused. Useful only for 
+    // Will be used in streaming scenarios, in order to determinate if resuming the stream resumes the ad
     val isBufferingWhilePaused: Boolean get() = true
 
     // Used for targetability purposes.
@@ -117,78 +112,70 @@ interface MediaPlayerState {
      */
     sealed class PlayerEvent(open val mediaId: String){
         /*
-             This event is sent when player start loading a media item
-                url - uri of media item
+             This event is sent when player start loading the media item for corresponding ad.
+                mediaId - the  AdData.instanceId
          */
         data class Loading(override val mediaId: String): PlayerEvent(mediaId)
 
         /*
           This event is sent when player finished loading a media item
-            url - uri of media item
+                mediaId - the  AdData.instanceId
         */
         data class LoadingFinished(override val mediaId: String): PlayerEvent(mediaId)
 
         /*
           This event is sent when a media item failed to load or failed during playing
-            url - uri of media item
+                mediaId - the  AdData.instanceId
         */
         data class Failed(override val  mediaId: String, val error: PlayerError): PlayerEvent(mediaId)
 
 
         /*
           This event is sent when a media item has paused due to buffering the content of media item
-            url - uri of media item
+                mediaId - the  AdData.instanceId
         */
         data class Buffering(override val mediaId: String): PlayerEvent(mediaId)
 
         /*
           This event is sent when a media item has resumed after buffering finishes
-            url - uri of media item
+                mediaId - the  AdData.instanceId
         */
         data class BufferingFinished(override val mediaId: String): PlayerEvent(mediaId)
 
         /*
-          This event is sent when player start playing
-            url - uri of media item currently playing
+          This event is sent when your player will begin to play the first ad in the ad pod. 
+                mediaId - the  AdData.instanceId
         */
         data class Playing(override val mediaId: String): PlayerEvent(mediaId)
 
         /*
           This event is sent when a player paused
-            url - uri of media item currently paused
+                mediaId - the  AdData.instanceId
         */
         data class Pause(override val mediaId: String): PlayerEvent(mediaId)
 
         /*
           This event is sent when a player resumed content
-            url - uri of media item currently resumed
+                mediaId - the  AdData.instanceId
         */
         data class Resume(override val mediaId: String): PlayerEvent(mediaId)
 
         /*
           This event is sent when a player finished playing all media items
-            url - uri of last media item in the list
+                mediaId - the AdData.instanceId of last media item in the list
         */
         data class Finished(override val mediaId: String): PlayerEvent(mediaId) //
 
-
-        /*
-          This event is sent when a player received metadata from the stream. Only for Server Side insertion
-            url - uri of stream
-        */
-        data class Metadata(override val mediaId: String, val list: List<AdPlayer.MetadataItem>): PlayerEvent(mediaId)
-
-
         /*
             This event is sent when a player advanced to the next item in the list
-                 url is the Uri of next media item to be played
+                 mediaId - the  AdData.instanceId
         * */
         data class TrackChanged(override val mediaId: String): PlayerEvent(mediaId)
 
 
         /*
             This event is sent when a player skipped current item
-                     url is the Uri of the item being skipped
+                     mediaId - the AdData.instanceId of the item being skipped
            * */
         data class SkipAd(override val mediaId: String, val error: PlayerError? = null): PlayerEvent(mediaId)
     }
