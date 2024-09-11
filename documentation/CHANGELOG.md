@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.9.3] - 2024-09-13
+### Added
+- Added a new event driven integration method for Client Side Insertion. From now on you can pass your `MediaPlayerState` instance implementation to the `AdManagerSettings.Builder` object calling `adMediaPlayerStatsInstance` method. For more details please visit [Playing Ads With Your Player using MediaPlayerState](Android/SDKAndroid/PlayAdsWithYourPlayer(MediaPlayerState).md) page.
+- Added new field in `AdData` interface named `intanceId: String`. This enables you to avoid collisions and unique identify each Ad in the AdManager's list.
+- Added a new sample project named **_JetpackComposeSample_** to the [Sample Project section](Android/SDKAndroid/SampleProjects) showcasing the **_AdCompanionView_** and **_AdVideoView_** interoperability with `jetpack compose` UI components.
+
+### Changed
+- Removed `org.jetbrains.kotlin:kotlin-reflect` and `org.apache.commons:commons-math3` libraries from the **_AdswizzSDK_** dependency tree.
+
 ## [7.9.2] - 2024-07-18
 ### Added
 - Added new public boolean property `AdswizzSDK.isInitialized` that allows to monitor whether **_AdswizzSDK_** is initialised or not.

@@ -47,3 +47,7 @@ This sample demonstrates how your app can integrate with the **_AdswizzSDK_** on
 ## Basic Sample using extension artefact
 
 This sample demonstrates a basic client-side, server-side and podcast insertion scenario using the **_com.adswizz.adswizz-sdk-extension_** artefact which simplifies creation and consumption of ads by the use of coroutines and sharedflows.
+
+## JetpackCompose Sample
+
+This sample demonstrates how to build your UI wrapper for **_AdCompanionView_** and **_AdVideoView_** using `AndroidView` component. In those composable functions are presented the steps required to properly use **_AdswizzSDK_** UI components in a compose screen or application and it showcases the main features/usa-cases such as : resizing, add/remove to view hierarchy, view listeners.
