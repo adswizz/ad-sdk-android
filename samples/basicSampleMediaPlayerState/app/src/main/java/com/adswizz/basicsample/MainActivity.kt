@@ -3,6 +3,7 @@ package com.adswizz.basicsample
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.method.ScrollingMovementMethod
@@ -38,7 +39,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val SERVER_URL = "demo.deliveryengine.adswizz.com"
-        const val ZONE_ID = "17871"
+        const val ZONE_ID = "17862"
+        const val COMPANION_ID = "17863"
     }
 
     private enum class AdManagerState {
@@ -264,9 +266,9 @@ class MainActivity : AppCompatActivity() {
             adManager.adManagerSettings = AdManagerSettings.Builder().timeoutIntervalForResource(2.5).build()
             adManager.setListener(listener)
             adManager.adManagerSettings = AdManagerSettings.Builder().adMediaPlayerStatsInstance(externalMediaPlayerState).build()
-            adManager.mediaItems.forEachIndexed { idx, item ->
-                println("*** load media item: $item $idx")
-                externalMediaPlayerState.loadMediaItem(item, idx )
+            adManager.ads.forEachIndexed { idx, ad ->
+//                println("*** load media item: ${ad.instanceId}  ${ad.mediaUrlString} $idx")
+                externalMediaPlayerState.loadMediaItem(ad.instanceId, Uri.parse(ad.mediaUrlString), idx )
             }
 
             adManager.prepare()
