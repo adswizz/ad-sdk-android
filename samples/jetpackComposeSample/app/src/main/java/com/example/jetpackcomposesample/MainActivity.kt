@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -37,7 +35,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.adswizz.sdk.AdswizzSDK
-import com.example.jetpackcomposesample.ui.theme.CompanionBannerJetpackComposeTheme
+import com.example.jetpackcomposesample.ui.theme.JetpackComposeSampleTheme
 import com.example.jetpackcomposesample.ui.theme.Purple40
 
 class MainActivity : ComponentActivity() {
@@ -84,7 +82,7 @@ fun App(
 
     val selectedResourceText by viewModel.selectedResourceText.collectAsState()
 
-    CompanionBannerJetpackComposeTheme {
+    JetpackComposeSampleTheme {
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
