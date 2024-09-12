@@ -1,6 +1,7 @@
 package com.adswizz.basicsample
 
 import android.content.Context
+import android.net.Uri
 import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Metadata
@@ -55,7 +56,7 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
 
     val creativeMap = mutableMapOf<String, Int>()
 
-    val items = mutableListOf<AdMediaItem>()
+    val items = mutableListOf<String>()
 
     override val playerVolume: Float
         get() = player.volume
@@ -91,24 +92,11 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
         player.addAnalyticsListener(this)
     }
 
-    fun play(){
-        player.playWhenReady = true
+    fun loadMediaItem(id: String, url: Uri, index: Int){
         seekInProgress = true
-    }
-
-    fun loadAdswizzContent(creativeUrl: String, index: Int) {
-        seekInProgress = true
-        creativeMap[creativeUrl] = index
-        player.addMediaItem(index, MediaItem.Builder().setUri(creativeUrl)
-            .build())
-    }
-
-    fun loadMediaItem(item: AdMediaItem, index: Int){
-        seekInProgress = true
-//        println("*** loadMediaItem $item $index ${items.size}")
-        items.add(index, item)
-        creativeMap[item.url.toString()] = index
-        player.addMediaItem(index, MediaItem.Builder().setUri(item.url).setMediaId(item.id)
+        items.add(index, id)
+        creativeMap[url.toString()] = index
+        player.addMediaItem(index, MediaItem.Builder().setUri(url).setMediaId(id)
             .build())
     }
 
@@ -135,9 +123,8 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
     ) {
         val wi = eventTime.windowIndex
         val adIndex = creativeMap[loadEventInfo.uri.toString()]
-//        println("*** onLoadStarted ${eventTime.windowIndex} ${eventTime.timeline} ${loadEventInfo.uri} ${mediaLoadData.mediaStartTimeMs/1000} ${mediaLoadData.mediaEndTimeMs/1000}")
         if (wi == adIndex) {
-            emitHelper(MediaPlayerState.PlayerEvent.Loading(items.get(wi).id))
+            emitHelper(MediaPlayerState.PlayerEvent.Loading(items.get(wi)))
             currentPlayerStatus = PlayerStatus.Loading
         }
     }
@@ -153,7 +140,7 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
 
         if (wi == adIndex) {
 //            println("--------- event emit loaded finish $wi")
-            emitHelper( MediaPlayerState.PlayerEvent.LoadingFinished(items.get(wi).id))
+            emitHelper( MediaPlayerState.PlayerEvent.LoadingFinished(items.get(wi)))
             currentPlayerStatus = PlayerStatus.LoadingFinished
         }
     }
@@ -172,7 +159,7 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
 //            val errorMessage =
 //                "ExoPlayer failed to load media: ${loadEventInfo.uri} with ${error.message}"
             //we should map exoplayer to
-            emitHelper( MediaPlayerState.PlayerEvent.Failed(items.get(wi).id, MediaPlayerState.PlayerError.GeneralError(error) ))
+            emitHelper( MediaPlayerState.PlayerEvent.Failed(items.get(wi), MediaPlayerState.PlayerError.GeneralError(error) ))
             currentPlayerStatus = PlayerStatus.Failed
         }
     }

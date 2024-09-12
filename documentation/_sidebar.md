@@ -4,7 +4,7 @@
 
     - [Before you start](Android/SDKAndroid/BeforeYouStart.md)
     - [Get started](Android/SDKAndroid/GetStarted.md)
-    - [Client Side Insertion](Android/SDKAndroid/ClientSideInsertion.md)  
+    - [Client Side Insertion](Android/SDKAndroid/ClientSideInsertion.md)
     - [Server Side Insertion](Android/SDKAndroid/ServerSideInsertion.md)
     - [Podcasts](Android/SDKAndroid/Podcasts.md)
     - [Companion Banner](Android/SDKAndroid/CompanionBanner.md)
