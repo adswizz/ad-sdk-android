@@ -1,0 +1,137 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "adswizz-sdk-extensions",
+    "version": "7.9.3",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.4"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.21"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-sdk-extensions-7.9.3.aar",
+          "url": "adswizz-sdk-extensions-7.9.3.aar",
+          "size": 148165,
+          "sha512": "cf01915075ec28acba5d81ad8bfd98301833d30258bb78458619c54129a9951f57c1ef03e4a6bb5f631fb01a84fb2636be987ceb559e9df199774a8b8ee7620b",
+          "sha256": "8a58375027ec06d87a35802fed6e5dd1af1fd80694a14cea387b3818fd99b5e5",
+          "sha1": "2f360023b8dd386bc793d78c8d05d7ad3a433f1b",
+          "md5": "0efd484cadf891f8cf776c5c56d6f1cf"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.21"
+          }
+        },
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.9.0"
+          }
+        },
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat",
+          "version": {
+            "requires": "1.6.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.6.4"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-sdk-extensions-7.9.3.aar",
+          "url": "adswizz-sdk-extensions-7.9.3.aar",
+          "size": 148165,
+          "sha512": "cf01915075ec28acba5d81ad8bfd98301833d30258bb78458619c54129a9951f57c1ef03e4a6bb5f631fb01a84fb2636be987ceb559e9df199774a8b8ee7620b",
+          "sha256": "8a58375027ec06d87a35802fed6e5dd1af1fd80694a14cea387b3818fd99b5e5",
+          "sha1": "2f360023b8dd386bc793d78c8d05d7ad3a433f1b",
+          "md5": "0efd484cadf891f8cf776c5c56d6f1cf"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseSourcePublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "adswizz-sdk-extensions-7.9.3-sources.jar",
+          "url": "adswizz-sdk-extensions-7.9.3-sources.jar",
+          "size": 12977,
+          "sha512": "91b7cc0d37a81587b2a9041e10b6bb69430debb3c3ea84736c9b5d3642c316e8f6a7532c49a865aa8bd33de81439b392f6aebf90863a3a23c32acd25662a09b0",
+          "sha256": "2ff4d3a05685516a1395102cddae0845c8fe3eeaf7a82bb799e79b1d075c813f",
+          "sha1": "b47c1462c5db17a3cd5a76ba58f6614b01271e63",
+          "md5": "279de5ebe3dc688321548f4a3dc77016"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseJavaDocPublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "javadoc",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "adswizz-sdk-extensions-7.9.3-javadoc.jar",
+          "url": "adswizz-sdk-extensions-7.9.3-javadoc.jar",
+          "size": 445903,
+          "sha512": "bbbe00af099a4c7b1d49a9923373297367402b2715242db7426a6326f23bf13b8760911def311e790cf0ab953150520bd31222c9461e330ee54e21ed2c0ff747",
+          "sha256": "e31c061cc68e32a57176dd72953fdf3011b1f0b57686ecef35d881c3d6ab0dd3",
+          "sha1": "927496d45e2d6f9009a7eef8e502ef73dfcd145b",
+          "md5": "d5c51438894f943bca2a7c58490a6444"
+        }
+      ]
+    }
+  ]
+}
