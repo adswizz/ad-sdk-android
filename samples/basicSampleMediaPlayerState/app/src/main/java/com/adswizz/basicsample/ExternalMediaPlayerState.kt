@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.Uri
 import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
-import androidx.media3.common.Metadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
@@ -12,17 +11,6 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.analytics.AnalyticsListener
 import androidx.media3.exoplayer.source.LoadEventInfo
 import androidx.media3.exoplayer.source.MediaLoadData
-import androidx.media3.extractor.metadata.emsg.EventMessage
-import androidx.media3.extractor.metadata.icy.IcyInfo
-import androidx.media3.extractor.metadata.id3.ApicFrame
-import androidx.media3.extractor.metadata.id3.CommentFrame
-import androidx.media3.extractor.metadata.id3.GeobFrame
-import androidx.media3.extractor.metadata.id3.Id3Frame
-import androidx.media3.extractor.metadata.id3.PrivFrame
-import androidx.media3.extractor.metadata.id3.TextInformationFrame
-import androidx.media3.extractor.metadata.id3.UrlLinkFrame
-import com.ad.core.adManager.AdMediaItem
-import com.adswizz.common.AdPlayer
 import com.adswizz.common.MediaPlayerState
 import com.adswizz.common.macro.PlayerCapabilities
 import com.adswizz.common.macro.PlayerState
@@ -210,7 +198,7 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
                             } else {
                                 //loadCompleted(playingIndex)     // this is needed because ExoPlayer calls onPlayerStateChanged before onLoadCompleted
                                 player.currentMediaItem?.mediaId?.let { id ->
-                                    emitHelper(MediaPlayerState.PlayerEvent.Playing(id))
+                                    emitHelper(MediaPlayerState.PlayerEvent.StartPlaying(id))
                                 }
                             }
                         }
@@ -269,87 +257,17 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
 //        println("*** onPositionDiscontinuity ${oldPosition.mediaItem?.localConfiguration?.uri} ${newPosition.mediaItem?.localConfiguration?.uri}")
 //        if (creativeMap[newPosition.mediaItem?.localConfiguration?.uri.toString()] == null) return
         if (reason == Player.DISCONTINUITY_REASON_AUTO_TRANSITION){
-            player.currentMediaItem?.mediaId?.let { id ->
-                emitHelper(MediaPlayerState.PlayerEvent.TrackChanged(id))
-            }
+            emitHelper(MediaPlayerState.PlayerEvent.Finished(oldPosition.mediaItem?.mediaId.orEmpty()))
+            emitHelper(MediaPlayerState.PlayerEvent.StartPlaying(newPosition.mediaItem?.mediaId.orEmpty()))
+        }
+        // this approach will trigger automatically finish when media item is removed
+        else if (reason == Player.DISCONTINUITY_REASON_REMOVE){
+            // removed if error has happened
+            emitHelper(MediaPlayerState.PlayerEvent.Finished(oldPosition.mediaItem?.mediaId.orEmpty()))
         }
     }
     // endregion
 
-    override fun onMetadata(metadata: Metadata) {
-        val metadataList = mutableListOf<AdPlayer.MetadataItem>()
-        for (i in 0 until metadata.length()) {
-            when (val entry = metadata.get(i)) {
-                is IcyInfo -> {
-                    if (entry.title != null) {
-                        metadataList.add(AdPlayer.MetadataItem("title", entry.title ?: ""))
-                    }
-                    if (entry.url != null) {
-                        metadataList.add(AdPlayer.MetadataItem("url", entry.url ?: ""))
-                    }
-                }
-                is TextInformationFrame -> {
-                    if (entry.value.isNotEmpty()) {
-                        metadataList.add(AdPlayer.MetadataItem("value", entry.value))
-                    }
-                    if (!entry.description.isNullOrEmpty()) {
-                        metadataList.add(
-                            AdPlayer.MetadataItem(
-                                "description",
-                                entry.description.toString()
-                            )
-                        )
-                    }
-                }
-                is UrlLinkFrame -> {
-                    // do nothing
-                }
-                is PrivFrame -> {
-                    // do nothing
-                }
-                is GeobFrame -> {
-                    // do nothing
-                }
-                is ApicFrame -> {
-                    if (!entry.description.isNullOrEmpty()) {
-                        metadataList.add(
-                            AdPlayer.MetadataItem(
-                                "description",
-                                entry.description.toString()
-                            )
-                        )
-                    }
-                    if (entry.mimeType.isNotEmpty()) {
-                        metadataList.add(
-                            AdPlayer.MetadataItem(
-                                "description",
-                                entry.mimeType
-                            )
-                        )
-                    }
-                }
-                is CommentFrame -> {
-                    if (entry.text.isNotEmpty()) {
-                        metadataList.add(AdPlayer.MetadataItem("text", entry.text))
-                    }
-                }
-                is Id3Frame -> {
-                    // do nothing
-                }
-                is EventMessage -> {
-                    // do nothing
-                }
-            }
-        }
-        player.currentMediaItem?.mediaId?.let { id ->
-            emitHelper(
-                MediaPlayerState.PlayerEvent.Metadata(
-                    id,
-                    metadataList
-                )
-            )
-        }
-    }
 
     fun skipAd(error: Error? = null) {
         try {
@@ -392,13 +310,6 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
                 )
             )
         }
-        /*
-        messing up with the state machine
-        player.stop()
-        player.removeMediaItem(adIndex)
-         */
-//        player.clearMediaItems() // OR clean the current ad
-//
     }
 
 }
