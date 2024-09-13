@@ -83,10 +83,6 @@ interface MediaPlayerState {
     // A value of 0.0 indicates silence; a value of 1.0 (the default) indicates full audio volume for the player instance.
     val playerVolume: Float
 
-    // Tells if the player continues buffering after it was paused. Useful only for 
-    // Will be used in streaming scenarios, in order to determinate if resuming the stream resumes the ad
-    val isBufferingWhilePaused: Boolean get() = true
-
     // Used for targetability purposes.
     // A list of player capabilities.
     val playerCapabilities: List<PlayerCapabilities>
@@ -94,9 +90,6 @@ interface MediaPlayerState {
     // Used for targetability purposes.
     // A list of player states as described by the IAB, which will help achieve better targetability.
     val playerState: List<PlayerState>
-
-	// Object used by Metadata event to encapsulate metadata. Used by streaming only
-    data class MetadataItem(val key: String, val value: String)
 
 	//Type of generic errors player should send. They are VAST compliant errors
     sealed class PlayerError(err: Exception){
@@ -131,31 +124,33 @@ interface MediaPlayerState {
 
 
         /*
-          This event is sent when a media item has paused due to buffering the content of media item
+          This event is sent when a media item has paused due to buffering the content of media item.
+          This event should be sent only for current media item during its playing phase
                 mediaId - the  AdData.instanceId
         */
         data class Buffering(override val mediaId: String): PlayerEvent(mediaId)
 
         /*
-          This event is sent when a media item has resumed after buffering finishes
+          This event is sent when a media item has resumed after buffering finishes.
+          This event should be sent only for current media item during its playing phase
                 mediaId - the  AdData.instanceId
         */
         data class BufferingFinished(override val mediaId: String): PlayerEvent(mediaId)
 
         /*
-          This event is sent when your player will begin to play the first ad in the ad pod. 
-                mediaId - the  AdData.instanceId
+          This event is sent when your player will begin to play the media item. 
+                mediaId - the AdData.instanceId
         */
-        data class Playing(override val mediaId: String): PlayerEvent(mediaId)
+        data class StartPlaying(override val mediaId: String): PlayerEvent(mediaId)
 
         /*
-          This event is sent when a player paused
+          This event is sent when a player paused current media item.
                 mediaId - the  AdData.instanceId
         */
         data class Pause(override val mediaId: String): PlayerEvent(mediaId)
 
         /*
-          This event is sent when a player resumed content
+          This event is sent when a player resumed current media item.
                 mediaId - the  AdData.instanceId
         */
         data class Resume(override val mediaId: String): PlayerEvent(mediaId)
@@ -165,12 +160,6 @@ interface MediaPlayerState {
                 mediaId - the AdData.instanceId of last media item in the list
         */
         data class Finished(override val mediaId: String): PlayerEvent(mediaId) //
-
-        /*
-            This event is sent when a player advanced to the next item in the list
-                 mediaId - the  AdData.instanceId
-        * */
-        data class TrackChanged(override val mediaId: String): PlayerEvent(mediaId)
 
 
         /*
@@ -189,22 +178,20 @@ Events sent by MediaPlayerState implementation are similar to AdPlayer.Listener 
 
 `Loading` and `LoadingFinished`. This pair of events should be sent foreach `media items` ( `ads` ) when the player starts loading the corresponding items. These events are needed for firing VAST related events
 
-`Buffering` and `BufferingFinished`. This pair of events should be sent every time player is stalling while buffering current content, but only when the player started playing items in the playlist and not before first loading event.
+`Buffering` and `BufferingFinished`. This pair of events should be sent every time player is stalling while buffering current content, but only during the playing phase of the items. `Buffering` and `BufferingFinished` during loading phase servers no purpose in SDK.
 The mediaId should reflect current item playing when buffering occurred. If there is buffering or caching for other media item than the current one, these events should not be triggered and can cause SDK to trigger duplicate vast events.
 
 `Failed` events should be sent any time the player raise an exception no matter where on the playing timeline occurs. They can be triggered in the loading part or when playing and for each item that raise the exception.
 
-`Playing` events should be sent every time the player changes to the playing the current item. 
+`StartPlaying` events should be sent every time the player changes to the playing the current item. 
+
+`Finish` should be sent for each media item that was scheduled to play even if the coresponding media item failed during loading time. This event must be paired with StartPlaying
+if the corresponding media item has finished loading and started playing or Failed event if the corresponding mediat  item failed at loading time.
 
 `Pause` and `Resume`. This pair of events should be sent each time the player is paused and resumed. 
 
-`TrackChanged` need to be sent when player advance to a new media item in the playlist 
-
 `SkipAd` should be sent if the media item is skipped during playing it
 
-`Finish` should be sent when the player finished all media items received from the AdRequest
-
-`Metadata` should be sent when player receives a metadata from the stream. Only needed on Server-Side insertion
 
 **** Note: All paired events: `Loading` and `LoadingFinished`, `Buffering` and `BufferingFinished`, `Pause` and `Resume` should be sent in pairs except when a `Failed` event or `Finish` event is triggered and closing events of the pair
 might be missing (LoadingFinished, BufferFinished, Resume)
@@ -213,4 +200,4 @@ might be missing (LoadingFinished, BufferFinished, Resume)
 ## Events diagram
 Here is a diagram showcasing order of events that should be triggered by MediaPlayerState implementation
 
-<img src="../img/MediaPlayerState-events.png" width="500" />
+<img src="../img/MediaPlayerState-events-order.png" width="1000" />
