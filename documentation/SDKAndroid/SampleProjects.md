@@ -11,7 +11,7 @@ Password: your_access_token (provided by AdsWizz)
 
 This sample demonstrates a basic client-side insertion scenario by showing how to create and customize an _**AdswizzAdRequest**_. It shows how to use it to create an _**AdRequestConnection**_ and finally request ads. Next, it demonstrates basic usage of an instance of _**AdManager**_ once it has been obtained from the SDK.
 
-## Basic MediaPlayerState
+## Basic MediaPlayerState Sample
 
 This sample demonstrates a basic client-side insertion scenario using an instance of a  _**MediaPlayerState**_ interface.
 
