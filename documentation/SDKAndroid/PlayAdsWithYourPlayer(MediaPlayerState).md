@@ -27,7 +27,7 @@ Similar with `AdPlayer` interface, once you receive the `AdManager` instance thr
                             //Handle success
                             adManager.adManagerSettings =
                                 AdManagerSettings.Builder() 
-                                    .adMediaPlayerStatsInstance(YOUR_MEDIA_PLAYER_STATE_INSTANCE_GOES_HERE) 
+                                    .mediaPlayerStateInstance(YOUR_MEDIA_PLAYER_STATE_INSTANCE_GOES_HERE) 
                                     .assetQuality(AssetQuality.MEDIUM)          // optional, other possible values AssetQuality.LOW, AssetQuality.HIGH, AssetQuality.AUTO
                                     .build()                                    // optional
                             adManager.setListener(this) // Get notifications from the Ad SDK
