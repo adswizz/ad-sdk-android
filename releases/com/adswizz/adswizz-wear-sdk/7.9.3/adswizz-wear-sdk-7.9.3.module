@@ -35,11 +35,11 @@
         {
           "name": "adswizz-wear-sdk-7.9.3.aar",
           "url": "adswizz-wear-sdk-7.9.3.aar",
-          "size": 25596,
-          "sha512": "2d784fd774c330cd1f083a2710a227368a104202720c5a2c233e89cd03b3836ec4cf0a1d76b11ad75d2332eb025b5f0aefe756232bcd349d65c745cf2933700e",
-          "sha256": "75a7c3e851f5ce07405ef62869943b4887026890cc578380ce028c1fb267c390",
-          "sha1": "e60c2e7cc59488adcd87ef29e55aebd875c4f7e1",
-          "md5": "e18e2bb5ae64122d26f3c9256ddd2477"
+          "size": 25598,
+          "sha512": "3dad5c173507bd386a3c853265d07043288d8075e9cb4488341e6fd59fac730643d58da62573087e374907cdaf26a21d4055258543339c7694fde21981402374",
+          "sha256": "cc9c1f08cf9ba30cba06b5a4ed2f8ee3c03e3bd320bbcdc4256487fde698e852",
+          "sha1": "fcd6ac9e21456387ceabdd8ab0bb116a0672edfa",
+          "md5": "35b5acbf75f7c8c69b5489458ce7ce7d"
         }
       ]
     },
@@ -113,11 +113,11 @@
         {
           "name": "adswizz-wear-sdk-7.9.3.aar",
           "url": "adswizz-wear-sdk-7.9.3.aar",
-          "size": 25596,
-          "sha512": "2d784fd774c330cd1f083a2710a227368a104202720c5a2c233e89cd03b3836ec4cf0a1d76b11ad75d2332eb025b5f0aefe756232bcd349d65c745cf2933700e",
-          "sha256": "75a7c3e851f5ce07405ef62869943b4887026890cc578380ce028c1fb267c390",
-          "sha1": "e60c2e7cc59488adcd87ef29e55aebd875c4f7e1",
-          "md5": "e18e2bb5ae64122d26f3c9256ddd2477"
+          "size": 25598,
+          "sha512": "3dad5c173507bd386a3c853265d07043288d8075e9cb4488341e6fd59fac730643d58da62573087e374907cdaf26a21d4055258543339c7694fde21981402374",
+          "sha256": "cc9c1f08cf9ba30cba06b5a4ed2f8ee3c03e3bd320bbcdc4256487fde698e852",
+          "sha1": "fcd6ac9e21456387ceabdd8ab0bb116a0672edfa",
+          "md5": "35b5acbf75f7c8c69b5489458ce7ce7d"
         }
       ]
     }
