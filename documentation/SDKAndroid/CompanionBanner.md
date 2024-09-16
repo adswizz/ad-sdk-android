@@ -128,7 +128,7 @@ Note that it is your responsibility to keep a strong reference the **_AdCompanio
 
 Here are a few things to consider when working with the **_AdCompanionView_**:
 * content is loaded and rendered within an **_AdCompanionView_** only if the view is considered **visible** on screen. The visibility checks performed by the **_AdswizzSDK_** include but not limited to:
-  - Android `View` properties such as `alpha`, `visibility
+  - Android `View` properties such as `alpha` and `visibility`
   - non zero size for `width` and `height`
   - on display (screen) visibility. The **_AdCompanionView_** should be displayed within screen bounds.
 * it is not mandatory to implement any of the callbacks for the **_AdCompanionView_** from the `AdCompanionView.Listener` interface. Setting a listener to your **_AdCompanionView_** instance is completely optional, however, keep in mind that this is your only communication channel with the **_AdCompanionView_** when it comes to content rendering.
