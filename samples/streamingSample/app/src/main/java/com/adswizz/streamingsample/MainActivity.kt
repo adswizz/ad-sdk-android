@@ -96,11 +96,12 @@ class MainActivity : AppCompatActivity() {
         val scroll = ScrollingMovementMethod()
         binding.appLogs.movementMethod = scroll
 
-        AdswizzSDK.initialize(this)
+        AdswizzSDK.initialize(this) {
+            streamManager = AdswizzAdStreamManager(null)
+            streamManager?.addListener(listener)
+            streamManager?.play(SERVER_URL)
+        }
 
-        streamManager = AdswizzAdStreamManager(null)
-        streamManager?.addListener(listener)
-        streamManager?.play(SERVER_URL)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
