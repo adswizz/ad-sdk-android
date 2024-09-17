@@ -22,6 +22,7 @@ Please check [here](Android/CHANGELOG.md) the latest AdswizzSDK version and all 
 
 ```groovy
 kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"
+appcompat = "androidx.appcompat:appcompat:${appcompatVersion}"
 coreKtx = "androidx.core:core-ktx:${coreKtxVersion}"
 exoPlayer = "com.google.android.exoplayer:exoplayer:$exoPlayerVerison"
 gmsPlayServicesAdsIdentifier = "com.google.android.gms:play-services-ads-identifier:$gmsPlayServicesAdsIdentifierVersion"
@@ -118,8 +119,6 @@ The AdswizzSDK uses the following permissions:
 <manifest>
 ....
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 ....
 </manifest>
@@ -144,6 +143,12 @@ The AdswizzSDK additional permissions are:
 ```xml
 <manifest>
 ....
+    <!-- Used for Interactive Ads to send a feedback to user when a interactivity has completed  -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- Used for choosing Ad creatives based on network conditions  -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    
     <!-- Used in sonar tracking endpoint for the gps location. Used in analytics when sending the batch to the server -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- Used for polling and profile sonar endpoints to get the microphone status. Used for speech recognition during voice ads -->
