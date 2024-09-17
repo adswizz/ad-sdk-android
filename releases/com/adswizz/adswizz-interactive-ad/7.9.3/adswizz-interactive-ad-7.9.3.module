@@ -35,11 +35,11 @@
         {
           "name": "adswizz-interactive-ad-7.9.3.aar",
           "url": "adswizz-interactive-ad-7.9.3.aar",
-          "size": 391123,
-          "sha512": "43bba10c67cb44562c5783f5a7a977de53575dc8fce5181bb5362b554728518830340c3e2c02e80916769df76a219c9ed3021fd85ee672547f135d4d3e917203",
-          "sha256": "862cfb30d2f97babb504a5dd36d8c0be9bad800b7a65c515f9d06da87171035e",
-          "sha1": "adc045a9a54faa5af82176b336c3d38097e6e1b9",
-          "md5": "00d318668e83cbd9f09fe98195bf7c4a"
+          "size": 392727,
+          "sha512": "ce402bc4c13def2e0a7ab941288599c027fd32d8a9f442743befcb0234968d5bffcf6875b754e6bb2988167a0b3bb39e10e5014c3b9651de9a2d0ce9052f6468",
+          "sha256": "176e898304a1c4f0ba6e1fa701affe5c7fc953fad3e2069bd55f455e24cd5a24",
+          "sha1": "509fbe3535b8c0b29bcd251f683ba551534b63a1",
+          "md5": "417845c672a390637a195a1299b93b6c"
         }
       ]
     },
@@ -113,11 +113,11 @@
         {
           "name": "adswizz-interactive-ad-7.9.3.aar",
           "url": "adswizz-interactive-ad-7.9.3.aar",
-          "size": 391123,
-          "sha512": "43bba10c67cb44562c5783f5a7a977de53575dc8fce5181bb5362b554728518830340c3e2c02e80916769df76a219c9ed3021fd85ee672547f135d4d3e917203",
-          "sha256": "862cfb30d2f97babb504a5dd36d8c0be9bad800b7a65c515f9d06da87171035e",
-          "sha1": "adc045a9a54faa5af82176b336c3d38097e6e1b9",
-          "md5": "00d318668e83cbd9f09fe98195bf7c4a"
+          "size": 392727,
+          "sha512": "ce402bc4c13def2e0a7ab941288599c027fd32d8a9f442743befcb0234968d5bffcf6875b754e6bb2988167a0b3bb39e10e5014c3b9651de9a2d0ce9052f6468",
+          "sha256": "176e898304a1c4f0ba6e1fa701affe5c7fc953fad3e2069bd55f455e24cd5a24",
+          "sha1": "509fbe3535b8c0b29bcd251f683ba551534b63a1",
+          "md5": "417845c672a390637a195a1299b93b6c"
         }
       ]
     }
