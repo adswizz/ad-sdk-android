@@ -1,6 +1,5 @@
 package com.adswizz.basicsample
 
-import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Bundle
@@ -26,10 +25,8 @@ import com.adswizz.basicsample.databinding.ActivityMainBinding
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.adFetcher.AdswizzAdZone
 import com.adswizz.sdk.AdswizzSDK
-//import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
-import java.util.*
-//import kotlinx.android.synthetic.main.activity_main.sdkVersion as sdkVersion1
+import java.util.Date
 
 // Basic app shows minimal client side functionality
 
@@ -37,8 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val SERVER_URL = "demo.deliveryengine.adswizz.com"
-        const val ZONE_ID = "17862"
-        const val COMPANION_ID = "17863"
+        const val ZONE_ID = "13381"
     }
 
     private enum class AdManagerState {
@@ -173,21 +169,23 @@ class MainActivity : AppCompatActivity() {
         val scroll = ScrollingMovementMethod()
         binding.appLogs.movementMethod = scroll
 
-        AdswizzSDK.initialize(this)
+        AdswizzSDK.initialize(this){
+
+            //Build the Ad Request with the needed parameters
+            AdswizzAdRequest.Builder()
+                .withServer(SERVER_URL)
+                .withZones(setOf(AdswizzAdZone(ZONE_ID)))
+                .build { adRequest ->
+                    // Create the AdRequestConnection using the above adRequest
+                    adRequestConnection = AdRequestConnection(adRequest)
+                    adRequestConnection?.requestAds { adManager, error ->
+                        handleResponse(error, adManager)
+                    }
+                }
+        }
 
         binding.sdkVersion.text = "${getString(R.string.adswizz_version_prefix)}${com.adswizz.sdk.BuildConfig.VERSION_NAME}"
 
-        //Build the Ad Request with the needed parameters
-        AdswizzAdRequest.Builder()
-            .withServer(SERVER_URL)
-            .withZones(setOf(AdswizzAdZone(ZONE_ID)))
-            .build() { adRequest ->
-                // Create the AdRequestConnection using the above adRequest
-                adRequestConnection = AdRequestConnection(adRequest)
-                adRequestConnection?.requestAds { adManager, error ->
-                    handleResponse(error, adManager)
-                }
-            }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
