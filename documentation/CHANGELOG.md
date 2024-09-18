@@ -14,10 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Removed `org.jetbrains.kotlin:kotlin-reflect`, `org.apache.commons:commons-math3` and `androidx.databinding:viewbinding` libraries from the **_AdswizzSDK_** dependency tree.
-- Removed `android.permission.VIBRATE` and `android.permission.ACCESS_NETWORK_STATE` from `com.adswizz:sdk` AndroidManifest files.
+- Removed `android.permission.VIBRATE` and `android.permission.ACCESS_NETWORK_STATE` from `com.adswizz:sdk` AndroidManifest files. The AdswizzSDK now relies solely on permissions requested by the host app. 
 
 ### Fixed
-- Fixed an `SecurityException` introduced since 7.8.0 release, this exception has occurred on devices running Android 9(API 28) or lower when `android.permission.ACCESS_WIFI_STATE` is not present in `AndroidManifest.xml` file
+- Fixed an `SecurityException` introduced since 7.8.0 release, which occurred only on devices running Android 9(API 28) or lower when `android.permission.ACCESS_WIFI_STATE` was not present in `AndroidManifest.xml` file.
 
 ## [7.9.2] - 2024-07-18
 ### Added
