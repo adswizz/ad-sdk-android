@@ -1,16 +1,16 @@
 # Playing ads using your player using MediaPlayerState interface [BETA]
 
-Since 7.9.3 release, the **_AdswizzSDK_** will provide a new event driven integration method. The `MediaPlayerState` interface will use a more Kotlin friendly approach in order to pass your player events to the `AdManager`s
+As of version 7.9.3, **_AdswizzSDK_** introduces a new event-driven integration method. The `MediaPlayerState` interface now offers a more Kotlin-friendly approach to pass your player events to the `AdManager`.
 
 > **Note**
-> This MediaPlayerState approach is currently in beta release and it may be changed during the following releases after processing your feedback.
-> For now, the MediaPlayerState will be available only in Client Side insertion scenarios without video ads capabilities.
+> 
+> The MediaPlayerState approach is currently in beta and may be modified in future releases based on your feedback. 
+> For now, MediaPlayerState is available only for Client-Side insertion scenarios without video ad capabilities.
 
 
 ## Client-side setup 
 
-Similar with `AdPlayer` interface, once you receive the `AdManager` instance through an `AdswizzAdRequest`, you will be able to set your MediaPlayerState implementation to the **_AdManagerSettings_** builder like follows:
-
+Similar to the `AdPlayer` interface, once you receive the `AdManager` instance through an `AdswizzAdRequest`, you can set your `MediaPlayerState` implementation in the **_AdManagerSettings_** builder as follows:
 
 ```kotlin
 	AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
@@ -64,7 +64,7 @@ Similar with `AdPlayer` interface, once you receive the `AdManager` instance thr
 
 ## MediaPlayerState interface
 
-**MediaPlayerState** aims to provide a simpler communication mechanism based on `kotlinx.coroutines.SharedFlow` by emitting `PlayerEvent`s resulted during the ads playback.
+**MediaPlayerState** aims to simplify communication by using `kotlinx.coroutines.SharedFlow` to emit `PlayerEvents` during ad playback.
 
 ```kotlin
 interface MediaPlayerState {
@@ -171,33 +171,46 @@ interface MediaPlayerState {
 }
 ```
 
+## Events Emitted by MediaPlayerState Implementation
 
-## Events sent by MediaPlayerState implementation. 
+The events emitted by the `MediaPlayerState` implementation are similar to `AdPlayer.Listener` function callbacks and should be sent in a specific order.
 
-Events sent by MediaPlayerState implementation are similar to AdPlayer.Listener function callbacks and should be sent in a specific order.
+- `Loading` and `LoadingFinished`
 
-`Loading` and `LoadingFinished`. This pair of events should be sent foreach `media items` ( `ads` ) when the player starts loading the corresponding items. These events are needed for firing VAST related events
+This pair of events should be sent for each ad when the player starts and finishes loading the corresponding item. These events are necessary for triggering VAST-related events.
 
-`Buffering` and `BufferingFinished`. This pair of events should be sent every time player is stalling while buffering current content, but only during the playing phase of the items. `Buffering` and `BufferingFinished` during loading phase servers no purpose in SDK.
-The mediaId should reflect current item playing when buffering occurred. If there is buffering or caching for other media item than the current one, these events should not be triggered and can cause SDK to trigger duplicate vast events.
+- `Buffering` and `BufferingFinished`
 
-`Failed` events should be sent any time the player raise an exception no matter where on the playing timeline occurs. They can be triggered in the loading part or when playing and for each item that raise the exception.
+This pair of events should be sent whenever the player stalls while buffering the current content, but only during the playing phase of the items. `Buffering` and `BufferingFinished` events during the loading phase serve no purpose in the SDK.
 
-`StartPlaying` events should be sent every time the player changes to the playing the current item. 
+The id (adInstanceID) should reflect the current ad playing when buffering occurs. If buffering or caching occurs for ads other than the current one, these events should not be triggered, as they can cause the SDK to trigger duplicate VAST events.
 
-`Finish` should be sent for each media item that was scheduled to play even if the coresponding media item failed during loading time. This event must be paired with StartPlaying
-if the corresponding media item has finished loading and started playing or Failed event if the corresponding mediat  item failed at loading time.
+- `Failed`
 
-`Pause` and `Resume`. This pair of events should be sent each time the player is paused and resumed. 
+`Failed` events should be sent any time the player raises an exception, regardless of where it occurs on the playback timeline. They can be triggered during loading or playback and should be sent for each ad that raises an exception.
 
-`SkipAd` should be sent if the media item is skipped during playing it
+- `StartPlaying`
 
+`StartPlaying` events should be sent every time the player begins playing the current ad.
 
-**** Note: All paired events: `Loading` and `LoadingFinished`, `Buffering` and `BufferingFinished`, `Pause` and `Resume` should be sent in pairs except when a `Failed` event or `Finish` event is triggered and closing events of the pair
-might be missing (LoadingFinished, BufferFinished, Resume)
+- `Finish`
 
+`Finish` should be sent for each ad that was scheduled to play, even if the corresponding creative item failed during loading. This event must be paired with a `StartPlaying` event if the creative item successfully loaded and started playing, or with a `Failed` event if the ad failed during loading.
 
-## Events diagram
-Here is a diagram showcasing order of events that should be triggered by MediaPlayerState implementation
+- `Pause` and `Resume`
+
+This pair of events should be sent each time the player is paused and resumed.
+
+- `SkipAd`
+
+`SkipAd` should be sent if the ad is skipped during playback.
+
+> **Note**  
+> 
+> All paired events - `Loading` & `LoadingFinished`, `Buffering` & `BufferingFinished`, `Pause` & `Resume` — should be sent in pairs. However, if a `Failed` or `Finish` event is triggered, the closing events of the pair (`LoadingFinished`, `BufferingFinished`, `Resume`) might be missing.
+
+## Events Diagram
+
+Here is a diagram showcasing the order of events that should be triggered by your `MediaPlayerState` implementation:
 
 <img src="../img/MediaPlayerState-events-order.png" width="1000" />
