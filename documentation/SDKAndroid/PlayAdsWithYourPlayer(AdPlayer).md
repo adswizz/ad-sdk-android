@@ -1,4 +1,4 @@
-# Playing ads using your player
+# Playing ads using your player using AdPlayer interface
 
 The AdswizzSDK enables you to choose whether to play the ad media with your player or let the SDK handle that for you.
 By default, the SDK will use its internal player to play the ad.<br/>

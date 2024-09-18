@@ -116,3 +116,21 @@ AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
 ```
 
 By default, it is set to `true`, allowing for toggling between two distinct approaches for loading content in companion banners. When set to `true`, the `AdCompanionView` object dynamically adds and removes `WebView` child views, which may lead to display problems in ReactNative. However, when set to `false`, the child views remain throughout the entire companion lifecycle, resolving the display issues in ReactNative but resulting in a slight increase in memory usage.
+
+## Companion best practices
+
+When you create an **_AdCompanionView_** instance, **_AdswizzSDK_** will start monitoring the companion view lifecycle and render the associated content during the ad playback. It begins to communicate to its listener via `AdCompanionView.Listener` interface. The communication focuses on updates for content loading / displaying by the **_AdCompanionView_** and your model should listen for any such incoming signals and act accordingly. i.e perform any further UI updates if needed, listen for errors to be able to display placeholders, etc.
+> **Note**
+> You can create and display multiple **_AdCompanionView_** instances in your application within different view hierarchies. **_AdswizzSDK_** will render the same ad related content for all companion banner instances while an AdManager starts playing the ads.
+> You should use the same **_AdCompanionView_** instance during an AdBreak, in order to avoid resource display delays. Therefore, you should not destroy/remove the current view for consecutive ads having "hasCompanion" flag defined **_AdData_** interface
+
+Note that it is your responsibility to keep a strong reference the **_AdCompanionView_** instances that you create in your application (although, this is typically achieved by default when you add the companion view(s) to your own view hierarchy in your app).
+
+Here are a few things to consider when working with the **_AdCompanionView_**:
+* content is loaded and rendered within an **_AdCompanionView_** only if the view is considered **visible** on screen. The visibility checks performed by the **_AdswizzSDK_** include but not limited to:
+  - Android `View` properties such as `alpha` and `visibility`
+  - non zero size for `width` and `height`
+  - on display (screen) visibility. The **_AdCompanionView_** should be displayed within screen bounds.
+* it is not mandatory to implement any of the callbacks for the **_AdCompanionView_** from the `AdCompanionView.Listener` interface. Setting a listener to your **_AdCompanionView_** instance is completely optional, however, keep in mind that this is your only communication channel with the **_AdCompanionView_** when it comes to content rendering.
+* in some cases, the **_AdCompanionView_** may inform your app that an error occurred via the `fun didFailToDisplayAd(adCompanionView: AdCompanionView, error: Error)` listener method. It is considered best practice to implement this method so that your application is well aware of any such error. When an error is received, you may want to show a placeholder instead of the empty companion view or remove it entirely from your views hierarchy.
+* if your app is using `jetpack compose`, we highly encourage you to take a look at the **_JetpackComposeSample_** to the [Sample Project section](Android/SDKAndroid/SampleProjects) showcasing the **_AdCompanionView_** and **_AdVideoView_** interoperability with `composable UI` components.

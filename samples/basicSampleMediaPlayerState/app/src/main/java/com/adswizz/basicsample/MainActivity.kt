@@ -265,7 +265,7 @@ class MainActivity : AppCompatActivity() {
             binding.appLogs.addEntry("Received ad manager")
             adManager.adManagerSettings = AdManagerSettings.Builder().timeoutIntervalForResource(2.5).build()
             adManager.setListener(listener)
-            adManager.adManagerSettings = AdManagerSettings.Builder().adMediaPlayerStatsInstance(externalMediaPlayerState).build()
+            adManager.adManagerSettings = AdManagerSettings.Builder().mediaPlayerStateInstance(externalMediaPlayerState).build()
             adManager.ads.forEachIndexed { idx, ad ->
 //                println("*** load media item: ${ad.instanceId}  ${ad.mediaUrlString} $idx")
                 externalMediaPlayerState.loadMediaItem(ad.instanceId, Uri.parse(ad.mediaUrlString), idx )

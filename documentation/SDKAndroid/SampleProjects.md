@@ -11,6 +11,11 @@ Password: your_access_token (provided by AdsWizz)
 
 This sample demonstrates a basic client-side insertion scenario by showing how to create and customize an _**AdswizzAdRequest**_. It shows how to use it to create an _**AdRequestConnection**_ and finally request ads. Next, it demonstrates basic usage of an instance of _**AdManager**_ once it has been obtained from the SDK.
 
+## Basic MediaPlayerState Sample
+
+This sample demonstrates a basic client-side insertion scenario using an instance of a  _**MediaPlayerState**_ interface.
+
+
 ## Streaming Sample
 
 This sample demonstrates a basic server-side insertion scenario by showing how to create and customize an _**AdswizzAdStreamManager**_.
@@ -47,3 +52,7 @@ This sample demonstrates how your app can integrate with the **_AdswizzSDK_** on
 ## Basic Sample using extension artefact
 
 This sample demonstrates a basic client-side, server-side and podcast insertion scenario using the **_com.adswizz.adswizz-sdk-extension_** artefact which simplifies creation and consumption of ads by the use of coroutines and sharedflows.
+
+## JetpackCompose Sample
+
+This sample demonstrates how to build your UI wrapper for **_AdCompanionView_** and **_AdVideoView_** using `AndroidView` component. In those composable functions are presented the steps required to properly use **_AdswizzSDK_** UI components in a compose screen or application and it showcases the main features/usa-cases such as : resizing, add/remove to view hierarchy, view listeners.
