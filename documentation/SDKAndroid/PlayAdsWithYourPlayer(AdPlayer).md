@@ -1,7 +1,7 @@
 # Playing ads using your player using AdPlayer interface
 
-The AdswizzSDK enables you to choose whether to play the ad media with your player or let the SDK handle that for you.
-By default, the SDK will use its internal player to play the ad.<br/>
+This integration method uses your own `AdPlayer` interface implementation and it can be used across all ad-insertion scenarios (Client Side, Server Side, Podcast).<br/>
+The `AdPlayer` interface is a bidirectional communication protocol between your player and **_AdswizzSDK_** managers, where you have to implement methods such as: `load`, `enqueue` called by the **_AdswizzSDK_** managers and forward your player events through `AdPlayer.Listener` methods.
 
 ## Client-side setup
 
