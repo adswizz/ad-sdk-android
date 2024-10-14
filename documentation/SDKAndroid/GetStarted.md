@@ -62,7 +62,6 @@ playServicesWearable = "com.google.android.gms:play-services-wearable:$playServi
 kotlinxCoroutines= "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion"
 kotlinxCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinxCoroutinesVersion"
 lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleRuntimeKtxVersion"
-commonsMath3 = "org.apache.commons:commons-math3:$commonsMath3Version"
 ```
 
 We have tested the above dependencies using the following version numbers:<br>
@@ -84,7 +83,6 @@ kotlinxCoroutinesVersion = '1.6.4'
 workManagerRuntimeVersion = '2.8.1'
 protobufJavaLiteVersion = '3.23.3'
 gmsPlayServicesLocationVersion = '21.0.1'
-commonsMath3Version = '3.6.1'
 roomVersion = '2.5.2'
 privacysandboxAdServicesVersion = '1.1.0-beta03'
 kotlinCoroutinesPlayServicesVersion = '1.6.4'

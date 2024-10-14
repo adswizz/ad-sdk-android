@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.9.4] - 2024-10-Undefined
+### Changed
+- Updated Android targetSdkVersion to API version 35 (Android 15).
+- Updated Kotlin version to 1.8.22
+- Updated SDK libraries to match the kotlin version. For additional information, refer to [Dependencies section](Android/SDKAndroid/GetStarted#dependencies)`
+- OMSDK library updates. Now, **_AdswizzSDK_** will use 1.5+ version. See what's new in Open Measurement SDK [here](https://iabtechlab.com/wp-content/uploads/2024/08/OMSDK_What-is-new-in-1.5_master.docx.pdf).
+
+### Fixed
+- Fixed an `NullPointerException` occurred when a Podcast download task is immediately canceled.
+
 ## [7.9.3] - 2024-09-17
 ### Added
 - Added a new event-driven integration method for Client Side Insertion. You can now pass your `MediaPlayerState` implementation to the `AdManagerSettings.Builder` object by calling the `mediaPlayerStateInstance` method. For more details, please visit the [Playing Ads With Your Player using MediaPlayerState](Android/SDKAndroid/PlayAdsWithYourPlayer(MediaPlayerState).md) page.
