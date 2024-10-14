@@ -22,7 +22,6 @@ Please check [here](Android/CHANGELOG.md) the latest AdswizzSDK version and all 
 
 ```groovy
 kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"
-appcompat = "androidx.appcompat:appcompat:${appcompatVersion}"
 coreKtx = "androidx.core:core-ktx:${coreKtxVersion}"
 exoPlayer = "com.google.android.exoplayer:exoplayer:$exoPlayerVerison"
 gmsPlayServicesAdsIdentifier = "com.google.android.gms:play-services-ads-identifier:$gmsPlayServicesAdsIdentifierVersion"
@@ -69,24 +68,23 @@ We have tested the above dependencies using the following version numbers:<br>
 ```groovy
 //Library
 androidMinSdkVersion = 23
-androidTargetSdkVersion = 34
-androidCompileSdkVersion = 34
+androidTargetSdkVersion = 35
+androidCompileSdkVersion = 35
 
-kotlin_version = '1.7.21'
-appcompatVersion = '1.6.1'
-coreKtxVersion = '1.9.0'
-exoPlayerVerison = '2.10.0' // and '2.11.3' too
+kotlin_version = '1.8.22'
+coreKtxVersion = '1.12.0'
+exoPlayerVerison = '2.14.2' // and others up to 2.19.1
+media3Version = '1.2.0'
 gmsPlayServicesAdsIdentifierVersion = '18.0.1'
 moshiVersion = '1.14.0'
 lifecycleRuntimeKtxVersion = '2.5.1'
-kotlinxCoroutinesVersion = '1.6.4'
+kotlinxCoroutinesVersion = '1.7.3'
 workManagerRuntimeVersion = '2.8.1'
 protobufJavaLiteVersion = '3.23.3'
 gmsPlayServicesLocationVersion = '21.0.1'
-roomVersion = '2.5.2'
+roomVersion = '2.6.1'
 privacysandboxAdServicesVersion = '1.1.0-beta03'
-kotlinCoroutinesPlayServicesVersion = '1.6.4'
-media3Version = '1.2.0'
+kotlinCoroutinesPlayServicesVersion = '1.7.3'
 
 //WearOS
 wearableSupportVersion = '2.9.0'

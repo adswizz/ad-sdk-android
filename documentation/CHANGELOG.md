@@ -9,9 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Updated Android targetSdkVersion to API version 35 (Android 15).
 - Updated Kotlin version to 1.8.22
-- Updated SDK libraries to match the kotlin version. For additional information, refer to [Dependencies section](Android/SDKAndroid/GetStarted#dependencies)`
+- Updated SDK libraries to match the kotlin version. For additional information, refer to [Dependencies section](Android/SDKAndroid/GetStarted#dependencies)
 - OMSDK library updates. Now, **_AdswizzSDK_** will use 1.5+ version. See what's new in Open Measurement SDK [here](https://iabtechlab.com/wp-content/uploads/2024/08/OMSDK_What-is-new-in-1.5_master.docx.pdf).
-
+- Removed `androidx.appcompat:appcompat` library from the **_AdswizzSDK_** dependency tree.
 ### Fixed
 - Fixed an `NullPointerException` occurred when a Podcast download task is immediately canceled.
 
