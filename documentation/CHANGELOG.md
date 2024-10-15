@@ -5,12 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.9.4] - 2024-10-Undefined
+## [7.10.0] - 2024-10-Undefined
 ### Changed
+- Changed the **_Adswizz_** player dependency (`com.adswizz:exoplayer2-*` and `com.adswizz:exoplayer-media3`) to be optional for integrations that don't use **_AdswizzSDK_** internal player. Starting from 7.10.0, you can include `com.adswizz:sdk` artefact only if your are using your player to play the ad media. For more details, please visit [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md) section.
 - Updated Android targetSdkVersion to API version 35 (Android 15).
 - Updated Kotlin version to 1.8.22
 - Updated SDK libraries to match the kotlin version. For additional information, refer to [Dependencies section](Android/SDKAndroid/GetStarted#dependencies)
-- OMSDK library updates. Now, **_AdswizzSDK_** will use 1.5+ version. See what's new in Open Measurement SDK [here](https://iabtechlab.com/wp-content/uploads/2024/08/OMSDK_What-is-new-in-1.5_master.docx.pdf).
 - Removed `androidx.appcompat:appcompat` library from the **_AdswizzSDK_** dependency tree.
 ### Fixed
 - Fixed an `NullPointerException` occurred when a Podcast download task is immediately canceled.
