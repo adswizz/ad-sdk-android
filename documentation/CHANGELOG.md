@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.10.0] - 2024-10-Undefined
 ### Changed
-- Changed the **_Adswizz_** player dependency (`com.adswizz:exoplayer2-*` and `com.adswizz:exoplayer-media3`) to be optional for integrations that don't use **_AdswizzSDK_** internal player. Starting from 7.10.0, you can include `com.adswizz:sdk` artefact only if your are using your player to play the ad media. For more details, please visit [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md) section.
+- Changed the **_Adswizz_** player dependency (`com.adswizz:exoplayer2-*` and `com.adswizz:exoplayer-media3`) to be optional for integrations that don't use **_AdswizzSDK_** internal player. Starting from 7.10.0, you can include only the `com.adswizz:sdk` artefact if your are using your player to play the ad media. For more details, please visit [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md) section.
 - Updated Android targetSdkVersion to API version 35 (Android 15).
 - Updated Kotlin version to 1.8.22
 - Updated SDK libraries to match the kotlin version. For additional information, refer to [Dependencies section](Android/SDKAndroid/GetStarted#dependencies)
