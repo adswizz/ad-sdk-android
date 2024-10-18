@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val SERVER_URL = "demo.deliveryengine.adswizz.com"
-        const val ZONE_ID = "13381"
+        const val ZONE_ID = "17862"
     }
 
     private enum class AdManagerState {
@@ -168,23 +168,26 @@ class MainActivity : AppCompatActivity() {
 
         val scroll = ScrollingMovementMethod()
         binding.appLogs.movementMethod = scroll
+        if(savedInstanceState == null) {
+            AdswizzSDK.initialize(this) {
 
-        AdswizzSDK.initialize(this){
-
-            //Build the Ad Request with the needed parameters
-            AdswizzAdRequest.Builder()
-                .withServer(SERVER_URL)
-                .withZones(setOf(AdswizzAdZone(ZONE_ID)))
-                .build { adRequest ->
-                    // Create the AdRequestConnection using the above adRequest
-                    adRequestConnection = AdRequestConnection(adRequest)
-                    adRequestConnection?.requestAds { adManager, error ->
-                        handleResponse(error, adManager)
+                //Build the Ad Request with the needed parameters
+                AdswizzAdRequest.Builder()
+                    .withServer(SERVER_URL)
+                    .withHttpProtocol(AdswizzAdRequest.HttpProtocol.HTTP)
+                    .withZones(setOf(AdswizzAdZone(ZONE_ID)))
+                    .build { adRequest ->
+                        // Create the AdRequestConnection using the above adRequest
+                        adRequestConnection = AdRequestConnection(adRequest)
+                        adRequestConnection?.requestAds { adManager, error ->
+                            handleResponse(error, adManager)
+                        }
                     }
-                }
-        }
+            }
 
-        binding.sdkVersion.text = "${getString(R.string.adswizz_version_prefix)}${com.adswizz.sdk.BuildConfig.VERSION_NAME}"
+
+            binding.sdkVersion.text = "${getString(R.string.adswizz_version_prefix)}${com.adswizz.sdk.BuildConfig.VERSION_NAME}"
+        }
 
     }
 

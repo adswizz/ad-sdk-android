@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     companion object {
-        const val SERVER_URL = "http://sdk.mobile.streaming.adswizz.com:8500/shakeDemo"
+        const val SERVER_URL = "https://streaming.sdk.eks.devel.adswizz.com/shakeDemo"
     }
 
     private var streamManager: AdswizzAdStreamManager? = null
@@ -129,7 +129,6 @@ class MainActivity : AppCompatActivity() {
         streamManager = AdswizzAdStreamManager(adManagerStreamingSettingsBuilder.build())
         streamManager?.addListener(listener)
         streamManager?.play(SERVER_URL)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -143,8 +142,11 @@ class MainActivity : AppCompatActivity() {
                 streamManager?.stop()
                 streamManager?.removeListener(listener)
                 binding.appLogs.text = ""
-
-                streamManager = AdswizzAdStreamManager(null)
+                val adManagerStreamingSettingsBuilder = AdManagerStreamingSettings.Builder()
+                externalAdPlayer?.let {
+                    adManagerStreamingSettingsBuilder.adPlayerInstance(it)
+                }
+                streamManager = AdswizzAdStreamManager(adManagerStreamingSettingsBuilder.build())
                 streamManager?.play(SERVER_URL)
                 streamManager?.addListener(listener)
             }

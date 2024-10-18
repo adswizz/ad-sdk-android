@@ -9,7 +9,7 @@ import com.adswizz.common.Utils
 import com.adswizz.common.macro.PlayerCapabilities
 import com.adswizz.common.macro.PlayerState
 import com.adswizz.common.video.AdVideoState
-import com.adswizz.player.CacheManager
+//import com.adswizz.player.CacheManager
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
@@ -36,7 +36,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 /**
  * Based on exoplayer
  */
-class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsListener, CacheManager.Listener, MetadataOutput {
+class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsListener, MetadataOutput {
 
     private enum class AssetState {
         INITIALIZED,
@@ -176,17 +176,8 @@ class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsL
                     else -> {
                         val extractorsFactory: DefaultExtractorsFactory =
                             DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
-                        return if (cacheAssetsHint) {
-                            ProgressiveMediaSource.Factory(
-                                CacheManager.getCacheDataSourceFactory(
-                                    dataSourceFactory
-                                ), extractorsFactory
-                            )
+                        return ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory)
                                 .createMediaSource(mediaItem)
-                        } else {
-                            ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory)
-                                .createMediaSource(mediaItem)
-                        }
                     }
                 }
             }
@@ -194,9 +185,6 @@ class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsL
     }
 
     override fun play() {
-        if (cacheAssetsHint) {
-            CacheManager.cancelAllDownloads()
-        }
         player.playWhenReady = true
     }
 
@@ -205,7 +193,7 @@ class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsL
     }
 
     override fun reset() {
-        player.stop(true)
+        player.stop()
         player.playWhenReady = false
         status = AdPlayer.Status.INITIALIZED
         duration = null
@@ -244,9 +232,6 @@ class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsL
     // region Enqueue Related
 
     override fun enqueue(creativeUrlString: String, index: Int) {
-        if (cacheAssetsHint && !creativeUrlString.startsWith("rawresource://", true))
-            CacheManager.addAssetToCache(creativeUrlString, this)
-
         if (enqueueEnabledHint) {
             if ((index >= 0) && (index <= playlist.size)) {
                 playlist.add(index, Asset(creativeUrlString, AssetState.INITIALIZED))
@@ -268,12 +253,6 @@ class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsL
 
     override fun dequeue(index: Int) {
         if ((index >= 0) && (index < playlist.size)) {
-            if (cacheAssetsHint) {
-                val tag = mediaSources.getMediaSource(index).mediaItem.mediaId
-                if (!tag.startsWith("rawresource://", true))
-                    CacheManager.removeAssetFromCache(tag)
-            }
-
             playlist.removeAt(index)
             mediaSources.removeMediaSource(index)
             if (playingIndex >= index)
@@ -447,13 +426,6 @@ class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsL
             duration = player.duration.toDouble() / 1000
             posChanged = true
         }
-
-        if (cacheAssetsHint && posChanged) {
-            val cancelIndex = playingIndex - 1
-            if (cancelIndex >= 0 && cancelIndex < mediaSources.size) {
-                CacheManager.cancelDownload(mediaSources.getMediaSource(playingIndex - 1).mediaItem.mediaId)
-            }
-        }
     }
 
     // endregion
@@ -595,22 +567,6 @@ class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsL
 
 
     //region CacheManager Listener
-
-    override fun onDownloadStarted(assetUri: String) {
-        //println("ExternalExoPlayer: Download Started for: $assetUri")
-    }
-
-    override fun onDownloadCompleted(assetUri: String) {
-        //println("ExternalExoPlayer: Download Completed for: $assetUri")
-    }
-
-    override fun onDownloadFailed(assetUri: String, error: Error) {
-        //println("ExternalExoPlayer: Download Failed for: $assetUri with error: $error")
-        status = AdPlayer.Status.FAILED
-        listenerList.forEach {
-            it.get()?.onError(error.localizedMessage ?: "Download Failed for $assetUri")
-        }
-    }
 
     //endregion
 
