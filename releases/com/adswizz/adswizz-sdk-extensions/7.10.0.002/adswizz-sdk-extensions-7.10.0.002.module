@@ -1,0 +1,130 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "adswizz-sdk-extensions",
+    "version": "7.10.0.002",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.7"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.8.22"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-sdk-extensions-7.10.0.002.aar",
+          "url": "adswizz-sdk-extensions-7.10.0.002.aar",
+          "size": 139904,
+          "sha512": "0d7f9164a88152ad44e513c299155727b014a985501b48f35abe2a561b5e91f9a999a05bcca2c16729e637a15a75e19b642d334356234172449021ce37acea6d",
+          "sha256": "c67f17b1fab5d7f4d1db9fbf770e480cad43ceb677328f654cc0e8084ac18461",
+          "sha1": "4dfe702ce13e8964dde91b56a00c10d7ce68bd00",
+          "md5": "90ba8fa153b64eb33a76c101d0013412"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.12.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.7.3"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.8.22"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-sdk-extensions-7.10.0.002.aar",
+          "url": "adswizz-sdk-extensions-7.10.0.002.aar",
+          "size": 139904,
+          "sha512": "0d7f9164a88152ad44e513c299155727b014a985501b48f35abe2a561b5e91f9a999a05bcca2c16729e637a15a75e19b642d334356234172449021ce37acea6d",
+          "sha256": "c67f17b1fab5d7f4d1db9fbf770e480cad43ceb677328f654cc0e8084ac18461",
+          "sha1": "4dfe702ce13e8964dde91b56a00c10d7ce68bd00",
+          "md5": "90ba8fa153b64eb33a76c101d0013412"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseSourcePublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "adswizz-sdk-extensions-7.10.0.002-sources.jar",
+          "url": "adswizz-sdk-extensions-7.10.0.002-sources.jar",
+          "size": 12977,
+          "sha512": "91b7cc0d37a81587b2a9041e10b6bb69430debb3c3ea84736c9b5d3642c316e8f6a7532c49a865aa8bd33de81439b392f6aebf90863a3a23c32acd25662a09b0",
+          "sha256": "2ff4d3a05685516a1395102cddae0845c8fe3eeaf7a82bb799e79b1d075c813f",
+          "sha1": "b47c1462c5db17a3cd5a76ba58f6614b01271e63",
+          "md5": "279de5ebe3dc688321548f4a3dc77016"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseJavaDocPublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "javadoc",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "adswizz-sdk-extensions-7.10.0.002-javadoc.jar",
+          "url": "adswizz-sdk-extensions-7.10.0.002-javadoc.jar",
+          "size": 445903,
+          "sha512": "bbbe00af099a4c7b1d49a9923373297367402b2715242db7426a6326f23bf13b8760911def311e790cf0ab953150520bd31222c9461e330ee54e21ed2c0ff747",
+          "sha256": "e31c061cc68e32a57176dd72953fdf3011b1f0b57686ecef35d881c3d6ab0dd3",
+          "sha1": "927496d45e2d6f9009a7eef8e502ef73dfcd145b",
+          "md5": "d5c51438894f943bca2a7c58490a6444"
+        }
+      ]
+    }
+  ]
+}
