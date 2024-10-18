@@ -1,0 +1,167 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "adswizz-sdk",
+    "version": "7.10.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.7"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-core",
+          "version": {
+            "requires": "7.10.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-common",
+          "version": {
+            "requires": "7.10.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-data-collector",
+          "version": {
+            "requires": "7.10.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-interactive-ad",
+          "version": {
+            "requires": "7.10.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-mercury",
+          "version": {
+            "requires": "7.10.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-omsdk",
+          "version": {
+            "requires": "7.10.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-sdk-7.10.0.aar",
+          "url": "adswizz-sdk-7.10.0.aar",
+          "size": 21834,
+          "sha512": "3936c58ccc34543e220bc19c07a512dc31b39cfd4192edd97037bbdc309185209eda583facc1de9af578f73eae047ae6560ae7cc54636eb70083757a17e7296f",
+          "sha256": "924dd14b23d84be6197a9031bca9be95a2eb68ab88e76a2dd36e7f9419f1238c",
+          "sha1": "92c1db2b646aa92e351da928322a32f8fe07015f",
+          "md5": "a1b631f73b8bc2077974cdc78c31cf4d"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk7",
+          "version": {
+            "requires": "1.8.22"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.7.3"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-android",
+          "version": {
+            "requires": "1.7.3"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-core",
+          "version": {
+            "requires": "7.10.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-common",
+          "version": {
+            "requires": "7.10.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-data-collector",
+          "version": {
+            "requires": "7.10.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-interactive-ad",
+          "version": {
+            "requires": "7.10.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-mercury",
+          "version": {
+            "requires": "7.10.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-omsdk",
+          "version": {
+            "requires": "7.10.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-sdk-7.10.0.aar",
+          "url": "adswizz-sdk-7.10.0.aar",
+          "size": 21834,
+          "sha512": "3936c58ccc34543e220bc19c07a512dc31b39cfd4192edd97037bbdc309185209eda583facc1de9af578f73eae047ae6560ae7cc54636eb70083757a17e7296f",
+          "sha256": "924dd14b23d84be6197a9031bca9be95a2eb68ab88e76a2dd36e7f9419f1238c",
+          "sha1": "92c1db2b646aa92e351da928322a32f8fe07015f",
+          "md5": "a1b631f73b8bc2077974cdc78c31cf4d"
+        }
+      ]
+    }
+  ]
+}
