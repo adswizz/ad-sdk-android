@@ -10,7 +10,7 @@
     - [Companion Banner](Android/SDKAndroid/CompanionBanner.md)
     - [Interactive Ads](Android/SDKAndroid/InteractiveAds.md)
     - [Video ads](Android/SDKAndroid/VideoAds.md)
-    - Play ads with your player
+    - [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md)
       - [AdPlayer Interface](Android/SDKAndroid/PlayAdsWithYourPlayer(AdPlayer).md)
       - [MediaPlayerState Interface](Android/SDKAndroid/PlayAdsWithYourPlayer(MediaPlayerState).md)
     - [AdswizzSDK general settings](Android/SDKAndroid/AdswizzGeneralSettings.md)
