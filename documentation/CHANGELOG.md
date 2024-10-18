@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.10.0] - 2024-10-18
+### Changed
+- The **_AdswizzSDK_** player dependency (`com.adswizz:exoplayer2-*` and `com.adswizz:exoplayer-media3`) is now optional for integrations that don't use **_AdswizzSDK_** internal player. Starting with version 7.10.0, if you’re using your own player to handle ad media, you only need to include the `com.adswizz:sdk` artifact. For more details, please visit [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md) section.
+- Updated Android targetSdkVersion to API version 35 (Android 15).
+- Updated Kotlin version to 1.8.22
+- Updated SDK libraries to match the Kotlin version. For additional information, refer to [Dependencies section](Android/SDKAndroid/GetStarted#dependencies)
+- Removed `androidx.appcompat:appcompat` library from the **_AdswizzSDK_** dependency tree.
+
+### Fixed
+- Fixed an `NullPointerException` occurred when a Podcast download task is immediately canceled.
+
 ## [7.9.3] - 2024-09-17
 ### Added
 - Added a new event-driven integration method for Client Side Insertion. You can now pass your `MediaPlayerState` implementation to the `AdManagerSettings.Builder` object by calling the `mediaPlayerStateInstance` method. For more details, please visit the [Playing Ads With Your Player using MediaPlayerState](Android/SDKAndroid/PlayAdsWithYourPlayer(MediaPlayerState).md) page.

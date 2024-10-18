@@ -22,7 +22,6 @@ Please check [here](Android/CHANGELOG.md) the latest AdswizzSDK version and all 
 
 ```groovy
 kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"
-appcompat = "androidx.appcompat:appcompat:${appcompatVersion}"
 coreKtx = "androidx.core:core-ktx:${coreKtxVersion}"
 exoPlayer = "com.google.android.exoplayer:exoplayer:$exoPlayerVerison"
 gmsPlayServicesAdsIdentifier = "com.google.android.gms:play-services-ads-identifier:$gmsPlayServicesAdsIdentifierVersion"
@@ -62,7 +61,6 @@ playServicesWearable = "com.google.android.gms:play-services-wearable:$playServi
 kotlinxCoroutines= "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion"
 kotlinxCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinxCoroutinesVersion"
 lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleRuntimeKtxVersion"
-commonsMath3 = "org.apache.commons:commons-math3:$commonsMath3Version"
 ```
 
 We have tested the above dependencies using the following version numbers:<br>
@@ -70,25 +68,23 @@ We have tested the above dependencies using the following version numbers:<br>
 ```groovy
 //Library
 androidMinSdkVersion = 23
-androidTargetSdkVersion = 34
-androidCompileSdkVersion = 34
+androidTargetSdkVersion = 35
+androidCompileSdkVersion = 35
 
-kotlin_version = '1.7.21'
-appcompatVersion = '1.6.1'
-coreKtxVersion = '1.9.0'
-exoPlayerVerison = '2.10.0' // and '2.11.3' too
+kotlin_version = '1.8.22'
+coreKtxVersion = '1.12.0'
+exoPlayerVerison = '2.14.2' // and others up to 2.19.1
+media3Version = '1.2.0'
 gmsPlayServicesAdsIdentifierVersion = '18.0.1'
 moshiVersion = '1.14.0'
 lifecycleRuntimeKtxVersion = '2.5.1'
-kotlinxCoroutinesVersion = '1.6.4'
+kotlinxCoroutinesVersion = '1.7.3'
 workManagerRuntimeVersion = '2.8.1'
 protobufJavaLiteVersion = '3.23.3'
 gmsPlayServicesLocationVersion = '21.0.1'
-commonsMath3Version = '3.6.1'
-roomVersion = '2.5.2'
+roomVersion = '2.6.1'
 privacysandboxAdServicesVersion = '1.1.0-beta03'
-kotlinCoroutinesPlayServicesVersion = '1.6.4'
-media3Version = '1.2.0'
+kotlinCoroutinesPlayServicesVersion = '1.7.3'
 
 //WearOS
 wearableSupportVersion = '2.9.0'
@@ -352,13 +348,17 @@ dependencyResolutionManagement {
 
 ```groovy
 implementation 'com.adswizz:adswizz-sdk:version'
-implementation 'com.adswizz:exoplayer2-10:version'
+
+implementation 'com.adswizz:exoplayer-media3:version' (optional dependency starting with **_AdswizzSDK_** 7.10.0)
 ```
 
-_NOTE_: SDK version prior to before 7.6.1 included the exoplayer dependency. Now this dependency is separate and you must include it for the SDK to function correctly. At this time (SDK 7.7.21), there are 7 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14, 2.15, 2.16, 2.17 and 2.18).
+> **Note**
+> SDK version prior to 7.6.1 included the exoplayer dependency. 
+> SDK version between [7.6.1; 7.9.3] the `com.adswizz:exoplayer` dependency is separate and you must include it for the SDK to function correctly. There are 9 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14, 2.15, 2.16, 2.17 and 2.18, 2.19 and media3).
 Using different artifact version from exoplayer used in the app may result in crashing the app, thus the app need to include corresponding versions for sdk artifact and exoplayer library (i.e. add com.adswizz:exoplayer2-18:7.7.21 dependecy when using com.google.android.exoplayer:exoplayer:2.18.6 dependency)
+> SDK versions after 7.10.0 (included) will have the `com.adswizz:exoplayer` as optional dependency for integrations that don't use **_AdswizzSDK_** internal player. you can include only the `com.adswizz:sdk` artefact if your are using your player to play the ad media. For more details, please visit [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md) section.
 
-In the code snippet above, replace <strong>version</strong> with the version of the phone and tablet SDK provided by AdsWizz (i.e. 7.8.0 - the latest version). Example:
+In the code snippet above, replace <strong>version</strong> with the version of the phone and tablet SDK provided by Adswizz (i.e. 7.8.0 - the latest version). Example:
 
 ```groovy
 
@@ -371,11 +371,13 @@ implementation 'com.adswizz:exoplayer2-10:7.8.0' // until 7.8.6
 //implementation 'com.adswizz:exoplayer2-16:7.8.0'
 //implementation 'com.adswizz:exoplayer2-17:7.8.0'
 //implementation 'com.adswizz:exoplayer2-18:7.8.0'
+//implementation 'com.adswizz:exoplayer2-19:7.8.0'
 //implementation 'com.adswizz:exoplayer-media3:7.8.7'
 
 ```
 
-_NOTE_: if you are compiling with an API > 30 (*Android 11*), you must also include a newer version of the Androidx WorkManager runtime, as follows:
+> **Note**
+> if you are compiling with an API > 30 (*Android 11*), you must also include a newer version of the Androidx WorkManager runtime, as follows:
 
 ```groovy
 implementation 'androidx.work:work-runtime-ktx:2.7.1'
@@ -383,7 +385,8 @@ implementation 'androidx.work:work-multiprocess:2.7.1'
 ```
 This is necessary since the because WorkManager version included in the SDK doesn't implement the PendingIntent _*FLAG_IMMUTABLE*_ requirements introduced in Android 12.
 
-_NOTE_: If you are using com.adswizz:exoplayer2-16 and com.adswizz:exoplayer2-17 artifact you need to target SDK to minimum API version 31  (*Android 11*). In case com.adswizz:exoplayer2-17 a minimum version of API 33 version should be target.
+> **Note**
+> If you are using com.adswizz:exoplayer2-16 and com.adswizz:exoplayer2-17 artifact you need to target SDK to minimum API version 31  (*Android 11*). In case com.adswizz:exoplayer2-17 a minimum version of API 33 version should be target.
 For com.adswizz:exoplayer2-17 and com.adswizz:exoplayer2-18 the minSdkVersion must be 24 or higher.
 
     
