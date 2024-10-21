@@ -9,6 +9,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.media3.common.util.UnstableApi
 import com.ad.core.adBaseManager.AdData
 import com.ad.core.adBaseManager.AdEvent
 import com.ad.core.adFetcher.AdRequestConnection
@@ -22,6 +23,7 @@ import com.adswizz.player.CacheManager
 import com.adswizz.precachesample.databinding.ActivityMainBinding
 import com.adswizz.sdk.AdswizzSDK
 
+@UnstableApi
 class MainActivity : AppCompatActivity(), CacheManager.Listener {
     companion object {
         const val SERVER_URL = "demo.deliveryengine.adswizz.com"
