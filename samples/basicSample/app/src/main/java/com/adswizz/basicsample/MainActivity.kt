@@ -36,7 +36,10 @@ class MainActivity : AppCompatActivity() {
         const val SERVER_URL = "demo.deliveryengine.adswizz.com"
         const val ZONE_ID = "17862"
         const val COMPANION_ZONE_ID = "17863"
+
     }
+
+    private val protocol = AdswizzAdRequest.HttpProtocol.HTTP
 
     private enum class AdManagerState {
         Unknown, ReadyForPlay, Playing, Paused, AllAdsCompleted
@@ -70,6 +73,7 @@ class MainActivity : AppCompatActivity() {
 
                 AdEvent.Type.State.ReadyForPlay -> {
                     adManagerState = AdManagerState.ReadyForPlay
+                    updatePlayButtonWithState(adManagerState)
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - ready for play")
                 }
 
@@ -83,16 +87,19 @@ class MainActivity : AppCompatActivity() {
 
                 AdEvent.Type.State.DidStartPlaying -> {
                     adManagerState = AdManagerState.Playing
+                    updatePlayButtonWithState(adManagerState)
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - did start playing")
                 }
 
                 AdEvent.Type.State.DidResumePlaying -> {
                     adManagerState = AdManagerState.Playing
+                    updatePlayButtonWithState(adManagerState)
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - did resume playing")
                 }
 
                 AdEvent.Type.State.DidPausePlaying -> {
                     adManagerState = AdManagerState.Paused
+                    updatePlayButtonWithState(adManagerState)
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - did pause playing")
                 }
 
@@ -106,6 +113,7 @@ class MainActivity : AppCompatActivity() {
 
                 AdEvent.Type.State.AllAdsCompleted -> {
                     adManagerState = AdManagerState.AllAdsCompleted
+                    updatePlayButtonWithState(adManagerState)
                     //playButton.setBackgroundResource(R.drawable.ic_play_arrow_black_24dp)
                     binding.appLogs.addEntry("Ad - all ads completed")
                 }
@@ -152,6 +160,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -173,9 +183,13 @@ class MainActivity : AppCompatActivity() {
             AdswizzSDK.initialize(this) {
 
                 //Build the Ad Request with the needed parameters
+                val zones = setOf(AdswizzAdZone(ZONE_ID))
+                binding.appLogs.addEntry("Request: zones: $zones, companionL $COMPANION_ZONE_ID, server: $SERVER_URL, protocol: $protocol")
+
+
                 AdswizzAdRequest.Builder()
                     .withServer(SERVER_URL)
-                    .withHttpProtocol(AdswizzAdRequest.HttpProtocol.HTTP)
+                    .withHttpProtocol(protocol)
                     .withZones(setOf(AdswizzAdZone(ZONE_ID)))
                     .withCompanionZones(COMPANION_ZONE_ID)
                     .build { adRequest ->
@@ -191,6 +205,16 @@ class MainActivity : AppCompatActivity() {
             binding.sdkVersion.text = "${getString(R.string.adswizz_version_prefix)}${com.adswizz.sdk.BuildConfig.VERSION_NAME}"
         }
 
+    }
+
+    private fun updatePlayButtonWithState(state: AdManagerState){
+        if (!::binding.isInitialized) return
+        if (state == AdManagerState.Playing) {
+            binding.toolbar.menu.findItem(R.id.menuPlay).setIcon(R.drawable.ic_pause_arrow_white_24dp)
+        }
+        else {
+            binding.toolbar.menu.findItem(R.id.menuPlay).setIcon(R.drawable.ic_play_arrow_white_24dp)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -217,7 +241,9 @@ class MainActivity : AppCompatActivity() {
                         adManager?.prepare()
                         adManager?.play()
                     }
-                    else -> Unit
+                    AdManagerState.Playing ->{
+                        adManager?.pause()
+                    }
                 }
             }
             R.id.menuReplay -> {
@@ -236,9 +262,9 @@ class MainActivity : AppCompatActivity() {
             R.id.menuSkip ->{
                 adManager?.skipAd()
             }
-            R.id.menuPause -> {
-                adManager?.pause()
-            }
+//            R.id.menuPause -> {
+//                adManager?.pause()
+//            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -252,7 +278,7 @@ class MainActivity : AppCompatActivity() {
         }
         if (adManager != null) {
             this.adManager = adManager
-            binding.appLogs.addEntry("Received ad manager")
+            binding.appLogs.addEntry("Received ad manager, ads count: ${adManager.ads.size}")
             adManager.adManagerSettings = AdManagerSettings.Builder().timeoutIntervalForResource(2.5).build()
             adManager.setListener(listener)
             adManager.prepare()

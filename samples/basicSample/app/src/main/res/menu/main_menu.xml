@@ -5,15 +5,15 @@
     <item
         android:id="@+id/menuPlay"
         android:icon="@drawable/ic_play_arrow_white_24dp"
-        android:title="Play o resume"
+        android:title="Play / resume"
         app:showAsAction="always" />
-
+<!--
     <item
         android:id="@+id/menuPause"
         android:icon="@drawable/ic_pause_arrow_white_24dp"
         android:title="Pause"
         app:showAsAction="always" />
-
+-->
     <item
         android:id="@+id/menuSkip"
         android:icon="@drawable/ic_menu_skip_24dp"
