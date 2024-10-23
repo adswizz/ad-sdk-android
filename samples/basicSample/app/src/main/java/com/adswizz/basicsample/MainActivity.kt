@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val SERVER_URL = "demo.deliveryengine.adswizz.com"
         const val ZONE_ID = "17862"
+        const val COMPANION_ZONE_ID = "17863"
     }
 
     private enum class AdManagerState {
@@ -176,6 +177,7 @@ class MainActivity : AppCompatActivity() {
                     .withServer(SERVER_URL)
                     .withHttpProtocol(AdswizzAdRequest.HttpProtocol.HTTP)
                     .withZones(setOf(AdswizzAdZone(ZONE_ID)))
+                    .withCompanionZones(COMPANION_ZONE_ID)
                     .build { adRequest ->
                         // Create the AdRequestConnection using the above adRequest
                         adRequestConnection = AdRequestConnection(adRequest)
@@ -230,6 +232,9 @@ class MainActivity : AppCompatActivity() {
                 adRequestConnection?.requestAds { adManager, error ->
                     handleResponse(error, adManager)
                 }
+            }
+            R.id.menuSkip ->{
+                adManager?.skipAd()
             }
             R.id.menuPause -> {
                 adManager?.pause()
