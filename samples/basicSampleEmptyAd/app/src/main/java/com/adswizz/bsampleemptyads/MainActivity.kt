@@ -69,6 +69,7 @@ class MainActivity : AppCompatActivity() {
 
                 AdEvent.Type.State.ReadyForPlay -> {
                     adManagerState = AdManagerState.ReadyForPlay
+                    updatePlayButtonWithState(adManagerState)
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - ready for play")
                 }
 
@@ -82,16 +83,19 @@ class MainActivity : AppCompatActivity() {
 
                 AdEvent.Type.State.DidStartPlaying -> {
                     adManagerState = AdManagerState.Playing
+                    updatePlayButtonWithState(adManagerState)
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - did start playing")
                 }
 
                 AdEvent.Type.State.DidResumePlaying -> {
                     adManagerState = AdManagerState.Playing
+                    updatePlayButtonWithState(adManagerState)
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - did resume playing")
                 }
 
                 AdEvent.Type.State.DidPausePlaying -> {
                     adManagerState = AdManagerState.Paused
+                    updatePlayButtonWithState(adManagerState)
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - did pause playing")
                 }
 
@@ -105,7 +109,7 @@ class MainActivity : AppCompatActivity() {
 
                 AdEvent.Type.State.AllAdsCompleted -> {
                     adManagerState = AdManagerState.AllAdsCompleted
-                    //playButton.setBackgroundResource(R.drawable.ic_play_arrow_black_24dp)
+                    updatePlayButtonWithState(adManagerState)
                     binding.appLogs.addEntry("Ad - all ads completed")
                 }
 
@@ -193,6 +197,16 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun updatePlayButtonWithState(state: AdManagerState){
+        if (!::binding.isInitialized) return
+        if (state == AdManagerState.Playing) {
+            binding.toolbar.menu.findItem(R.id.menuPlay).setIcon(R.drawable.ic_pause_arrow_white_24dp)
+        }
+        else {
+            binding.toolbar.menu.findItem(R.id.menuPlay).setIcon(R.drawable.ic_play_arrow_white_24dp)
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
 
@@ -217,7 +231,9 @@ class MainActivity : AppCompatActivity() {
                         adManager?.prepare()
                         adManager?.play()
                     }
-                    else -> Unit
+                    AdManagerState.Playing ->{
+                        adManager?.pause()
+                    }
                 }
             }
             R.id.menuReplay -> {
@@ -233,8 +249,8 @@ class MainActivity : AppCompatActivity() {
                     handleResponse(error, adManager)
                 }
             }
-            R.id.menuPause -> {
-                adManager?.pause()
+            R.id.menuSkip -> {
+                binding.appLogs.addEntry("Skip ad not implemented in external AdPlayer")
             }
         }
         return super.onOptionsItemSelected(item)

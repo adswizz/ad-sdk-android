@@ -35,7 +35,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val SERVER_URL = "demo.deliveryengine.adswizz.com"
-        const val ZONE_ID = "13381"
+        const val ZONE_ID = "17862"
+        const val COMPANION_ID="17863"
     }
 
     private enum class AdManagerState {
@@ -71,6 +72,7 @@ class MainActivity : AppCompatActivity() {
 
                 AdEvent.Type.State.ReadyForPlay -> {
                     adManagerState = AdManagerState.ReadyForPlay
+                    updatePlayButtonWithState(adManagerState)
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - ready for play")
                 }
 
@@ -84,16 +86,19 @@ class MainActivity : AppCompatActivity() {
 
                 AdEvent.Type.State.DidStartPlaying -> {
                     adManagerState = AdManagerState.Playing
+                    updatePlayButtonWithState(adManagerState)
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - did start playing")
                 }
 
                 AdEvent.Type.State.DidResumePlaying -> {
                     adManagerState = AdManagerState.Playing
+                    updatePlayButtonWithState(adManagerState)
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - did resume playing")
                 }
 
                 AdEvent.Type.State.DidPausePlaying -> {
                     adManagerState = AdManagerState.Paused
+                    updatePlayButtonWithState(adManagerState)
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - did pause playing")
                 }
 
@@ -107,7 +112,7 @@ class MainActivity : AppCompatActivity() {
 
                 AdEvent.Type.State.AllAdsCompleted -> {
                     adManagerState = AdManagerState.AllAdsCompleted
-                    //playButton.setBackgroundResource(R.drawable.ic_play_arrow_black_24dp)
+                    updatePlayButtonWithState(adManagerState)
                     binding.appLogs.addEntry("Ad - all ads completed")
                 }
 
@@ -181,6 +186,7 @@ class MainActivity : AppCompatActivity() {
             AdswizzAdRequest.Builder()
                 .withServer(SERVER_URL)
                 .withZones(setOf(AdswizzAdZone(ZONE_ID)))
+                .withCompanionZones(COMPANION_ID)
                 .build { adRequest ->
                     // Create the AdRequestConnection using the above adRequest
                     binding.appLogs.addEntry("Requesting ads")
@@ -193,6 +199,16 @@ class MainActivity : AppCompatActivity() {
 
         binding.sdkVersion.text = "${getString(R.string.adswizz_version_prefix)}${com.adswizz.sdk.BuildConfig.VERSION_NAME}"
 
+    }
+
+    private fun updatePlayButtonWithState(state: AdManagerState){
+        if (!::binding.isInitialized) return
+        if (state == AdManagerState.Playing) {
+            binding.toolbar.menu.findItem(R.id.menuPlay).setIcon(R.drawable.ic_pause_arrow_white_24dp)
+        }
+        else {
+            binding.toolbar.menu.findItem(R.id.menuPlay).setIcon(R.drawable.ic_play_arrow_white_24dp)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -222,7 +238,9 @@ class MainActivity : AppCompatActivity() {
                         //adManager?.play()
                         externalPlayer?.player
                     }
-                    else -> Unit
+                    AdManagerState.Playing ->{
+                        externalPlayer?.player?.pause()
+                    }
                 }
             }
             R.id.menuReplay -> {
@@ -239,10 +257,14 @@ class MainActivity : AppCompatActivity() {
                     handleResponse(error, adManager)
                 }
             }
-            R.id.menuPause -> {
-                //adManager?.pause()
-                externalPlayer?.player?.pause()
+            R.id.menuSkip -> {
+                binding.appLogs.addEntry("Skip ad not implemented in external AdPlayer")
+                //adManager?.skipAd()
             }
+//            R.id.menuPause -> {
+//                //adManager?.pause()
+//                externalPlayer?.player?.pause()
+//            }
         }
         return super.onOptionsItemSelected(item)
     }
