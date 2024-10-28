@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menuPlay"
+        android:icon="@drawable/ic_play_arrow_white_24dp"
+        android:title="Play / resume"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menuSkip"
+        android:icon="@drawable/ic_menu_skip_24dp"
+        android:title="Skip"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menuReplay"
+        android:icon="@drawable/ic_replay_white_24dp"
+        android:title="Restart request"
+        app:showAsAction="always" />
+</menu>

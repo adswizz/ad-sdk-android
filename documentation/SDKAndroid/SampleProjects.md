@@ -15,6 +15,13 @@ This sample demonstrates a basic client-side insertion scenario by showing how t
 
 This sample demonstrates a basic client-side insertion scenario using an instance of a  _**MediaPlayerState**_ interface.
 
+## Basic Sample External AdPlayer 
+
+This sample demonstrates a basic client-side insertion scenario using an instance of a  _**AdPLayer**_ interface.
+
+## Basic Sample Empty Ads
+
+This sample demonstrates a basic client-side insertion scenario when no ad is returned by the SDK and the specific empty ads events being triggered in this case.
 
 ## Streaming Sample
 
