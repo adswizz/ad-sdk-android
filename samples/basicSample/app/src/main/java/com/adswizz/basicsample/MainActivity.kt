@@ -179,31 +179,29 @@ class MainActivity : AppCompatActivity() {
 
         val scroll = ScrollingMovementMethod()
         binding.appLogs.movementMethod = scroll
-        if(savedInstanceState == null) {
-            AdswizzSDK.initialize(this) {
 
-                //Build the Ad Request with the needed parameters
-                val zones = setOf(AdswizzAdZone(ZONE_ID))
-                binding.appLogs.addEntry("Request: zones: $zones, companionL $COMPANION_ZONE_ID, server: $SERVER_URL, protocol: $protocol")
+        AdswizzSDK.initialize(this) {
+            //Build the Ad Request with the needed parameters
+            val zones = setOf(AdswizzAdZone(ZONE_ID))
+            binding.appLogs.addEntry("Request: zones: $zones, companionL $COMPANION_ZONE_ID, server: $SERVER_URL, protocol: $protocol")
 
-
-                AdswizzAdRequest.Builder()
-                    .withServer(SERVER_URL)
-                    .withHttpProtocol(protocol)
-                    .withZones(setOf(AdswizzAdZone(ZONE_ID)))
-                    .withCompanionZones(COMPANION_ZONE_ID)
-                    .build { adRequest ->
-                        // Create the AdRequestConnection using the above adRequest
-                        adRequestConnection = AdRequestConnection(adRequest)
-                        adRequestConnection?.requestAds { adManager, error ->
-                            handleResponse(error, adManager)
-                        }
+            AdswizzAdRequest.Builder()
+                .withServer(SERVER_URL)
+                .withHttpProtocol(protocol)
+                .withZones(setOf(AdswizzAdZone(ZONE_ID)))
+                .withCompanionZones(COMPANION_ZONE_ID)
+                .build { adRequest ->
+                    // Create the AdRequestConnection using the above adRequest
+                    adRequestConnection = AdRequestConnection(adRequest)
+                    adRequestConnection?.requestAds { adManager, error ->
+                        handleResponse(error, adManager)
                     }
-            }
-
-
-            binding.sdkVersion.text = "${getString(R.string.adswizz_version_prefix)}${com.adswizz.sdk.BuildConfig.VERSION_NAME}"
+                }
         }
+
+
+        binding.sdkVersion.text = "${getString(R.string.adswizz_version_prefix)}${com.adswizz.sdk.BuildConfig.VERSION_NAME}"
+
 
     }
 
