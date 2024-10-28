@@ -24,7 +24,7 @@ import com.adswizz.streamingsample.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        const val SERVER_URL = "http://sdk.mobile.streaming.adswizz.com:8500/shakeDemo"
+        const val SERVER_URL = "https://streaming.sdk.eks.devel.adswizz.com/shakeDemo"
     }
 
     private lateinit var binding: ActivityMainBinding

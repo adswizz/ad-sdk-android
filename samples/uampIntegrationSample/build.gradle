@@ -2,7 +2,6 @@ Properties localProperties = new Properties()
 localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 buildscript {
-    ext.kotlin_version = '1.4.32'
     repositories {
         google()
         mavenCentral()

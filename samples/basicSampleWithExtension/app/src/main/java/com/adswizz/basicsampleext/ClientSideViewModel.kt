@@ -21,7 +21,7 @@ import kotlinx.coroutines.withContext
 class ClientSideViewModel(application: Application) : AndroidViewModel(application) {
 
     val SERVER_URL = "demo.deliveryengine.adswizz.com"
-    val ZONE_ID = "13396"
+    val ZONE_ID = "17862"
 
     private var adManager: AdManager? = null
 

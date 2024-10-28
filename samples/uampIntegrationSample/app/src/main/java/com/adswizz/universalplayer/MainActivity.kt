@@ -4,9 +4,7 @@ import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
 import android.view.Menu
 import android.view.MenuItem
 import android.Manifest
@@ -18,7 +16,7 @@ import android.os.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+
 import com.adswizz.universalplayer.databinding.ActivityMainBinding
 import com.adswizz.universalplayer.fragments.ListMediaFragment
 import com.adswizz.universalplayer.fragments.PlayingItemFragment
@@ -57,7 +55,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.title = "Adswizz UAMP (SDK ${BuildConfig.SDK_VERSION})"
+
+        supportActionBar?.title = "Adswizz UAMP (SDK ${com.adswizz.sdk.BuildConfig.VERSION_NAME})"
 
         MusicServiceConnections.initializeWithAppContext(this)
         if (ActivityCompat.shouldShowRequestPermissionRationale(

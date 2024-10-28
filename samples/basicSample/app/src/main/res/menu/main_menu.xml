@@ -5,18 +5,24 @@
     <item
         android:id="@+id/menuPlay"
         android:icon="@drawable/ic_play_arrow_white_24dp"
-        android:title="Send interactivity"
+        android:title="Play / resume"
         app:showAsAction="always" />
-
+<!--
     <item
         android:id="@+id/menuPause"
         android:icon="@drawable/ic_pause_arrow_white_24dp"
-        android:title=""
+        android:title="Pause"
+        app:showAsAction="always" />
+-->
+    <item
+        android:id="@+id/menuSkip"
+        android:icon="@drawable/ic_menu_skip_24dp"
+        android:title="Pause"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/menuReplay"
         android:icon="@drawable/ic_replay_white_24dp"
-        android:title=""
+        android:title="Restart request"
         app:showAsAction="always" />
 </menu>
