@@ -15,6 +15,8 @@ import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.ad.core.adBaseManager.AdBaseManager
+import com.ad.core.adBaseManager.AdBaseManagerAdapter
 import com.ad.core.adBaseManager.AdData
 import com.ad.core.adBaseManager.AdEvent
 import com.ad.core.adFetcher.AdRequestConnection
@@ -35,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val SERVER_URL = "demo.deliveryengine.adswizz.com"
         const val ZONE_ID = "12345"
+        const val MAX_ADS = 3
     }
 
     private enum class AdManagerState {
@@ -159,6 +162,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private val adapter = object : AdBaseManagerAdapter {
+        override fun urlsForNoAd(
+            adBaseManager: AdBaseManager,
+            noAdUrlString: String
+        ): List<String> {
+            return listOf("https://emptyAds.com")
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -182,7 +194,8 @@ class MainActivity : AppCompatActivity() {
             //Build the Ad Request with the needed parameters
             AdswizzAdRequest.Builder()
                 .withServer(SERVER_URL)
-                .withZones(setOf(AdswizzAdZone(ZONE_ID)))
+                .withZones(setOf(AdswizzAdZone(ZONE_ID, MAX_ADS)))
+                .withExpectedAdsReporting(true)
                 .build { adRequest ->
                     // Create the AdRequestConnection using the above adRequest
                     binding.appLogs.addEntry("Requesting ads")
@@ -270,6 +283,7 @@ class MainActivity : AppCompatActivity() {
                 .timeoutIntervalForResource(2.5)
             adManager.adManagerSettings = builder.build()
             adManager.setListener(listener)
+            adManager.setAdapter(adapter)
             adManager.prepare()
         }
     }

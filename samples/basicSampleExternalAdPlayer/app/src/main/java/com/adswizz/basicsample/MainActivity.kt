@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val SERVER_URL = "demo.deliveryengine.adswizz.com"
         const val ZONE_ID = "17862"
-        const val COMPANION_ID="17863"
+        const val COMPANION_ID = "17863"
     }
 
     private enum class AdManagerState {
@@ -187,6 +187,7 @@ class MainActivity : AppCompatActivity() {
                 .withServer(SERVER_URL)
                 .withZones(setOf(AdswizzAdZone(ZONE_ID)))
                 .withCompanionZones(COMPANION_ID)
+                .withExpectedAdsReporting(true)
                 .build { adRequest ->
                     // Create the AdRequestConnection using the above adRequest
                     binding.appLogs.addEntry("Requesting ads")
