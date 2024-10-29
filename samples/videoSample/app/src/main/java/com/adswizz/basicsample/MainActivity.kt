@@ -34,11 +34,12 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val SERVER_URL = "demo.deliveryengine.adswizz.com"
-        const val ZONE_ID = "17161"
+        const val ZONE_ID = "19991"
     }
 
-    private lateinit var binding: ActivityMainBinding
+    private val protocol = AdswizzAdRequest.HttpProtocol.HTTP
 
+    private lateinit var binding: ActivityMainBinding
 
     private enum class AdManagerState {
         Unknown, ReadyForPlay, Playing, Paused, AllAdsCompleted
@@ -142,6 +143,10 @@ class MainActivity : AppCompatActivity() {
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - 100% complete")
                 }
 
+                AdEvent.Type.Other.Error -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} ERROR ${event.extraAdData}")
+                }
+
                 else -> Unit
             }
         }
@@ -154,7 +159,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        AdswizzSDK.initialize(this.applicationContext)
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -168,6 +173,10 @@ class MainActivity : AppCompatActivity() {
 
         val scroll = ScrollingMovementMethod()
         binding.appLogs.movementMethod = scroll
+
+        AdswizzSDK.initialize(this.applicationContext){
+            binding.appLogs.addEntry("AdswizzSDK initialize")
+        }
 
         //binding.adVideoView.resizeMode = VideoResizeMode.FILL
         binding.sdkVersion.text = String.format(getString(R.string.adswizz_version_prefix, com.adswizz.sdk.BuildConfig.VERSION_NAME))
@@ -205,6 +214,7 @@ class MainActivity : AppCompatActivity() {
                 if ( adManager == null ) {
                     AdswizzAdRequest.Builder()
                         .withServer(SERVER_URL)
+                        .withHttpProtocol(protocol)
                         .withZones(setOf(AdswizzAdZone(ZONE_ID)))
                         .build() { adRequest ->
                             // Create the AdRequestConnection using the above adRequest

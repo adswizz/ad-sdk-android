@@ -151,6 +151,10 @@ class MainActivity : AppCompatActivity() {
                 AdEvent.Type.Position.Complete -> {
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - 100% complete")
                 }
+
+                AdEvent.Type.Other.Error -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} ERROR ${event.extraAdData}")
+                }
                 else -> Unit
             }
         }
@@ -169,7 +173,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+//        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         val window = this.window
         getWindow().decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -179,6 +183,7 @@ class MainActivity : AppCompatActivity() {
 
         val scroll = ScrollingMovementMethod()
         binding.appLogs.movementMethod = scroll
+
 
         AdswizzSDK.initialize(this) {
             //Build the Ad Request with the needed parameters
@@ -207,6 +212,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun updatePlayButtonWithState(state: AdManagerState){
         if (!::binding.isInitialized) return
+
         if (state == AdManagerState.Playing) {
             binding.toolbar.menu.findItem(R.id.menuPlay).setIcon(R.drawable.ic_pause_arrow_white_24dp)
         }
@@ -269,17 +275,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleResponse(
         error: Error?,
-        adManager: AdManager?
+        adm: AdManager?
     ) {
         if (error != null) {
             binding.appLogs.addEntry("RequestError: ${error.message}")
         }
-        if (adManager != null) {
-            this.adManager = adManager
-            binding.appLogs.addEntry("Received ad manager, ads count: ${adManager.ads.size}")
-            adManager.adManagerSettings = AdManagerSettings.Builder().timeoutIntervalForResource(2.5).build()
-            adManager.setListener(listener)
-            adManager.prepare()
+        if (adm != null) {
+            this.adManager = adm
+            binding.appLogs.addEntry("Received ad manager, ads count: ${adm.ads.size}")
+            adm.adManagerSettings = AdManagerSettings.Builder().timeoutIntervalForResource(2.5).build()
+            adm.setListener(listener)
+            adm.prepare()
         }
     }
 
