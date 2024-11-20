@@ -40,13 +40,15 @@ workManagerRuntime = "androidx.work:work-runtime-ktx:$workManagerRuntimeVersion"
 roomRuntime = "androidx.room:room-runtime:$roomVersion"
 roomCompiler = "androidx.room:room-compiler:$roomVersion"
 roomKtx = "androidx.room:room-ktx:$roomVersion"
-privacysandboxAdServices = "androidx.privacysandbox.ads:ads-adservices:$privacysandboxAdServicesVersion"
 kotlinCoroutinesPlayServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$kotlinCoroutinesPlayServicesVersion"
 // used only in media3 flavor
 media3Exoplayer = "androidx.media3:media3-exoplayer:$media3Version"
 media3ExoplayerDash = "androidx.media3:media3-exoplayer-dash:$media3Version"
 media3ExoplayerHLS = "androidx.media3:media3-exoplayer-hls:$media3Version"
 media3ExoplayerSS = "androidx.media3:media3-exoplayer-smoothstreaming:$media3Version"
+
+// used only in "com.adswizz:adswizz-sdk-topics-api" artefact
+privacysandboxAdServices = "androidx.privacysandbox.ads:ads-adservices:$privacysandboxAdServicesVersion"
 
 ```
 
