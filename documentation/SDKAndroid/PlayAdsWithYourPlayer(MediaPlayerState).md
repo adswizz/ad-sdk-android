@@ -69,9 +69,9 @@ Similar to the `AdPlayer` interface, once you receive the `AdManager` instance t
 ```kotlin
 interface MediaPlayerState {
 
-	/**
+    /**
      * This represents the current playing position between [0, currentDuration] time interval.
-	 */
+     */
     val currentPlayhead: Duration
 
     /**
