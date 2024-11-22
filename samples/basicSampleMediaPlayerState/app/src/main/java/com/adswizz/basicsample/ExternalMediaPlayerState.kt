@@ -75,6 +75,8 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
 
     private var seekInProgress = false
 
+    private var lastId = ""
+
     init {
         player.addListener(this)
         player.addAnalyticsListener(this)
@@ -94,6 +96,10 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
         player.playWhenReady = false
         creativeMap.clear()
         items.clear()
+    }
+
+    fun sendFinishEvent(){
+        emitHelper(MediaPlayerState.PlayerEvent.Finished(lastId))
     }
 
     private fun emitHelper(event: MediaPlayerState.PlayerEvent){
@@ -179,10 +185,12 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
                             if (oldStatus == PlayerStatus.Paused) {
                                 player.currentMediaItem?.mediaId?.let { id ->
                                     emitHelper(MediaPlayerState.PlayerEvent.Resume(id))
+                                    lastId = id
                                 }
                             } else {
                                 player.currentMediaItem?.mediaId?.let { id ->
                                     emitHelper(MediaPlayerState.PlayerEvent.StartPlaying(id))
+                                    lastId = id
                                 }
                             }
                         }

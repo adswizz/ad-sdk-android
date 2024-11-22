@@ -78,6 +78,7 @@ class MainActivity : AppCompatActivity() {
 
                 AdEvent.Type.State.ReadyForPlay -> {
                     adManagerState = AdManagerState.ReadyForPlay
+                    updatePlayButtonWithState(adManagerState)
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - ready for play")
                 }
 
@@ -91,16 +92,19 @@ class MainActivity : AppCompatActivity() {
 
                 AdEvent.Type.State.DidStartPlaying -> {
                     adManagerState = AdManagerState.Playing
+                    updatePlayButtonWithState(adManagerState)
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - did start playing")
                 }
 
                 AdEvent.Type.State.DidResumePlaying -> {
                     adManagerState = AdManagerState.Playing
+                    updatePlayButtonWithState(adManagerState)
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - did resume playing")
                 }
 
                 AdEvent.Type.State.DidPausePlaying -> {
                     adManagerState = AdManagerState.Paused
+                    updatePlayButtonWithState(adManagerState)
                     binding.appLogs.addEntry("Ad ${event.ad?.id} - did pause playing")
                 }
 
@@ -114,7 +118,7 @@ class MainActivity : AppCompatActivity() {
 
                 AdEvent.Type.State.AllAdsCompleted -> {
                     adManagerState = AdManagerState.AllAdsCompleted
-                    //playButton.setBackgroundResource(R.drawable.ic_play_arrow_black_24dp)
+                    updatePlayButtonWithState(adManagerState)
                     binding.appLogs.addEntry("Ad - all ads completed")
                 }
 
@@ -157,6 +161,17 @@ class MainActivity : AppCompatActivity() {
 
         override fun onEventErrorReceived(adManager: AdManager, ad: AdData?, error: Error) {
             binding.appLogs.addEntry("Error - ${error.message} for ad: ${ad?.id}")
+        }
+    }
+
+    private fun updatePlayButtonWithState(state: AdManagerState){
+        if (!::binding.isInitialized) return
+
+        if (state == AdManagerState.Playing) {
+            binding.toolbar.menu.findItem(R.id.menuPlay).setIcon(R.drawable.ic_pause_arrow_white_24dp)
+        }
+        else {
+            binding.toolbar.menu.findItem(R.id.menuPlay).setIcon(R.drawable.ic_play_arrow_white_24dp)
         }
     }
 
@@ -220,6 +235,9 @@ class MainActivity : AppCompatActivity() {
                         player.playWhenReady = true
                         //adManager?.resume()
                     }
+                    AdManagerState.Playing ->{
+                        player.playWhenReady = false
+                    }
 //                    AdManagerState.AllAdsCompleted -> {
 //                        player.stop()
 //                        adManager?.reset()
@@ -245,9 +263,10 @@ class MainActivity : AppCompatActivity() {
                     handleResponse(error, adManager)
                 }
             }
-            R.id.menuPause -> {
+            R.id.menuStop -> {
                 //adManager?.pause()
-                player.playWhenReady = false
+                //player.playWhenReady = false
+                externalMediaPlayerState.sendFinishEvent()
             }
         }
         return super.onOptionsItemSelected(item)

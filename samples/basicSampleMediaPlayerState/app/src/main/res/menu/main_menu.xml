@@ -9,8 +9,8 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/menuPause"
-        android:icon="@drawable/ic_pause_arrow_white_24dp"
+        android:id="@+id/menuStop"
+        android:icon="@drawable/stop_24px"
         android:title=""
         app:showAsAction="always" />
 
