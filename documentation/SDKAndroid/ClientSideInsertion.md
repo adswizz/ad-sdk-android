@@ -168,7 +168,10 @@ Once presented with an AdManager, you can call different actions on the AdManage
 ## AdManager interface
 ### prepare
 
-You call this method to begin to cycle through the ads in the AdManager. This method ensures that the player buffers enough data so that ad playing starts smoothly. Upon calling this method, the ads start loading. The SDK will trigger the **_PreparingForPlay_** event, informing your app that buffering has begun for a specific ad. Once buffering is done, the **_ReadyForPlay_** event for the ad will be triggered. If the `adManager` instance has no ad (EmptyAds scenario), a **_ReadyForPlay_** event with `null` instead of an `AdEvent` instance will be triggered.
+Call this method to begin to cycle through the ads in the AdManager. This method ensures that the player buffers enough data so that ad playing starts smoothly. Upon calling this method, the ads start loading. The SDK will trigger the **_PreparingForPlay_** event, informing your app that buffering has begun for a specific ad. Once buffering is done, the **_ReadyForPlay_** event for the ad will be triggered. If the `adManager` instance has no ad (EmptyAds scenario), a **_ReadyForPlay_** event with `null` instead of an `AdEvent` instance will be triggered.
+> **Note**
+> Since 7.10.0 version, this method may throw an IllegalStateException if you are using the **_AdswizzSDK_** internal player without adding one of the following dependencies: `com.adswizz:exoplayer2-*` or `com.adswizz:exoplayer-media3` in your project.
+>\nThe IllegalStateException will not be thrown if you pass your own player instance through **_AdManagerSettings_**.
 
 ### play
 
