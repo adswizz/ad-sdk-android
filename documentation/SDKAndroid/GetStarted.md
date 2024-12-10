@@ -40,13 +40,15 @@ workManagerRuntime = "androidx.work:work-runtime-ktx:$workManagerRuntimeVersion"
 roomRuntime = "androidx.room:room-runtime:$roomVersion"
 roomCompiler = "androidx.room:room-compiler:$roomVersion"
 roomKtx = "androidx.room:room-ktx:$roomVersion"
-privacysandboxAdServices = "androidx.privacysandbox.ads:ads-adservices:$privacysandboxAdServicesVersion"
 kotlinCoroutinesPlayServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$kotlinCoroutinesPlayServicesVersion"
 // used only in media3 flavor
 media3Exoplayer = "androidx.media3:media3-exoplayer:$media3Version"
 media3ExoplayerDash = "androidx.media3:media3-exoplayer-dash:$media3Version"
 media3ExoplayerHLS = "androidx.media3:media3-exoplayer-hls:$media3Version"
 media3ExoplayerSS = "androidx.media3:media3-exoplayer-smoothstreaming:$media3Version"
+
+// used only in "com.adswizz:adswizz-sdk-topics-api" artefact
+privacysandboxAdServices = "androidx.privacysandbox.ads:ads-adservices:$privacysandboxAdServicesVersion"
 
 ```
 
@@ -353,10 +355,10 @@ implementation 'com.adswizz:exoplayer-media3:version' (optional dependency start
 ```
 
 > **Note**
-> SDK version prior to 7.6.1 included the exoplayer dependency. 
-> SDK version between [7.6.1; 7.9.3] the `com.adswizz:exoplayer` dependency is separate and you must include it for the SDK to function correctly. There are 9 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14, 2.15, 2.16, 2.17 and 2.18, 2.19 and media3).
+> <br>SDK version prior to 7.6.1 included the exoplayer dependency.
+> <br>SDK version between [7.6.1; 7.9.3] the `com.adswizz:exoplayer` dependency is separate and you must include it for the SDK to function correctly. There are 9 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14, 2.15, 2.16, 2.17 and 2.18, 2.19 and media3).
 Using different artifact version from exoplayer used in the app may result in crashing the app, thus the app need to include corresponding versions for sdk artifact and exoplayer library (i.e. add com.adswizz:exoplayer2-18:7.7.21 dependecy when using com.google.android.exoplayer:exoplayer:2.18.6 dependency)
-> SDK versions after 7.10.0 (included) will have the `com.adswizz:exoplayer` as optional dependency for integrations that don't use **_AdswizzSDK_** internal player. you can include only the `com.adswizz:sdk` artefact if your are using your player to play the ad media. For more details, please visit [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md) section.
+> <br> SDK versions after 7.10.0 (included) will have the `com.adswizz:exoplayer` as optional dependency for integrations that don't use **_AdswizzSDK_** internal player. you can include only the `com.adswizz:sdk` artefact if your are using your player to play the ad media. For more details, please visit [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md) section.
 
 In the code snippet above, replace <strong>version</strong> with the version of the phone and tablet SDK provided by Adswizz (i.e. 7.8.0 - the latest version). Example:
 

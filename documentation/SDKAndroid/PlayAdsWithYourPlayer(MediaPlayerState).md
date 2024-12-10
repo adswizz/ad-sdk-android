@@ -69,13 +69,17 @@ Similar to the `AdPlayer` interface, once you receive the `AdManager` instance t
 ```kotlin
 interface MediaPlayerState {
 
-	// Playhead position of currently playing item
+    /**
+     * This represents the current playing position between [0, currentDuration] time interval.
+     */
     val currentPlayhead: Duration
 
-    // The media item total duration.
+    /**
+     * This represents the total duration of the current playing item.
+    */
     val currentDuration: Duration
 
-    // This is the event channel which the player uses to comunicate to sdk
+    // This is the event channel which the player uses to communicate to sdk
     // player events changes (like buffering, pause, resume, playing, etc.)
     val playerStatusFlow: SharedFlow<PlayerEvent>
 

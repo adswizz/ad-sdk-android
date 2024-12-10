@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.10.1] - 2024-12-10
+### Changed
+- The **_AdswizzSDK_** TopicsAPI module is now an optional dependency in the SDK library release, published as `com.adswizz:adswizz-sdk-topics-api`. For more details, please visit [Topics API](Android/TopicsAPI/AdswizzSDKTopicsAPI.md) section.
+- OMSDK library updates. Now, **_AdswizzSDK_** uses 1.5.2 version. See what's new in Open Measurement SDK [here](https://iabtechlab.com/wp-content/uploads/2024/08/OMSDK_What-is-new-in-1.5_master.docx.pdf).
+
+### Fixed
+- Fixed some DiskRead warnings when [StrictMode](https://developer.android.com/reference/android/os/StrictMode) is applied. 
+- Fixed a proguard repackaging issue when the optional dependency (`com.adswizz:exoplayer2-*` or `com.adswizz:exoplayer-media3`) is added.
+
+
 ## [7.10.0] - 2024-10-18
 ### Changed
 - The **_AdswizzSDK_** player dependency (`com.adswizz:exoplayer2-*` and `com.adswizz:exoplayer-media3`) is now optional for integrations that don't use **_AdswizzSDK_** internal player. Starting with version 7.10.0, if you’re using your own player to handle ad media, you only need to include the `com.adswizz:sdk` artifact. For more details, please visit [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md) section.

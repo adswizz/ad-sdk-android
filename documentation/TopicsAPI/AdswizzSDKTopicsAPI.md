@@ -7,6 +7,16 @@ This guide is addressed to Android developers that are interested to integrate [
 * `AndroidManifest.xml` permissions enabled and `property` set
 * `ad_services_config.xml` file created in your project
 
+
+## Add the AdswizzSDK-Topics library
+The topics module is bundled with **_AdswizzSDK_** artefact until 7.10.1 version (exclusive), starting with 7.10.1 it is published as optional library and can be added as follows in the `build.gradle` file.
+
+```gradle
+
+implementation "com.adswizz:adswizz-sdk-topics-api:7.10.1"
+
+```
+
 ## Android Manifest changes
 In order to access this feature with **_AdswizzSDK_** you need to add non dangerous permissions (without a prompt dialog) to your `manifest` file.
 
