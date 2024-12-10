@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.10.1] - 2024-12-10
 ### Changed
 - The **_AdswizzSDK_** TopicsAPI module is now an optional dependency in the SDK library release, published as `com.adswizz:adswizz-sdk-topics-api`. For more details, please visit [Topics API](Android/TopicsAPI/AdswizzSDKTopicsAPI.md) section.
-- OMSDK library updates. Now, **_AdswizzSDK_** will use 1.5+ version. See what's new in Open Measurement SDK [here](https://iabtechlab.com/wp-content/uploads/2024/08/OMSDK_What-is-new-in-1.5_master.docx.pdf).
+- OMSDK library updates. Now, **_AdswizzSDK_** uses 1.5.2 version. See what's new in Open Measurement SDK [here](https://iabtechlab.com/wp-content/uploads/2024/08/OMSDK_What-is-new-in-1.5_master.docx.pdf).
 
 ### Fixed
 - Fixed some DiskRead warnings when [StrictMode](https://developer.android.com/reference/android/os/StrictMode) is applied. 
