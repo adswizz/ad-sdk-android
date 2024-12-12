@@ -1,4 +1,4 @@
-[![AdsWizz](../img/adswizz_logo.png)](https://www.adswizz.com)
+[<img src="../img/adswizz_logo.png" alt="AdsWizz" style="width:30%;">](https://www.adswizz.com)
 # Changelog
 All notable changes to this project will be documented in this file.
 
