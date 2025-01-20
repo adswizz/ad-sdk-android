@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed the `Complete` quartile issue introduced in version [7.10.1](Android/CHANGELOG#_7101-2024-12-10), which in certain scenarios failed to trigger as expected.
 
 ## [7.10.1] - 2024-12-10
+> **Note**
+> Usage is not recommended due to the `Complete` quartile issue introduced in this version. Please update to version [7.10.2](Android/CHANGELOG#_7102-2025-01-17) or later.
+
 ### Changed
 - The **_AdswizzSDK_** TopicsAPI module is now an optional dependency in the SDK library release, published as `com.adswizz:adswizz-sdk-topics-api`. For more details, please visit [Topics API](Android/TopicsAPI/AdswizzSDKTopicsAPI.md) section.
 - OMSDK library updates. Now, **_AdswizzSDK_** uses 1.5.2 version. See what's new in Open Measurement SDK [here](https://iabtechlab.com/wp-content/uploads/2024/08/OMSDK_What-is-new-in-1.5_master.docx.pdf).
@@ -17,8 +20,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fixed some DiskRead warnings when [StrictMode](https://developer.android.com/reference/android/os/StrictMode) is applied. 
 - Fixed a proguard repackaging issue when the optional dependency (`com.adswizz:exoplayer2-*` or `com.adswizz:exoplayer-media3`) is added.
-> **Note**
-> Usage is not recommended due to the `Complete` quartile issue introduced in this version. Please update to version [7.10.2](Android/CHANGELOG#_7102-2025-01-17) or later.
 
 ## [7.10.0] - 2024-10-18
 ### Changed
