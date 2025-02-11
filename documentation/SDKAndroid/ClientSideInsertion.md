@@ -50,7 +50,9 @@ The minimal request looks like the following: one or more zones and a server url
 ```
 The ad server and the zoneId(s) will be provided to you by an AdsWizz PIM.
 
-**Add shims zones to AdswizzAdRequest**
+**Add shims zone to AdswizzAdRequest**
+Only one shim zone can be set in `AdswizzAdRequest`.
+
 ```kotlin
 	//starting with SDK 7.11.0
 	AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters

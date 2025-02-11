@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.11.0] - 2025-02-14
+### Added
+- Added class **_AdswizzShimZone_** to be used in `AdswizzAdRequest` for requesting shim ad on an ad request. [AdswizzShimZone](Android/SDKAndroid/ClientSideInsertion#your-first-ad-request)
+
+### Changed
+- The **_AdswizzAdZone_** now can be set with `zoneAlias` instead of `zoneId`. Thus, `AdswizzAdZone` has a new optional parameter `zoneAlias`. This change is backword compatible.
+- `AdswizzAdRequest.Builder` has a new function `withShimZone` which accepts an object of type `AdswizzShimZone` to request shim ad fillers on current request. [AdswizzShimZone](Android/SDKAndroid/ClientSideInsertion#your-first-ad-request)
+
 ## [7.10.2] - 2025-01-17
 ### Fixed
 - Fixed the `Complete` quartile issue introduced in version [7.10.1](Android/CHANGELOG#_7101-2024-12-10), which in certain scenarios failed to trigger as expected.
