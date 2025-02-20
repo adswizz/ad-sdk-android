@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - The **_AdswizzAdZone_** now can be set with `zoneAlias` instead of `zoneId`. Thus, `AdswizzAdZone` has a new optional parameter `zoneAlias`. This change is backword compatible.
 - `AdswizzAdRequest.Builder` has a new function `withShimZone` which accepts an object of type `AdswizzShimZone` to request shim ad fillers on current request. [AdswizzShimZone](Android/SDKAndroid/ClientSideInsertion#your-first-ad-request)
+- Improved the [Integration Guide](Android)
 
 ## [7.10.2] - 2025-01-17
 ### Fixed
@@ -31,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.10.0] - 2024-10-18
 ### Changed
-- The **_AdswizzSDK_** player dependency (`com.adswizz:exoplayer2-*` and `com.adswizz:exoplayer-media3`) is now optional for integrations that don't use **_AdswizzSDK_** internal player. Starting with version 7.10.0, if you’re using your own player to handle ad media, you only need to include the `com.adswizz:sdk` artifact. For more details, please visit [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md) section.
+- The **_AdswizzSDK_** player dependency (`com.adswizz:exoplayer2-*` and `com.adswizz:exoplayer-media3`) is now optional for integrations that don't use **_AdswizzSDK_** internal player. Starting with version 7.10.0, if you’re using your own player to handle ad media, you only need to include the `com.adswizz:adswizz-sdk` artifact. For more details, please visit [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md) section.
 - Updated Android targetSdkVersion to API version 35 (Android 15).
 - Updated Kotlin version to 1.8.22
 - Updated SDK libraries to match the Kotlin version. For additional information, refer to [Dependencies section](Android/SDKAndroid/GetStarted#dependencies)
@@ -49,7 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Removed `org.jetbrains.kotlin:kotlin-reflect`, `org.apache.commons:commons-math3` and `androidx.databinding:viewbinding` libraries from the **_AdswizzSDK_** dependency tree.
-- Removed `android.permission.VIBRATE` and `android.permission.ACCESS_NETWORK_STATE` from `com.adswizz:sdk` AndroidManifest files. The AdswizzSDK now relies solely on permissions requested by the host app. 
+- Removed `android.permission.VIBRATE` and `android.permission.ACCESS_NETWORK_STATE` from `com.adswizz:adswizz-sdk` AndroidManifest files. The AdswizzSDK now relies solely on permissions requested by the host app. 
 
 ### Fixed
 - Fixed an `SecurityException` introduced since 7.8.0 release, which occurred only on devices running Android 9(API 28) or lower when `android.permission.ACCESS_WIFI_STATE` was not present in `AndroidManifest.xml` file.
@@ -115,7 +116,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The support for `com.adswizz:exoplayer2-10` and `com.adswizz:exoplayer2-12` artefacts is discontinued due to `jCenter` repository deprecation. The old versions are still available in `adswizz` github repository.
 
 ### Fixed
-- Removed an exoplayer transitive dependency in `com.adswizz:sdk` module.
+- Removed an exoplayer transitive dependency in `com.adswizz:adswizz-sdk` module.
 - Fixed a `NullPointerException` due to a race condition when logging `AnalyticsEvent`. 
 
 ## [7.8.6] - 2024-02-09
