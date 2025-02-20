@@ -22,8 +22,7 @@ You are now ready for your first ad request. You will need to create an AdswizzA
 Each `AdswizzAdZone` object is defined by a mandatory `zoneId`/`zoneAlias` and optional `maxAds` and `maxDuration` fields, where `zoneId` or `zoneAlias` is provided by the PIM and the other fields are defined by the application logic, and therefore are not mandatory.
 
 **Note**
-Since 7.11.0 parameter `zoneId` is not longer mandatory if `zoneAlis` is present. However, they can be both set the same time.
-Setting `zoneId` and `zoneAlias` both to `null` or both to `not null` results in a exception. 
+Since 7.11.0 parameter `zoneId` is not longer mandatory if `zoneAlis` is present. However, they cannot be set simultaneously with `null` or `not null` values, this will lead to a runtime exception.
 
 ```kotlin
 //starting with SDK 7.11.0
@@ -31,13 +30,13 @@ data class AdswizzShimZone @JvmOverloads constructor(
     @Json(name = "zoneId")
     val zoneId: String? = null,
     @Json(name = "maxDeadAir")
-    val maxDeadAir: Int? = null,
+    val maxDeadAir: Duration? = null,
     @Json(name = "zoneAlias")
     val zoneAlias: String? = null
 )
 ```
 Each `AdswizzShimZone` object is defined by a mandatory `zoneId`/`zoneAlias` and an optional `maxDeadAir` field, where `zoneId` or `zoneAlias` is provided by the PIM.
-The fields `zoneId` or `zoneAlias` are the same as for the AdswizzAdZone and `maxDeadAir` is a parameter set in seconds which says the minimal threshold time necessary to fill the remaining duration with shims ads.
+The fields `zoneId` or `zoneAlias` checked in the same manner as AdswizzAdZone. The `maxDeadAir` parameter represents the minimal threshold time necessary to fill the remaining duration with shims ads.
 
 The minimal request looks like the following: one or more zones and a server url 
 ```kotlin
