@@ -12,7 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - The **_AdswizzAdZone_** now can be set with `zoneAlias` instead of `zoneId`. Thus, `AdswizzAdZone` has a new optional parameter `zoneAlias`. This change is backword compatible.
 - `AdswizzAdRequest.Builder` has a new function `withShimZone` which accepts an object of type `AdswizzShimZone` to request shim ad fillers on current request. [AdswizzShimZone](Android/SDKAndroid/ClientSideInsertion#your-first-ad-request)
+- Relaxed some VAST parser rules when parsing `MediaFile` tag.
+- Relaxed `AdswizzAdPodcastManager` response validation when Client Side Reporting is disabled.
 - Improved the [Integration Guide](Android)
+
+### Fixed
+- Fixed some Class Verification warnings occurred on lower AndroidOS versions.
+
 
 ## [7.10.2] - 2025-01-17
 ### Fixed
