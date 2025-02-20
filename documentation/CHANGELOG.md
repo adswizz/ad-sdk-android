@@ -5,13 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.11.0] - 2025-02-14
+## [7.11.0] - 2025-02-21
 ### Added
-- Added class **_AdswizzShimZone_** to be used in `AdswizzAdRequest` for requesting shim ad on an ad request. [AdswizzShimZone](Android/SDKAndroid/ClientSideInsertion#your-first-ad-request)
+- Added a new class **_AdswizzShimZone_** that can be used in a `AdswizzAdRequest` in order to receive shim ad. For more details, please visit [AdswizzShimZone](Android/SDKAndroid/ClientSideInsertion#your-first-ad-request) section.
 
 ### Changed
-- The **_AdswizzAdZone_** now can be set with `zoneAlias` instead of `zoneId`. Thus, `AdswizzAdZone` has a new optional parameter `zoneAlias`. This change is backword compatible.
-- `AdswizzAdRequest.Builder` has a new function `withShimZone` which accepts an object of type `AdswizzShimZone` to request shim ad fillers on current request. [AdswizzShimZone](Android/SDKAndroid/ClientSideInsertion#your-first-ad-request)
+- The **_AdswizzAdZone_** can be set either with `zoneAlias` or `zoneId`. Important to note: they are mutually exclusive in the `AdswizzAdZone` object instantiation. Those changes are backwards compatible.
+- `AdswizzAdRequest.Builder` has a new method `withShimZone` to pass an `AdswizzShimZone` object in order to request shim ad fillers on the current request.
 - Relaxed some VAST parser rules when parsing `MediaFile` tag.
 - Relaxed `AdswizzAdPodcastManager` response validation when Client Side Reporting is disabled.
 - Improved the [Integration Guide](Android)
