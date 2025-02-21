@@ -30,7 +30,7 @@ data class AdswizzShimZone @JvmOverloads constructor(
     @Json(name = "zoneId")
     val zoneId: String? = null,
     @Json(name = "maxDeadAir")
-    val maxDeadAir: Duration? = null,
+    val maxDeadAir: Long? = null,
     @Json(name = "zoneAlias")
     val zoneAlias: String? = null
 )
