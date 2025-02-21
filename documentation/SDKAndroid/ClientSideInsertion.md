@@ -19,10 +19,10 @@ You are now ready for your first ad request. You will need to create an AdswizzA
     	val zoneAlias: String? = null
 )
 ```
-Each `AdswizzAdZone` object is defined by a mandatory `zoneId`/`zoneAlias` and optional `maxAds` and `maxDuration` fields, where `zoneId` or `zoneAlias` is provided by the PIM and the other fields are defined by the application logic, and therefore are not mandatory.
+Each `AdswizzAdZone` object is defined by a mandatory `zoneId` or `zoneAlias`, provided by the PIM/TAM, and optional `maxAds` and `maxDuration` fields. The optional fields are determined by the application logic and are not required.
 
 **Note**
-Since 7.11.0 parameter `zoneId` is not longer mandatory if `zoneAlis` is present. However, they cannot be set simultaneously with `null` or `not null` values, this will lead to a runtime exception.
+Since v7.11.0, `zoneId` parameter is no longer mandatory if `zoneAlias` is present. However, they cannot be set simultaneously with `null` or `not null` values, this will lead to a runtime exception.
 
 ```kotlin
 //starting with SDK 7.11.0

@@ -7,17 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.11.0] - 2025-02-21
 ### Added
-- Added a new class **_AdswizzShimZone_** that can be used in a `AdswizzAdRequest` in order to receive shim ad. For more details, please visit [AdswizzShimZone](Android/SDKAndroid/ClientSideInsertion#your-first-ad-request) section.
+- Added a new class **_AdswizzShimZone_** that can be used in a `AdswizzAdRequest` in order to receive shim ad(s). For more details, please visit [AdswizzShimZone](Android/SDKAndroid/ClientSideInsertion#your-first-ad-request) section.
 
 ### Changed
-- The **_AdswizzAdZone_** can be set either with `zoneAlias` or `zoneId`. Important to note: they are mutually exclusive in the `AdswizzAdZone` object instantiation. Those changes are backwards compatible.
-- `AdswizzAdRequest.Builder` has a new method `withShimZone` to pass an `AdswizzShimZone` object in order to request shim ad fillers on the current request.
-- Relaxed some VAST parser rules when parsing `MediaFile` tag.
-- Relaxed `AdswizzAdPodcastManager` response validation when Client Side Reporting is disabled.
+- The **_AdswizzAdZone_** can be configured using either `zoneAlias` or `zoneId`, but not both, as they are mutually exclusive. These changes remain backward compatible.
+- The `AdswizzAdRequest.Builder` now includes a new method, `withShimZone`, allowing you to pass an `AdswizzShimZone` object to request shim ad fillers for the current request.
+- Adjusted the VAST parser to be more flexible when handling the `MediaFile` tag.
+- Loosened `AdswizzAdPodcastManager` response validation when Client Side Reporting is disabled.
 - Improved the [Integration Guide](Android)
 
 ### Fixed
-- Fixed some Class Verification warnings occurred on lower AndroidOS versions.
+- Fixed some Class Verification warnings that occurred on lower AndroidOS versions.
 
 
 ## [7.10.2] - 2025-01-17
