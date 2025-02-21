@@ -8,6 +8,9 @@ The AdswizzSDK handles interactive ad insertion, while playing HLS or ICY live s
 
 To get started, you need to create an **_AdswizzAdStreamManager_** object with a URL pointing to the ad server your Integration Manager has provided you with.
 
+The stream object can play the url using either its internal player or an external player provided by you. This should be specified in the **_AdManagerStreamingSettings_**. 
+
+**Using internal player**
 
 ```kotlin
 
@@ -22,6 +25,22 @@ class YourClass {
     }
 }
 
+```
+
+**Using external player**
+
+Also the enqueueEnabled feature can be set in this class. Below is a sample of how to set the external player:
+
+
+```kotlin
+    fun createStreamManager() {
+        val settings = AdManagerStreamingSettings.Builder()
+            .adPlayerInstance(externalPlayer)
+            .enqueueEnabled(false)                  // optional
+            .build()
+        streamManager = AdswizzAdStreamManager(settings)
+        ...
+    }
 ```
 
 Once the stream manager is constructed, it is recommended to set a listener:
@@ -77,19 +96,9 @@ class YourClass {
 
 ```
 
-The stream object can play the url using either its internal player or an external player provided by you. This should be specified in the **_AdManagerStreamingSettings_**. Also the enqueueEnabled feature can be set in this class. Below is a sample of how to set the external player:
+## Public methods
 
 
-```kotlin
-    fun createStreamManager() {
-        val settings = AdManagerStreamingSettings.Builder()
-            .adPlayerInstance(externalPlayer)
-            .enqueueEnabled(false)                  // optional
-            .build()
-        streamManager = AdswizzAdStreamManager(settings)
-        ...
-    }
-```
 ### play
 To start playing the stream, do the following:
 

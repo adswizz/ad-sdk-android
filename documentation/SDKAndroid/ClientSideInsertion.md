@@ -4,7 +4,7 @@
 
 You are now ready for your first ad request. You will need to create an AdswizzAdRequest object and configure it.
 
-**Minimal request parameters** The `AdswizzAdRequest` requires at minimum to set the server url and a set of one ore more `AdswizzAdZone`.
+**Minimal request parameters** The `AdswizzAdRequest` requires at minimum to set the server url and a set of one ore more `AdswizzAdZone` or an `AdswizzShimZone`.
 
 ```kotlin
 	data class AdswizzAdZone @JvmOverloads constructor(
@@ -13,11 +13,30 @@ You are now ready for your first ad request. You will need to create an AdswizzA
         @Json(name = "maxAds")
         val maxAds: Int? = null,
         @Json(name = "maxDuration")
-        val maxDuration: Long? = null
+        val maxDuration: Long? = null,
+        //starting with SDK 7.11.0
+    	@Json(name = "zoneAlias")
+    	val zoneAlias: String? = null
 )
 ```
-Each `AdswizzAdZone` object is defined by a mandatory zoneId and optional maxAds and maxDuration fields, where zoneId is provided by the PIM and the other fields are defined by the application logic, and therefore are not mandatory.
+Each `AdswizzAdZone` object is defined by a mandatory `zoneId` or `zoneAlias`, provided by the PIM/TAM, and optional `maxAds` and `maxDuration` fields. The optional fields are determined by the application logic and are not required.
 
+**Note**
+Since v7.11.0, `zoneId` parameter is no longer mandatory if `zoneAlias` is present. However, they cannot be set simultaneously with `null` or `not null` values, this will lead to a runtime exception.
+
+```kotlin
+//starting with SDK 7.11.0
+data class AdswizzShimZone @JvmOverloads constructor(
+    @Json(name = "zoneId")
+    val zoneId: String? = null,
+    @Json(name = "maxDeadAir")
+    val maxDeadAir: Long? = null,
+    @Json(name = "zoneAlias")
+    val zoneAlias: String? = null
+)
+```
+Each `AdswizzShimZone` object is defined by a mandatory `zoneId`/`zoneAlias` and an optional `maxDeadAir` field, where `zoneId` or `zoneAlias` is provided by the PIM.
+The fields `zoneId` or `zoneAlias` checked in the same manner as AdswizzAdZone. The `maxDeadAir` parameter represents the minimal threshold time necessary to fill the remaining duration with shims ads.
 
 The minimal request looks like the following: one or more zones and a server url 
 ```kotlin
@@ -29,6 +48,20 @@ The minimal request looks like the following: one or more zones and a server url
             }
 ```
 The ad server and the zoneId(s) will be provided to you by an AdsWizz PIM.
+
+**Add shims zone to AdswizzAdRequest**
+Only one shim zone can be set in `AdswizzAdRequest`.
+
+```kotlin
+	//starting with SDK 7.11.0
+	AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
+            .withServer("SERVER_PROVIDED_BY_PIM")
+            .withShimZone(AdswizzShimZone("SHIM_ZONE_ID")))
+            .build { adswizzAdRequest ->
+			// handle resulted adswizzAdRequest
+            }
+```
+
 
 **Custom request parameters**
 

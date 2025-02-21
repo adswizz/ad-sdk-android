@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.11.0] - 2025-02-21
+### Added
+- Added a new class **_AdswizzShimZone_** that can be used in a `AdswizzAdRequest` in order to receive shim ad(s). For more details, please visit [AdswizzShimZone](Android/SDKAndroid/ClientSideInsertion#your-first-ad-request) section.
+
+### Changed
+- The **_AdswizzAdZone_** can be configured using either `zoneAlias` or `zoneId`, but not both, as they are mutually exclusive. These changes remain backward compatible.
+- The `AdswizzAdRequest.Builder` now includes a new method, `withShimZone`, allowing you to pass an `AdswizzShimZone` object to request shim ad fillers for the current request.
+- Adjusted the VAST parser to be more flexible when handling the `MediaFile` tag.
+- Loosened `AdswizzAdPodcastManager` response validation when Client Side Reporting is disabled.
+- Improved the [Integration Guide](Android)
+
+### Fixed
+- Fixed some Class Verification warnings that occurred on lower AndroidOS versions.
+
+
 ## [7.10.2] - 2025-01-17
 ### Fixed
 - Fixed the `Complete` quartile issue introduced in version [7.10.1](Android/CHANGELOG#_7101-2024-12-10), which in certain scenarios failed to trigger as expected.
@@ -23,7 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.10.0] - 2024-10-18
 ### Changed
-- The **_AdswizzSDK_** player dependency (`com.adswizz:exoplayer2-*` and `com.adswizz:exoplayer-media3`) is now optional for integrations that don't use **_AdswizzSDK_** internal player. Starting with version 7.10.0, if you’re using your own player to handle ad media, you only need to include the `com.adswizz:sdk` artifact. For more details, please visit [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md) section.
+- The **_AdswizzSDK_** player dependency (`com.adswizz:exoplayer2-*` and `com.adswizz:exoplayer-media3`) is now optional for integrations that don't use **_AdswizzSDK_** internal player. Starting with version 7.10.0, if you’re using your own player to handle ad media, you only need to include the `com.adswizz:adswizz-sdk` artifact. For more details, please visit [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md) section.
 - Updated Android targetSdkVersion to API version 35 (Android 15).
 - Updated Kotlin version to 1.8.22
 - Updated SDK libraries to match the Kotlin version. For additional information, refer to [Dependencies section](Android/SDKAndroid/GetStarted#dependencies)
@@ -41,7 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Removed `org.jetbrains.kotlin:kotlin-reflect`, `org.apache.commons:commons-math3` and `androidx.databinding:viewbinding` libraries from the **_AdswizzSDK_** dependency tree.
-- Removed `android.permission.VIBRATE` and `android.permission.ACCESS_NETWORK_STATE` from `com.adswizz:sdk` AndroidManifest files. The AdswizzSDK now relies solely on permissions requested by the host app. 
+- Removed `android.permission.VIBRATE` and `android.permission.ACCESS_NETWORK_STATE` from `com.adswizz:adswizz-sdk` AndroidManifest files. The AdswizzSDK now relies solely on permissions requested by the host app. 
 
 ### Fixed
 - Fixed an `SecurityException` introduced since 7.8.0 release, which occurred only on devices running Android 9(API 28) or lower when `android.permission.ACCESS_WIFI_STATE` was not present in `AndroidManifest.xml` file.
@@ -107,7 +122,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The support for `com.adswizz:exoplayer2-10` and `com.adswizz:exoplayer2-12` artefacts is discontinued due to `jCenter` repository deprecation. The old versions are still available in `adswizz` github repository.
 
 ### Fixed
-- Removed an exoplayer transitive dependency in `com.adswizz:sdk` module.
+- Removed an exoplayer transitive dependency in `com.adswizz:adswizz-sdk` module.
 - Fixed a `NullPointerException` due to a race condition when logging `AnalyticsEvent`. 
 
 ## [7.8.6] - 2024-02-09
