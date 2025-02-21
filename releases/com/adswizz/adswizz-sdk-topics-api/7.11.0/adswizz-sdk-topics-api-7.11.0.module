@@ -1,0 +1,116 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "adswizz-sdk-topics-api",
+    "version": "7.11.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.7"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "adswizz-sdk-topics-api-7.11.0.aar",
+          "url": "adswizz-sdk-topics-api-7.11.0.aar",
+          "size": 24521,
+          "sha512": "f827e96f98ff9464bea195dd9cfb3ba224b0b46b851b11566ee65e7933aa34aaf9d12f67109af1aca9523b4783c2a7d8f8fb2799892e19860647b835c2224c48",
+          "sha256": "eb7f32b9ad93e74b2417917f72069c6eaf2cb69436651b4c807753036d2bb457",
+          "sha1": "0a2e3422c513ecb8e5d09d5562511f3eec127afd",
+          "md5": "846fa55d5472229a06c53f8089ccaa92"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.annotation",
+          "module": "annotation",
+          "version": {
+            "requires": "1.5.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk7",
+          "version": {
+            "requires": "1.8.22"
+          }
+        },
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.12.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.7.3"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-android",
+          "version": {
+            "requires": "1.7.3"
+          }
+        },
+        {
+          "group": "com.squareup.moshi",
+          "module": "moshi",
+          "version": {
+            "requires": "1.14.0"
+          }
+        },
+        {
+          "group": "com.squareup.moshi",
+          "module": "moshi-adapters",
+          "version": {
+            "requires": "1.14.0"
+          }
+        },
+        {
+          "group": "androidx.privacysandbox.ads",
+          "module": "ads-adservices",
+          "version": {
+            "requires": "1.1.0-beta03"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-sdk-topics-api-7.11.0.aar",
+          "url": "adswizz-sdk-topics-api-7.11.0.aar",
+          "size": 24521,
+          "sha512": "f827e96f98ff9464bea195dd9cfb3ba224b0b46b851b11566ee65e7933aa34aaf9d12f67109af1aca9523b4783c2a7d8f8fb2799892e19860647b835c2224c48",
+          "sha256": "eb7f32b9ad93e74b2417917f72069c6eaf2cb69436651b4c807753036d2bb457",
+          "sha1": "0a2e3422c513ecb8e5d09d5562511f3eec127afd",
+          "md5": "846fa55d5472229a06c53f8089ccaa92"
+        }
+      ]
+    }
+  ]
+}
