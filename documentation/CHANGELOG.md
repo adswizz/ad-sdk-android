@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The `AdswizzAdRequest.Builder` now includes a new method, `withShimZone`, allowing you to pass an `AdswizzShimZone` object to request shim ad fillers for the current request.
 - Adjusted the VAST parser to be more flexible when handling the `MediaFile` tag.
 - Loosened `AdswizzAdPodcastManager` response validation when Client Side Reporting is disabled.
-- Improved the [Integration Guide](Android)
+- Improved the Server Side Insertion section in [Integration Guide](Android/SDKAndroid/ServerSideInsertion)
 
 ### Fixed
 - Fixed some Class Verification warnings that occurred on lower AndroidOS versions.
