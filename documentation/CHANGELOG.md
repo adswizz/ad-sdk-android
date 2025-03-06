@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.11.1] - 2025-03-Undefined
+
+### Changed
+- Adjusted the VAST parser to be more flexible when handling the `MediaFiles` tag.
+- Improved **_AdswizzSDK_**'s internal AdPlayer error handling implementation.
+- Updated the [Playing ads using your player](Android/SDKAndroid/PlayAdsWithYourPlayer(AdPlayer).md) section based on **_AdswizzSDK_**'s internal AdPlayer changes.
+
+### Fixed
+- Fixed URL decoration when `android.permission.ACCESS_COARSE_LOCATION` is provided to the **_AdswizzSDK_** without `android.permission.ACCESS_FINE_LOCATION`.
+- Fixed `AdswizzAdPodcastManager` behaviour to play the remote podcast url when Client Side Reporting is enabled.
+
+
 ## [7.11.0] - 2025-02-21
 ### Added
 - Added a new class **_AdswizzShimZone_** that can be used in a `AdswizzAdRequest` in order to receive shim ad(s). For more details, please visit [AdswizzShimZone](Android/SDKAndroid/ClientSideInsertion#your-first-ad-request) section.
