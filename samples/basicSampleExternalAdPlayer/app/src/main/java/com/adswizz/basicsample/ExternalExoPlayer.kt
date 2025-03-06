@@ -1,4 +1,4 @@
-package com.adswizz.artemis
+package com.adswizz.basicsample
 
 import android.content.Context
 import android.net.Uri
@@ -32,6 +32,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.CopyOnWriteArrayList
 
 
+@Suppress("DEPRECATION")
 class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, AnalyticsListener,
     CacheManager.Listener {
 
@@ -212,7 +213,8 @@ class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, Analy
     }
 
     override fun reset() {
-        player.stop(true)
+        player.stop()
+        player.clearMediaItems()
         player.playWhenReady = false
         status = AdPlayer.Status.INITIALIZED
         duration = null
@@ -227,13 +229,21 @@ class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, Analy
     override fun seekToTrackEnd() {
         try {
             seekInProgress = true
-            player.seekTo(playingIndex + 1, 0L)
-        } catch (e: Exception) {
-            seekInProgress = false
-            if (status != AdPlayer.Status.FINISHED) {
-                status = AdPlayer.Status.FINISHED
-                listenerList.forEach { it.onSeekToTrackEnd(playingIndex) }
+            if ((player.mediaItemCount) > playingIndex + 1) {
+                player.seekTo(playingIndex + 1, 0L)
+            } else {
+                skipCurrent()
             }
+        } catch (e: Exception) {
+            skipCurrent()
+        }
+    }
+
+    private fun skipCurrent(){
+        seekInProgress = false
+        if (status != AdPlayer.Status.FINISHED) {
+            status = AdPlayer.Status.FINISHED
+            listenerList.forEach { it.onSeekToTrackEnd(playingIndex) }
         }
     }
 
@@ -390,7 +400,7 @@ class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, Analy
                             if (oldStatus == AdPlayer.Status.PAUSED) {
                                 listenerList.forEach { it.onResume() }
                             } else {
-                                loadCompleted(playingIndex)     // this is needed because ExoPlayer calls onPlayerStateChanged before onLoadCompleted
+                                loadCompleted(playingIndex + removedMediaSourcesCount)     // this is needed because ExoPlayer calls onPlayerStateChanged before onLoadCompleted
                                 listenerList.forEach { it.onPlay() }
                             }
                         }
@@ -419,12 +429,14 @@ class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, Analy
         }
     }
 
-
     override fun onPlayerError(error: PlaybackException) {
         super<Player.Listener>.onPlayerError(error)
         status = AdPlayer.Status.FAILED
         val errorMessage = "Something went wrong with external exoplayer: ${error.message}"
-        listenerList.forEach { it.onError(errorMessage) }
+        listenerList.forEach {
+            it.onError(errorMessage)
+            it.onEnded()
+        }
     }
 
     override fun onPositionDiscontinuity(reason: Int) {
@@ -536,7 +548,7 @@ class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, Analy
         mediaLoadData: MediaLoadData
     ) {
         val wi = eventTime.windowIndex
-        if ((wi >= 0) && ((wi + removedMediaSourcesCount) < playlist.size)) {
+        if ((wi >= 0) && ( (wi+ removedMediaSourcesCount) < playlist.size)) {
             val item = playlist.elementAt(wi + removedMediaSourcesCount)
             item.assetState = AssetState.LOADING
             if (item.lastLoadingCallbackSent == LastLoadingCallbackSent.NONE) {
@@ -566,18 +578,20 @@ class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, Analy
         if ((wi >= 0) && (wi < playlist.size)) {
             playlist.elementAt(wi).assetState = AssetState.FAILED
 
-            if (wi < mediaSources.size) {
-                if (mediaSources.getMediaSource(wi).mediaItem.mediaId == loadEventInfo.uri.toString()) {
+            if(wi < mediaSources.size) {
+                if(mediaSources.getMediaSource(wi).mediaItem.mediaId == loadEventInfo.uri.toString()) {
                     mediaSources.removeMediaSource(wi)
-                    if (enqueueEnabledHint) {
+                    if(enqueueEnabledHint) {
                         removedMediaSourcesCount++
+                    }
+                    val errorMessage =
+                        "ExoPlayer failed to load media: ${loadEventInfo.uri} with ${error.message}"
+                    listenerList.forEach {
+                        it.onError(errorMessage)
+                        if (wi == playingIndex) it.onEnded()
                     }
                 }
             }
-
-            val errorMessage =
-                "ExoPlayer failed to load media: ${loadEventInfo.uri} with ${error.message}"
-            listenerList.forEach { it.onError(errorMessage) }
         }
     }
 

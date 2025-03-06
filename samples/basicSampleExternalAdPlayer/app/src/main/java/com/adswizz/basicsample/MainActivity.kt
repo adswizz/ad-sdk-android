@@ -21,7 +21,6 @@ import com.ad.core.adFetcher.AdRequestConnection
 import com.ad.core.adManager.AdManager
 import com.ad.core.adManager.AdManagerListener
 import com.ad.core.adManager.AdManagerSettings
-import com.adswizz.artemis.ExternalExoPlayer
 import com.adswizz.basicsample.databinding.ActivityMainBinding
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.adFetcher.AdswizzAdZone
