@@ -5,7 +5,6 @@ import android.net.Uri
 import android.view.Surface
 import com.adswizz.common.AdPlayer
 import com.adswizz.common.CommonContext
-import com.adswizz.player.CacheManager
 import com.adswizz.common.macro.PlayerCapabilities
 import com.adswizz.common.macro.PlayerState
 import com.adswizz.common.video.AdVideoState
@@ -33,8 +32,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 
 
 @Suppress("DEPRECATION")
-class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, AnalyticsListener,
-    CacheManager.Listener {
+class ExternalExoPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsListener{
 
     private enum class AssetState {
         INITIALIZED,
@@ -184,17 +182,8 @@ class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, Analy
                     else -> {
                         val extractorsFactory: DefaultExtractorsFactory =
                             DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
-                        return if (cacheAssetsHint) {
-                            ProgressiveMediaSource.Factory(
-                                CacheManager.getCacheDataSourceFactory(
-                                    dataSourceFactory
-                                ), extractorsFactory
-                            )
-                                .createMediaSource(mediaItem)
-                        } else {
-                            ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory)
-                                .createMediaSource(mediaItem)
-                        }
+                        return ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory)
+                            .createMediaSource(mediaItem)
                     }
                 }
             }
@@ -202,9 +191,6 @@ class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, Analy
     }
 
     override fun play() {
-        if (cacheAssetsHint) {
-            CacheManager.cancelAllDownloads()
-        }
         player.playWhenReady = true
     }
 
@@ -262,9 +248,6 @@ class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, Analy
     // region Enqueue Related
 
     override fun enqueue(creativeUrlString: String, index: Int) {
-        if (cacheAssetsHint && !creativeUrlString.startsWith("rawresource://", true))
-            CacheManager.addAssetToCache(creativeUrlString, this)
-
         if (enqueueEnabledHint) {
             if ((index >= 0) && (index <= playlist.size)) {
                 playlist.add(index, Asset(creativeUrlString, AssetState.INITIALIZED))
@@ -286,12 +269,6 @@ class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, Analy
 
     override fun dequeue(index: Int) {
         if ((index >= 0) && (index < playlist.size)) {
-            if (cacheAssetsHint) {
-                val tag = mediaSources.getMediaSource(index).mediaItem.mediaId
-                if (!tag.startsWith("rawresource://", true))
-                    CacheManager.removeAssetFromCache(tag)
-            }
-
             playlist.removeAt(index)
             mediaSources.removeMediaSource(index)
             if (playingIndex >= index)
@@ -440,25 +417,16 @@ class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, Analy
     }
 
     override fun onPositionDiscontinuity(reason: Int) {
-        var posChanged = false
         if (reason == Player.DISCONTINUITY_REASON_AUTO_TRANSITION) {  // transition from one track to the next
             playingIndex++
             duration = player.duration.toDouble() / 1000
             listenerList.forEach { it.onTrackChanged(playingIndex) }
-            posChanged = true
         } else if (reason == Player.DISCONTINUITY_REASON_SEEK) {    // triggered by seek to end of track function
             listenerList.forEach { it.onSeekToTrackEnd(playingIndex) }
             playingIndex++
             duration = player.duration.toDouble() / 1000
-            posChanged = true
         }
 
-        if (cacheAssetsHint && posChanged) {
-            val cancelIndex = playingIndex - 1
-            if (cancelIndex >= 0 && cancelIndex < mediaSources.size) {
-                CacheManager.cancelDownload(mediaSources.getMediaSource(playingIndex - 1).mediaItem.mediaId)
-            }
-        }
     }
 
     // endregion
@@ -618,23 +586,6 @@ class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, Analy
     }
 
     //endregion
-
-
-    //region CacheManager Listener
-
-    override fun onDownloadStarted(assetUri: String) = Unit
-
-    override fun onDownloadCompleted(assetUri: String) = Unit
-
-    override fun onDownloadFailed(assetUri: String, error: Error) {
-        status = AdPlayer.Status.FAILED
-        listenerList.forEach {
-            it.onError(error.localizedMessage ?: "Download Failed for $assetUri")
-        }
-    }
-
-    //endregion
-
 
     // region Audio Listener
 

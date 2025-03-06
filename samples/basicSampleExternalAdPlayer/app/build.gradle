@@ -44,8 +44,8 @@ dependencies {
 
 
     implementation 'com.adswizz:adswizz-sdk:7.11.0'
-    implementation 'com.adswizz:exoplayer2-19:7.11.0'
-
+    //implementation 'com.adswizz:exoplayer2-14:7.10.0' - there is no need for adswizz player if using external player
+    implementation 'com.google.android.exoplayer:exoplayer:2.19.1'
 
     testImplementation 'junit:junit:4.13.2'
 
