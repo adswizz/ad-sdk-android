@@ -1,0 +1,139 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "exoplayer-media3",
+    "version": "7.11.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.7"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.media3",
+          "module": "media3-exoplayer",
+          "version": {
+            "requires": "1.2.0"
+          }
+        },
+        {
+          "group": "androidx.media3",
+          "module": "media3-exoplayer-dash",
+          "version": {
+            "requires": "1.2.0"
+          }
+        },
+        {
+          "group": "androidx.media3",
+          "module": "media3-exoplayer-hls",
+          "version": {
+            "requires": "1.2.0"
+          }
+        },
+        {
+          "group": "androidx.media3",
+          "module": "media3-exoplayer-smoothstreaming",
+          "version": {
+            "requires": "1.2.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.8.22"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "exoplayer-media3-7.11.1.aar",
+          "url": "exoplayer-media3-7.11.1.aar",
+          "size": 34095,
+          "sha512": "70213ffd674e098749736f30b4b4dc64b862e434f9ba058d2c9cbc4c47c941ba7278784289fec3b3e9d3eecfb27743bf64977f32a73523fafc93da694f149132",
+          "sha256": "ecf7ef5ffc13f83a1d5802c1b81e9d0a935a98bc8b7343e075441fc3d7ba7822",
+          "sha1": "43b46b3a78508d741357f1f01a4af97b3530519e",
+          "md5": "a1b656f8797634d2ed5375cdf8ec72c0"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.annotation",
+          "module": "annotation",
+          "version": {
+            "requires": "1.5.0"
+          }
+        },
+        {
+          "group": "androidx.media3",
+          "module": "media3-exoplayer",
+          "version": {
+            "requires": "1.2.0"
+          }
+        },
+        {
+          "group": "androidx.media3",
+          "module": "media3-exoplayer-dash",
+          "version": {
+            "requires": "1.2.0"
+          }
+        },
+        {
+          "group": "androidx.media3",
+          "module": "media3-exoplayer-hls",
+          "version": {
+            "requires": "1.2.0"
+          }
+        },
+        {
+          "group": "androidx.media3",
+          "module": "media3-exoplayer-smoothstreaming",
+          "version": {
+            "requires": "1.2.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.8.22"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "exoplayer-media3-7.11.1.aar",
+          "url": "exoplayer-media3-7.11.1.aar",
+          "size": 34095,
+          "sha512": "70213ffd674e098749736f30b4b4dc64b862e434f9ba058d2c9cbc4c47c941ba7278784289fec3b3e9d3eecfb27743bf64977f32a73523fafc93da694f149132",
+          "sha256": "ecf7ef5ffc13f83a1d5802c1b81e9d0a935a98bc8b7343e075441fc3d7ba7822",
+          "sha1": "43b46b3a78508d741357f1f01a4af97b3530519e",
+          "md5": "a1b656f8797634d2ed5375cdf8ec72c0"
+        }
+      ]
+    }
+  ]
+}
