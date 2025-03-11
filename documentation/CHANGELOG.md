@@ -9,12 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Adjusted the VAST parser to be more flexible when handling the `MediaFiles` tag.
-- Improved **_AdswizzSDK_**'s internal AdPlayer error handling implementation.
+- Improved **_AdswizzSDK_**'s internal `AdPlayer` error handling.
 - Updated the [Playing ads using your player](Android/SDKAndroid/PlayAdsWithYourPlayer(AdPlayer).md) section based on **_AdswizzSDK_**'s internal AdPlayer changes.
 
 ### Fixed
-- Fixed URL decoration when `android.permission.ACCESS_COARSE_LOCATION` is provided to the **_AdswizzSDK_** without `android.permission.ACCESS_FINE_LOCATION`.
-- Fixed `AdswizzAdPodcastManager` behaviour to play the remote podcast url when Client Side Reporting is enabled.
+- Fixed URL decoration to improve targeting in scenarios where `android.permission.ACCESS_COARSE_LOCATION` is granted to the **_AdswizzSDK_**, but `android.permission.ACCESS_FINE_LOCATION` is not.
+- Fixed `AdswizzAdPodcastManager` behaviour to play the remote podcast url when Client-Side-Reporting flag is enabled.
 
 
 ## [7.11.0] - 2025-02-21
