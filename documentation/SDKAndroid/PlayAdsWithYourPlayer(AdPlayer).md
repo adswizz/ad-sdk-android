@@ -627,263 +627,331 @@ Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)```
 ## Sample AdPlayer Interface Implementation
 
 ```kotlin
-	class ExternalExoPlayer(val context: Context) : AdPlayer, Player.EventListener, AnalyticsListener, CacheManager.Listener, AudioListener, MetadataOutput, VideoListener {
-		...
-		override val name = "ExternalExoPlayer"
-	    override val version = "1.23.456"
-    	override val playerCapabilities: List<PlayerCapabilities> = listOf(PlayerCapabilities.SKIP, PlayerCapabilities.MUTE, PlayerCapabilities.FULLSCREEN)
-		override var cacheAssetsHint: Boolean = true
-	    override var enqueueEnabledHint: Boolean = true
-    	override val isBufferingWhilePaused: Boolean = true
-    	
-    	...
-    	private var listenerList: ConcurrentLinkedQueue<WeakReference<AdPlayer.Listener>> = ConcurrentLinkedQueue()
-
-    	private val player: SimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(context)
-	    private val mediaSources = ConcatenatingMediaSource()
-	    
-	    ...
-	    init {
-			player.addListener(this)
-			player.addMetadataOutput(this)
-			player.addAudioListener(this)
-			player.addAnalyticsListener(this)
-			player.addVideoListener(this)
-		}
-		
-		// region Player Controls
-		override fun load(creativeUrlString: String) {
-			if (!enqueueEnabledHint) {
-				val oldPlayWhenReady = player.playWhenReady
-				reset()
-				player.playWhenReady = oldPlayWhenReady
-
-				playlist.add(Asset(creativeUrlString, AssetState.INITIALIZED))
-				val source = buildMediaSource(creativeUrlString)
-				mediaSources.addMediaSource(source)
-
-				playingIndex = 0
-				seekInProgress = true
-				player.prepare(mediaSources)
-			}
-		}
-
-		private fun buildMediaSource(urlString: String): MediaSource {
-			val uri = Uri.parse(urlString)
-			val undecoratedUri = Uri.parse(urlString).buildUpon().clearQuery().build()
-
-			when {
-				urlString.startsWith("rawresource://", true) -> {
-					val dataSourceFactory =
-						DataSource.Factory { RawResourceDataSource(CommonContext.getContext()) }
-					val extractorsFactory: DefaultExtractorsFactory =
-						DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
-					return ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory)
-						.setTag(urlString).createMediaSource(uri)
-				}
-				urlString.startsWith("file:///", true) -> {
-					val dataSourceFactory = DataSource.Factory { FileDataSource() }
-					val extractorsFactory: DefaultExtractorsFactory =
-						DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
-					return ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory)
-						.setTag(urlString).createMediaSource(uri)
-				}
-				else -> {
-					val dataSourceFactory =
-						DefaultHttpDataSourceFactory(com.adswizz.common.Utils.getDefaultUserAgent())
-
-					when (Util.inferContentType(undecoratedUri)) {
-						C.TYPE_DASH -> {
-							return DashMediaSource.Factory(dataSourceFactory).setTag(urlString)
-								.createMediaSource(uri)
-						}
-						C.TYPE_HLS -> {
-							return HlsMediaSource.Factory(dataSourceFactory).setTag(urlString)
-								.createMediaSource(uri)
-						}
-						C.TYPE_SS -> {
-							return SsMediaSource.Factory(dataSourceFactory).setTag(urlString)
-								.createMediaSource(uri)
-						}
-						else -> {
-							val extractorsFactory: DefaultExtractorsFactory =
-								DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
-							return if (cacheAssetsHint) {
-								ProgressiveMediaSource.Factory(
-									CacheManager.getCacheDataSourceFactory(
-										dataSourceFactory
-									), extractorsFactory
-								)
-									.setTag(urlString)
-									.createMediaSource(uri)
-							} else {
-								ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory)
-									.setTag(urlString).createMediaSource(uri)
-							}
-						}
-					}
-				}
-			}
-		}
-
-		override fun play() {
-			if (cacheAssetsHint) {
-				CacheManager.cancelAllDownloads()
-			}
-			player.playWhenReady = true
-		}
-
-		override fun pause() {
-			player.playWhenReady = false
-		}
-
-		override fun reset() {
-			player.stop(true)
-			player.playWhenReady = false
-			status = AdPlayer.Status.INITIALIZED
-			duration = null
-
-			mediaSources.clear()
-			playlist.clear()
-			playingIndex = -1
-			seekInProgress = false
-		}
-
-        override fun release(){
-            reset()
-            player.removeVideoListener(this)
-            player.removeAnalyticsListener(this)
-            player.removeAudioListener(this)
-            player.removeMetadataOutput(this)
-            player.removeListener(this)
-            player.release() 
+	class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, AnalyticsListener, CacheManager.Listener {
+    ...
+    override val name = "ExternalExoPlayer"
+    override val version = "1.23.456"
+    override val playerCapabilities: List<PlayerCapabilities> = listOf(PlayerCapabilities.SKIP, PlayerCapabilities.MUTE, PlayerCapabilities.FULLSCREEN)
+    override val playerState: List<PlayerState>
+        get() {
+            val ml = mutableListOf<PlayerState>()
+            if (adVideoState == AdVideoState.FULLSCREEN)
+                ml.add(PlayerState.FULLSCREEN)
+            if (volume == 0.0f)
+                ml.add(PlayerState.MUTED)
+            if (CommonContext.isInForeground()) {
+                ml.add(PlayerState.FOREGROUND)
+            } else {
+                ml.add(PlayerState.BACKGROUND)
+            }
+            return ml
         }
 
-		override fun seekToTrackEnd() {
-			try {
-				seekInProgress = true
-				player.seekTo(playingIndex + 1, 0L)
-			} catch (e: Exception) {
-				seekInProgress = false
-				if (status != AdPlayer.Status.FINISHED) {
-					status = AdPlayer.Status.FINISHED
-					listenerList.forEach { it.get()?.onSeekToTrackEnd(playingIndex) }
-				}
-			}
-		}
+    // endregion
 
-		override fun seekTo(position: Double) {
-			try {
-				seekInProgress = true
-				player.seekTo(player.currentWindowIndex, (position * 1000.0).toLong())
-			} catch (e: Exception) {
-				seekInProgress = false
-			}
-		}
 
-		// endregion
-		
-		// region Enqueue Related
+    // region Player Options
 
-		override fun enqueue(creativeUrlString: String, index: Int) {
-			if (cacheAssetsHint && !creativeUrlString.startsWith("rawresource://", true))
-				CacheManager.addAssetToCache(creativeUrlString, this)
+    override val isBufferingWhilePaused: Boolean = true
 
-			if (enqueueEnabledHint) {
-				if ((index >= 0) && (index <= playlist.size)) {
-					playlist.add(index, Asset(creativeUrlString, AssetState.INITIALIZED))
-					val source = buildMediaSource(creativeUrlString)
-					mediaSources.addMediaSource(index, source)
+    // endregion
 
-					if (playingIndex >= index)
-						playingIndex++
 
-					if (mediaSources.size == 1) {
-						playingIndex = 0
-						seekInProgress = true
-						player.prepare(mediaSources)
-					}
-				}
-			}
-		}
+    private var status: AdPlayer.Status = AdPlayer.Status.INITIALIZED
+    private var duration: Double? = null
 
-		override fun dequeue(index: Int) {
-			if ((index >= 0) && (index < playlist.size)) {
-				if (cacheAssetsHint) {
-					val tag = mediaSources.getMediaSource(index).tag.toString()
-					if (!tag.startsWith("rawresource://", true))
-						CacheManager.removeAssetFromCache(tag)
-				}
 
-				playlist.removeAt(index)
-				mediaSources.removeMediaSource(index)
-				if (playingIndex >= index)
-					playingIndex--
-			}
-		}
+    internal var listenerList: ConcurrentLinkedQueue<AdPlayer.Listener> = ConcurrentLinkedQueue()
 
-		// endregion
-		
-		// region Current Values
+    val player = ExoPlayer.Builder(context).build()
 
-		override var volume: Float
-			set(value) {
-				player.volume = value
-			}
-			get() = player.volume
+    @Suppress("DEPRECATION")
+    private val mediaSources = androidx.media3.exoplayer.source.ConcatenatingMediaSource()
 
-		/**
-		 * @return the current play head from the player in seconds
-		 */
-		override fun getCurrentTime(): Double {
-			return player.currentPosition.toDouble() / 1000
-		}
+    @VisibleForTesting
+    internal val playlist = CopyOnWriteArrayList<Asset>()
+    private var playingIndex = -1
+    private var seekInProgress = false
 
-		/**
-		 * @return the track duration from the player in seconds
-		 */
-		override fun getDuration(): Double? {
-			return duration
-		}
+    private var adVideoState: AdVideoState? = null
 
-		/**
-		 * @return the current internal status from our media player
-		 */
-		override fun status(): AdPlayer.Status {
-			return status
-		}
+    init {
+        player.addListener(this)
+        player.addAnalyticsListener(this)
+    }
 
-		// endregion
-		
-		   // region Listener
+    override fun toString(): String {
+        return "ExternalAdPlayer (name = $name, version = $version)"
+    }
+
+
+    // region Player Controls
+
+    /**
+     * Method called from AdManager
+     *
+     * @param creativeUrlString: the urlString of the ad we want to play
+     *
+     */
+    override fun load(creativeUrlString: String) {
+
+        if (!enqueueEnabledHint) {
+
+            val oldPlayWhenReady = player.playWhenReady
+            reset()
+            player.playWhenReady = oldPlayWhenReady
+
+            playlist.add(Asset(creativeUrlString, AssetState.INITIALIZED))
+            val source = buildMediaSource(creativeUrlString)
+            mediaSources.addMediaSource(source)
+
+            playingIndex = 0
+            seekInProgress = true
+            player.setMediaSource(mediaSources)
+            player.prepare()
+        }
+    }
+
+    private fun buildMediaSource(urlString: String): MediaSource {
+        val uri = Uri.parse(urlString)
+        val undecoratedUri = Uri.parse(urlString).buildUpon().clearQuery().build()
+
+        val mediaItem = MediaItem.Builder()
+            .setMediaId(urlString)
+            .setUri(uri)
+            .build()
+
+        when {
+            Utils.isLocalResource(uri) || urlString.startsWith("file:///",true) -> {
+                val dataSourceFactory = DefaultDataSource.Factory(CommonContext.getContext())
+                val extractorsFactory: DefaultExtractorsFactory =
+                    DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
+                return ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory)
+                    .createMediaSource(mediaItem)
+            }
+            else -> {
+                val dataSourceFactory = DefaultHttpDataSource.Factory()
+                    .setUserAgent(Utils.getDefaultUserAgent())
+
+                timeoutInterval?.let{
+                    val millis = (it * 1_000).toInt()
+                    dataSourceFactory.setConnectTimeoutMs(millis)
+                    dataSourceFactory.setReadTimeoutMs(millis)
+                }
+
+                when (Util.inferContentType(undecoratedUri)) {
+                    C.CONTENT_TYPE_DASH -> {
+                        return DashMediaSource.Factory(dataSourceFactory)
+                            .createMediaSource(mediaItem)
+                    }
+                    C.CONTENT_TYPE_HLS -> {
+                        return HlsMediaSource.Factory(dataSourceFactory)
+                            .createMediaSource(mediaItem)
+                    }
+                    C.CONTENT_TYPE_SS -> {
+                        return SsMediaSource.Factory(dataSourceFactory).createMediaSource(mediaItem)
+                    }
+                    else -> {
+                        val extractorsFactory: DefaultExtractorsFactory =
+                            DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
+                        return if (cacheAssetsHint) {
+                            ProgressiveMediaSource.Factory(
+                                CacheManager.getCacheDataSourceFactory(
+                                    dataSourceFactory
+                                ), extractorsFactory
+                            )
+                                .createMediaSource(mediaItem)
+                        } else {
+                            ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory)
+                                .createMediaSource(mediaItem)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Method called from AdManager ->
+     * adManager.play()/adManager.resume() to start/resume the media stream
+     */
+    override fun play() {
+        if (cacheAssetsHint) {
+            CacheManager.cancelAllDownloads()
+        }
+        player.playWhenReady = true
+    }
+
+    /**
+     * Method called from AdManager ->
+     * adManager.pause() to pause the media stream
+     */
+    override fun pause() {
+        player.playWhenReady = false
+    }
+
+    override fun reset() {
+        player.stop()
+        player.clearMediaItems()
+        player.playWhenReady = false
+        status = AdPlayer.Status.INITIALIZED
+        duration = null
+
+        removedMediaSourcesCount = 0
+        mediaSources.clear()
+        playlist.clear()
+        playingIndex = -1
+        seekInProgress = false
+    }
+
+    override fun release(){
+        reset()
+        player.removeAnalyticsListener(this)
+        player.removeListener(this)
+        player.release()
+    }
+
+    override fun seekToTrackEnd() {
+        try {
+            seekInProgress = true
+            if ( (player.mediaItemCount ) > playingIndex+1) {
+                player.seekTo(playingIndex + 1, 0L)
+            }
+            else{
+                skipCurrent()
+            }
+        } catch (e: Exception) {
+            skipCurrent()
+        }
+    }
+
+    private fun skipCurrent(){
+        seekInProgress = false
+        if (status != AdPlayer.Status.FINISHED) {
+            status = AdPlayer.Status.FINISHED
+            listenerList.forEach { it.onSeekToTrackEnd(playingIndex) }
+        }
+    }
+
+    override fun seekTo(position: Double) {
+        try {
+            seekInProgress = true
+            player.seekTo(player.currentMediaItemIndex , (position * 1000.0).toLong())
+        } catch (e: Exception) {
+            seekInProgress = false
+        }
+    }
+
+    // endregion
+
+
+    // region Enqueue Related
+
+    override fun enqueue(creativeUrlString: String, index: Int) {
+        if (cacheAssetsHint &&  Patterns.WEB_URL.matcher(creativeUrlString).matches())
+            CacheManager.addAssetToCache(creativeUrlString, this)
+
+        if (enqueueEnabledHint) {
+            if ((index >= 0) && (index <= playlist.size)) {
+                playlist.add(index, Asset(creativeUrlString, AssetState.INITIALIZED))
+                val source = buildMediaSource(creativeUrlString)
+                mediaSources.addMediaSource(index, source)
+
+                if (playingIndex >= index)
+                    playingIndex++
+
+                if (mediaSources.size == 1) {
+                    playingIndex = 0
+                    seekInProgress = true
+                    player.setMediaSource(mediaSources)
+                    player.prepare()
+                }
+            }
+        }
+    }
+
+    override fun dequeue(index: Int) {
+        if ((index >= 0) && (index < playlist.size)) {
+
+            if (cacheAssetsHint) {
+                val tag = mediaSources.getMediaSource(index).mediaItem.mediaId
+                if ( Patterns.WEB_URL.matcher(tag).matches() )
+                    CacheManager.removeAssetFromCache(tag)
+            }
+
+            playlist.removeAt(index)
+            mediaSources.removeMediaSource(index)
+            if (playingIndex >= index)
+                playingIndex--
+        }
+    }
+
+    // endregion
+
+
+    // region Current Values
+
+    override var volume: Float
+        set(value) {
+            player.volume = value
+        }
+        get() = player.volume
+
+
+    /**
+     * @return the current play head from the player in seconds
+     */
+    override fun getCurrentTime(): Double {
+        return player.currentPosition.toDouble() / 1000
+    }
+
+    /**
+     * @return the track duration from the player in seconds
+     */
+    override fun getDuration(): Double? {
+        return duration
+    }
+
+    /**
+     * @return the current internal status from our media player
+     */
+    override fun status(): AdPlayer.Status {
+        return status
+    }
+
+    // endregion
+
+
+    // region Video
+
+    override fun setVideoSurface(surface: Surface) {
+        player.setVideoSurface(surface)
+    }
+
+    override fun clearVideoSurface(surface: Surface) {
+        player.clearVideoSurface(surface)
+    }
+
+    override fun setVideoState(videoState: AdVideoState?) {
+        adVideoState = videoState
+    }
+
+    // endregion
+
+
+    // region Listener
 
     override fun addListener(listener: AdPlayer.Listener) {
-        cleanupNullsInListenerList()
-
         listenerList.forEach {
-            if (it.get() == listener) {
+            if (it == listener) {
                 return
             }
         }
-        listenerList.add(WeakReference(listener))
+        listenerList.add(listener)
     }
 
     override fun removeListener(listener: AdPlayer.Listener) {
-        cleanupNullsInListenerList()
-        listenerList.forEach {
-            if (it.get() == listener) {
-                listenerList.remove(it)
-                return
-            }
-        }
-    }
-
-    private fun cleanupNullsInListenerList() {
-        listenerList.forEach {
-            if (it.get() == null) {
-                listenerList.remove(it)
-            }
-        }
+        listenerList.remove(listener)
     }
 
     // endregion
@@ -897,7 +965,7 @@ Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)```
                 if (playingIndex >= 0) {
                     status = AdPlayer.Status.BUFFERING
                     if (!seekInProgress)
-                        listenerList.forEach { it.get()?.onBuffering() }
+                        listenerList.forEach { it.onBuffering() }
                 }
             }
             Player.STATE_READY -> {
@@ -909,7 +977,7 @@ Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)```
                     if (seekInProgress)
                         seekInProgress = false
                     else
-                        listenerList.forEach { it.get()?.onBufferingFinished() }
+                        listenerList.forEach { it.onBufferingFinished() }
                 }
 
                 when (playWhenReady) {
@@ -918,17 +986,17 @@ Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)```
                         if (status != AdPlayer.Status.PLAYING) {
                             status = AdPlayer.Status.PLAYING
                             if (oldStatus == AdPlayer.Status.PAUSED) {
-                                listenerList.forEach { it.get()?.onResume() }
+                                listenerList.forEach { it.onResume() }
                             } else {
-                                loadCompleted(playingIndex)     // this is needed because ExoPlayer calls onPlayerStateChanged before onLoadCompleted
-                                listenerList.forEach { it.get()?.onPlay() }
+                                loadCompleted(playingIndex + removedMediaSourcesCount)     // this is needed because ExoPlayer calls onPlayerStateChanged before onLoadCompleted
+                                listenerList.forEach { it.onPlay() }
                             }
                         }
                     }
                     false -> {
                         if (status == AdPlayer.Status.PLAYING) {
                             status = AdPlayer.Status.PAUSED
-                            listenerList.forEach { it.get()?.onPause() }
+                            listenerList.forEach { it.onPause() }
                         }
                     }
                 }
@@ -939,7 +1007,7 @@ Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)```
                 } else {
                     if (status != AdPlayer.Status.FINISHED) {
                         status = AdPlayer.Status.FINISHED
-                        listenerList.forEach { it.get()?.onEnded() }
+                        listenerList.forEach { it.onEnded() }
                     }
                 }
             }
@@ -949,22 +1017,27 @@ Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)```
         }
     }
 
-    override fun onPlayerError(error: ExoPlaybackException) {
-        super<Player.EventListener>.onPlayerError(error)
+    override fun onPlayerError(error: PlaybackException) {
+        super<Player.Listener>.onPlayerError(error)
         status = AdPlayer.Status.FAILED
         val errorMessage = "Something went wrong with external exoplayer: ${error?.message}"
-        listenerList.forEach { it.get()?.onError(errorMessage) }
+        listenerList.forEach {
+            it.onError(errorMessage)
+            it.onEnded()
+        }
     }
 
     override fun onPositionDiscontinuity(reason: Int) {
         var posChanged = false
-        if (reason == Player.DISCONTINUITY_REASON_PERIOD_TRANSITION) {  // transition from one track to the next
+        if (reason == Player.DISCONTINUITY_REASON_AUTO_TRANSITION) {  // transition from one track to the next
             playingIndex++
             duration = player.duration.toDouble() / 1000
-            listenerList.forEach { it.get()?.onTrackChanged(playingIndex) }
+            listenerList.forEach { it.onTrackChanged(playingIndex) }
             posChanged = true
-        } else if (reason == Player.DISCONTINUITY_REASON_SEEK) {    // triggered by seek to end of track function
-            listenerList.forEach { it.get()?.onSeekToTrackEnd(playingIndex) }
+        } else if (reason == Player.DISCONTINUITY_REASON_SEEK) {
+            //?? not sure if is ok to assume is seek to the end
+            //maybe we should try to check duration vs position & i
+            listenerList.forEach { it.onSeekToTrackEnd(playingIndex) }
             playingIndex++
             duration = player.duration.toDouble() / 1000
             posChanged = true
@@ -972,165 +1045,184 @@ Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)```
 
         if (cacheAssetsHint && posChanged) {
             val cancelIndex = playingIndex - 1
-            if (cancelIndex >= 0 && cancelIndex < mediaSources.size) {
-                CacheManager.cancelDownload(mediaSources.getMediaSource(playingIndex - 1).tag.toString())
+            if (cancelIndex >= 0 && cancelIndex < mediaSources.size){
+                CacheManager.cancelDownload(mediaSources.getMediaSource(playingIndex - 1).mediaItem.mediaId)
             }
         }
     }
-
     // endregion
 
 
     // region MetadataOutput
-
-    override fun onMetadata(metadata: com.google.android.exoplayer2.metadata.Metadata) {
+    override fun onMetadata(metadata: Metadata) {
         val metadataList = mutableListOf<AdPlayer.MetadataItem>()
-        if (metadata != null) {
-            for (i in 0 until metadata.length()) {
-                when (val entry = metadata.get(i)) {
-                    is IcyInfo -> {
-                        if (entry.title != null) {
-                            metadataList.add(AdPlayer.MetadataItem("title", entry.title ?: ""))
-                        }
-                        if (entry.url != null) {
-                            metadataList.add(AdPlayer.MetadataItem("url", entry.url ?: ""))
-                        }
+        for (i in 0 until metadata.length()) {
+            when (val entry = metadata.get(i)) {
+                is IcyInfo -> {
+                    if (entry.title != null) {
+                        metadataList.add(AdPlayer.MetadataItem("title", entry.title ?: ""))
                     }
-                    is TextInformationFrame -> {
-                        if (!entry.value.isNullOrEmpty()) {
-                            metadataList.add(AdPlayer.MetadataItem("value", entry.value))
-                        }
-                        if (!entry.description.isNullOrEmpty()) {
-                            metadataList.add(
-                                    AdPlayer.MetadataItem(
-                                            "description",
-                                            entry.description.toString()
-                                    )
+                    if (entry.url != null) {
+                        metadataList.add(AdPlayer.MetadataItem("url", entry.url ?: ""))
+                    }
+                }
+                is TextInformationFrame -> {
+                    if (entry.values[0].isNotEmpty()) {
+                        metadataList.add(AdPlayer.MetadataItem("value", entry.values[0]))
+                    }
+                    if (!entry.description.isNullOrEmpty()) {
+                        metadataList.add(
+                            AdPlayer.MetadataItem(
+                                "description",
+                                entry.description.toString()
                             )
-                        }
+                        )
                     }
-                    is UrlLinkFrame -> {
-                        // do nothing
-                    }
-                    is PrivFrame -> {
-                        // do nothing
-                    }
-                    is GeobFrame -> {
-                        // do nothing
-                    }
-                    is ApicFrame -> {
-                        if (!entry.description.isNullOrEmpty()) {
-                            metadataList.add(
-                                    AdPlayer.MetadataItem(
-                                            "description",
-                                            entry.description.toString()
-                                    )
+                }
+                is UrlLinkFrame -> {
+                    // do nothing
+                }
+                is PrivFrame -> {
+                    // do nothing
+                }
+                is GeobFrame -> {
+                    // do nothing
+                }
+                is ApicFrame -> {
+                    if (!entry.description.isNullOrEmpty()) {
+                        metadataList.add(
+                            AdPlayer.MetadataItem(
+                                "description",
+                                entry.description.toString()
                             )
-                        }
-                        if (!entry.mimeType.isNullOrEmpty()) {
-                            metadataList.add(
-                                    AdPlayer.MetadataItem(
-                                            "description",
-                                            entry.mimeType.toString()
-                                    )
+                        )
+                    }
+                    if (entry.mimeType.isNotEmpty()) {
+                        metadataList.add(
+                            AdPlayer.MetadataItem(
+                                "description",
+                                entry.mimeType
                             )
-                        }
+                        )
                     }
-                    is CommentFrame -> {
-                        if (!entry.text.isNullOrEmpty()) {
-                            metadataList.add(AdPlayer.MetadataItem("text", entry.text))
-                        }
+                }
+                is CommentFrame -> {
+                    if (entry.text.isNotEmpty()) {
+                        metadataList.add(AdPlayer.MetadataItem("text", entry.text))
                     }
-                    is Id3Frame -> {
-                        // do nothing
+                }
+                is Id3Frame -> {
+                    // do nothing
+                }
+                is EventMessage -> {
+                    // do nothing
+                }
+            }
+        }
+        listenerList.forEach { it.onMetadata(metadataList) }
+    }
+
+    //endregion
+
+
+    //region Analytics Listener
+
+    // monitor removed media sources and offset the windowIndex to reflect the ad index
+    private var removedMediaSourcesCount = 0
+
+    override fun onLoadStarted(eventTime: AnalyticsListener.EventTime, loadEventInfo: LoadEventInfo, mediaLoadData: MediaLoadData) {
+        val wi = eventTime.windowIndex
+        if ((wi >= 0) && ((wi + removedMediaSourcesCount) < playlist.size)) {
+            val item = playlist.elementAt(wi + removedMediaSourcesCount)
+            item.assetState = AssetState.LOADING
+            if (item.lastLoadingCallbackSent == LastLoadingCallbackSent.NONE) {
+                item.lastLoadingCallbackSent = LastLoadingCallbackSent.LOADING
+                val i = if (enqueueEnabledHint) wi + removedMediaSourcesCount else null
+                listenerList.forEach { it.onLoading(i) }
+            }
+        }
+    }
+
+    override fun onLoadCompleted(eventTime: AnalyticsListener.EventTime, loadEventInfo: LoadEventInfo, mediaLoadData: MediaLoadData) {
+        loadCompleted(eventTime.windowIndex + removedMediaSourcesCount)
+    }
+
+    override fun onLoadError(eventTime: AnalyticsListener.EventTime, loadEventInfo: LoadEventInfo, mediaLoadData: MediaLoadData, error: IOException, wasCanceled: Boolean) {
+        val wi = eventTime.windowIndex
+        if ((wi >= 0) && (wi < playlist.size)) {
+            playlist.elementAt(wi).assetState = AssetState.FAILED
+
+            if(wi < mediaSources.size) {
+                if (mediaSources.getMediaSource(wi).mediaItem.mediaId == loadEventInfo.uri.toString()) {
+                    mediaSources.removeMediaSource(wi)
+                    if (enqueueEnabledHint) {
+                        removedMediaSourcesCount++
                     }
-                    is EventMessage -> {
-                        // do nothing
+                    val errorMessage =
+                        "ExoPlayer failed to load media: ${loadEventInfo.uri} with ${error.message}"
+                    listenerList.forEach {
+                        it.onError(errorMessage)
+                        if (wi == playingIndex) it.onEnded()
                     }
                 }
             }
         }
-        listenerList.forEach { it.get()?.onMetadata(metadataList) }
+    }
+
+    override fun onLoadCanceled(eventTime: AnalyticsListener.EventTime, loadEventInfo: LoadEventInfo, mediaLoadData: MediaLoadData) {
+        val wi = eventTime.windowIndex
+        if ((wi >= 0) && (wi < playlist.size))
+            playlist.elementAt(wi).assetState = AssetState.CANCELED
+    }
+
+    private fun loadCompleted(index: Int) {
+        if ((index >= 0) && (index < playlist.size)) {
+            val item = playlist.elementAt(index)
+            item.assetState = AssetState.COMPLETED
+            if (item.lastLoadingCallbackSent == LastLoadingCallbackSent.LOADING) {
+                item.lastLoadingCallbackSent = LastLoadingCallbackSent.LOADING_FINISHED
+                val i = if (enqueueEnabledHint) index else null
+                listenerList.forEach { it.onLoadingFinished(i) }
+            }
+        }
     }
 
     //endregion
-    
-    	//region forward events
-    	
-		override fun onLoadStarted(eventTime: AnalyticsListener.EventTime, loadEventInfo: MediaSourceEventListener.LoadEventInfo, mediaLoadData: MediaSourceEventListener.MediaLoadData) {
-			eventTime?.windowIndex?.let { wi ->
-				if ((wi >= 0) && (wi < playlist.size)) {
-					val item = playlist.elementAt(wi + removedMediaSourcesCount)
-					item.assetState = AssetState.LOADING
-					if (item.lastLoadingCallbackSent == LastLoadingCallbackSent.NONE) {
-						item.lastLoadingCallbackSent = LastLoadingCallbackSent.LOADING
-						val i = if (enqueueEnabledHint) wi + removedMediaSourcesCount else null
-						listenerList.forEach { it.get()?.onLoading(i) }
-					}
-				}
-			}
-		}
 
-		override fun onLoadCompleted(eventTime: AnalyticsListener.EventTime, loadEventInfo: MediaSourceEventListener.LoadEventInfo, mediaLoadData: MediaSourceEventListener.MediaLoadData) {
-			eventTime?.windowIndex?.let { wi ->
-				loadCompleted(wi + removedMediaSourcesCount)
-			}
-		}
 
-		override fun onLoadError(eventTime: AnalyticsListener.EventTime, loadEventInfo: MediaSourceEventListener.LoadEventInfo, mediaLoadData: MediaSourceEventListener.MediaLoadData, error: IOException, wasCanceled: Boolean) {
-			eventTime.windowIndex.let { wi ->
-				if ((wi >= 0) && (wi < playlist.size)) {
-					playlist.elementAt(wi).assetState = AssetState.FAILED
+    //region CacheManager Listener
 
-					if(wi >= 0 && wi < mediaSources.size) {
-						if(mediaSources.getMediaSource(wi).tag == loadEventInfo?.uri?.toString()) {
-							mediaSources.removeMediaSource(wi)
-							if(enqueueEnabledHint) {
-								removedMediaSourcesCount++
-							}
-						}
-					}
-					val errorMessage = "ExoPlayer failed to load media: ${loadEventInfo.uri} with ${error.message}"
-					listenerList.forEach { it.get()?.onError(errorMessage) }
-				}
-			}
-		}
+    override fun onDownloadStarted(assetUri: String) = Unit
 
-		override fun onLoadCanceled(eventTime: AnalyticsListener.EventTime, loadEventInfo: MediaSourceEventListener.LoadEventInfo, mediaLoadData: MediaSourceEventListener.MediaLoadData) {
-			eventTime?.windowIndex?.let { wi ->
-				if ((wi >= 0) && (wi < playlist.size))
-					playlist.elementAt(wi).assetState = AssetState.CANCELED
-			}
-		}
+    override fun onDownloadCompleted(assetUri: String) = Unit
 
-		private fun loadCompleted(index: Int) {
-			if ((index >= 0) && (index < playlist.size)) {
-				val item = playlist.elementAt(index)
-				item.assetState = AssetState.COMPLETED
-				if (item.lastLoadingCallbackSent == LastLoadingCallbackSent.LOADING) {
-					item.lastLoadingCallbackSent = LastLoadingCallbackSent.LOADING_FINISHED
-					val i = if (enqueueEnabledHint) index else null
-					listenerList.forEach { it.get()?.onLoadingFinished(i) }
-				}
-			}
-		}
-		
-		override fun onVolumeChanged(volume: Float) {
-			super<AudioListener>.onVolumeChanged(volume)
-			listenerList.forEach { it.get()?.onVolumeChanged(volume) }
-		}
+    override fun onDownloadFailed(assetUri: String, error: Error) {
+        status = AdPlayer.Status.FAILED
+        listenerList.forEach {
+            it.onError(error.localizedMessage ?: "Download Failed for $assetUri")
+        }
+    }
 
-		// endregion
+    //endregion
 
-		// region VideoListener
 
-		override fun onVideoSizeChanged(width: Int, height: Int, unappliedRotationDegrees: Int, pixelWidthHeightRatio: Float) {
-			listenerList.forEach { it.get()?.onVideoSizeChanged(this, width, height) }
-		}
+    // region Audio Listener
 
-		//endregion
-    
-	}
+    override fun onVolumeChanged(volume: Float) {
+        super<Player.Listener>.onVolumeChanged(volume)
+        listenerList.forEach { it.onVolumeChanged(volume) }
+    }
+
+    // endregion
+
+    // region VideoListener
+
+    override fun onVideoSizeChanged(videoSize: VideoSize) {
+        listenerList.forEach { it.onVideoSizeChanged(this, videoSize.width, videoSize.height) }
+    }
+    // endregion
+
+}
 ```
 
 ## Cache Manager
