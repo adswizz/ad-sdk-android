@@ -211,7 +211,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val STREAM_URL = "http://sdk.mobile.streaming.adswizz.com:8500/kissFM/playlist.m3u8"
+        const val STREAM_URL = "https://streaming.sdk.eks.devel.adswizz.com/addictalternative/playlist.m3u8"
     }
 
     enum class PlayerState {
