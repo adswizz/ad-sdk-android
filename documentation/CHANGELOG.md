@@ -10,19 +10,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - New public method in `AdswizzAdRequest.Builder`:
-    - `withCompanionZoneIds(companionZones: List<String>)` - todo add info
-    - `withCompanionZoneAliases(companionZoneAliases: List<String>)` - todo add info
+    - `withCompanionZoneIds(companionZones: List<String>)`
+    - `withCompanionZoneAliases(companionZoneAliases: List<String>)`
 - Added new artefact `com.adswizz:exoplayer2x` in the SDK library release. This new library provides compatibility across `com.google.android.exoplayer` versions in the range of [2.16.0; 2.19.1]. For more details, please visit the updated [Get Started](Android/SDKAndroid/GetStarted) section.
 
 ### Changed
 - Changed the default `VastVersion` to VAST 4.1 protocol in the `AdswizzAdRequest`. Starting with 7.12.0 version, the `AdswizzAdRequest.Builder.withVastVersion(vastVersion: VastVersion)` method will accept VastVersion.V40 and VastVersion.V41 values.
 - Improved **_AdswizzSDK_**'s listeners to ensure calls only on the `MainThread`.
 - The support for `com.adswizz:exoplayer2-14` and `com.adswizz:exoplayer2-15` artefacts is discontinued. The old versions are still available in `adswizz` github repository up to 7.11.1 versions.
-- Change the `AdswizzAdRequest.Builder.withZones(zones: Set<AdswizzAdZone>)` method signature to `AdswizzAdRequest.Builder.withZones(zones: List<AdswizzAdZone>)`. This will raise a compilation error that can be fixed easily by replacing the `setOf<AdswizzAdZone>(...)` with `listOf<AdswizzAdZone>(...)`. For more details, please visit the updated [Integration Guide](Android/SDKAndroid/ClientSideInsertion) section.
-- The legacy `AdswizzAdRequest.Builder.withCompanionZones(companionZones: String?)` method is now deprecated. As a replacement, you can use the newly added method `withCompanionZoneIds`.
+- Change the `AdswizzAdRequest.Builder.withZones(zones: Set<AdswizzAdZone>)` method signature to `AdswizzAdRequest.Builder.withZones(zones: List<AdswizzAdZone>)`. For more details, please visit [How to migrate to AdswizzSDK v7.12.0+](Android/Migrations/v7_12_0) page.
+- The legacy `AdswizzAdRequest.Builder.withCompanionZones(companionZones: String?)` method is deprecated and replaced with `AdswizzAdRequest.Builder.withCompanionZoneIds()`. For more details, please visit [How to migrate to AdswizzSDK v7.12.0+](Android/Migrations/v7_12_0) page.
 - The `com.adswizz:exoplayer-media3` artefact (used on **_AdswizzSDK_**'s InternalPlayer) is now compatible up to `androidx.media3:media3-exoplayer:1.5.1`. The **_AdswizzSDK_** library will not be bundled anymore with `androidx.media3:media3-exoplayer` as transitive dependency. For more details, please visit the updated [Get Started](Android/SDKAndroid/GetStarted) section.
 - Updated the [Client Side Insertion](Android/SDKAndroid/ClientSideInsertion) and [Get Started](Android/SDKAndroid/GetStarted) pages based on the new features.
-
 
 ## [7.11.1] - 2025-03-11
 
