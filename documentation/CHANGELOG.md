@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - New public method in `AdswizzAdRequest.Builder`:
-    - `withCompanionZoneIds(companionZones: List<String>)`
+    - `withCompanionZoneIds(companionZones: List<Int>)`
     - `withCompanionZoneAliases(companionZoneAliases: List<String>)`
 - Added new artefact `com.adswizz:exoplayer2x` in the SDK library release. This new library provides compatibility across `com.google.android.exoplayer` versions in the range of [2.16.0; 2.19.1]. For more details, please visit the updated [Get Started](Android/SDKAndroid/GetStarted) section.
 
