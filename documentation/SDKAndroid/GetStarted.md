@@ -364,12 +364,6 @@ implementation "androidx.media3:media3-exoplayer-smoothstreaming:$YourMedia3Vers
 > **Note**
 > The following dependencies: "com.google.android.exoplayer:exoplayer", "androidx.media3:media3-exoplayer-dash", "androidx.media3:media3-exoplayer-hls", "androidx.media3:media3-exoplayer-smoothstreaming" must be present in your `build.gradle` in order to successfully use the `com.adswizz:exoplayer-media3` wrapper.
 
-<br>Player module changes:
-- SDK version prior to 7.6.1 included the exoplayer dependency.
-- SDK version between [7.6.1; 7.9.3] the `com.adswizz:exoplayer2-*` or `com.adswizz:exoplayer-media3` dependency is separate and you must include it for the SDK to function correctly. There are 9 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14, 2.15, 2.16, 2.17 and 2.18, 2.19 and media3).
-Using different artifact version from exoplayer used in the app may result in crashing the app, thus the app need to include corresponding versions for sdk artifact and exoplayer library (i.e. add com.adswizz:exoplayer2-18: 7.7.21 dependecy when using com.google.android.exoplayer:exoplayer: 2.18.6 dependency)
-- SDK versions after 7.12.0 will have the <strong>player</strong> dependency as <strong>optional</strong> for integrations that doesn't use **_AdswizzSDK_** internal player. You can include only the `com.adswizz:adswizz-sdk` artefact if your are using your player to play the ad media. For more details, please visit [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md) section.
-
 In the code snippet above, replace <strong>SdkVersion</strong> with the version of SDK provided by Adswizz (i.e. 7.12.0 - the latest version). Example:
 
 ```groovy
@@ -378,6 +372,14 @@ implementation 'com.adswizz:adswizz-sdk:7.12.0'
 implementation "com.adswizz:exoplayer-media3:7.12.0"
 
 ```
+
+<br>Player module changes across versions:
+- SDK version prior to 7.6.1 included the exoplayer dependency.
+- SDK version between [7.6.1; 7.9.3] the `com.adswizz:exoplayer2-*` or `com.adswizz:exoplayer-media3` dependency is separate and you must include it for the SDK to function correctly. There are 9 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14, 2.15, 2.16, 2.17 and 2.18, 2.19 and media3).
+Using different artifact version from exoplayer used in the app may result in crashing the app, thus the app need to include corresponding versions for sdk artifact and exoplayer library (i.e. add com.adswizz:exoplayer2-18: 7.7.21 dependecy when using com.google.android.exoplayer:exoplayer: 2.18.6 dependency)
+- SDK versions after 7.12.0 will have the <strong>player</strong> dependency as <strong>optional</strong> for integrations that doesn't use **_AdswizzSDK_** internal player. You can include only the `com.adswizz:adswizz-sdk` artefact if your are using your player to play the ad media. For more details, please visit [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md) section.
+
+
 
 > **Note**
 > if you are compiling with an API > 30 (*Android 11*), you must also include a newer version of the Androidx WorkManager runtime, as follows:
