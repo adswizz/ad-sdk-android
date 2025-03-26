@@ -75,7 +75,7 @@ The `withCompanionZoneAliases(companionZoneAliases: List<String>)` method provid
 ```
 
 > **Note**
-> Setting simultaneously `companionZoneIds` and `companionZoneAliases` in the AdswizzAdRequest.Builder will throw an Exception.
+> Calling both `withCompanionZoneIds` and `withCompanionZoneAliases` simultaneously on the `AdswizzAdRequest.Builder` will result in an exception.
 
 Once the request is made, if there is a companion associated with the ad, it will be loaded into your **_AdCompanionView_** object.
 
