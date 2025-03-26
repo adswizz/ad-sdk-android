@@ -14,7 +14,7 @@ You can choose between the following communication methods that fit your needs b
 
 ```groovy
 
-        implementation "com.adswizz:adswizz-sdk:7.11.1" // <--- sdk module
+        implementation "com.adswizz:adswizz-sdk:7.11.1" // AdsWizz SDK module
 //      The com.adswizz:exoplayer is not needed in this integration since 7.10.0
 //      implementation "com.adswizz:exoplayer2-19:7.11.1" // <--- old versioned Exoplayer module
 //      ------  Your other dependencies -----
