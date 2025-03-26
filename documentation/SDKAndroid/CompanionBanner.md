@@ -49,7 +49,7 @@ There are two scenarios for setting up the companion banner: one for client-side
 First, when you create an **_AdswizzAdRequest_**, you must configure the **_companionZones_** with the value provided by the PIM.
 </br>You can either use the zoneId or zoneAlias in the request builder, as follows:
 
-The new `withCompanionZoneIds(companionZoneIds: List<Int>)` method allows you to specify multiple numeric companion zone IDs. It replaces the deprecated `withCompanionZones(companionZones: String?)` method from previous versions.
+The `withCompanionZoneIds(companionZoneIds: List<Int>)` method allows you to specify multiple numeric companion zone IDs. It replaces the deprecated `withCompanionZones(companionZones: String?)` method from previous versions.
 
 ```kotlin
         AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
@@ -62,7 +62,7 @@ The new `withCompanionZoneIds(companionZoneIds: List<Int>)` method allows you to
             }
 ```
 
-The new `withCompanionZoneAliases(companionZoneAliases: List<String>)` method provides a convenient way to specify companion zones using string aliases instead of numeric IDs. The aliases should be formatted as follows:
+The `withCompanionZoneAliases(companionZoneAliases: List<String>)` method provides a convenient way to specify companion zones using string aliases instead of numeric IDs. The aliases should be formatted as follows:
 
 ```kotlin
         AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
