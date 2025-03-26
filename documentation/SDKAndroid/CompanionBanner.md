@@ -47,15 +47,34 @@ There are two scenarios for setting up the companion banner: one for client-side
 
 ### Client-side setup
 First, when you create an **_AdswizzAdRequest_**, you must configure the **_companionZones_** with the value provided by the PIM.
+</br>You can either use the zoneId or zoneAlias in the request builder, as follows:
+
+- `withCompanionZoneIds(companionZoneIds: List<Int>)` method enables you to provide multiple **numerical** companion zone ids. This is a replacement for legacy `withCompanionZones(companionZones: String?)` method used in previous versions.
 
 ```kotlin
         AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
             .withServer("SERVER_PROVIDED_BY_PIM")
-            .withZones(setOf(AdswizzAdZone("ZONEID_PROVIDED_BY_PIM")))
-            .withCompanionZones("COMPANION_PROVIDED_BY_PIM") // A comma-separated list of zone IDs from where companions will be selected. Ex: "1234,5678"
+            .withZones(listOf(AdswizzAdZone("ZONEID_1"), AdswizzAdZone("ZONEID_2")))
+//            .withCompanionZones("1243")  <--- deprecated in 7.12.0
+            .withCompanionZoneIds(listOf(123, 5678))
             .build { adswizzAdRequest ->
+//                    handle the request
             }
 ```
+
+- `withCompanionZoneAliases(companionZoneAliases: List<String>)` is a convenience method that can be used when companion zones are in a **string** format, as follows:
+
+```kotlin
+        AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
+            .withServer("SERVER_PROVIDED_BY_PIM")
+            .withZones(listOf(AdswizzAdZone("ZONEID_1"), AdswizzAdZone("ZONEID_2")))
+            .withCompanionZoneAliases(listOf("COMPANION_ALIAS_1", "COMPANION-ALIAS-2"))
+            .build { adswizzAdRequest ->
+//                    handle the request
+            }
+```
+> **Note**
+> Setting simultaneously `companionZoneIds` and `companionZoneAliases` in the AdswizzAdRequest.Builder will throw an Exception.
 
 Once the request is made, if there is a companion associated with the ad, it will be loaded into your **_AdCompanionView_** object.
 
