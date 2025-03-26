@@ -35,6 +35,7 @@
 
 	- [How to migrate to AdswizzSDK v7.8.0+](Android/Migrations/v7_8_0.md)
 	- [How to migrate to AdswizzSDK v7.8.2+](Android/Migrations/v7_8_2.md)
+	- [How to migrate to AdswizzSDK v7.12.0+](Android/Migrations/v7_12_0.md)
 
 - AdswizzSDK Extensions
 
