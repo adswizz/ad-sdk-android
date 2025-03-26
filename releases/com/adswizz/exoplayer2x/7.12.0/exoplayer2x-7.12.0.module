@@ -1,0 +1,83 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "exoplayer2x",
+    "version": "7.12.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.9"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.8.22"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "exoplayer2x-7.12.0.aar",
+          "url": "exoplayer2x-7.12.0.aar",
+          "size": 38192,
+          "sha512": "67af6d8e3c03f8d8b7b6da29367707148f5a07349686c3e4e8e95d39e7aadbd1d194f3e9e74537e684e80742682d5355797790fb4189db3a6ffb12b742af2e56",
+          "sha256": "ef46629d5aa5fbe3184254935d8edbcc27b2f8d079291500cc67d68d6a5ce219",
+          "sha1": "e1cdcfc703da887e15a1023a2ebcb601aefed221",
+          "md5": "72b1dd55d45b1f93bfc9aa87a36cdf6c"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.annotation",
+          "module": "annotation",
+          "version": {
+            "requires": "1.5.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.8.22"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "exoplayer2x-7.12.0.aar",
+          "url": "exoplayer2x-7.12.0.aar",
+          "size": 38192,
+          "sha512": "67af6d8e3c03f8d8b7b6da29367707148f5a07349686c3e4e8e95d39e7aadbd1d194f3e9e74537e684e80742682d5355797790fb4189db3a6ffb12b742af2e56",
+          "sha256": "ef46629d5aa5fbe3184254935d8edbcc27b2f8d079291500cc67d68d6a5ce219",
+          "sha1": "e1cdcfc703da887e15a1023a2ebcb601aefed221",
+          "md5": "72b1dd55d45b1f93bfc9aa87a36cdf6c"
+        }
+      ]
+    }
+  ]
+}
