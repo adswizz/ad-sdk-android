@@ -3,16 +3,14 @@ apply plugin: 'kotlin-android'
 //apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdk 34
+    compileSdk 35
     namespace "com.adswizz.streamingsample.ext"
     defaultConfig {
         applicationId "com.adswizz.streamingsample.ext"
         minSdkVersion 24
-        targetSdkVersion 34
+        targetSdkVersion 35
         versionCode 1
         versionName "1.0"
-
-        ndkVersion '21.3.6528147'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -43,7 +41,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.adswizz:adswizz-sdk:7.11.0'
+    implementation 'com.adswizz:adswizz-sdk:7.12.0'
     //implementation 'com.adswizz:exoplayer2-19:7.11.0' - there is no need for adswizz player if using external player
     implementation 'com.google.android.exoplayer:exoplayer:2.19.1'
 
