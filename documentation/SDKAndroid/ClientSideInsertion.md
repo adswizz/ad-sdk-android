@@ -42,12 +42,15 @@ The minimal request looks like the following: one or more zones and a server url
 ```kotlin
 	AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
             .withServer("SERVER_PROVIDED_BY_PIM")
-            .withZones(setOf(AdswizzAdZone("ZONEID_1_PROVIDED_BY_PIM"), ... AdswizzAdZone("ZONEID_n_PROVIDED_BY_PIM")))
+            .withZones(listOf(AdswizzAdZone("ZONEID_1_PROVIDED_BY_PIM"), ... AdswizzAdZone("ZONEID_n_PROVIDED_BY_PIM")))
             .build { adswizzAdRequest ->
 			// handle resulted adswizzAdRequest
             }
 ```
 The ad server and the zoneId(s) will be provided to you by an AdsWizz PIM.
+
+> **Note**
+> The order and uniqueness of the provided **_AdswizzAdZone_** array is essential to properly retrieve the ads.
 
 **Add shims zone to AdswizzAdRequest**
 Only one shim zone can be set in `AdswizzAdRequest`.
@@ -139,7 +142,7 @@ class MainActivity : AppCompatActivity(), AdManagerListener {
 
         AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
             .withServer("SERVER_PROVIDED_BY_PIM")
-            .withZones(setOf(AdswizzAdZone("ZONEID_PROVIDED_BY_PIM")))
+            .withZones(listOf(AdswizzAdZone("ZONEID_PROVIDED_BY_PIM")))
             .build { adswizzAdRequest ->
 
                 AdRequestConnection(adswizzAdRequest)
@@ -203,7 +206,7 @@ Once presented with an AdManager, you can call different actions on the AdManage
 
 Call this method to begin to cycle through the ads in the AdManager. This method ensures that the player buffers enough data so that ad playing starts smoothly. Upon calling this method, the ads start loading. The SDK will trigger the **_PreparingForPlay_** event, informing your app that buffering has begun for a specific ad. Once buffering is done, the **_ReadyForPlay_** event for the ad will be triggered. If the `adManager` instance has no ad (EmptyAds scenario), a **_ReadyForPlay_** event with `null` instead of an `AdEvent` instance will be triggered.
 > **Note**
-> Since 7.10.0 version, this method may throw an IllegalStateException if you are using the **_AdswizzSDK_** internal player without adding one of the following dependencies: `com.adswizz:exoplayer2-*` or `com.adswizz:exoplayer-media3` in your project.
+> Since 7.10.0 version, this method may throw an IllegalStateException if you are using the **_AdswizzSDK_** internal player without adding one of the following dependencies: `com.adswizz:exoplayer2x` or `com.adswizz:exoplayer-media3` in your project.
 > The IllegalStateException will not be thrown if you pass your own player instance through **_AdManagerSettings_**.
 
 ### play
@@ -502,7 +505,7 @@ Read more about `AdManagerDatasource` methods and behavior here: [Working with t
             AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
                 .withServer("SERVER_PROVIDED_BY_PIM")
                 .withExpectedAdsReporting(true)
-                .withZones(setOf(AdswizzAdZone(zoneId = "12345", maxAds = 3), AdswizzAdZone(zoneId = "122245", maxAds = 2), AdswizzAdZone(zoneId = "17865")))
+                .withZones(listOf(AdswizzAdZone(zoneId = "12345", maxAds = 3), AdswizzAdZone(zoneId = "122245", maxAds = 2), AdswizzAdZone(zoneId = "17865")))
                 .build { adswizzAdRequest ->
 		}
         ....
