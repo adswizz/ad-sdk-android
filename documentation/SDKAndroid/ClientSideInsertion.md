@@ -50,7 +50,8 @@ The minimal request looks like the following: one or more zones and a server url
 The ad server and the zoneId(s) will be provided to you by an AdsWizz PIM.
 
 > **Note**
-> The order and uniqueness of the provided **_AdswizzAdZone_** array is essential to properly retrieve the ads.
+> Ensure the provided `AdswizzAdZone` array is ordered and unique, as this directly impacts the sequence of ads returned by the Ad Server.
+
 
 **Add shims zone to AdswizzAdRequest**
 Only one shim zone can be set in `AdswizzAdRequest`.
