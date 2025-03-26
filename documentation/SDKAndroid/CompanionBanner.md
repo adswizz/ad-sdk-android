@@ -49,30 +49,31 @@ There are two scenarios for setting up the companion banner: one for client-side
 First, when you create an **_AdswizzAdRequest_**, you must configure the **_companionZones_** with the value provided by the PIM.
 </br>You can either use the zoneId or zoneAlias in the request builder, as follows:
 
-- `withCompanionZoneIds(companionZoneIds: List<Int>)` method enables you to provide multiple **numerical** companion zone ids. This is a replacement for legacy `withCompanionZones(companionZones: String?)` method used in previous versions.
+The new `withCompanionZoneIds(companionZoneIds: List<Int>)` method allows you to specify multiple numeric companion zone IDs. It replaces the deprecated `withCompanionZones(companionZones: String?)` method from previous versions.
 
 ```kotlin
         AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
             .withServer("SERVER_PROVIDED_BY_PIM")
-            .withZones(listOf(AdswizzAdZone("ZONEID_1"), AdswizzAdZone("ZONEID_2")))
-//            .withCompanionZones("1243")  <--- deprecated in 7.12.0
-            .withCompanionZoneIds(listOf(123, 5678))
+            .withZones(listOf(AdswizzAdZone("ID_1"), AdswizzAdZone("ID_2")))
+             //.withCompanionZones("123,5678")  // Deprecated as of v7.12.0
+            .withCompanionZoneIds(listOf(123, 5678)) // New method from v7.12.0
             .build { adswizzAdRequest ->
 //                    handle the request
             }
 ```
 
-- `withCompanionZoneAliases(companionZoneAliases: List<String>)` is a convenience method that can be used when companion zones are in a **string** format, as follows:
+The new `withCompanionZoneAliases(companionZoneAliases: List<String>)` method provides a convenient way to specify companion zones using string aliases instead of numeric IDs. The aliases should be formatted as follows:
 
 ```kotlin
         AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
             .withServer("SERVER_PROVIDED_BY_PIM")
-            .withZones(listOf(AdswizzAdZone("ZONEID_1"), AdswizzAdZone("ZONEID_2")))
-            .withCompanionZoneAliases(listOf("COMPANION_ALIAS_1", "COMPANION-ALIAS-2"))
+            .withZones(listOf(AdswizzAdZone("ID_1"), AdswizzAdZone("ID_2")))
+            .withCompanionZoneAliases(listOf("ALIAS_1", "ALIAS_2")) //convenience method for zone aliases
             .build { adswizzAdRequest ->
-//                    handle the request
-            }
+                 //handle the request
+             }
 ```
+
 > **Note**
 > Setting simultaneously `companionZoneIds` and `companionZoneAliases` in the AdswizzAdRequest.Builder will throw an Exception.
 
