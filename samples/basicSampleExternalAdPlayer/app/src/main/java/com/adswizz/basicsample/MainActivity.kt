@@ -184,7 +184,7 @@ class MainActivity : AppCompatActivity() {
             //Build the Ad Request with the needed parameters
             AdswizzAdRequest.Builder()
                 .withServer(SERVER_URL)
-                .withZones(setOf(AdswizzAdZone(ZONE_ID)))
+                .withZones(listOf(AdswizzAdZone(ZONE_ID)))
                 .withCompanionZones(COMPANION_ID)
                 .withExpectedAdsReporting(true)
                 .build { adRequest ->

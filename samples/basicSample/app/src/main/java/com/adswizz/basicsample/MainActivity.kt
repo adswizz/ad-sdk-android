@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val SERVER_URL = "demo.deliveryengine.adswizz.com"
         const val ZONE_ID = "17862"
-        const val COMPANION_ZONE_ID = "17863"
+        const val COMPANION_ZONE_ID = 17863
 
     }
 
@@ -193,8 +193,8 @@ class MainActivity : AppCompatActivity() {
             AdswizzAdRequest.Builder()
                 .withServer(SERVER_URL)
                 .withHttpProtocol(protocol)
-                .withZones(setOf(AdswizzAdZone(ZONE_ID)))
-                .withCompanionZones(COMPANION_ZONE_ID)
+                .withZones(listOf(AdswizzAdZone(ZONE_ID)))
+                .withCompanionZoneIds(listOf(COMPANION_ZONE_ID))
                 .build { adRequest ->
                     // Create the AdRequestConnection using the above adRequest
                     adRequestConnection = AdRequestConnection(adRequest)
