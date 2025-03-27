@@ -87,7 +87,7 @@ fun App(
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
-                TopAppBar(colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Purple40),
+                TopAppBar(colors = TopAppBarDefaults.topAppBarColors(containerColor = Purple40),
                     navigationIcon = {
                         if (canNavigateBack) {
                             IconButton(onClick = {

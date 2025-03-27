@@ -205,7 +205,7 @@ class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener
     }
 
     override fun reset() {
-        player.stop(true)
+        player.stop()
         player.playWhenReady = false
         status = AdPlayer.Status.INITIALIZED
         duration = null
