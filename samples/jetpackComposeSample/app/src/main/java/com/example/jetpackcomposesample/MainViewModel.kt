@@ -34,7 +34,7 @@ class MainViewModel : ViewModel() {
     private val _logs = MutableStateFlow(emptyList<String>())
     val logs = _logs.asStateFlow()
 
-    private var zoneIdAndCompanion = Pair("17862", "17863")
+    private var zoneIdAndCompanion = Pair("17862", 17863)
 
     private var _selectedResourceText = MutableStateFlow("Static Resource")
     val selectedResourceText = _selectedResourceText.asStateFlow()
@@ -80,8 +80,8 @@ class MainViewModel : ViewModel() {
     }
     private fun requestCompanionAd() {
         AdswizzAdRequest.Builder()
-            .withZones(setOf(AdswizzAdZone(zoneId = zoneIdAndCompanion.first)))
-            .withCompanionZones(zoneIdAndCompanion.second)
+            .withZones(listOf(AdswizzAdZone(zoneId = zoneIdAndCompanion.first)))
+            .withCompanionZoneIds(listOf(zoneIdAndCompanion.second))
             .withServer("demo.deliveryengine.adswizz.com").build {
                 AdRequestConnection(it).requestAds { adManager, _ ->
                     adManager ?: return@requestAds
@@ -117,7 +117,7 @@ class MainViewModel : ViewModel() {
 
     private fun requestVideoAd(){
         AdswizzAdRequest.Builder()
-            .withZones(setOf(AdswizzAdZone(zoneId ="17161")))
+            .withZones(listOf(AdswizzAdZone(zoneId ="17161")))
             .withServer("demo.deliveryengine.adswizz.com").build {
                 AdRequestConnection(it).requestAds { adManager, _ ->
                     adManager ?: return@requestAds
@@ -162,10 +162,10 @@ class MainViewModel : ViewModel() {
     fun onResourceSelected(resourceType: String) {
         zoneIdAndCompanion = if (resourceType.contains("HtmlResource", ignoreCase = true)) {
             _selectedResourceText.tryEmit("HtmlResource")
-            "12561" to "12562"
+            "12561" to 12562
         } else {
             _selectedResourceText.tryEmit("Static Resource")
-            Pair("17862", "17863")
+            Pair("17862", 17863)
         }
         currentManager?.reset()
         currentManager = null

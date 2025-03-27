@@ -151,7 +151,7 @@ class MainActivity : AppCompatActivity(), CacheManager.Listener {
         binding.appLogs.movementMethod = scroll
 
         AdswizzSDK.initialize(this)
-        binding.sdkVersion.text = String.format(getString(R.string.adswizz_version_prefix, com.adswizz.sdk.BuildConfig.VERSION_NAME))
+        binding.sdkVersion.text = getString(R.string.adswizz_version_prefix, com.adswizz.sdk.BuildConfig.VERSION_NAME)
 
         adManagerSettings = AdManagerSettings.Builder()
             .addCachePolicy(CachePolicy.ASSETS)
@@ -162,7 +162,7 @@ class MainActivity : AppCompatActivity(), CacheManager.Listener {
         //Build the Ad Request with the needed parameters
         AdswizzAdRequest.Builder()
             .withServer(SERVER_URL)
-            .withZones(setOf(AdswizzAdZone(ZONE_ID), AdswizzAdZone(ZONE_ID_2)))
+            .withZones(listOf(AdswizzAdZone(ZONE_ID), AdswizzAdZone(ZONE_ID_2)))
             .build { adRequest ->
                 // Create the AdRequestConnection using the above adRequest
                 adRequestConnection = AdRequestConnection(adRequest)

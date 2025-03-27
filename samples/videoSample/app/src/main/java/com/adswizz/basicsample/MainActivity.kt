@@ -215,8 +215,8 @@ class MainActivity : AppCompatActivity() {
                     AdswizzAdRequest.Builder()
                         .withServer(SERVER_URL)
                         .withHttpProtocol(protocol)
-                        .withZones(setOf(AdswizzAdZone(ZONE_ID)))
-                        .build() { adRequest ->
+                        .withZones(listOf(AdswizzAdZone(ZONE_ID)))
+                        .build { adRequest ->
                             // Create the AdRequestConnection using the above adRequest
                             adRequestConnection = AdRequestConnection(adRequest)
                             adRequestConnection?.requestAds { adManager, error ->

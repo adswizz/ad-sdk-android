@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.example.jetpackcomposesample"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.jetpackcomposesample"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -59,10 +59,15 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation (libs.androidx.navigation.compose)
 
     implementation(libs.adswizz.sdk)
     implementation(libs.adswizz.exoplayer)
-    implementation (libs.androidx.navigation.compose)
+
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.exoplayer.hlsh)
+    implementation(libs.androidx.media3.exoplayer.ss)
+    implementation(libs.androidx.media3.exoplayer.dash)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

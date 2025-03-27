@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    compileSdk 34
+    compileSdk 35
     namespace "com.adswizz.podcastsample"
 
     defaultConfig {
         applicationId "com.adswizz.podcastsample"
         minSdkVersion 24
-        targetSdkVersion 34
+        targetSdkVersion 35
         versionCode 1
         versionName "1.0"
 
@@ -44,12 +44,14 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-//    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.7'
-//    implementation 'androidx.navigation:navigation-ui-ktx:2.7.7'
 
-    implementation 'com.adswizz:adswizz-sdk:7.10.0'
-    implementation 'com.adswizz:exoplayer-media3:7.10.0'
-//    implementation "androidx.work:work-runtime-ktx:2.9.0"
+    implementation 'com.adswizz:adswizz-sdk:7.12.0'
+    implementation "com.adswizz:exoplayer-media3:7.12.0"
+
+    implementation "androidx.media3:media3-exoplayer:1.5.1"
+    implementation "androidx.media3:media3-exoplayer-dash:1.5.1"
+    implementation "androidx.media3:media3-exoplayer-hls:1.5.1"
+    implementation "androidx.media3:media3-exoplayer-smoothstreaming:1.5.1"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
