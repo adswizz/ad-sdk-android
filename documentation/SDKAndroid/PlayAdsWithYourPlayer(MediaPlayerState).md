@@ -70,7 +70,8 @@ Similar to the `AdPlayer` interface, once you receive the `AdManager` instance t
 interface MediaPlayerState {
 
     /**
-     * This represents the current playing position between [0, currentDuration] time interval.
+     * This represents the current playing position. 
+     * This variable reflect the continuous progress for each item that is currently playing.
      */
     val currentPlayhead: Duration
 

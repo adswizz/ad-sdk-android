@@ -8,12 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.12.1] - 2025-04-17
 
 ### Changed
-- Removed the `currentDuration` parameter from `MediaPlayerState` interface. Starting with 7.12.1 version, the `MediaPlayerState` integrations will rely on the duration present in the `VAST` response. For more details, please refer to the updated [Playing Ads With Your Player using MediaPlayerState](Android/SDKAndroid/PlayAdsWithYourPlayer(MediaPlayerState).md) page.
+- Removed the `currentDuration` field in the `MediaPlayerState` interface. Starting with 7.12.1 version, the `MediaPlayerState` integrations will rely on the duration present in the `VAST` response. For more details, please refer to the updated [Playing Ads With Your Player using MediaPlayerState](Android/SDKAndroid/PlayAdsWithYourPlayer(MediaPlayerState).md) page.
 - The `com.adswizz:exoplayer-media3` artefact is now compatible up to `androidx.media3:media3-exoplayer:1.6.0`.
 - Updated the [Playing Ads With Your Player using MediaPlayerState](Android/SDKAndroid/PlayAdsWithYourPlayer(MediaPlayerState).md) page based on the new features.
 
 ### Fixed
-- Fixed **_AdswizzSDK_**'s internal `AdPlayer` compatibility when `com.google.android.exoplayer:exoplayer:2.18.2` artefact is present in the dependency tree.
+- Fixed **_AdswizzSDK_**'s internal `AdPlayer` compatibility when `com.google.android.exoplayer:exoplayer:2.18.2` artefact is used in the dependency tree.
 
 ## [7.12.0] - 2025-03-26
 
