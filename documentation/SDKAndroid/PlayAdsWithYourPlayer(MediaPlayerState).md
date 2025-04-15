@@ -74,11 +74,6 @@ interface MediaPlayerState {
      */
     val currentPlayhead: Duration
 
-    /**
-     * This represents the total duration of the current playing item.
-    */
-    val currentDuration: Duration
-
     // This is the event channel which the player uses to communicate to sdk
     // player events changes (like buffering, pause, resume, playing, etc.)
     val playerStatusFlow: SharedFlow<PlayerEvent>
