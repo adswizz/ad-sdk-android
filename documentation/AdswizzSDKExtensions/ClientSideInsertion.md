@@ -13,7 +13,7 @@ Since **_AdswizzSDK_** 7.9.0 you can request ads using a suspend function as fol
     viewModelScope.launch { 
         // or your custom scope 
         val manager = requestAdManagerWith { 
-            zones = setOf(AdswizzAdZone(ZONE_ID))
+            zones = listOf(AdswizzAdZone(ZONE_ID))
             server = SERVER_URL
        }.value ?: return@launch
         
@@ -28,7 +28,7 @@ Since **_AdswizzSDK_** 7.9.0 you can request ads using a suspend function as fol
     val job = viewModelScope.launch {
     // or your custom scope 
     val manager = requestAdManagerWith {
-        zones = setOf(AdswizzAdZone(ZONE_ID))
+        zones = listOf(AdswizzAdZone(ZONE_ID))
         server = SERVER_URL
         }
     }
@@ -63,7 +63,7 @@ adManager.postAction(AdManagerAction.Prepare)
 ```kotlin
 viewModelScope.launch {
     val manager =  requestAdManagerWith {
-        zones = setOf(AdswizzAdZone(ZONE_ID))
+        zones = listOf(AdswizzAdZone(ZONE_ID))
         server = SERVER_URL
     }.value ?: return@launch
 

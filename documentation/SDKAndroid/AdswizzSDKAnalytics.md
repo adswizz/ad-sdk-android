@@ -65,7 +65,7 @@ Here is an example using the **_AdswizzAdRequest_**:
         AdswizzAdRequest.Builder()
             .withServer("SERVER_PROVIDED_BY_PIM")
             .withZones(
-                setOf(
+                listOf(
                     AdswizzAdZone("ZONEID_1_PROVIDED_BY_PIM"),
                     AdswizzAdZone("ZONEID_n_PROVIDED_BY_PIM")
                 )

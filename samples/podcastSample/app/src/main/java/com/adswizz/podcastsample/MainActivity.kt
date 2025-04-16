@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
     //Setting: PODCAST URL
     private val podcastUri: Uri =
-        Uri.parse("http://sdk.mobile.streaming.adswizz.com:8501/podcast_RAD_QueenBohemian.mp3")
+        Uri.parse("https://streaming.sdk.eks.devel.adswizz.com/podcast/podcast_RAD_QueenBohemian.mp3")
 
     private var downloadedLocation: Uri? = null
     private var downloadingAsset: DownloadableAsset? = null

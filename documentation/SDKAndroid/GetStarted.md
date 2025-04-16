@@ -76,8 +76,8 @@ androidCompileSdkVersion = 35
 
 kotlin_version = '1.8.22'
 coreKtxVersion = '1.12.0'
-exoPlayerVerison = '2.14.2' // and others up to 2.19.1
-media3Version = '1.2.0'
+exoPlayerVerison = '2.16.0' // and others up to 2.19.1
+media3Version = '1.2.0' // and others up to 1.6.0
 gmsPlayServicesAdsIdentifierVersion = '18.0.1'
 moshiVersion = '1.14.0'
 lifecycleRuntimeKtxVersion = '2.5.1'

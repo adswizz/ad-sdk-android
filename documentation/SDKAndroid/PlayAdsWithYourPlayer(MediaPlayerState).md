@@ -15,7 +15,7 @@ Similar to the `AdPlayer` interface, once you receive the `AdManager` instance t
 ```kotlin
 	AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
             .withServer("SERVER_PROVIDED_BY_PIM")
-            .withZones(setOf(AdswizzAdZone("ZONEID_1_PROVIDED_BY_PIM"), ... AdswizzAdZone("ZONEID_n_PROVIDED_BY_PIM")))
+            .withZones(listOf(AdswizzAdZone("ZONEID_1_PROVIDED_BY_PIM"), ... AdswizzAdZone("ZONEID_n_PROVIDED_BY_PIM")))
             .build { adswizzAdRequest ->
 			
 			val adRequestConnection = AdRequestConnection(adRequest) // Create the AdRequestConnection using the above adRequest
@@ -70,14 +70,10 @@ Similar to the `AdPlayer` interface, once you receive the `AdManager` instance t
 interface MediaPlayerState {
 
     /**
-     * This represents the current playing position between [0, currentDuration] time interval.
+     * This represents the current playing position. 
+     * This variable reflect the continuous progress for each item that is currently playing.
      */
     val currentPlayhead: Duration
-
-    /**
-     * This represents the total duration of the current playing item.
-    */
-    val currentDuration: Duration
 
     // This is the event channel which the player uses to communicate to sdk
     // player events changes (like buffering, pause, resume, playing, etc.)

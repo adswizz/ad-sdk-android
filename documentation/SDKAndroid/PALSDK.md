@@ -12,7 +12,7 @@ Once you get a **_PalNonceHandlerInterface_**, there is a final step to take: li
 ```kotlin
 AdswizzAdRequest.Builder()
     .withServer(SERVER_URL)
-    .withZones(setOf(AdswizzAdZone(ZONE_ID)))
+    .withZones(listOf(AdswizzAdZone(ZONE_ID)))
     ...
     .withNonceHandler(palNonceHandler) //set here the palNonceHandler object previously created
     .build { adswizzAdRequest ->
