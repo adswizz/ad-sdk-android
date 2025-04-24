@@ -40,7 +40,10 @@ class ExternalMediaPlayerState(val context: Context) : MediaPlayerState, Player.
 
 
     override val currentPlayhead: Duration
-        get() = playerCurrentPlayHead.toDuration(DurationUnit.MILLISECONDS)
+        get() {
+            println("*** player get head: $playerCurrentPlayHead")
+            return playerCurrentPlayHead.toDuration(DurationUnit.MILLISECONDS)
+        }
 
     override val currentDuration: Duration
         get() = playerCurrentDuration.toDuration(DurationUnit.MILLISECONDS)
@@ -132,6 +135,8 @@ class ExternalMediaPlayerState(val context: Context) : MediaPlayerState, Player.
 
     fun resetPlayer(){
         Handler(backgroundLooper).post {
+            playerCurrentDuration = 0
+            playerCurrentPlayHead = 0
             player.stop()
             player.clearMediaItems()
             player.playWhenReady = false
@@ -226,6 +231,8 @@ class ExternalMediaPlayerState(val context: Context) : MediaPlayerState, Player.
                                     emitHelper(MediaPlayerState.PlayerEvent.Resume(id))
                                 }
                             } else {
+                                playerCurrentDuration = player.duration
+                                println("*** player on play")
                                 player.currentMediaItem?.mediaId?.let { id ->
                                     emitHelper(MediaPlayerState.PlayerEvent.StartPlaying(id))
                                 }

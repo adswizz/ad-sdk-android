@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
     private var adRequestConnection: AdRequestConnection? = null
 
     private lateinit var externalMediaPlayerState: ExternalMediaPlayerState
+    private lateinit var externalExoPlayer: ExternalExoPlayer
 
     private var adManagerState: AdManagerState = AdManagerState.Unknown
 
@@ -117,7 +118,6 @@ class MainActivity : AppCompatActivity() {
 
                 AdEvent.Type.State.AllAdsCompleted -> {
                     adManagerState = AdManagerState.AllAdsCompleted
-                    //playButton.setBackgroundResource(R.drawable.ic_play_arrow_black_24dp)
                     binding.appLogs.addEntry("Ad - all ads completed")
                 }
 
@@ -185,6 +185,7 @@ class MainActivity : AppCompatActivity() {
 
         //Build the Ad Request with the needed parameters
         externalMediaPlayerState = ExternalMediaPlayerState(this)
+        externalExoPlayer = ExternalExoPlayer(this)
         AdswizzSDK.initialize(this) {
             AdswizzAdRequest.Builder()
                 .withServer(SERVER_URL)
@@ -231,11 +232,20 @@ class MainActivity : AppCompatActivity() {
                         if (adManagerState == AdManagerState.Unknown) {
                             binding.appLogs.addEntry("Recommendation: just to be sure that the ad playback will start immediately wait for the <<AdEvent.Type.State.ReadyForPlay>> event")
                         }
-                        externalMediaPlayerState.play()
+                        if ( useMediaPlayerState ) {
+                            externalMediaPlayerState.play()
+                        }
+                        else{
+                            adManager?.play()
+                        }
                     }
                     AdManagerState.Paused -> {
-                        externalMediaPlayerState.resume()
-                        //adManager?.resume()
+                        if ( useMediaPlayerState ) {
+                            externalMediaPlayerState.resume()
+                        }
+                        else {
+                            adManager?.resume()
+                        }
                     }
 //                    AdManagerState.AllAdsCompleted -> {
 //                        player.stop()
@@ -263,9 +273,12 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             R.id.menuPause -> {
-                //adManager?.pause()
-//                player.playWhenReady = false
-                externalMediaPlayerState.pause()
+                if ( useMediaPlayerState ) {
+                    externalMediaPlayerState.pause()
+                }
+                else{
+                    adManager?.pause()
+                }
             }
         }
         return super.onOptionsItemSelected(item)
@@ -281,12 +294,26 @@ class MainActivity : AppCompatActivity() {
         if (adManager != null) {
             this.adManager = adManager
             binding.appLogs.addEntry("Received ad manager")
-            adManager.adManagerSettings = AdManagerSettings.Builder().timeoutIntervalForResource(2.5).build()
+//            adManager.adManagerSettings = AdManagerSettings.Builder().timeoutIntervalForResource(2.5).build()
             adManager.setListener(listener)
-            adManager.adManagerSettings = AdManagerSettings.Builder().mediaPlayerStateInstance(externalMediaPlayerState).build()
-            adManager.ads.forEachIndexed { idx, ad ->
+
+            if ( useMediaPlayerState) {
+                adManager.adManagerSettings =
+                    AdManagerSettings.Builder().mediaPlayerStateInstance(externalMediaPlayerState)
+                        .build()
+                adManager.ads.forEachIndexed { idx, ad ->
 //                println("*** load media item: ${ad.instanceId}  ${ad.mediaUrlString} $idx")
-                externalMediaPlayerState.loadMediaItem(ad.instanceId, Uri.parse(ad.mediaUrlString), idx )
+                    externalMediaPlayerState.loadMediaItem(
+                        ad.instanceId,
+                        Uri.parse(ad.mediaUrlString),
+                        idx
+                    )
+                }
+            }
+            else{
+                adManager.adManagerSettings =
+                    AdManagerSettings.Builder().adPlayerInstance(externalExoPlayer)
+                        .build()
             }
 
             adManager.prepare()

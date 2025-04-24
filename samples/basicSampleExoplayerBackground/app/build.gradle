@@ -6,7 +6,7 @@ android {
     compileSdk 35
 
     defaultConfig {
-        applicationId "com.adswizz.basicsample"
+        applicationId "com.adswizz.basicsamplebackground"
         minSdkVersion 24
         targetSdkVersion 35
         versionCode 1

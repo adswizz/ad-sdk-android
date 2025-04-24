@@ -2,6 +2,9 @@ package com.adswizz.basicsample
 
 import android.content.Context
 import android.net.Uri
+import android.os.Handler
+import android.os.HandlerThread
+import android.os.Looper
 import android.view.Surface
 import com.adswizz.common.AdPlayer
 import com.adswizz.common.CommonContext
@@ -33,6 +36,11 @@ import java.util.concurrent.CopyOnWriteArrayList
 
 @Suppress("DEPRECATION")
 class ExternalExoPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsListener{
+
+    private var playerCurrentDuration = 0L
+    private var playerCurrentPlayHead = 0L
+    private var playerCurrentVolume = 0.0f
+
 
     private enum class AssetState {
         INITIALIZED,
@@ -88,12 +96,22 @@ class ExternalExoPlayer(context: Context) : AdPlayer, Player.Listener, Analytics
 
 
     private var status: AdPlayer.Status = AdPlayer.Status.INITIALIZED
-    private var duration: Double? = null
+    //private var duration: Double? = null
     private var listenerList: ConcurrentLinkedQueue<AdPlayer.Listener> =
         ConcurrentLinkedQueue()
 
-    val player: SimpleExoPlayer =
-        SimpleExoPlayer.Builder(context).build()
+    private val handlerThread = HandlerThread("ExoPlayerThread1").apply {
+        start()
+    }
+    private val backgroundLooper: Looper = handlerThread.getLooper()
+    private val handler = Handler(backgroundLooper)
+
+    private val updateInterval = 300L // 1 second
+
+    val player: SimpleExoPlayer = SimpleExoPlayer
+            .Builder(context)
+            .setLooper(backgroundLooper)
+            .build()
     private val mediaSources = ConcatenatingMediaSource()
 
     private val playlist = CopyOnWriteArrayList<Asset>()
@@ -102,10 +120,25 @@ class ExternalExoPlayer(context: Context) : AdPlayer, Player.Listener, Analytics
 
     private var adVideoState: AdVideoState? = null
 
+    private val updatePlayheadRunnable = object : Runnable {
+        override fun run() {
+            if (player.isPlaying) {
+                playerCurrentPlayHead = player.currentPosition
+                playerCurrentDuration = player.duration
+            }
+            playerCurrentVolume = player.volume
+            println("*** player AdPlayer: pos: $playerCurrentPlayHead dur: $playerCurrentDuration vol: $playerCurrentVolume")
+            handler.postDelayed(this, updateInterval)
+        }
+    }
+
 
     init {
         player.addListener(this)
         player.addAnalyticsListener(this)
+        Handler(handlerThread.looper).post {
+            playerCurrentVolume = player.volume
+        }
     }
 
     //eionut: cleanup should be used by AdManagers when they do cleanup
@@ -133,8 +166,14 @@ class ExternalExoPlayer(context: Context) : AdPlayer, Player.Listener, Analytics
 
             playingIndex = 0
             seekInProgress = true
-            player.setMediaSource(mediaSources)
-            player.prepare()
+
+            Handler(handlerThread.looper).post {
+                player.setMediaSource(mediaSources)
+                player.prepare()
+                if ( mediaSources.size == 1){
+                    handler.post(updatePlayheadRunnable)
+                }
+            }
         }
     }
 
@@ -191,37 +230,47 @@ class ExternalExoPlayer(context: Context) : AdPlayer, Player.Listener, Analytics
     }
 
     override fun play() {
-        player.playWhenReady = true
+        Handler(handlerThread.looper).post {
+            player.playWhenReady = true
+        }
     }
 
     override fun pause() {
-        player.playWhenReady = false
+        Handler(handlerThread.looper).post {
+            player.playWhenReady = false
+        }
     }
 
     override fun reset() {
-        player.stop()
-        player.clearMediaItems()
-        player.playWhenReady = false
-        status = AdPlayer.Status.INITIALIZED
-        duration = null
+        Handler(handlerThread.looper).post {
+            playerCurrentDuration = 0
+            playerCurrentPlayHead = 0
+            player.stop()
+            player.clearMediaItems()
+            player.playWhenReady = false
+            status = AdPlayer.Status.INITIALIZED
 
-        removedMediaSourcesCount = 0
-        mediaSources.clear()
-        playlist.clear()
-        playingIndex = -1
-        seekInProgress = false
+            removedMediaSourcesCount = 0
+            mediaSources.clear()
+            playlist.clear()
+            playingIndex = -1
+            seekInProgress = false
+        }
+        handler.removeCallbacks(updatePlayheadRunnable)
     }
 
     override fun seekToTrackEnd() {
-        try {
-            seekInProgress = true
-            if ((player.mediaItemCount) > playingIndex + 1) {
-                player.seekTo(playingIndex + 1, 0L)
-            } else {
+        Handler(handlerThread.looper).post {
+            try {
+                seekInProgress = true
+                if ((player.mediaItemCount) > playingIndex + 1) {
+                    player.seekTo(playingIndex + 1, 0L)
+                } else {
+                    skipCurrent()
+                }
+            } catch (e: Exception) {
                 skipCurrent()
             }
-        } catch (e: Exception) {
-            skipCurrent()
         }
     }
 
@@ -234,11 +283,13 @@ class ExternalExoPlayer(context: Context) : AdPlayer, Player.Listener, Analytics
     }
 
     override fun seekTo(position: Double) {
-        try {
-            seekInProgress = true
-            player.seekTo(player.currentMediaItemIndex, (position * 1000.0).toLong())
-        } catch (e: Exception) {
-            seekInProgress = false
+        Handler(handlerThread.looper).post {
+            try {
+                seekInProgress = true
+                player.seekTo(player.currentMediaItemIndex, (position * 1000.0).toLong())
+            } catch (e: Exception) {
+                seekInProgress = false
+            }
         }
     }
 
@@ -260,8 +311,11 @@ class ExternalExoPlayer(context: Context) : AdPlayer, Player.Listener, Analytics
                 if (mediaSources.size == 1) {
                     playingIndex = 0
                     seekInProgress = true
-                    player.setMediaSource(mediaSources)
-                    player.prepare()
+                    Handler(handlerThread.looper).post {
+                        player.setMediaSource(mediaSources)
+                        player.prepare()
+                        handler.post(updatePlayheadRunnable)
+                    }
                 }
             }
         }
@@ -283,22 +337,24 @@ class ExternalExoPlayer(context: Context) : AdPlayer, Player.Listener, Analytics
 
     override var volume: Float
         set(value) {
-            player.volume = value
+            playerCurrentVolume = value
         }
-        get() = player.volume
+        get() = playerCurrentVolume
 
     /**
      * @return the current play head from the player in seconds
      */
     override fun getCurrentTime(): Double {
-        return player.currentPosition.toDouble() / 1000
+        println("*** player get head: ${playerCurrentPlayHead.toDouble()/1000}")
+        return playerCurrentPlayHead.toDouble() / 1000
     }
 
     /**
      * @return the track duration from the player in seconds
      */
     override fun getDuration(): Double? {
-        return duration
+        println("*** player get duration: ${playerCurrentDuration.toDouble()/1000}")
+        return playerCurrentDuration.toDouble()/1000
     }
 
     /**
@@ -314,11 +370,15 @@ class ExternalExoPlayer(context: Context) : AdPlayer, Player.Listener, Analytics
     // region Video
 
     override fun setVideoSurface(surface: Surface) {
-        player.setVideoSurface(surface)
+        Handler(handlerThread.looper).post {
+            player.setVideoSurface(surface)
+        }
     }
 
     override fun clearVideoSurface(surface: Surface) {
-        player.clearVideoSurface(surface)
+        Handler(handlerThread.looper).post {
+            player.clearVideoSurface(surface)
+        }
     }
 
     override fun setVideoState(videoState: AdVideoState?) {
@@ -358,9 +418,6 @@ class ExternalExoPlayer(context: Context) : AdPlayer, Player.Listener, Analytics
                 }
             }
             Player.STATE_READY -> {
-                if (duration == null) {
-                    duration = player.duration.toDouble() / 1000
-                }
                 if (status == AdPlayer.Status.BUFFERING) {
                     status = AdPlayer.Status.BUFFERING_FINISHED
                     if (seekInProgress)
@@ -378,6 +435,8 @@ class ExternalExoPlayer(context: Context) : AdPlayer, Player.Listener, Analytics
                                 listenerList.forEach { it.onResume() }
                             } else {
                                 loadCompleted(playingIndex + removedMediaSourcesCount)     // this is needed because ExoPlayer calls onPlayerStateChanged before onLoadCompleted
+                                playerCurrentDuration = player.duration
+                                println("*** player on play")
                                 listenerList.forEach { it.onPlay() }
                             }
                         }
@@ -419,12 +478,10 @@ class ExternalExoPlayer(context: Context) : AdPlayer, Player.Listener, Analytics
     override fun onPositionDiscontinuity(reason: Int) {
         if (reason == Player.DISCONTINUITY_REASON_AUTO_TRANSITION) {  // transition from one track to the next
             playingIndex++
-            duration = player.duration.toDouble() / 1000
             listenerList.forEach { it.onTrackChanged(playingIndex) }
         } else if (reason == Player.DISCONTINUITY_REASON_SEEK) {    // triggered by seek to end of track function
             listenerList.forEach { it.onSeekToTrackEnd(playingIndex) }
             playingIndex++
-            duration = player.duration.toDouble() / 1000
         }
 
     }
