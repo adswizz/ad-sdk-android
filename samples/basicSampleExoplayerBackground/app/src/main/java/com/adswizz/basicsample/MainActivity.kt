@@ -1,6 +1,5 @@
 package com.adswizz.basicsample
 
-import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.net.Uri
@@ -19,7 +18,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.media3.exoplayer.ExoPlayer
 import com.ad.core.adBaseManager.AdData
 import com.ad.core.adBaseManager.AdEvent
 import com.ad.core.adFetcher.AdRequestConnection
@@ -30,12 +28,10 @@ import com.adswizz.basicsample.databinding.ActivityMainBinding
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.adFetcher.AdswizzAdZone
 import com.adswizz.sdk.AdswizzSDK
-//import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.util.*
-//import kotlinx.android.synthetic.main.activity_main.sdkVersion as sdkVersion1
 
-// Basic app shows minimal client side functionality
+//This sample showcase exoplayer runing on background thread
 
 class MainActivity : AppCompatActivity() {
 
