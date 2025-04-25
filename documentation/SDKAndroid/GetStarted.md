@@ -388,6 +388,7 @@ android.useFullClasspathForDexingTransform=true
 android.enableDexingArtifactTransform=false
 
 ```
+<br>
     
 3. The Adswizz Android SDK uses Google Play Services (`com.google.android.gms.ads.identifier.AdvertisingIdClient`) to get the Google Advertising ID (GAD). To do this, your application will need the following permission in your `AndroidManifest.xml` file.
 ```xml
