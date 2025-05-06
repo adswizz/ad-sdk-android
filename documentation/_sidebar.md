@@ -13,6 +13,7 @@
     - [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md)
       - [AdPlayer Interface](Android/SDKAndroid/PlayAdsWithYourPlayer(AdPlayer).md)
       - [MediaPlayerState Interface](Android/SDKAndroid/PlayAdsWithYourPlayer(MediaPlayerState).md)
+      - [Limitations](Android/SDKAndroid/Limitations.md)
     - [AdswizzSDK general settings](Android/SDKAndroid/AdswizzGeneralSettings.md)
     - [Open Measurement in AdswizzSDK](Android/SDKAndroid/OpenMeasurement.md)
     - [Advanced targetability capabilities](Android/SDKAndroid/Prepare.md)
@@ -56,5 +57,5 @@
     - [Changelog](Android/CHANGELOG.md)
 
 - API Docs
-	- <a href="https://streaming.adswizz.com/fcf6c1b8749cf98/ad-sdk-android-documentation/apidoc/" target="_blank" rel="noopener" title="API Docs"><img src="img/doc.text.png" data-origin="img/doc.text.png" alt="Code" style="text-color:red"> API Docs</a>
+	- <a href="https://api.sdk.adswizz.com/android/index.html" target="_blank" rel="noopener" title="API Docs"><img src="img/doc.text.png" data-origin="img/doc.text.png" alt="Code" style="text-color:red"> API Docs</a>
 
