@@ -1,4 +1,4 @@
-# Limitations when using **_AdswizzSDK_** with your Exoplayer instance
+# Limitations when using **_AdswizzSDK_** with your ExoPlayer instance
 
 The **_AdswizzSDK_** interacts with your **AdPlayer** implementation on the **main thread**. Additionally, all SDK API calls are expected to be made **from the main thread**.
 Calling the SDK from a different thread, or using an ExoPlayer instance bound to a different looper, will result in **runtime exceptions**.
@@ -111,7 +111,7 @@ class MyAdPlayer(private val exoPlayer: ExoPlayer) : AdPlayer {
 
 ## Calling AdswizzSDK from a background thread
 
-Calling AdswizzSDK from a background thread will result in a an exception if you are using SDK internal player with the same exoplayer message
+Calling AdswizzSDK from a background thread will result in a an exception if you are using SDK internal player with the same ExoPlayer message
 
 ```kotlin
       "Player is accessed on the wrong thread.\n"
