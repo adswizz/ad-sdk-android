@@ -1,4 +1,4 @@
-# Limitations when using SDK with your Exoplayer instance
+# Limitations when using **_AdswizzSDK_** with your Exoplayer instance
 
 The **_AdswizzSDK_** interacts with your **AdPlayer** implementation on the **main thread**. Additionally, all SDK API calls are expected to be made **from the main thread**.
 Calling the SDK from a different thread, or using an ExoPlayer instance bound to a different looper, will result in **runtime exceptions**.
@@ -41,9 +41,9 @@ class MyAdPlayer(private val exoPlayer: ExoPlayer) : AdPlayer {
 
 ## When ExoPlayer Is Running on a Different Looper
 
-If your **ExoPlayer** instance is not attached to the main looper (e.g., initialized with a custom HandlerThread), direct calls from the **SDK** to your **AdPlayer** implementation—executed on the main thread—will result in runtime exceptions. This is because **ExoPlayer** enforces thread affinity and expects all method calls to be made from its own looper thread.
+If your **ExoPlayer** instance is not attached to the main looper (e.g., initialized with a custom HandlerThread), direct calls from the **_AdswizzSDK_** to your **AdPlayer** implementation—executed on the main thread—will result in runtime exceptions. This is because **ExoPlayer** enforces thread affinity and expects all method calls to be made from its own looper thread.
 
-Such violations will typically result in an exception like the following (excerpt from ExoPlayer source):
+Such violations will typically result in an exception like the following:
 
 ```kotlin
 	java.lang.IllegalStateException: Player is accessed on the wrong thread.
