@@ -1,6 +1,5 @@
 package com.adswizz.basicsample
 
-import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableStringBuilder
