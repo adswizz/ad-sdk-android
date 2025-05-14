@@ -34,7 +34,11 @@ This sample demonstrates a basic server-side insertion scenario similar to the a
 
 ## DvrStreaming Sample
 
-This sample demonstrates a basic server-side insertion scenario that also contains the DVR timeshifting capabilities of an AIS DVR enabled stream.
+This sample demonstrates a basic server-side insertion scenario that also contains the DVR time shifting capabilities of an AIS DVR enabled stream.
+
+## DvrStreaming Sample (with External Player)
+
+This sample demonstrates a server-side insertion scenario similar to the above sample, the only difference being the external player that has been used in this case.
 
 ## PreCache Sample
 
