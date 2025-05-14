@@ -1,6 +1,5 @@
 package com.adswizz.basicsample
 
-import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.net.Uri
@@ -28,12 +27,8 @@ import com.adswizz.basicsample.databinding.ActivityMainBinding
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.adFetcher.AdswizzAdZone
 import com.adswizz.sdk.AdswizzSDK
-//import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.util.*
-//import kotlinx.android.synthetic.main.activity_main.sdkVersion as sdkVersion1
-
-// Basic app shows minimal client side functionality
 
 class MainActivity : AppCompatActivity() {
 
@@ -214,19 +209,10 @@ class MainActivity : AppCompatActivity() {
                             binding.appLogs.addEntry("Recommendation: just to be sure that the ad playback will start immediately wait for the <<AdEvent.Type.State.ReadyForPlay>> event")
                         }
                         player.playWhenReady = true
-                        //adManager?.play()
                     }
                     AdManagerState.Paused -> {
                         player.playWhenReady = true
-                        //adManager?.resume()
                     }
-//                    AdManagerState.AllAdsCompleted -> {
-//                        player.stop()
-//                        adManager?.reset()
-//                        adManager?.prepare()
-//                        player.playWhenReady = true
-//                        //adManager?.play()
-//                    }
                     else -> Unit
                 }
             }
@@ -246,7 +232,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             R.id.menuPause -> {
-                //adManager?.pause()
                 player.playWhenReady = false
             }
         }
@@ -267,7 +252,6 @@ class MainActivity : AppCompatActivity() {
             adManager.setListener(listener)
             adManager.adManagerSettings = AdManagerSettings.Builder().mediaPlayerStateInstance(externalMediaPlayerState).build()
             adManager.ads.forEachIndexed { idx, ad ->
-//                println("*** load media item: ${ad.instanceId}  ${ad.mediaUrlString} $idx")
                 externalMediaPlayerState.loadMediaItem(ad.instanceId, Uri.parse(ad.mediaUrlString), idx )
             }
 
