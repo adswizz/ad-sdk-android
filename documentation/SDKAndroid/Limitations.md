@@ -41,7 +41,7 @@ class MyAdPlayer(private val exoPlayer: ExoPlayer) : AdPlayer {
 
 ## When ExoPlayer Is Running on a Different Looper
 
-If your **ExoPlayer** instance is not attached to the main looper (e.g., initialized with a custom HandlerThread), direct calls from the **_AdswizzSDK_** to your **AdPlayer** implementation—executed on the main thread—will result in runtime exceptions. This is because **ExoPlayer** enforces thread affinity and expects all method calls to be made from its own looper thread.
+If your **ExoPlayer** instance is not attached to the main looper (e.g.: initialized with a custom HandlerThread), direct calls from the **_AdswizzSDK_** to your **AdPlayer** implementation — executed on the main thread — will result in runtime exceptions. This is because **ExoPlayer** enforces thread affinity and expects all method calls to be made from its own looper thread.
 
 Such violations will typically result in an exception like the following:
 
@@ -63,7 +63,7 @@ Such violations will typically result in an exception like the following:
 	
 ```
 
-To avoid this, you'll need to post the calls to ExoPlayer’s handler or use a wrapper that ensures thread-safe communication.
+To avoid this, you'll need to post the calls to ExoPlayer’s handler or use a wrapper that ensures a thread-safe communication.
 
 ```kotlin
 class MyAdPlayer(private val exoPlayer: ExoPlayer) : AdPlayer {
@@ -111,12 +111,12 @@ class MyAdPlayer(private val exoPlayer: ExoPlayer) : AdPlayer {
 
 ## Calling AdswizzSDK from a background thread
 
-Calling AdswizzSDK from a background thread will result in a an exception if you are using SDK internal player with the same ExoPlayer message
+If you’re using the SDK’s internal player, calling AdswizzSDK from a background thread will trigger an exception, resulting in the following ExoPlayer error message:
 
 ```kotlin
-      "Player is accessed on the wrong thread.\n"
-                  + "Current thread: '%s'\n"
-                  + "Expected thread: '%s'\n"
+      "Player is accessed on the wrong thread."
+                  + "Current thread: '%s'"
+                  + "Expected thread: '%s'"
                   + "See https://developer.android.com/guide/topics/media/issues/"
                   + "player-accessed-on-wrong-thread",
 ```
