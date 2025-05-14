@@ -5,6 +5,7 @@ apply plugin: 'kotlin-android'
 Properties versionProperties = new Properties()
 versionProperties.load(project.rootProject.file('../versions.properties').newDataInputStream())
 def adsiwzzVersion = versionProperties["adsiwzzVersion"]
+
 android {
     compileSdk 35
 

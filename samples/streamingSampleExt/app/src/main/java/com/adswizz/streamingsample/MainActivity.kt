@@ -1,7 +1,6 @@
 package com.adswizz.streamingsample
 
 import android.annotation.SuppressLint
-import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -93,7 +92,6 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_main)
         AdswizzSDK.initialize(this)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
