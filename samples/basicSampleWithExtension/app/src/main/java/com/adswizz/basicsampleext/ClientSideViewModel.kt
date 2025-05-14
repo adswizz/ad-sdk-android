@@ -33,7 +33,7 @@ class ClientSideViewModel(application: Application) : AndroidViewModel(applicati
 
         viewModelScope.launch {
             val manager =  requestAdManagerWith {
-                zones = setOf(AdswizzAdZone(ZONE_ID))
+                zones = listOf(AdswizzAdZone(ZONE_ID))
                 server = SERVER_URL
             }.value ?: return@launch
             adManager = manager
