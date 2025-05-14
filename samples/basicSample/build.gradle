@@ -32,7 +32,7 @@ allprojects {
                 else {
                     Properties localProperties = new Properties()
                     localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
-                    value = localProperties["adswizzDevToken"]
+                    value = localProperties["adswizzToken"]
                 }
             }
             authentication {

@@ -2,6 +2,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 //apply plugin: 'kotlin-android-extensions'
 
+Properties versionProperties = new Properties()
+versionProperties.load(project.rootProject.file('../versions.properties').newDataInputStream())
+def adsiwzzVersion = versionProperties["adsiwzzVersion"]
+
 android {
     compileSdk 35
     namespace "com.adswizz.videosample"
@@ -42,8 +46,8 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.12.0'
 
-    implementation 'com.adswizz:adswizz-sdk:7.12.0'
-    implementation "com.adswizz:exoplayer-media3:7.12.0"
+    implementation "com.adswizz:adswizz-sdk:$adsiwzzVersion"
+    implementation "com.adswizz:exoplayer-media3:$adsiwzzVersion"
 
     implementation "androidx.media3:media3-exoplayer:1.5.1"
     implementation "androidx.media3:media3-exoplayer-dash:1.5.1"
