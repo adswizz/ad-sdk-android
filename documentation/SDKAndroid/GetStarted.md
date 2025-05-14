@@ -379,21 +379,16 @@ implementation "com.adswizz:exoplayer-media3:7.12.0"
 Using different artifact version from exoplayer used in the app may result in crashing the app, thus the app need to include corresponding versions for sdk artifact and exoplayer library (i.e. add `com.adswizz:exoplayer2-18:7.7.21` dependency when using `com.google.android.exoplayer:exoplayer:2.18.6` dependency)
 - SDK versions after 7.12.0 will have the <strong>player</strong> dependency as <strong>optional</strong> for integrations that doesn't use **_AdswizzSDK_** internal player. You can include only the `com.adswizz:adswizz-sdk` artefact if your are using your player to play the ad media. For more details, please visit [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md) section.
 
-
-
 > **Note**
-> if you are compiling with an API > 30 (*Android 11*), you must also include a newer version of the Androidx WorkManager runtime, as follows:
-
+> If you are using Adswizz InternalPlayer in order to play the ads content ( either com.adswizz:exoplayer-media3 or com.adswizz:exoplayer2x ) and  you are targeting `minSdkVersion 23` in your application build.gradle file, you need to add in your `gradle.properties` one of the following:
 ```groovy
-implementation 'androidx.work:work-runtime-ktx:2.7.1'
-implementation 'androidx.work:work-multiprocess:2.7.1'
+// for AGP versions greater than 8.3
+android.useFullClasspathForDexingTransform=true 
+// for AGP versions lower than 8.3
+android.enableDexingArtifactTransform=false
+
 ```
-This is necessary since the because WorkManager version included in the SDK doesn't implement the PendingIntent _*FLAG_IMMUTABLE*_ requirements introduced in Android 12.
-
-> **Note**
-> If you are using com.adswizz:exoplayer2-16 and com.adswizz:exoplayer2-17 artifact you need to target SDK to minimum API version 31  (*Android 11*). In case com.adswizz:exoplayer2-17 a minimum version of API 33 version should be target.
-For com.adswizz:exoplayer2-17 and com.adswizz:exoplayer2-18 the minSdkVersion must be 24 or higher.
-
+<br>
     
 3. The Adswizz Android SDK uses Google Play Services (`com.google.android.gms.ads.identifier.AdvertisingIdClient`) to get the Google Advertising ID (GAD). To do this, your application will need the following permission in your `AndroidManifest.xml` file.
 ```xml

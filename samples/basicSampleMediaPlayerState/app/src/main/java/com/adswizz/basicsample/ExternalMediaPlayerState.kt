@@ -34,9 +34,6 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
     override val currentPlayhead: Duration
         get() = player.currentPosition.toDuration(DurationUnit.MILLISECONDS)
 
-    override val currentDuration: Duration
-        get() = player.duration.toDuration(DurationUnit.MILLISECONDS)
-
     private enum class PlayerStatus{
         Initialized, Loading, LoadingFinished, Failed, Buffering, BufferingFinished, Playing, Paused, Finished
     }
