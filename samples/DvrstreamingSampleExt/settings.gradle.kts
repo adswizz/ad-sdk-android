@@ -15,9 +15,7 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
-val properties = Properties().apply {
-    load(FileInputStream(File(rootProject.projectDir.path, "local.properties")))
-}
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -30,8 +28,15 @@ dependencyResolutionManagement {
 
             credentials(HttpHeaderCredentials::class) {
                 name = "Authorization"
-                val token = properties["adswizzMavenToken"].toString()
-                value = token
+                val envToken = System.getenv("ADSWIZZ_TOKEN")
+                if(envToken != null){
+                    value = envToken
+                }
+                else {
+                    val properties = Properties()
+                    properties. load(FileInputStream(File(rootProject.projectDir.path, "local.properties")))
+                    value = properties["adswizzMavenToken"].toString()
+                }
             }
             authentication {
                 create<HttpHeaderAuthentication>("header")

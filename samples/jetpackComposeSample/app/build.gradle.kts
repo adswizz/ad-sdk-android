@@ -1,9 +1,18 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
 }
 
+val properties = Properties().apply {
+    load(FileInputStream(File("../versions.properties")))
+}
+val adswizzVersion = properties["adswizzVersion"]
+
 android {
+
     namespace = "com.example.jetpackcomposesample"
     compileSdk = 35
 
@@ -61,8 +70,8 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation (libs.androidx.navigation.compose)
 
-    implementation(libs.adswizz.sdk)
-    implementation(libs.adswizz.exoplayer)
+    implementation("com.adswizz:adswizz-sdk:$adswizzVersion")
+    implementation("com.adswizz:exoplayer-media3:$adswizzVersion")
 
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.exoplayer.hlsh)

@@ -1,5 +1,6 @@
 package com.adswizz.streamingsample
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
@@ -16,6 +17,7 @@ import com.ad.core.streaming.DvrBufferInfo
 import com.adswizz.common.AdPlayer
 import com.adswizz.core.streaming.AdswizzAdStreamManager
 import com.adswizz.sdk.AdswizzSDK
+import com.adswizz.sdk.BuildConfig
 import com.adswizz.streamingsample.databinding.ActivityMainBinding
 
 
@@ -79,6 +81,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -93,6 +96,7 @@ class MainActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = ContextCompat.getColor(this, R.color.my_statusbar_color)
 
+        binding.sdkVersion.text = "AdswizzSDK version ${BuildConfig.VERSION_NAME}"
         val scroll = ScrollingMovementMethod()
         binding.appLogs.movementMethod = scroll
 

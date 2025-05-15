@@ -1,7 +1,15 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
 }
+
+val properties = Properties().apply {
+    load(FileInputStream(File("../versions.properties")))
+}
+val adswizzVersion = properties["adswizzVersion"]
 
 android {
     namespace = "com.adswizz.dvrstreamingsampleext"
@@ -51,9 +59,8 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-
-    implementation(libs.adswizz.sdk)
-    implementation(libs.adswizz.exoplayer)
+    implementation("com.adswizz:adswizz-sdk:$adswizzVersion")
+    implementation("com.adswizz:exoplayer-media3:$adswizzVersion")
 
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.exoplayer.dash)
