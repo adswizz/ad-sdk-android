@@ -9,7 +9,7 @@ plugins {
 val properties = Properties().apply {
     load(FileInputStream(File("../versions.properties")))
 }
-val adsiwzzVersion = properties["adsiwzzVersion"]
+val adswizzVersion = properties["adswizzVersion"]
 
 android {
     namespace = "com.adswizz.dvrstreamingsampleext"
@@ -59,8 +59,8 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation("com.adswizz:adswizz-sdk:$adsiwzzVersion")
-    implementation("com.adswizz:exoplayer-media3:$adsiwzzVersion")
+    implementation("com.adswizz:adswizz-sdk:$adswizzVersion")
+    implementation("com.adswizz:exoplayer-media3:$adswizzVersion")
 
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.exoplayer.dash)
