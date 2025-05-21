@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - public `DVRMetadata` data class has been renamed to `AdStreamDVRMetadata` as per the **_AdswizzSDK_**'s naming conventions
+- updated `DvrStreaming Sample` and `DvrStreaming Sample (with External Player)` to showcase the `requestDVRMetadata` method.
 
 ### Fixed
 - Fixed an incorrect event emission of `AdEvent.Type.State.DidResumePlaying` in `AdswizzAdPodcastManager` scenario when an interactive Ad is skipped.
