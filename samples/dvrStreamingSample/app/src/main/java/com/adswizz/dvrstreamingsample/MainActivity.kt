@@ -238,6 +238,7 @@ class MainActivity : AppCompatActivity() {
     private fun reset() {
         streamManager?.apply {
             stop()
+            cancelDVRMetadataRequest()
             removeListener(streamListener)
             cleanup()
         }
@@ -246,6 +247,7 @@ class MainActivity : AppCompatActivity() {
         clearDvrInfo()
         binding.buttonReset.isEnabled = false
         updateIcon()
+        timer.cancel()
     }
 
     private fun updateIcon() {
