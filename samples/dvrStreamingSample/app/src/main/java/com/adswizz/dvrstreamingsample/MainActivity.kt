@@ -3,10 +3,12 @@ package com.adswizz.dvrstreamingsample
 import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import com.ad.core.adBaseManager.AdBaseManager
 import com.ad.core.streaming.AdManagerStreamingSettings
+import com.ad.core.streaming.AdStreamDVRMetadata
 import com.ad.core.streaming.AdStreamManager
 import com.ad.core.streaming.DvrBufferInfo
 import com.adswizz.common.AdPlayer
@@ -64,54 +66,70 @@ class MainActivity : AppCompatActivity() {
         @SuppressLint("SetTextI18n")
         override fun onDvrMetadataReceived(adStreamManager: AdStreamManager, dvrBufferInfo: DvrBufferInfo?) {
             dvrBufferInfo?.let {
-                println("dvrstreamingsample::onDvrMetadataReceived")
-                binding.dvrStartTimestamp.text = it.start.toString()
-                binding.dvrStartDateTime.text = dateFormat.format(Date(it.start))
-
-                binding.dvrEndTimestamp.text = it.latest.toString()
-                binding.dvrEndDateTime.text = dateFormat.format(Date(it.latest))
-
-                binding.dvrBufferTimestamp.text = it.maxBufferSize.toString()
-                val hours = it.maxBufferSize / 3600000
-                val minutes = (it.maxBufferSize % 3600000) / 60000
-                binding.dvrBufferTime.text = "${hours}h ${minutes}m"
-
-                val actualWindowSize = it.latest - it.start
-
-                binding.dvrPlaySlider.apply {
-                    valueFrom = it.start.toFloat()
-                    valueTo = it.latest.toFloat()
-                    value = it.start + actualWindowSize / 2f
-                }
-                binding.dvrPlayTimestamp.editText?.setText(binding.dvrPlaySlider.value.toLong().toString())
-
-                binding.dvrPlay0.setOnClickListener { _ ->
-                    streamManager?.play(STREAM_URL, it.start)
-                }
-
-                binding.dvrPlay25.setOnClickListener { _ ->
-                    streamManager?.play(STREAM_URL, it.start + actualWindowSize / 4)
-                }
-
-                binding.dvrPlay50.setOnClickListener { _ ->
-                    streamManager?.play(STREAM_URL, it.start + actualWindowSize / 2)
-                }
-
-                binding.dvrPlay75.setOnClickListener { _ ->
-                    streamManager?.play(STREAM_URL, it.start + actualWindowSize * 3 / 4)
-                }
-
+                updateDvrBufferInfo(dvrBufferInfo)
                 binding.dvrPlayAction.isEnabled = true
+                binding.refreshMetadata.isEnabled = true
                 binding.dvrPlaySlider.isEnabled = true
                 binding.dvrPlayTimestamp.isEnabled = true
                 binding.dvrPlay0.isEnabled = true
                 binding.dvrPlay25.isEnabled = true
                 binding.dvrPlay50.isEnabled = true
                 binding.dvrPlay75.isEnabled = true
+                timer.start()
             } ?: run {
                 clearDvrInfo()
             }
         }
+    }
+
+    private var timer : CountDownTimer = object : CountDownTimer(60000, 1000) {
+
+        override fun onTick(millisUntilFinished: Long) {
+            binding.refreshMetadata.text = "Refresh metadata in: ${millisUntilFinished / 1000}s"
+        }
+
+        override fun onFinish() {
+            requestNewMetadata()
+        }
+    }
+
+    private fun updateDvrBufferInfo(dvrBufferInfo: DvrBufferInfo){
+        binding.dvrStartTimestamp.text = dvrBufferInfo.start.toString()
+        binding.dvrStartDateTime.text = dateFormat.format(Date(dvrBufferInfo.start))
+
+        binding.dvrEndTimestamp.text = dvrBufferInfo.latest.toString()
+        binding.dvrEndDateTime.text = dateFormat.format(Date(dvrBufferInfo.latest))
+
+        binding.dvrBufferTimestamp.text = dvrBufferInfo.maxBufferSize.toString()
+        val hours = dvrBufferInfo.maxBufferSize / 3600000
+        val minutes = (dvrBufferInfo.maxBufferSize % 3600000) / 60000
+        binding.dvrBufferTime.text = "${hours}h ${minutes}m"
+
+        val actualWindowSize = dvrBufferInfo.latest - dvrBufferInfo.start
+
+        binding.dvrPlaySlider.apply {
+            valueFrom = dvrBufferInfo.start.toFloat()
+            valueTo = dvrBufferInfo.latest.toFloat()
+            value = dvrBufferInfo.start + actualWindowSize / 2f
+        }
+        binding.dvrPlayTimestamp.editText?.setText(binding.dvrPlaySlider.value.toLong().toString())
+
+        binding.dvrPlay0.setOnClickListener { _ ->
+            streamManager?.play(STREAM_URL, dvrBufferInfo.start)
+        }
+
+        binding.dvrPlay25.setOnClickListener { _ ->
+            streamManager?.play(STREAM_URL, dvrBufferInfo.start + actualWindowSize / 4)
+        }
+
+        binding.dvrPlay50.setOnClickListener { _ ->
+            streamManager?.play(STREAM_URL, dvrBufferInfo.start + actualWindowSize / 2)
+        }
+
+        binding.dvrPlay75.setOnClickListener { _ ->
+            streamManager?.play(STREAM_URL, dvrBufferInfo.start + actualWindowSize * 3 / 4)
+        }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -173,7 +191,31 @@ class MainActivity : AppCompatActivity() {
             streamManager?.play(STREAM_URL, binding.dvrPlaySlider.value.toLong())
         }
 
+        binding.refreshMetadata.setOnClickListener {
+           requestNewMetadata()
+        }
         AdswizzSDK.initialize(this)
+    }
+
+    private fun requestNewMetadata(){
+        timer.cancel()
+        timer = object : CountDownTimer(60000, 1000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                binding.refreshMetadata.text = "Refresh metadata in: ${millisUntilFinished / 1000}s"
+            }
+
+            override fun onFinish() {
+                requestNewMetadata()
+            }
+        }
+        timer.start()
+        streamManager?.requestDVRMetadata { result: Result<AdStreamDVRMetadata> ->
+            result.getOrNull()?.bufferInfo?.let {
+                updateDvrBufferInfo(result.getOrThrow().bufferInfo)
+            }
+        }
+
     }
 
     private fun clearDvrInfo() {
@@ -186,6 +228,7 @@ class MainActivity : AppCompatActivity() {
         binding.dvrPlayAction.isEnabled = false
         binding.dvrPlaySlider.isEnabled = false
         binding.dvrPlayTimestamp.isEnabled = false
+        binding.refreshMetadata.isEnabled = false
         binding.dvrPlay0.isEnabled = false
         binding.dvrPlay25.isEnabled = false
         binding.dvrPlay50.isEnabled = false
@@ -195,6 +238,7 @@ class MainActivity : AppCompatActivity() {
     private fun reset() {
         streamManager?.apply {
             stop()
+            cancelDVRMetadataRequest()
             removeListener(streamListener)
             cleanup()
         }
@@ -203,6 +247,7 @@ class MainActivity : AppCompatActivity() {
         clearDvrInfo()
         binding.buttonReset.isEnabled = false
         updateIcon()
+        timer.cancel()
     }
 
     private fun updateIcon() {

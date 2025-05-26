@@ -273,6 +273,15 @@
                             android:enabled="false"
                             android:textAllCaps="false"
                             android:text="Play from timestamp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/refresh_metadata"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cornerRadius="6dp"
+                        android:enabled="false"
+                        android:textAllCaps="false"
+                        android:text="Refresh metadata in"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
