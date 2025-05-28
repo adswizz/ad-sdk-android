@@ -144,9 +144,9 @@ interface AdPlayer {
     fun seekToTrackEnd()
 
     /**
-     * @since 7.7.0
+     * @since 7.12.3
      */
-    fun seekTo(position: Double)
+    fun seekTo(position: Duration)
 
     // endregion
 
@@ -170,10 +170,10 @@ interface AdPlayer {
     var volume: Float
 
     // the current playback time in seconds
-    fun getCurrentTime(): Double
+    fun getCurrentTime(): Duration /** changed from Double 7.12.3 **/
 
     // the current track duration in seconds
-    fun getDuration(): Double?
+    fun getDuration(): Duration? /** changed from Double? 7.12.3 **/
 
     // the current status for a player. The enum with all possible values is defined below
     fun status(): Status
@@ -253,10 +253,9 @@ interface AdPlayer {
 
         /**
          * @param newTrackIndex: index of the new track
+         * default implementation does nothing. This is only needed for enqueue functionality
          */
-        fun onTrackChanged(newTrackIndex: Int) {
-            // default implementation does nothing. This is only needed for enqueue functionality
-        }
+        fun onTrackChanged(newTrackIndex: Int) = Unit
 
         /**
          * Fire this callback on error
@@ -266,33 +265,36 @@ interface AdPlayer {
         /**
          * Fire this when you want to skip with an error
          * this function will not fire skip tracking but error tracking with vast code 400
-         *
+         * default implementation does nothing. This is only needed for enqueue functionality
          * @param error - error which is the reason for this skipAd call
          */
-        fun onSkipAd(error: Error){
-            // default implementation does nothing.
-        }
+        fun onSkipAd(error: Error) = Unit
 
-        fun onMetadata(metadataList: List<MetadataItem>) {
-            // default implementation does nothing. This is only needed for server side insertion
-        }
+        /**
+         * Fire this when metadata event is triggered by the player. The player implementation should
+         * convert the metadata received by the player to List<MetadataItem>
+         * default implementation does nothing. This is only needed for server side insertion
+         * 
+         */		
+        fun onMetadata(metadataList: List<MetadataItem>) = Unit
 
-        fun onVolumeChanged(volume: Float) {
-            // default implementation does nothing
-        }
+		/**
+         * Fire this when volume of the player has changed
+         * default implementation does nothing. 
+         * 
+         */
+        fun onVolumeChanged(volume: Float) = Unit
 
         /**
          * Called when video size changes and also when it starts with the initial values
-         *
+         * default implementation does nothing
          * @param player - this player
          * @param width - the video width
          * @param height - the video height
          *
          * @since 7.3.0
          */
-        fun onVideoSizeChanged(player: AdPlayer, width: Int, height: Int) {
-            // default implementation does nothing
-        }
+        fun onVideoSizeChanged(player: AdPlayer, width: Int, height: Int) = Unit
     }
 
     // endregion
@@ -833,10 +835,10 @@ Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)```
         }
     }
 
-    override fun seekTo(position: Double) {
+    override fun seekTo(position: Duration) {
         try {
             seekInProgress = true
-            player.seekTo(player.currentMediaItemIndex , (position * 1000.0).toLong())
+            player.seekTo(player.currentMediaItemIndex , position.inWholeMilliseconds)
         } catch (e: Exception) {
             seekInProgress = false
         }
@@ -901,15 +903,15 @@ Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)```
     /**
      * @return the current play head from the player in seconds
      */
-    override fun getCurrentTime(): Double {
-        return player.currentPosition.toDouble() / 1000
+    override fun getCurrentTime(): Duration {
+        return player.currentPosition.toDuration(DurationUnit.MILLISECONDS)
     }
 
     /**
      * @return the track duration from the player in seconds
      */
-    override fun getDuration(): Double? {
-        return duration
+    override fun getDuration(): Duration? {
+        return duration?.toDuration(DurationUnit.SECONDS)
     }
 
     /**
