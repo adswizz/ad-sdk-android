@@ -12,8 +12,9 @@ interface AdData {
 
     /**
      * The duration of the ad taken from the VAST response
+     * changed from Double? in 7.12.3
      */
-    val duration: Double?
+    val duration: Duration? 
 
     /**
      * The media file that was chosen be used for the ad
@@ -27,8 +28,9 @@ interface AdData {
 
     /**
      * The minimum time that has to pass until an ad can be skipped. If null, the ad can be skipped immediately.
+     * changed from Double? in 7.12.3
      */
-    val skipOffset: Double?
+    val skipOffset: Duration? 
 
     /**
      * Ad extensions from VAST response

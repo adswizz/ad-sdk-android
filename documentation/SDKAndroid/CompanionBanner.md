@@ -104,11 +104,15 @@ Also, you can decide whether or not to override click-through on the companion v
 ## Extra exposure time
 
 By default, the AdCompanionView will end displaying the content after the ad finishes playing.
-If you need to keep the companion on the screen for a longer time(or indefinitely), you can configure it like this:
+If you need to keep the companion on the screen for a longer time (or indefinitely), you can configure it like this:
 
 ```kotlin
 val adCompanionOptions = AdCompanionOptions()
-adCompanionOptions.extraExposureTime = 1.2 // seconds.
+adCompanionOptions.extraExposureTime = 1.2.toDuration(DurationUnit.SECONDS) // the companion will linger on UI for 1.2 extra seconds.
+/*
+	or to remain indefinitely
+	adCompanionOptions.extraExposureTime = Duration.INFINTE
+*/
 AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
 ```
 
