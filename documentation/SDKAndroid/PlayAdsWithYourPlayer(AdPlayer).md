@@ -170,10 +170,10 @@ interface AdPlayer {
     var volume: Float
 
     // the current playback time in seconds
-    fun getCurrentTime(): Duration /** changed from Double 7.12.3 **/
+    fun getCurrentTime(): Duration /** changed from Double 7.12.4 **/
 
     // the current track duration in seconds
-    fun getDuration(): Duration? /** changed from Double? 7.12.3 **/
+    fun getDuration(): Duration? /** changed from Double? 7.12.4 **/
 
     // the current status for a player. The enum with all possible values is defined below
     fun status(): Status
