@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.12.4] - 2025-06-XX
+
+### Changed
+- Changed all API functions that have a time or period parameter from a non intuitive type Double or Long to kotlin Duration.For more details, please refer to the [How to migrate to AdswizzSDK v7.12.4+](Android/Migrations/v7_12_4) page.
+- `AdPlayer` interface functions changed `Double` return type or parameter to `Duration` type:
+	 - `abstract fun getCurrentTime(): Duration` 
+	 - `abstract fun getDuration(): Duration?`
+	 - `abstract fun seekTo(position: Duration)`
+- `AdswizzAdRequest` class:
+	- `fun withDuration(duration: Duration?)`
+- `AdManagerSettings` class:
+	- `fun timeoutIntervalForResource(timeout: Duration?)`
+- `AdCompanionOptions` class:
+	- `var extraExposureTime: Duration`
+- `AdManager` interface
+	- `abstract fun getCurrentTime(): Duration`
+- `AdswizzAdPodcastManager` class
+	- `open fun seekTo(position: Duration)`
+- `AdData` interface
+	- `abstract val duration: Duration?`
+	- `abstract val skipOffset: Duration?`
+- `AdswizzAdZone` class
+	- `	val maxDuration: Duration?`
+- `AdswizzShimZone` class
+	- `	val maxDeadAir: Duration?`
+
+
 ## [7.12.2] - 2025-05-26
 
 ### Added
