@@ -109,7 +109,6 @@ class MainActivity : AppCompatActivity() {
 
                 AdEvent.Type.State.AllAdsCompleted -> {
                     adManagerState = AdManagerState.AllAdsCompleted
-                    //playButton.setBackgroundResource(R.drawable.ic_play_arrow_black_24dp)
                     binding.appLogs.addEntry("Ad - all ads completed")
                 }
 

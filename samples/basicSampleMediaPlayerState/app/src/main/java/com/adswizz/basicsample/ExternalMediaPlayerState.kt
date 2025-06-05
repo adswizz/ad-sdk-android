@@ -2,6 +2,7 @@ package com.adswizz.basicsample
 
 import android.content.Context
 import android.net.Uri
+import android.util.Patterns
 import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
@@ -35,13 +36,13 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
         get() = player.currentPosition.toDuration(DurationUnit.MILLISECONDS)
 
     private enum class PlayerStatus{
-        Initialized, Loading, LoadingFinished, Failed, Buffering, BufferingFinished, Playing, Paused, Finished
+        Initialized, Failed, Buffering, BufferingFinished, Playing, Paused, Finished
     }
     private var currentPlayerStatus = PlayerStatus.Initialized
 
-    private val creativeMap = mutableMapOf<String, Int>()
-
     private val items = mutableListOf<String>()
+
+    private val loadingFinishedSet = mutableSetOf<String>()
 
     override val playerVolume: Float
         get() = player.volume
@@ -77,20 +78,23 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
         player.addAnalyticsListener(this)
     }
 
-    fun loadMediaItem(id: String, url: Uri, index: Int){
+    fun play(){
+        player.playWhenReady = true
         seekInProgress = true
-        items.add(index, id)
-        creativeMap[url.toString()] = index
-        player.addMediaItem(index, MediaItem.Builder().setUri(url).setMediaId(id)
+    }
+
+    fun loadMediaItem(itemid: String, itemUrl: Uri, index: Int){
+        seekInProgress = true
+        items.add(index, itemid)
+        player.addMediaItem(index, MediaItem.Builder().setUri(itemUrl).setMediaId(itemid)
             .build())
     }
 
     fun resetPlayer(){
+        seekInProgress = false
+        items.clear()
         player.stop()
         player.clearMediaItems()
-        player.playWhenReady = false
-        creativeMap.clear()
-        items.clear()
     }
 
     private fun emitHelper(event: MediaPlayerState.PlayerEvent){
@@ -99,6 +103,13 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
         }
     }
     //region Analytics Listener
+    private fun sendLoadingFinished(mediaId: String){
+        if ( loadingFinishedSet.contains(mediaId))
+            return
+
+        loadingFinishedSet.add(mediaId)
+        emitHelper(MediaPlayerState.PlayerEvent.LoadingFinished(mediaId))
+    }
 
     // monitor removed media sources and offset the windowIndex to reflect the ad index
     override fun onLoadStarted(
@@ -107,10 +118,8 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
         mediaLoadData: MediaLoadData
     ) {
         val wi = eventTime.windowIndex
-        val adIndex = creativeMap[loadEventInfo.uri.toString()]
-        if (wi == adIndex) {
-            emitHelper(MediaPlayerState.PlayerEvent.Loading(items.get(wi)))
-            currentPlayerStatus = PlayerStatus.Loading
+        if (wi in 0 until items.size) {
+            emitHelper(MediaPlayerState.PlayerEvent.Loading(items[wi]))
         }
     }
 
@@ -120,11 +129,8 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
         mediaLoadData: MediaLoadData
     ) {
         val wi = eventTime.windowIndex
-        val adIndex = creativeMap[loadEventInfo.uri.toString()]
-
-        if (wi == adIndex) {
-            emitHelper( MediaPlayerState.PlayerEvent.LoadingFinished(items.get(wi)))
-            currentPlayerStatus = PlayerStatus.LoadingFinished
+        if (wi in 0 until items.size) {
+            sendLoadingFinished(items[wi])
         }
     }
 
@@ -136,15 +142,20 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
         wasCanceled: Boolean
     ) {
         val wi = eventTime.windowIndex
-        val adIndex = creativeMap[loadEventInfo.uri.toString()]
 
-        if (wi == adIndex) {
-            emitHelper( MediaPlayerState.PlayerEvent.Failed(items.get(wi), MediaPlayerState.PlayerError.GeneralError(error) ))
+        if (wi in 0 until items.size) {
+            val errorMessage =
+                "ExoPlayer failed to load media: ${loadEventInfo.uri} with ${error.message}"
+            //we should map exoplayer to
+            emitHelper( MediaPlayerState.PlayerEvent.Failed(items[wi], MediaPlayerState.PlayerError.GeneralError(Exception(errorMessage)) ))
             currentPlayerStatus = PlayerStatus.Failed
+            items.removeAt(wi)
         }
+        player.removeMediaItem(wi)
     }
 
     //region Player Event Listener
+    @Deprecated("Deprecated in Java")
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
 
         when (playbackState) {
@@ -172,16 +183,17 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
                     true -> {
                         val oldStatus = currentPlayerStatus
                         if (currentPlayerStatus != PlayerStatus.Playing) {
-                            currentPlayerStatus = PlayerStatus.Playing
                             if (oldStatus == PlayerStatus.Paused) {
                                 player.currentMediaItem?.mediaId?.let { id ->
                                     emitHelper(MediaPlayerState.PlayerEvent.Resume(id))
                                 }
                             } else {
                                 player.currentMediaItem?.mediaId?.let { id ->
+                                    sendLoadingFinished(id)
                                     emitHelper(MediaPlayerState.PlayerEvent.StartPlaying(id))
                                 }
                             }
+                            currentPlayerStatus = PlayerStatus.Playing
                         }
                     }
                     false -> {
@@ -195,6 +207,7 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
                 }
             }
             Player.STATE_ENDED -> {
+                items.clear()
                 if (playWhenReady) {
                     player.playWhenReady = false
                 } else {
@@ -205,6 +218,7 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
                         }
                     }
                 }
+                player.stop()
             }
             Player.STATE_IDLE -> {
                 currentPlayerStatus = PlayerStatus.Initialized
@@ -214,12 +228,10 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
 
 
     override fun onPlayerError(error: PlaybackException) {
-
-        super<Player.Listener>.onPlayerError(error)
-        player.currentMediaItem?.localConfiguration?.let { conf ->
+        player.currentMediaItem?.mediaId?.let { mediaId ->
             emitHelper(
                 MediaPlayerState.PlayerEvent.Failed(
-                    conf.uri.toString(),
+                    mediaId,
                     MediaPlayerState.PlayerError.GeneralError(
                         error
                     )
@@ -250,12 +262,22 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
     fun skipAd(error: Error? = null) {
         try {
             seekInProgress = true
-            if ((player.mediaItemCount) > player.currentMediaItemIndex + 1) {
+            if (player.mediaItemCount > player.currentMediaItemIndex + 1) {
+                val err = error?.let{
+                    MediaPlayerState.PlayerError.GeneralError(Exception(it.message))
+                }
                 player.currentMediaItem?.localConfiguration?.let { conf ->
-                    val err = error?.let{
-                        MediaPlayerState.PlayerError.GeneralError(Exception(it.message))
-                    }
                     player.currentMediaItem?.mediaId?.let { id ->
+                        emitHelper(
+                            MediaPlayerState.PlayerEvent.SkipAd(
+                                id,
+                                err
+                            )
+                        )
+                    }
+                } ?: run{
+                    if ( player.mediaItemCount > 0 ){
+                        val id = player.getMediaItemAt(0).mediaId
                         emitHelper(
                             MediaPlayerState.PlayerEvent.SkipAd(
                                 id,
@@ -275,17 +297,30 @@ class ExternalMediaPlayerState(val context: Context, val player: ExoPlayer) : Me
 
     private fun skipCurrent(error: Error?){
         seekInProgress = false
+        val err = error?.let{
+            MediaPlayerState.PlayerError.GeneralError(Exception(it.message))
+        }
+
         player.currentMediaItem?.mediaId?.let { id ->
-            val err = error?.let{
-                MediaPlayerState.PlayerError.GeneralError(Exception(it.message))
-            }
             emitHelper(
                 MediaPlayerState.PlayerEvent.SkipAd(
                     id,
                     err
                 )
             )
+        }?:run{
+            //there is no current media item
+            if ( player.mediaItemCount > 0 ){
+                val id = player.getMediaItemAt(0).mediaId
+                emitHelper(
+                    MediaPlayerState.PlayerEvent.SkipAd(
+                        id,
+                        err
+                    )
+                )
+            }
         }
     }
+
 
 }
