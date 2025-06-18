@@ -161,7 +161,7 @@ You can set the following values to the scaleType field:
  - CENTER_CROP - the content is scaled to maintain its aspect ratio while filling the element's entire content box.
  - CENTER_INSIDE - the content is scaled to maintain its aspect ratio without exceeding the container bounds.
  - FIT_XY - the replaced content is stretched to completely fill the container.
-The default value is CENTER_INSIDE, this has a backward compatible behaviour as previous versions.
+The default value is CENTER_INSIDE, this value has backward compatible behaviour as previous the versions.
 
 ## Companion best practices
 
