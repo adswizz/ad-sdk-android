@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New scaling functionality in `AdCompanionView`. Starting with 7.12.4 version, the `AdCompanionView` can scale its content through `scaleType` field or `companion_scale_type` xml attribute. For more details, please refer to the updated [Companion Banner](Android/SDKAndroid/CompanionBanner.md) page.
 
 ### Changed
-- Increased Quartile `Complete` tolerance up to 10% of the ad duration in some scenarios, but it will be clamped to maximum 2 seconds.
+- Increased Quartile `Complete` tolerance based on the ad duration.
 
 ## [7.12.3] - 2025-06-05
 
