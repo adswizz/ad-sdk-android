@@ -137,6 +137,32 @@ AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
 
 By default, it is set to `true`, allowing for toggling between two distinct approaches for loading content in companion banners. When set to `true`, the `AdCompanionView` object dynamically adds and removes `WebView` child views, which may lead to display problems in ReactNative. However, when set to `false`, the child views remain throughout the entire companion lifecycle, resolving the display issues in ReactNative but resulting in a slight increase in memory usage.
 
+## Preferred scale type
+
+Starting with 7.12.4 version, the `AdCompanionView` can scale its content by setting `scaleType` field or `companion_scale_type` xml attribute as follows:
+
+### Set scaling in XML
+```xml
+    <com.ad.core.companion.AdCompanionView
+            android:id="@+id/companionView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:companion_scale_type="CENTER_CROP"
+         />
+```
+
+### Set scaling programmatically
+```kotlin
+val companionView = AdCompanionView(context)
+companionView.scaleType = CompanionScaleType.CENTER_CROP
+```
+You can set the following values to the scaleType field:
+ - CENTER  - the content is centered and keeps its original size without scaling it
+ - CENTER_CROP - the content is scaled to maintain its aspect ratio while filling the element's entire content box.
+ - CENTER_INSIDE - the content is scaled to maintain its aspect ratio without exceeding the container bounds.
+ - FIT_XY - the replaced content is stretched to completely fill the container.
+The default value is CENTER_INSIDE, this has a backward compatible behaviour as previous versions.
+
 ## Companion best practices
 
 When you create an **_AdCompanionView_** instance, **_AdswizzSDK_** will start monitoring the companion view lifecycle and render the associated content during the ad playback. It begins to communicate to its listener via `AdCompanionView.Listener` interface. The communication focuses on updates for content loading / displaying by the **_AdCompanionView_** and your model should listen for any such incoming signals and act accordingly. i.e perform any further UI updates if needed, listen for errors to be able to display placeholders, etc.
