@@ -8,10 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.12.4] - Undefined
 
 ### Added
-- New scaling functionality in `AdCompanionView`. Starting with 7.12.4 version, the `AdCompanionView` can scale its content through `scaleType` field or `companion_scale_type` xml attribute. For more details, please refer to the updated [Companion Banner](Android/SDKAndroid/CompanionBanner.md) page.
+- Starting with 7.12.4 version, the `AdData` interface has now `selectedCompanion` property which can be used when companion has loaded to resize content to vast aspect ratio. For more details, please refer to the updated [Companion Banner](Android/SDKAndroid/CompanionBanner.md) page.
 
 ### Changed
 - Increased Quartile `Complete` tolerance based on the ad duration.
+
+### Fixed
+- Fixed flickering issues that occurred when multiple display ads were shown consecutively. 
 
 ## [7.12.3] - 2025-06-05
 

@@ -137,31 +137,6 @@ AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
 
 By default, it is set to `true`, allowing for toggling between two distinct approaches for loading content in companion banners. When set to `true`, the `AdCompanionView` object dynamically adds and removes `WebView` child views, which may lead to display problems in ReactNative. However, when set to `false`, the child views remain throughout the entire companion lifecycle, resolving the display issues in ReactNative but resulting in a slight increase in memory usage.
 
-## Preferred scale type
-
-Starting with 7.12.4 version, the `AdCompanionView` can scale its content by setting `scaleType` field or `companion_scale_type` xml attribute as follows:
-
-### Set scaling in XML
-```xml
-    <com.ad.core.companion.AdCompanionView
-            android:id="@+id/companionView1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:companion_scale_type="CENTER_CROP"
-         />
-```
-
-### Set scaling programmatically
-```kotlin
-val companionView = AdCompanionView(context)
-companionView.scaleType = CompanionScaleType.CENTER_CROP
-```
-You can set the following values to the scaleType field:
- - CENTER  - the content is centered and keeps its original size without scaling it
- - CENTER_CROP - the content is scaled to maintain its aspect ratio while filling the element's entire content box.
- - CENTER_INSIDE - the content is scaled to maintain its aspect ratio without exceeding the container bounds.
- - FIT_XY - the replaced content is stretched to completely fill the container.
-The default value is CENTER_INSIDE, this value has backward compatible behaviour as previous the versions.
 
 ## Companion best practices
 
@@ -169,6 +144,10 @@ When you create an **_AdCompanionView_** instance, **_AdswizzSDK_** will start m
 > **Note**
 > You can create and display multiple **_AdCompanionView_** instances in your application within different view hierarchies. **_AdswizzSDK_** will render the same ad related content for all companion banner instances while an AdManager starts playing the ads.
 > You should use the same **_AdCompanionView_** instance during an AdBreak, in order to avoid resource display delays. Therefore, you should not destroy/remove the current view for consecutive ads having "hasCompanion" flag defined **_AdData_** interface
+
+> **Note**
+> Starting with version 7.12.4, if you want to resize the companion view based on the VAST aspect ratio, you can use the `selectedCompanion` property of the `AdData` object within the `didDisplayAd` callback of the `AdCompanionView.Listener`.
+> To determine the appropriate size, use the `width` and `height` properties of `selectedCompanion` (i.e., adData.selectedCompanion.width and adData.selectedCompanion.height)
 
 Note that it is your responsibility to keep a strong reference the **_AdCompanionView_** instances that you create in your application (although, this is typically achieved by default when you add the companion view(s) to your own view hierarchy in your app).
 
