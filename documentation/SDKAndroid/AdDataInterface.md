@@ -61,7 +61,7 @@ interface AdData {
     val pricing: Pricing?
 
   	/**
-     * The companion selected by the SDK to be displayed
+     * The companion selected by the SDK for display
      * based on SDK settings
      */
     val selectedCompanion: CompanionVast?

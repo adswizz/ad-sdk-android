@@ -146,8 +146,8 @@ When you create an **_AdCompanionView_** instance, **_AdswizzSDK_** will start m
 > You should use the same **_AdCompanionView_** instance during an AdBreak, in order to avoid resource display delays. Therefore, you should not destroy/remove the current view for consecutive ads having "hasCompanion" flag defined **_AdData_** interface
 
 > **Note**
-> Starting with version 7.12.4, if you want to resize the companion view based on the VAST aspect ratio, you can use the `selectedCompanion` property of the `AdData` object within the `didDisplayAd` callback of the `AdCompanionView.Listener`.
-> To determine the appropriate size, use the `width` and `height` properties of `selectedCompanion` (i.e., adData.selectedCompanion.width and adData.selectedCompanion.height)
+> Starting with version 7.12.4, you can use the `selectedCompanion` property of the `AdData` object to resize the companion view based on the VAST-defined aspect ratio. The recommended time to perform this resizing is within the `didDisplayAd` callback of the `AdCompanionView.Listener`, once the companion has been fully loaded.
+> To determine the appropriate size, use the `width` and `height` properties of `selectedCompanion` (i.e., `adData.selectedCompanion.width` and `adData.selectedCompanion.height`)
 
 Note that it is your responsibility to keep a strong reference the **_AdCompanionView_** instances that you create in your application (although, this is typically achieved by default when you add the companion view(s) to your own view hierarchy in your app).
 
