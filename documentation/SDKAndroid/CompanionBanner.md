@@ -137,12 +137,17 @@ AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
 
 By default, it is set to `true`, allowing for toggling between two distinct approaches for loading content in companion banners. When set to `true`, the `AdCompanionView` object dynamically adds and removes `WebView` child views, which may lead to display problems in ReactNative. However, when set to `false`, the child views remain throughout the entire companion lifecycle, resolving the display issues in ReactNative but resulting in a slight increase in memory usage.
 
+
 ## Companion best practices
 
 When you create an **_AdCompanionView_** instance, **_AdswizzSDK_** will start monitoring the companion view lifecycle and render the associated content during the ad playback. It begins to communicate to its listener via `AdCompanionView.Listener` interface. The communication focuses on updates for content loading / displaying by the **_AdCompanionView_** and your model should listen for any such incoming signals and act accordingly. i.e perform any further UI updates if needed, listen for errors to be able to display placeholders, etc.
 > **Note**
 > You can create and display multiple **_AdCompanionView_** instances in your application within different view hierarchies. **_AdswizzSDK_** will render the same ad related content for all companion banner instances while an AdManager starts playing the ads.
 > You should use the same **_AdCompanionView_** instance during an AdBreak, in order to avoid resource display delays. Therefore, you should not destroy/remove the current view for consecutive ads having "hasCompanion" flag defined **_AdData_** interface
+
+> **Note**
+> Starting with version 7.12.4, you can use the `selectedCompanion` property of the `AdData` object to resize the companion view based on the VAST-defined aspect ratio. The recommended time to perform this resizing is within the `didDisplayAd` callback of the `AdCompanionView.Listener`, once the companion has been fully loaded.
+> To determine the appropriate size, use the `width` and `height` properties of `selectedCompanion` (i.e., `adData.selectedCompanion.width` and `adData.selectedCompanion.height`)
 
 Note that it is your responsibility to keep a strong reference the **_AdCompanionView_** instances that you create in your application (although, this is typically achieved by default when you add the companion view(s) to your own view hierarchy in your app).
 

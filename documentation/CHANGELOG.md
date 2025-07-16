@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.12.4] - Undefined
+
+### Added
+- Starting with 7.12.4 version, the `AdData` interface includes a new `selectedCompanion` property. This can be used to resize content based on the companion’s VAST aspect ratio once it has loaded. For more details, please refer to the updated [Companion Banner](Android/SDKAndroid/CompanionBanner.md) page.
+
+### Changed
+- Increased the `Complete` quartile tolerance dynamically based on the ad duration.
+- Improved seek detection tolerance, which affects quartile tracking accuracy.
+
+### Fixed
+- Fixed flickering issues that occurred when multiple companion display ads are shown back-to-back. 
+
 ## [7.12.3] - 2025-06-05
 
 ### Fixed
