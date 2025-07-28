@@ -1,0 +1,153 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "adswizz-mercury",
+    "version": "7.12.4",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.9"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-core",
+          "version": {
+            "requires": "7.12.4"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-mercury-7.12.4.aar",
+          "url": "adswizz-mercury-7.12.4.aar",
+          "size": 223034,
+          "sha512": "e4b877ad61863873c709c38c385fbb9b37f17a28e5b9a632aea6ec893a3bf3647d2a69bbdf3abc82adc3deb50426d2af057a11dc92068aaa74b55a81149818dd",
+          "sha256": "b45d88faac7f144044c6e1e71bbf741396a061e2d0af84ebb53661e4ac93de4b",
+          "sha1": "3e8f2a13e70caf44db466b935fbe7908a63d4850",
+          "md5": "dd5464e213539a5eff58ff7256211c17"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk7",
+          "version": {
+            "requires": "1.8.22"
+          }
+        },
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.12.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.7.3"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-android",
+          "version": {
+            "requires": "1.7.3"
+          }
+        },
+        {
+          "group": "androidx.annotation",
+          "module": "annotation",
+          "version": {
+            "requires": "1.5.0"
+          }
+        },
+        {
+          "group": "com.squareup.moshi",
+          "module": "moshi",
+          "version": {
+            "requires": "1.14.0"
+          }
+        },
+        {
+          "group": "com.squareup.moshi",
+          "module": "moshi-adapters",
+          "version": {
+            "requires": "1.14.0"
+          }
+        },
+        {
+          "group": "com.google.protobuf",
+          "module": "protobuf-javalite",
+          "version": {
+            "requires": "3.23.3"
+          }
+        },
+        {
+          "group": "androidx.work",
+          "module": "work-runtime-ktx",
+          "version": {
+            "requires": "2.8.1"
+          }
+        },
+        {
+          "group": "androidx.room",
+          "module": "room-runtime",
+          "version": {
+            "requires": "2.6.1"
+          }
+        },
+        {
+          "group": "androidx.room",
+          "module": "room-ktx",
+          "version": {
+            "requires": "2.6.1"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-core",
+          "version": {
+            "requires": "7.12.4"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-mercury-7.12.4.aar",
+          "url": "adswizz-mercury-7.12.4.aar",
+          "size": 223034,
+          "sha512": "e4b877ad61863873c709c38c385fbb9b37f17a28e5b9a632aea6ec893a3bf3647d2a69bbdf3abc82adc3deb50426d2af057a11dc92068aaa74b55a81149818dd",
+          "sha256": "b45d88faac7f144044c6e1e71bbf741396a061e2d0af84ebb53661e4ac93de4b",
+          "sha1": "3e8f2a13e70caf44db466b935fbe7908a63d4850",
+          "md5": "dd5464e213539a5eff58ff7256211c17"
+        }
+      ]
+    }
+  ]
+}
