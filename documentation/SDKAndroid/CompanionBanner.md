@@ -137,6 +137,40 @@ AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
 
 By default, it is set to `true`, allowing for toggling between two distinct approaches for loading content in companion banners. When set to `true`, the `AdCompanionView` object dynamically adds and removes `WebView` child views, which may lead to display problems in ReactNative. However, when set to `false`, the child views remain throughout the entire companion lifecycle, resolving the display issues in ReactNative but resulting in a slight increase in memory usage.
 
+## Companion data
+
+If available, **_AdswizzSDK_** provides access to companion data through the **_CompanionVast_** data class associated to each **_AdData_** instance that has any companion banner content to display.
+The **_CompanionVast_** data class encapsulates and exposes information from the VAST response itself - and packaged by the **_AdManager_**.
+
+```kotlin
+object : AdManagerListener {
+  override fun onEventReceived(adManager: AdManager, event: AdEvent) {
+
+      when (event.type) {
+        AdEvent.Type.State.ReadyForPlay -> {
+            // You can also inspect this information on other ad events such as DidStartPlaying
+          LogEvent(LogType.EVENT, "AdEvent:${event.ad?.id}: DidStartPlaying hasCompanion=${event.ad?.hasCompanion} selectedWidth=${event.ad?.selectedCompanion?.width} selectedHeight=${event.ad?.selectedCompanion?.height}")
+        }
+      }
+    }
+```
+
+Next, let's explore further the companion data accessible from the **_AdData_** instance.
+
+### getAllCompanions()
+
+The list of available **_CompanionVast_** instances associated with the **_AdData_**. May be empty if the ad does not have any companion data associated with the ad.
+May not be available when the ad is preparing/ready to play or has just started playing. Take a look below at the **_hasCompanion_** property instead to check for the presence of any companion data.
+
+### hasCompanion
+
+Determines if the ad has any companion banner information to display. Note that this information is available early in the succession of ad events and it can be used to update your UI accordingly. For example, in case **_hasCompanion_** returns `false`, you may want to swap the **_AdCompanionView_** with a placeholder or remove the companion view container altogether.
+
+### selectedCompanion
+
+The **_CompanionVast_** instance which will be displayed when the ad starts. The selection is based based on various criteria such as setting the [preferred resource type](#preferred-resource-type).
+
+For more details on how and when the **_Companion_** data might be useful, please read the [Companion best practices](#companion-best-practices) section below.
 
 ## Companion best practices
 
