@@ -12,7 +12,7 @@ interface AdData {
 
     /**
      * The duration of the ad taken from the VAST response
-     * changed from Double? in 7.12.4
+     * changed from Double? in 7.13.0
      */
     val duration: Duration? 
 
@@ -28,7 +28,7 @@ interface AdData {
 
     /**
      * The minimum time that has to pass until an ad can be skipped. If null, the ad can be skipped immediately.
-     * changed from Double? in 7.12.4
+     * changed from Double? in 7.13.0
      */
     val skipOffset: Duration? 
 
