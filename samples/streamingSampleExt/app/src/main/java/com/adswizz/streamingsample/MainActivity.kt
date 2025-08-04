@@ -17,6 +17,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.ad.core.adBaseManager.AdBaseManager
+import com.ad.core.adBaseManager.AdBaseManagerListener
+import com.ad.core.adBaseManager.AdEvent
 import com.ad.core.streaming.AdManagerStreamingSettings
 import com.ad.core.streaming.AdStreamManager
 import com.ad.core.streaming.DvrBufferInfo
@@ -25,6 +27,7 @@ import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.streaming.AdswizzAdStreamManager
 import com.adswizz.core.streaming.AfrConfig
 import com.adswizz.sdk.AdswizzSDK
+import com.adswizz.streamingsample.ext.BuildConfig
 import com.adswizz.streamingsample.ext.R
 import com.adswizz.streamingsample.ext.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
@@ -36,11 +39,121 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     companion object {
-        const val SERVER_URL = "https://streaming.sdk.eks.devel.adswizz.com/shakeDemo"
+        val SERVER_URL =
+            if (BuildConfig.ENABLE_HLS_METADATA)
+                "https://streaming.sdk.eks.devel.adswizz.com/shakeDemo/playlist.m3u8"
+            else "https://streaming.sdk.eks.devel.adswizz.com/shakeDemo"
     }
 
     private var streamManager: AdswizzAdStreamManager? = null
     private var externalAdPlayer: ExternalAdPlayer? = null
+    private var adBreakManager: AdBaseManager? = null
+
+    private val adManagerListener = object : AdBaseManagerListener {
+        override fun onEventReceived(adBaseManager: AdBaseManager, event: AdEvent) {
+            when (event.type) {
+                AdEvent.Type.State.FirstAdWillInitialize -> {
+                    binding.appLogs.addEntry("Ad - first ad will initialize")
+                }
+
+                AdEvent.Type.State.Initialized -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - initialized")
+                }
+
+                AdEvent.Type.State.Unknown -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - in unknown state")
+                }
+
+                AdEvent.Type.State.PreparingForPlay -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - preparing for play")
+                }
+
+                AdEvent.Type.State.ReadyForPlay -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - ready for play")
+                }
+
+                AdEvent.Type.State.WillStartBuffering -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - will start buffering")
+                }
+
+                AdEvent.Type.State.DidFinishBuffering -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - did finish buffering")
+                }
+
+                AdEvent.Type.State.DidStartPlaying -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - did start playing")
+                }
+
+                AdEvent.Type.State.DidResumePlaying -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - did resume playing")
+                }
+
+                AdEvent.Type.State.DidPausePlaying -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - did pause playing")
+                }
+
+                AdEvent.Type.State.DidFinishPlaying -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - did finish playing")
+                }
+
+                AdEvent.Type.State.Completed -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - completed")
+                }
+
+                AdEvent.Type.State.AllAdsCompleted -> {
+                    binding.appLogs.addEntry("Ad - all ads completed")
+                }
+
+                AdEvent.Type.State.DidSkip -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - did skip playing")
+                }
+
+                AdEvent.Type.State.NotUsed -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - not used for playing")
+                }
+
+                AdEvent.Type.State.AdUpdated -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - ad updated")
+                }
+
+                AdEvent.Type.Position.Start -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - 0% start")
+                }
+
+                AdEvent.Type.Position.FirstQuartile -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - 25% first quartile")
+                }
+
+                AdEvent.Type.Position.Midpoint -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - 50% midpoint")
+
+                }
+
+                AdEvent.Type.Position.ThirdQuartile -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - 75% third quartile")
+
+                }
+
+                AdEvent.Type.Position.Complete -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} - 100% complete")
+                }
+
+                AdEvent.Type.Other.Error -> {
+                    binding.appLogs.addEntry("Ad ${event.ad?.id} ERROR ${event.extraAdData}")
+                }
+                else -> Unit
+            }
+        }
+
+        override fun onEventErrorReceived(
+            adBaseManager: AdBaseManager,
+            event: AdEvent,
+            error: Error
+        ) {
+            binding.appLogs.addEntry("Error - ${error.message} for ad: ${event.ad?.id}")
+        }
+    }
+
 
     private val listener = object : AdStreamManager.Listener {
         override fun willStartPlayingUrl(adStreamManager: AdStreamManager, url: Uri) {
@@ -70,12 +183,16 @@ class MainActivity : AppCompatActivity() {
             adStreamManager: AdStreamManager, adBaseManager: AdBaseManager
         ) {
             binding.appLogs.addEntry("Ad break started: adBaseManager $adBaseManager")
+            adBreakManager = adBaseManager
+            adBaseManager.setListener(adManagerListener)
         }
 
         override fun adBreakEnded(
             adStreamManager: AdStreamManager, adBaseManager: AdBaseManager
         ) {
             binding.appLogs.addEntry("Ad break ended: adBaseManager $adBaseManager")
+            adBreakManager?.removeAdBaseManagerListener()
+            adBreakManager = null
         }
 
         override fun onError(adStreamManager: AdStreamManager, error: Error) {

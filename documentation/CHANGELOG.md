@@ -5,31 +5,49 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.12.4] - 2025-06-XX
+## [7.13.0] - 2025-08-Undefined
 
 ### Changed
 - Changed all API functions that have a time or period parameter from a non intuitive type Double or Long to kotlin Duration.For more details, please refer to the [How to migrate to AdswizzSDK v7.12.4+](Android/Migrations/v7_12_4) page.
 - `AdPlayer` interface functions changed `Double` return type or parameter to `Duration` type:
-	 - `abstract fun getCurrentTime(): Duration` 
-	 - `abstract fun getDuration(): Duration?`
-	 - `abstract fun seekTo(position: Duration)`
+    - `abstract fun getCurrentTime(): Duration`
+    - `abstract fun getDuration(): Duration?`
+    - `abstract fun seekTo(position: Duration)`
 - `AdswizzAdRequest` class:
-	- `fun withDuration(duration: Duration?)`
+    - `fun withDuration(duration: Duration?)`
 - `AdManagerSettings` class:
-	- `fun timeoutIntervalForResource(timeout: Duration?)`
+    - `fun timeoutIntervalForResource(timeout: Duration?)`
 - `AdCompanionOptions` class:
-	- `var extraExposureTime: Duration`
+    - `var extraExposureTime: Duration`
 - `AdManager` interface
-	- `abstract fun getCurrentTime(): Duration`
+    - `abstract fun getCurrentTime(): Duration`
 - `AdswizzAdPodcastManager` class
-	- `open fun seekTo(position: Duration)`
+    - `open fun seekTo(position: Duration)`
 - `AdData` interface
-	- `abstract val duration: Duration?`
-	- `abstract val skipOffset: Duration?`
+    - `abstract val duration: Duration?`
+    - `abstract val skipOffset: Duration?`
 - `AdswizzAdZone` class
-	- `	val maxDuration: Duration?`
+    - `	val maxDuration: Duration?`
 - `AdswizzShimZone` class
-	- `	val maxDeadAir: Duration?`
+    - `	val maxDeadAir: Duration?`
+
+
+## [7.12.4] - 2025-07-28
+
+### Added
+- Starting with 7.12.4 version, the `AdData` interface includes a new `selectedCompanion` property. This can be used to resize content based on the companion’s VAST aspect ratio once it has loaded. For more details, please refer to the updated [Companion Banner](Android/SDKAndroid/CompanionBanner.md) page.
+
+### Changed
+- Increased the `Complete` quartile tolerance dynamically based on the ad duration.
+- Improved seek detection tolerance, which affects quartile tracking accuracy.
+
+### Fixed
+- Fixed flickering issues that occurred when multiple companion display ads are shown back-to-back. 
+
+## [7.12.3] - 2025-06-05
+
+### Fixed
+- Fixed an event reporting issue when the same `MediaPlayerState` instance is shared across multiple `AdManagers`.
 
 
 ## [7.12.2] - 2025-05-26
@@ -44,7 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - updated `DvrStreaming Sample` and `DvrStreaming Sample (with External Player)` to showcase the `requestDVRMetadata` method.
 
 ### Fixed
-- Fixed an issue in `AdswizzAdPodcastManager` where `AdEvent.Type.State.DidResumePlaying`  was incorrectly emitted when an interactive ad was skipped.
+- Fixed an issue in `AdswizzAdPodcastManager` where `AdEvent.Type.State.DidResumePlaying` was incorrectly emitted when an interactive ad was skipped.
 
 ## [7.12.1] - 2025-04-17
 

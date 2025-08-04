@@ -9,16 +9,17 @@ import com.adswizz.common.macro.PlayerCapabilities
 import com.adswizz.common.macro.PlayerState
 import com.adswizz.common.video.AdVideoState
 import com.adswizz.sdk.AdswizzSDK
+import com.adswizz.streamingsample.ext.BuildConfig
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.metadata.Metadata
-import com.google.android.exoplayer2.metadata.MetadataOutput
 import com.google.android.exoplayer2.metadata.emsg.EventMessage
 import com.google.android.exoplayer2.metadata.icy.IcyInfo
 import com.google.android.exoplayer2.metadata.id3.*
 import com.google.android.exoplayer2.source.*
 import com.google.android.exoplayer2.source.dash.DashMediaSource
+import com.google.android.exoplayer2.source.hls.HlsManifest
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
@@ -28,8 +29,13 @@ import com.google.android.exoplayer2.upstream.RawResourceDataSource
 import com.google.android.exoplayer2.util.Util
 import com.google.android.exoplayer2.video.VideoSize
 import java.io.IOException
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.CopyOnWriteArrayList
+import kotlin.math.abs
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.DurationUnit
 
 
 @Suppress("DEPRECATION")
@@ -104,12 +110,37 @@ class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsL
     private var adVideoState: AdVideoState? = null
 
 
+    // HLS streams region
+    // This code region is required in order to play AIS enabled HLS streams
+    data class HlsSegmentInfo(val url: String, val metaData: String, val startTimeMs: Long)
+    private val AD_BREAK_INSERTION_TRESHOLD_MS = 500
+    private val adBreaks = ConcurrentHashMap<String, HlsSegmentInfo>()
+    private var playedTime = Duration.ZERO
+    private val adBreakRunnable: (Duration) -> Unit = { time ->
+        playedTime = time
+        adBreaks.forEach { (key, value) ->
+            if (abs(time.inWholeMilliseconds - value.startTimeMs) <= AD_BREAK_INSERTION_TRESHOLD_MS) { // insertion moment
+
+                val metadata = adBreaks.remove(key)?.metaData
+                if (!metadata.isNullOrBlank()) {
+                    listenerList.forEach {
+                        it.onMetadata(
+                            listOf(AdPlayer.MetadataItem("value", metadata))
+                        )
+                    }
+                }
+            }
+        }
+    }
+    private var timerHelper: TimerHelper = TimerHelper(period = 0.25.seconds, onTimePassed = adBreakRunnable)
+
+    // end HLS streams region
+
     init {
         player.addListener(this)
         player.addAnalyticsListener(this)
     }
 
-    //eionut: cleanup should be used by AdManagers when they do cleanup
     fun cleanup() {
         player.removeAnalyticsListener(this)
         player.removeListener(this)
@@ -200,6 +231,7 @@ class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsL
     }
 
     override fun reset() {
+        resetHlsDataIfNeeded()
         player.stop()
         player.clearMediaItems()
         player.playWhenReady = false
@@ -292,7 +324,10 @@ class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsL
      * @return the current play head from the player in seconds
      */
     override fun getCurrentTime(): Double {
-        return player.currentPosition.toDouble() / 1000
+        return if (BuildConfig.ENABLE_HLS_METADATA) {
+            // this is needed for precise playback progress
+            playedTime.toDouble(DurationUnit.SECONDS)
+        } else player.currentPosition.toDouble() / 1000
     }
 
     /**
@@ -533,6 +568,9 @@ class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsL
         loadEventInfo: LoadEventInfo,
         mediaLoadData: MediaLoadData
     ) {
+        if (BuildConfig.ENABLE_HLS_METADATA) {
+            handleHlsSegmentInfo(loadEventInfo.uri.toString(), mediaLoadData)
+        }
         loadCompleted(eventTime.windowIndex + removedMediaSourcesCount)
     }
 
@@ -603,6 +641,48 @@ class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsL
         listenerList.forEach { it.onVideoSizeChanged(this, videoSize.width, videoSize.height) }
     }
 
+    // endregion
+
+    // HLS streams region
+    // This code region is required in order to play AIS enabled HLS streams
+     override fun onTimelineChanged(timeline: Timeline, reason: Int) {
+        if (!BuildConfig.ENABLE_HLS_METADATA) return
+
+        val manifest = player.currentManifest
+        if (manifest is HlsManifest) {
+            manifest.mediaPlaylist.segments.forEach { segment ->
+                val commentTag =
+                    segment.title.substringAfter("comment=", missingDelimiterValue = "")
+                        .trim('"')
+
+                if (commentTag != "adwData=''" && commentTag.isNotBlank()) {
+                    adBreaks.putIfAbsent(segment.url, HlsSegmentInfo(segment.url, commentTag, Long.MIN_VALUE))
+                }
+            }
+        }
+    }
+
+    override fun onIsPlayingChanged(isPlaying: Boolean) {
+
+        if (!BuildConfig.ENABLE_HLS_METADATA) return
+
+        if (isPlaying) timerHelper.start()
+        else timerHelper.pause()
+    }
+
+    private fun handleHlsSegmentInfo(url: String, mediaLoadData: MediaLoadData){
+        val current = adBreaks[url]
+        if (current != null) {
+            adBreaks[url] = current.copy(startTimeMs = mediaLoadData.mediaStartTimeMs)
+        }
+    }
+
+    private fun resetHlsDataIfNeeded(){
+        if (!BuildConfig.ENABLE_HLS_METADATA) return
+        timerHelper.stop()
+        timerHelper = TimerHelper(period = 0.25.seconds, onTimePassed = adBreakRunnable)
+        adBreaks.clear()
+    }
     // endregion
 
 }
