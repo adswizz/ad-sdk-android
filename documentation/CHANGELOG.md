@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.13.0] - 2025-08-Undefined
 
 ### Changed
-- Changed all API functions that have a time or period parameter from a non intuitive type Double or Long to kotlin Duration.For more details, please refer to the [How to migrate to AdswizzSDK v7.12.4+](Android/Migrations/v7_12_4) page.
+- Changed all API functions that have a time or period parameter from a non intuitive type Double or Long to kotlin Duration.For more details, please refer to the [How to migrate to AdswizzSDK v7.13.0+](Android/Migrations/v7_13_0) page.
 - `AdPlayer` interface functions changed `Double` return type or parameter to `Duration` type:
     - `abstract fun getCurrentTime(): Duration`
     - `abstract fun getDuration(): Duration?`
