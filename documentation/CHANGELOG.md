@@ -30,7 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `	val maxDuration: Duration?`
 - `AdswizzShimZone` class
     - `	val maxDeadAir: Duration?`
-
+- `AdRequestConnection` class
+    - `var timeout: Duration?`
 
 ## [7.12.4] - 2025-07-28
 

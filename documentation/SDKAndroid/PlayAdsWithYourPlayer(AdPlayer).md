@@ -169,10 +169,16 @@ interface AdPlayer {
     // Current player volume. The value will be between 0.0f and 1.0f
     var volume: Float
 
-    // the current playback time in seconds
+    /**
+     * Gets the current time.
+     * `return` the current playback time in milliseconds precision
+     */
     fun getCurrentTime(): Duration /** changed from Double 7.13.0 **/
 
-    // the current track duration in seconds
+    /**
+     * Gets the duration.
+     * `return` the current track duration in milliseconds precision
+     */
     fun getDuration(): Duration? /** changed from Double? 7.13.0 **/
 
     // the current status for a player. The enum with all possible values is defined below
@@ -452,8 +458,8 @@ The ```volume``` variable can be used to get the player's current volume or to s
 
 ### getCurrentTime and getDuration
 
-The ```fun getDuration(): Double?``` function should return the duration of the track in seconds when it can be obtained from the media resource; otherwise, null.
-The ```fun getCurrentTime(): Double``` function should return the current position of the playhead in the current track in seconds. If no media resource exists, then 0.0 should be returned. The value returned by this function should be between 0.0 and the duration returned by ```getDuration()```. When the playing finishes at the end of the track, the value returned should be equal to ```getDuration()```.
+The ```fun getDuration(): Duration?``` function should return the duration of the track when it can be obtained from the media resource; otherwise, null.
+The ```fun getCurrentTime(): Duration``` function should return the current position of the playhead in the current track. If no media resource exists, then 0.0 should be returned. The value returned by this function should be between 0.0 and the duration returned by ```getDuration()```. When the playing finishes at the end of the track, the value returned should be equal to ```getDuration()```.
 
 ### status function
 
@@ -901,14 +907,14 @@ Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)```
 
 
     /**
-     * @return the current play head from the player in seconds
+     * @return the current play head from the player in milliseconds precision
      */
     override fun getCurrentTime(): Duration {
         return player.currentPosition.toDuration(DurationUnit.MILLISECONDS)
     }
 
     /**
-     * @return the track duration from the player in seconds
+     * @return the track duration from the player in milliseconds precision
      */
     override fun getDuration(): Duration? {
         return duration?.toDuration(DurationUnit.SECONDS)
