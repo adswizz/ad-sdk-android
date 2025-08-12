@@ -95,16 +95,24 @@ interface AdPlayer {
 
     // region VAST Related
 
-    // Player name
-    val name: String
+	 /**
+	 * Name of the player, e.g. MyExternalImplementationOfAdPlayer
+	 */
+     val name: String
 
-    // Player version.
-    val version: String
+    /**
+     * Player version, e.g. 1.0.0
+     */
+     val version: String
 
-    // Player capabilities as described in VAST document
-    val playerCapabilities: List<PlayerCapabilities>
+     /**
+     * Player capabilities as described in the VAST 4.0 document
+     */
+     val playerCapabilities: List<PlayerCapabilities>
 
-    // Player state as described in VAST document
+     /**
+     * Player state as described in the VAST  4.+ document
+     */
     val playerState: List<PlayerState>
 
     // endregion
@@ -112,17 +120,26 @@ interface AdPlayer {
 
     // region Player Options
 
-    // The cache assets hint; the AdPlayer may or may not implement this AdManager hint
+     /**
+     * Cache assets hint - the SDK set this value to **true** if it prefers the assets to be cached, according to AdManager settings.
+     * The AdPlayer may or may not implement this AdManager hint.
+     *
+     * @since 7.2.0
+     */
     var cacheAssetsHint: Boolean
 
-    // The enqueue functionality hint; the AdPlayer may or may not implement this AdManager hint
+    /**
+     * Enqueue enabled hint - the SDK set this value to **true** if it prefers all media files in an ad pod to be loaded immediately, based on AdManager settings.
+     * The AdPlayer may or may not implement this AdManager hint.
+     *
+     * @since 7.2.0
+     */
     var enqueueEnabledHint: Boolean
 
     /**
-     * This val only counts for server side playback (streams)
-     *
-     * @returns true if the player buffers the content while paused and starts from that same point when it resumes
-     * @returns false if the player does not buffer while paused, and when it resumes the playback starts from the live frame of the stream
+     * Is buffering while paused. Returns:
+     * **true** if the player buffers the content while paused and starts from that same point when it resumes;
+     * **false** if the player does not buffer while paused, and when it resumes the playback starts from the live frame of the stream
      */
     val isBufferingWhilePaused: Boolean
 
@@ -130,21 +147,40 @@ interface AdPlayer {
 
 
     // region Player Controls
-
+    /**
+     * Loads a new creative into the player. The function is called only for current media file.
+     * `creativeUrlString` - the url we want to load
+     */
     fun load(creativeUrlString: String)
 
+    /**
+     * Plays the current ad.
+     */
     fun play()
 
+    /**
+     * Pauses the current ad.
+     */
     fun pause()
 
+    /**
+     * Resets the player. Should be able to rerun ads from the beginning.
+     */
     fun reset()
 
+	/** 
+     * This method will be called when any instance of: AdManager, AdswizzAdStreamManager, AdswizzAdPodcastManager wants to free up the resources used is their lifecycle.
+     */
     fun release() = Unit
 
+    /**
+     *  Skips the current ad.
+     */
     fun seekToTrackEnd()
 
     /**
-     * @since 7.13.0
+     * Skips to a certain position.
+     * `position`: where to jump player playhead
      */
     fun seekTo(position: Duration)
 
@@ -152,11 +188,21 @@ interface AdPlayer {
 
 
     // region Enqueue Related
-
+     /** 
+     * Enqueue - enqueues a new URL into the player. The function is called only for each of the media file in an ad pod.
+     * `creativeUrlString` - the url we want to enqueue
+     * `index` - the position on the playlist we want to enqueue it on.
+     * @since 7.2.0
+     */
     fun enqueue(creativeUrlString: String, index: Int) {
         /* does nothing */
     }
 
+    /**
+     * Dequeue - removes a creative from the playlist.
+     * `index` - the position from which we want to remove the creative
+     * @since 7.2.0
+     */
     fun dequeue(index: Int) {
         /* does nothing */
     }
@@ -171,18 +217,20 @@ interface AdPlayer {
 
     /**
      * Gets the current time.
-     * `return` the current playback time in milliseconds precision
+     * `return` the current playback time with milliseconds precision
      */
     fun getCurrentTime(): Duration /** changed from Double 7.13.0 **/
 
     /**
      * Gets the duration.
-     * `return` the current track duration in milliseconds precision
+     * `return` the current track duration with milliseconds precision
      */
     fun getDuration(): Duration? /** changed from Double? 7.13.0 **/
 
-    // the current status for a player. The enum with all possible values is defined below
-    fun status(): Status
+   /**
+     * `return` the current status for a player. 
+     */
+	fun status(): Status
 
     // endregion
 
@@ -224,41 +272,69 @@ interface AdPlayer {
     // endregion
 
     // region Listener
-
+   /**
+     * Adds an AdPlayer.Listener callback.</br>
+     *`listener``: AdPlayer.Listener callback to be add
+    */
     fun addListener(listener: Listener)
+    
+    /**
+     * Removes an AdPlayer.Listener callback.</br>
+     * `listener`: AdPlayer.Listener callback to be removed
+     */
     fun removeListener(listener: Listener)
 
     interface Listener {
 
         /**
-         * @param index: if enqueue is used then index should represent the loading item index. If enqueue is not used then index should always be null
-         */
+        * Param `index`: if enqueue is used then index should represent the loading item index.
+        * If enqueue is not used then index should always be null
+        */
         fun onLoading(index: Int?)
 
         /**
-         * @param index: if enqueue is used then index should represent the loading item index. If enqueue is not used then index should always be null
-         */
+    	 * Param `index`: if enqueue is used then index should represent the loading item index.
+         * If enqueue is not used then index should always be null
+        */
         fun onLoadingFinished(index: Int?)
 
+        /**
+         * Fire this callback when the buffering has started
+         */
         fun onBuffering()
 
+        /**
+         * Fire this callback when the buffering has finished
+         */
         fun onBufferingFinished()
 
+        /**
+         * Fire this callback when the play starts
+         */
         fun onPlay()
 
+        /**
+         * Fire this callback when the player has paused
+         */
         fun onPause()
 
+	     /**
+         * Fire this callback when the player resumed
+         */
         fun onResume()
 
+        /**
+         * Fire this callback when the player has finished playing
+         */
         fun onEnded()
 
         /**
-         * @param currentTrackIndex: index of the current track
+         * @param `currentTrackIndex``: index of the current track
          */
         fun onSeekToTrackEnd(currentTrackIndex: Int)
 
         /**
-         * @param newTrackIndex: index of the new track
+         * @param `newTrackIndex``: index of the new track
          * default implementation does nothing. This is only needed for enqueue functionality
          */
         fun onTrackChanged(newTrackIndex: Int) = Unit
@@ -307,9 +383,16 @@ interface AdPlayer {
 
 
     // region Helpers
-
+    /**
+     * MetadataItem encapsulates one key-value item used in the onMetadata callback
+     *  @property `key` metadata key
+     *  @property `value` metadata value. All values are encoded as String type
+     */
     data class MetadataItem(val key: String, val value: String)
 
+    /**
+     * Possible player states
+     */
     enum class Status {
         // The player is initialized but not playing and does not have an item to play. This should be the default state
         INITIALIZED,
