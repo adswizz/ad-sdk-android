@@ -7,8 +7,10 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.media.AudioAttributes
+import android.media.AudioDeviceInfo
 import android.media.AudioFocusRequest
 import android.media.AudioManager
+import android.media.MediaRouter
 import android.net.Uri
 import android.os.*
 import android.support.v4.media.MediaBrowserCompat
@@ -16,6 +18,8 @@ import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
@@ -24,6 +28,7 @@ import androidx.media.utils.MediaConstants
 import com.ad.core.adBaseManager.AdBaseManager
 import com.ad.core.adBaseManager.AdData
 import com.ad.core.adBaseManager.AdEvent
+import com.ad.core.adFetcher.AdRequest
 import com.ad.core.adFetcher.AdRequestConnection
 import com.ad.core.adManager.AdManager
 import com.ad.core.adManager.AdManagerListener
@@ -51,6 +56,8 @@ private const val SERVER_ROOT_ID = "_server_side_id_"
 private const val PODCAST_ROOT_ID = "_podcast_side_id_"
 
 private const val channelId = "com.adswizz.universalplayer.notification"
+private const val urlRequest = "https://siriusxmdigital.deliveryengine.adswizz.com/vast/4.1/request?companionAds=true&aw_0_1st.companionzonesalias=siriusxm-companion-display-300x250%20%2Csiriusxm-companion-display-500x500&aw_0_req.adEvents=%5B%7B%22zoneAlias%22%3A%22siriusxm-nowplaying-audio%22%7D%5D&aw_0_1st.duration=245038&aw_0_awz.appVers=7.17.0%3A1800000000&aw_0_1st.version=7.12.1%3Aandroid34&aw_0_1st.ts=1747848565767&aw_0_req.permissions=CCCC1CCCCC1C10&calendar=0&aw_0_1st.playerId=SXMAndroid-Phone&aw_0_1st.cb=1747848565.3314&aw_0_1st.sessionid=1747848565769.998857&aw_0_req.appState=fg&sdkiad=1&call=1&pkpass=1&aw_0_req.bundleId=com.sirius&aw_0_req.tapOpp=true&aw_0_awz.listenerid=6e990a91-c740-4fbd-bcc0-29ae9fc796ae&aw_0_req.lmt=0&aw_0_1st.ifaType=androidGMS&aw_0_req.wopp=0&aw_0_cnt.artist=null&&aw_0_1st.channelId=51f88432-8311-37e0-b57d-9b0ab63f5ce9&&aw_0_1st.showId=ca91c400-cc81-4e27-a9bf-125d19514a87&&aw_0_cnt.title=Joe%20Fortenbaugh%20and%20Q%20Myers&&aw_0_1st.requestId=1644&&aw_0_1st.podId=1747848395_890818648&&aw_0_1st.ppid=1b3e8f00-d09b-4b77-b47e-78bf8c896173&&aw_0_enc.profileId=hls_48&aw_0_1st.zip=15293"
+
 
 @Suppress("SpellCheckingInspection")
 class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
@@ -318,6 +325,7 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
 
     private fun playNext(serviceType: String){
         println("AdswizzMediaBrowserService:: Play next type: $serviceType")
+        printCurrentSelectedRoute("playNext")
 
         var list = listOf<MediaData>()
         when (serviceType){
@@ -340,6 +348,7 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
 
     private fun playPrev(serviceType: String){
         println("AdswizzMediaBrowserService:: Play next type: $serviceType")
+        printCurrentSelectedRoute("playPrev")
 
         var list = listOf<MediaData>()
         when (serviceType){
@@ -361,12 +370,33 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
     }
 
     private fun playClient(zoneId: String){
+        printCurrentSelectedRoute("playClient")
         CoroutineScope(Dispatchers.Main).launch {
+            /*
+            val req = AdRequest.Builder().withUrlString(urlRequest)
+            req.requestAds { adManager, _ ->
+                // Handle the response from server
+                adManager?.prepare()
+                adManager?.play()
+                adManager?.setListener(adManagerListener)
+                myAdManager = adManager
+            }
+            */
+
+            val adRequestBuilder = AdswizzAdRequest.Builder().
+                withServer("siriusxmdigital.deliveryengine.adswizz.com").
+                withZoneAlias("siriusxm-companion-display-300x250 ,siriusxm-companion-display-500x500").
+                withDuration(245038).
+                withZones(listOf(AdswizzAdZone(zoneAlias = "siriusxm-nowplaying-audio"))).
+                withCustomParameter("aw_0_cnt.artist=null&&aw_0_1st.channelId=51f88432-8311-37e0-b57d-9b0ab63f5ce9&&aw_0_1st.showId=ca91c400-cc81-4e27-a9bf-125d19514a87&&aw_0_cnt.title=Joe%20Fortenbaugh%20and%20Q%20Myers&&aw_0_1st.requestId=1644&&aw_0_1st.podId=1747848395_890818648&&aw_0_1st.ppid=1b3e8f00-d09b-4b77-b47e-78bf8c896173&&aw_0_enc.profileId=hls_48&aw_0_1st.zip=15293")
+            /*
             val adRequestBuilder =
                 AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
                     .withServer("demo.deliveryengine.adswizz.com")
                     .withHttpProtocol(AdswizzAdRequest.HttpProtocol.HTTPS)
                     .withZones(setOf(AdswizzAdZone(zoneId)))
+
+             */
             adRequestBuilder.build {
                 println("Url: ${it.uri}")
                 val adRequestConnection = AdRequestConnection(it)
@@ -379,11 +409,15 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
                     myAdManager = adManager
                 }
             }
+
+
+
         }
     }
 
     private fun playPodcast(uri: String){
         println("AdswizzMediaBrowserService:: Play next podcast: $uri")
+        printCurrentSelectedRoute("playPodcast")
         CoroutineScope(Dispatchers.Main).launch {
             val podcastManager = AdswizzAdPodcastManager(AdPodcastManagerSettings.Builder().adPlayerInstance(player).build())
             myPodcastManager = podcastManager
@@ -393,6 +427,7 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
     }
 
     private fun playServer(uri: String) {
+        printCurrentSelectedRoute("playServer")
         CoroutineScope(Dispatchers.Main).launch {
             val adStreamManager = AdswizzAdStreamManager(
                 AdManagerStreamingSettings.Builder().adPlayerInstance(player).build()
@@ -401,6 +436,18 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
             adStreamManager.addListener(adStreamManagerListener)
             adStreamManager.play(uri)
         }
+    }
+
+    private fun printCurrentSelectedRoute(function: String){
+        val mediaRouter = getSystemService(MEDIA_ROUTER_SERVICE) as MediaRouter
+        val route = mediaRouter.getSelectedRoute(MediaRouter.ROUTE_TYPE_LIVE_AUDIO)
+
+        println("Route -> $function -> Route name: " + route.name)
+        println("Route -> $function -> Route description: " + route.description)
+        println("Route -> $function -> Route deviceType: " + route.deviceType)
+
+
+        Toast.makeText(this.applicationContext, "Route name:  " + route.name, Toast.LENGTH_LONG)
     }
 
     /*

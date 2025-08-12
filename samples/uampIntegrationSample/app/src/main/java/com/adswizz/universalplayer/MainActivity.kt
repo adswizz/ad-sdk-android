@@ -8,8 +8,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import android.view.Menu
 import android.view.MenuItem
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.projection.MediaProjectionManager
 import android.media.session.PlaybackState
 import android.net.Uri
 import android.os.*
@@ -176,6 +178,9 @@ class MainActivity : AppCompatActivity() {
             ArrayList(neededPermissionsList).toArray(array)
             ActivityCompat.requestPermissions(this, array, 1000)
         }
+        val mediaProjectionManager = getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
+        val captureIntent = mediaProjectionManager.createScreenCaptureIntent()
+        startActivityForResult(captureIntent, 1010)
     }
 
     private fun navigateToMediaItem(mediaId: String) {
