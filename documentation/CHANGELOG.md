@@ -33,6 +33,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `AdRequestConnection` class
     - `var timeout: Duration?`
 
+## [7.12.5] - 2025-08-08
+
+### Changed
+- Updated `Streaming Sample (with External Player)` to showcase how to pass to **_AdswizzSDK_** the metadata received in HLS Manifest for AIS enabled streams.
+- Improved `AdswizzAdStreamManager` to filter duplicated metadata received during the same adBreak.
+
+
 ## [7.12.4] - 2025-07-28
 
 ### Added

@@ -1,0 +1,130 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "adswizz-sdk-extensions",
+    "version": "7.12.5",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.9"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.8.22"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-sdk-extensions-7.12.5.aar",
+          "url": "adswizz-sdk-extensions-7.12.5.aar",
+          "size": 138999,
+          "sha512": "00c2d8d6698fdeaa12a9af1d2cd16219f82d892e0afae641dbed79bb5dd83a58c80ee00cf43ae337b7a3fe05ec53b05d1247e3cd6dd10ea20c920f8903a8a793",
+          "sha256": "758590859f46490d573c238261a0afea2b7c4f4440db074abbf4da8b84bbdf02",
+          "sha1": "396d7548c124eb4fb86f6d38d1e16256d140a3f7",
+          "md5": "ce51457def1c52ae8166e92a1113688d"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.12.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.7.3"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.8.22"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-sdk-extensions-7.12.5.aar",
+          "url": "adswizz-sdk-extensions-7.12.5.aar",
+          "size": 138999,
+          "sha512": "00c2d8d6698fdeaa12a9af1d2cd16219f82d892e0afae641dbed79bb5dd83a58c80ee00cf43ae337b7a3fe05ec53b05d1247e3cd6dd10ea20c920f8903a8a793",
+          "sha256": "758590859f46490d573c238261a0afea2b7c4f4440db074abbf4da8b84bbdf02",
+          "sha1": "396d7548c124eb4fb86f6d38d1e16256d140a3f7",
+          "md5": "ce51457def1c52ae8166e92a1113688d"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseSourcePublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "adswizz-sdk-extensions-7.12.5-sources.jar",
+          "url": "adswizz-sdk-extensions-7.12.5-sources.jar",
+          "size": 12996,
+          "sha512": "ebd834cb813175974e512043a77d2a37d8c7ca597bec963caf07416325e7d1acfb7d5790e750c547931b58beb49f0ce573f39b686e12619d8f534fa60100bc71",
+          "sha256": "229cbf294c36d3f3d66e8797de6639e5c3a018a6601e7da154078f99fb8ea175",
+          "sha1": "d865981e94a51c2368a313996d8e166e05cc4034",
+          "md5": "f373c877bbd0d9ae5fe574d480328fbd"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseJavaDocPublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "javadoc",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "adswizz-sdk-extensions-7.12.5-javadoc.jar",
+          "url": "adswizz-sdk-extensions-7.12.5-javadoc.jar",
+          "size": 445951,
+          "sha512": "f16de19f41f1bed3c389ae9b8023d2389c404892bc4ceeda87ec87ebf93b2173461778f68d346a79ba4fcadc4577ecee272e606b4abf50645dd952f5ef42ef99",
+          "sha256": "eb1a726ffef5d0cde6a6e38b2c07527bc283f0f30007fc8c7a466bcce190e6c1",
+          "sha1": "7a9a11d91799dfad0e2223c03254025bd5d40ec9",
+          "md5": "055dff10275b418c4a367c388f23dc97"
+        }
+      ]
+    }
+  ]
+}
