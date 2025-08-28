@@ -219,13 +219,13 @@ interface AdPlayer {
      * Gets the current time.
      * `return` the current playback time with milliseconds precision
      */
-    fun getCurrentTime(): Duration /** changed from Double 7.13.0 **/
+    fun getCurrentTime(): Duration
 
     /**
      * Gets the duration.
      * `return` the current track duration with milliseconds precision
      */
-    fun getDuration(): Duration? /** changed from Double? 7.13.0 **/
+    fun getDuration(): Duration?
 
    /**
      * `return` the current status for a player. 
