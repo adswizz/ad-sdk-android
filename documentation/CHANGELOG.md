@@ -33,6 +33,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `AdRequestConnection` class
     - `var timeout: Duration?`
 
+- Optimized the **_AdswizzSDK_**'s consumer `proguard-rules.pro` to help reduce the final APK size. For more details, please refer to the [How to migrate to AdswizzSDK v8.0.0+](Android/Migrations/v8_0_0) page.
+
+### Added
+- Starting with 8.0.0 version, the `AdCompanionView.Listener` interface includes a new `didReceivedError(adCompanionView: AdCompanionView, error: Error)` method called when some error occurred after companion has loaded. For more details, please refer to the updated [Companion Banner](Android/SDKAndroid/CompanionBanner.md) page.
+
 ## [7.12.5] - 2025-08-08
 
 ### Changed
