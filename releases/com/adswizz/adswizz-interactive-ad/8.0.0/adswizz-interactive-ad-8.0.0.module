@@ -1,0 +1,135 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "adswizz-interactive-ad",
+    "version": "8.0.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.9"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "adswizz-interactive-ad-8.0.0.aar",
+          "url": "adswizz-interactive-ad-8.0.0.aar",
+          "size": 8565,
+          "sha512": "b378be0413c98a3316662786f4cfde07ff2195de5eb610c1a82cc06ab95a19b23c5aeff4b98ad784f66d2ad834934c28aa4d3e33b9350fc69f24935d1060022e",
+          "sha256": "c5f79153535391404141086161b30dddb79d48379bd19c79338a41e4eef5285c",
+          "sha1": "5ab3ed311aedb9b2e3e71a767f942c2cd884fb5c",
+          "md5": "abe04549330cfdee6d49349014f951b1"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-core",
+          "version": {
+            "requires": "8.0.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-common-internal",
+          "version": {
+            "requires": "8.0.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk7",
+          "version": {
+            "requires": "1.8.22"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.7.3"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-android",
+          "version": {
+            "requires": "1.7.3"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-interactive-ad-8.0.0.aar",
+          "url": "adswizz-interactive-ad-8.0.0.aar",
+          "size": 8565,
+          "sha512": "b378be0413c98a3316662786f4cfde07ff2195de5eb610c1a82cc06ab95a19b23c5aeff4b98ad784f66d2ad834934c28aa4d3e33b9350fc69f24935d1060022e",
+          "sha256": "c5f79153535391404141086161b30dddb79d48379bd19c79338a41e4eef5285c",
+          "sha1": "5ab3ed311aedb9b2e3e71a767f942c2cd884fb5c",
+          "md5": "abe04549330cfdee6d49349014f951b1"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseSourcePublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "adswizz-interactive-ad-8.0.0-sources.jar",
+          "url": "adswizz-interactive-ad-8.0.0-sources.jar",
+          "size": 1682,
+          "sha512": "9f6fa68476667898a8b09bf36bda31e1e82fe0cd7b68e7b2b22820e5c06c0b5888009196736285d9d1af1d53611ed6d9aa41a9e03dbebc37097b2d04f6c54760",
+          "sha256": "3fed39a0b6a19583ba95d699c2c4c7c0660df45d7bbd9854d36835dcc82ab6aa",
+          "sha1": "6c4fb5f6130f9f6a6cabbfe2a2ac858de865c53d",
+          "md5": "d451d478aeb59f19295ab436de2ec41d"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseJavaDocPublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "javadoc",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "adswizz-interactive-ad-8.0.0-javadoc.jar",
+          "url": "adswizz-interactive-ad-8.0.0-javadoc.jar",
+          "size": 264226,
+          "sha512": "83ce0433ebc32fab6aa0440ab4520ad0fdebd3e5bbbe5c33b7ec983ae0942d279d52977d4f1ec7d19a473283783129284f79629d64ed5f01d0a2c9ad7e12e768",
+          "sha256": "ce81d5172656624ac79642cf9a681da86b51db8f3dfb090a2b137ad8721ea59d",
+          "sha1": "213ee1d0ca61bb3669a6f54e42c50b8513bff0c1",
+          "md5": "d2c4ce04fa3efef05369f86851429288"
+        }
+      ]
+    }
+  ]
+}
