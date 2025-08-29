@@ -14,9 +14,8 @@ class MyAdPlayer(private val exoPlayer: ExoPlayer) : AdPlayer {
    		return exoPlayer.currentPosition
 	}
 
-    // the current track duration in seconds
-	fun getDuration(): Double?{
-	    return exoPlayer.duration.toDouble()
+	fun getDuration(): Duration?{
+	    return exoPlayer.duration..toDuration(DurationUnit.MILLISECONDS)
 	}
 	
 	
@@ -75,7 +74,6 @@ class MyAdPlayer(private val exoPlayer: ExoPlayer) : AdPlayer {
    		return myPrivateComputedCurrentPosition
 	}
 
-    // the current track duration in seconds
 	fun getDuration(): Double?{
 	    //return exoPlayer.duration.toDouble()  - this will result in crash
 	    //do not use exoplayer current duration but a computed variable previously updated
@@ -97,7 +95,7 @@ class MyAdPlayer(private val exoPlayer: ExoPlayer) : AdPlayer {
     }
 
     override fun pause() {
-	    playerHandler).post {
+	    playerHandler.post {
         	exoplayerInstance.playWhenReady = false
         }
     }

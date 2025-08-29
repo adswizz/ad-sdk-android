@@ -13,7 +13,7 @@ You are now ready for your first ad request. You will need to create an AdswizzA
         @Json(name = "maxAds")
         val maxAds: Int? = null,
         @Json(name = "maxDuration")
-        val maxDuration: Long? = null,
+        val maxDuration: Duration? = null,
         //starting with SDK 7.11.0
     	@Json(name = "zoneAlias")
     	val zoneAlias: String? = null
@@ -35,6 +35,10 @@ data class AdswizzShimZone @JvmOverloads constructor(
     val zoneAlias: String? = null
 )
 ```
+**Note**
+Since v8.0.0, `maxDuration` and `maxDeadAir` parameters are now of type Duration? instead of Long? which makes the time or period values representation more clear ( no need to know if is seconds or milliseconds or other time values).
+
+
 Each `AdswizzShimZone` object is defined by a mandatory `zoneId`/`zoneAlias` and an optional `maxDeadAir` field, where `zoneId` or `zoneAlias` is provided by the PIM.
 The fields `zoneId` or `zoneAlias` checked in the same manner as AdswizzAdZone. The `maxDeadAir` parameter represents the minimal threshold time necessary to fill the remaining duration with shims ads.
 
@@ -86,9 +90,13 @@ Duration is set in milliseconds. Here is an example that sets max duration to 90
 ```kotlin
 	AdswizzAdRequest.Builder()
 		...	
-		.withDuration(90000L)
+		.withDuration(90.toDuration(DurationUnit.SECONDS))
 		...
 ```
+**Note**
+Since v8.0.0, `withDuration` now uses Duration kotlin type instead of Long.
+
+
 
 **(Advanced) Enable expected ads reporting**
 
@@ -158,7 +166,7 @@ class MainActivity : AppCompatActivity(), AdManagerListener {
                                     .assetQuality(AssetQuality.MEDIUM)          // optional, other possible values AssetQuality.LOW, AssetQuality.HIGH, AssetQuality.AUTO
                                     .enqueueEnabled(false)                      // optional
                                     .videoViewId(1)                             // optional
-                                    .timeoutIntervalForResource(10.0)			// optional, used by internal players, defaults to internal exoplayer timeout (8 sec)
+                                    .timeoutIntervalForResource(10.0.toDuration(DurationUnit.SECONDS))	// optional, used by internal players, defaults to internal exoplayer timeout (8 sec)
                                     .automaticallyManageAudioFocus(true)		// optional, used by internal players, defaults to internal exoplayer audio focus handling
                                     .build()                                    // optional
                             adManager.setListener(this) // Get notifications from the Ad SDK

@@ -3,7 +3,15 @@
 This interface exposes to the host app the following information:
 
 ```kotlin
+/**
+ *  AdData exposes the ad data attributes of the VAST protocol.
+ */
 interface AdData {
+    /**
+     * Unique id of the ad instance. While two request on the same zone id can return
+     * the same ad with the same id, the instanceId will be different.
+     */
+    val instanceId: String
 
     /**
      * The ad ID from the VAST response
@@ -13,7 +21,7 @@ interface AdData {
     /**
      * The duration of the ad taken from the VAST response
      */
-    val duration: Double?
+    val duration: Duration?
 
     /**
      * The media file that was chosen be used for the ad
@@ -28,7 +36,7 @@ interface AdData {
     /**
      * The minimum time that has to pass until an ad can be skipped. If null, the ad can be skipped immediately.
      */
-    val skipOffset: Double?
+    val skipOffset: Duration?
 
     /**
      * Ad extensions from VAST response
@@ -60,12 +68,11 @@ interface AdData {
      */
     val pricing: Pricing?
 
-  	/**
-     * The companion selected by the SDK for display
-     * based on SDK settings
+    /**
+     * The companion selected by the SDK to be displayed based on [AdCompanionOptions] settings
      */
     val selectedCompanion: CompanionVast?
-    
+
     /**
      * The list of all companions from the VAST response
      */
@@ -74,11 +81,23 @@ interface AdData {
     /**
      * Exposes whether the ad has a companion banner information or not.
      */
-    var hasCompanion: Boolean
+    val hasCompanion: Boolean
 
     /**
      * Expose ad type information
      */
     var adType: Ad.AdType
+
+    /**
+     * The advertiser field from VAST response.
+     * The [Advertiser.id] is an (optional) identifier for the advertiser, provided by the ad server. Can be used for internal analytics. This is only available in newer VAST versions such as 4.1, 4.2, etc.
+     * The [Advertiser.value] is a string that provides the name of the advertiser as defined by the ad serving party. Recommend using the domain of the advertiser.
+     *
+     * The Advertiser format should be as follows
+     * <Advertiser id="the_advertiser_id">YourAdvertiserValue</Advertiser>
+     * <Advertiser>YourAdvertiserValueWithoutId</Advertiser>
+     * @since 7.8.5
+     */
+    val advertiser: Advertiser?
 }
 ```

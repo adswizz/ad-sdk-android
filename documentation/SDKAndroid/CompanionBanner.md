@@ -101,14 +101,83 @@ You will be notified when the ad has loaded the companion view, if the companion
 the display. If there was an error while loading the companion, you will be notified through this listener.
 Also, you can decide whether or not to override click-through on the companion view.
 
+```kotlin
+    interface Listener {
+        /**
+         * Called when the companion view is about to load the content </br>
+         * [adCompanionView]: The `AdCompanionView` instance which will load the content
+         */
+        fun willLoadAd(adCompanionView: AdCompanionView)
+
+        /**
+         * Called when the companion view displayed the ad content </br>
+         * [adCompanionView]: The `AdCompanionView` instance which displayed the ad content
+         */
+        fun didDisplayAd(adCompanionView: AdCompanionView)
+
+        /**
+         * Called when the content display failed. The failure is normally due to network connectivity. </br>
+         * [adCompanionView]: The `AdCompanionView` instance which failed to display the content </br>
+         * [error]: The `error` received
+         */
+        fun didFailToDisplayAd(adCompanionView: AdCompanionView, error: Error)
+
+        /**
+         * Called when some error was triggered after companion has loaded. </br>
+         * [adCompanionView]: The `AdCompanionView` instance which triggered the error. </br>
+         * [error]: The `error` received
+         * @since 8.0.0
+         */
+        fun didReceivedError(adCompanionView: AdCompanionView, error: Error) = Unit
+
+        /**
+         * Called when the companion view is out of context. This means that the stream is not correlated
+         * anymore with the companion view. </br>
+         * [adCompanionView]: The `AdCompanionView` instance which is out of context
+         */
+        fun didEndDisplay(adCompanionView: AdCompanionView)
+
+        /**
+         * Called immediately when a touch event is detected over the ad companion view.
+         * Give the host application a chance to override the default behaviour when a `clickThrough` event occurs. </br>
+         * `return` `true` if the host application wants to handle itself the targetURL </br>
+         * `return` `false` otherwise. In this case the targetURL will be handled internally by the SDK </br>
+         * [adCompanionView]: The `AdCompanionView` instance which received the touch/click event </br>
+         * [uri]: The `URI` which was loaded by the `AdCompanionView`
+         */
+        fun shouldOverrideClickThrough(adCompanionView: AdCompanionView, uri: Uri): Boolean
+
+        /**
+         *  Called when the application is about to go to background as a result of
+         *  a `clickThrough` event and the targetURL is opened in the external browser.</br>
+         *  [adCompanionView]: The `AdCompanionView` instance which triggers the event
+         */
+        fun willLeaveApplication(adCompanionView: AdCompanionView)
+
+        /**
+         * Notify host application that the given WebView's render process has exited.
+         * The host app should release the current AdCompanionView and create another one next time it is needed </br>
+         * [adCompanionView]: The `AdCompanionView` instance affected </br>
+         * [didCrash]: if render process crashed, otherwise it was killed by system
+         *
+         * @since 7.5.0
+         */
+        fun onRenderProcessGone(adCompanionView: AdCompanionView, didCrash: Boolean)
+    }
+```
+
 ## Extra exposure time
 
 By default, the AdCompanionView will end displaying the content after the ad finishes playing.
-If you need to keep the companion on the screen for a longer time(or indefinitely), you can configure it like this:
+If you need to keep the companion on the screen for a longer time (or indefinitely), you can configure it like this:
 
 ```kotlin
 val adCompanionOptions = AdCompanionOptions()
-adCompanionOptions.extraExposureTime = 1.2 // seconds.
+adCompanionOptions.extraExposureTime = 1.2.toDuration(DurationUnit.SECONDS) // the companion will linger on UI for 1.2 extra seconds.
+/*
+	or to remain indefinitely
+	adCompanionOptions.extraExposureTime = Duration.INFINTE
+*/
 AdswizzSDK.setAdCompanionOptions(adCompanionOptions)
 ```
 

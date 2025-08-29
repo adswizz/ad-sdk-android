@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.0.0] - 2025-08-29
+
+### Changed
+- All API functions with time or period parameters now use Kotlin's [`Duration`](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.time/-duration/) instead of the less intuitive `Double` or `Long` types. For more details, please refer to the [How to migrate to AdswizzSDK v8.0.0+](Android/Migrations/v8_0_0) page.
+  - `AdPlayer` interface functions changed `Double` return type or parameter to `Duration` type:
+      - `abstract fun getCurrentTime(): Duration`
+      - `abstract fun getDuration(): Duration?`
+      - `abstract fun seekTo(position: Duration)`
+  - `AdswizzAdRequest` class:
+      - `fun withDuration(duration: Duration?)`
+  - `AdManagerSettings` class:
+      - `fun timeoutIntervalForResource(timeout: Duration?)`
+  - `AdCompanionOptions` class:
+      - `var extraExposureTime: Duration`
+  - `AdManager` interface
+      - `abstract fun getCurrentTime(): Duration`
+  - `AdswizzAdPodcastManager` class
+      - `open fun seekTo(position: Duration)`
+  - `AdData` interface
+      - `abstract val duration: Duration?`
+      - `abstract val skipOffset: Duration?`
+  - `AdswizzAdZone` class
+      - `val maxDuration: Duration?`
+  - `AdswizzShimZone` class
+      - `val maxDeadAir: Duration?`
+  - `AdRequestConnection` class
+      - `var timeout: Duration?`
+
+- Optimized the **_AdswizzSDK_**'s consumer `proguard-rules.pro` to help reduce the final APK size. For more details, please refer to the [How to migrate to AdswizzSDK v8.0.0+](Android/Migrations/v8_0_0) page.
+
+### Added
+- Starting with 8.0.0 version, the `AdCompanionView.Listener` interface includes a new `didReceivedError(adCompanionView: AdCompanionView, error: Error)` method called when some error occurred after companion has loaded. For more details, please refer to the updated [Companion Banner](Android/SDKAndroid/CompanionBanner.md) page.
+
 ## [7.12.5] - 2025-08-08
 
 ### Changed

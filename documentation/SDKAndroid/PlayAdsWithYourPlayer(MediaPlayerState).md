@@ -70,102 +70,111 @@ Similar to the `AdPlayer` interface, once you receive the `AdManager` instance t
 interface MediaPlayerState {
 
     /**
-     * This represents the current playing position. 
+     * Playback position of the current media with milliseconds precision
      * This variable reflect the continuous progress for each item that is currently playing.
      */
     val currentPlayhead: Duration
 
-    // This is the event channel which the player uses to communicate to sdk
-    // player events changes (like buffering, pause, resume, playing, etc.)
+    /**
+     * The current status for the player.
+     * Player events changes (like buffering, pause, resume, playing, etc.) should be send through this flow
+     */
     val playerStatusFlow: SharedFlow<PlayerEvent>
 
-    // Reports the volume for the player. This value should be between [0..1].
-    // A value of 0.0 indicates silence; a value of 1.0 (the default) indicates full audio volume for the player instance.
+    /**
+     * Current value for the player's volume. This value should be between [0..1].
+     * A value of 0.0 indicates silence; a value of 1.0 (the default) indicates full audio volume for the player instance.
+     */
     val playerVolume: Float
 
-    // Used for targetability purposes.
-    // A list of player capabilities.
+    /**
+     * Used for targetability purposes.
+     * A list of player capabilities.
+     */
     val playerCapabilities: List<PlayerCapabilities>
 
-    // Used for targetability purposes.
-    // A list of player states as described by the IAB, which will help achieve better targetability.
+    /**
+     * Used for targetability purposes.
+     * A list of player states as described by the IAB, which will help achieve better targetability.
+     */
     val playerState: List<PlayerState>
 
-	//Type of generic errors player should send. They are VAST compliant errors
-    sealed class PlayerError(err: Exception){
-        data class GeneralError(val error: Exception) : PlayerError(error)
-        data class FileNotFound(val error: Exception) : PlayerError(error)
-        data class Timeout(val error: Exception) : PlayerError(error)
-        data class MediaFileNotSupported(val error: Exception) : PlayerError(error)
-        data class MediaFileDisplayError(val error: Exception) : PlayerError(error)
+    /**
+     * Specifies the type of generic errors the player should send, compliant with VAST standards.
+     */
+    sealed class PlayerError(open val error: Exception){
+        data class GeneralError(override val error: Exception) : PlayerError(error)
+        data class FileNotFound(override val error: Exception) : PlayerError(error)
+        data class Timeout(override val error: Exception) : PlayerError(error)
+        data class MediaFileNotSupported(override val error: Exception) : PlayerError(error)
+        data class MediaFileDisplayError(override val error: Exception) : PlayerError(error)
     }
 
     /**
      * Various player states send as event changes through playerStatusFlow
      */
     sealed class PlayerEvent(open val id: String){
-        /*
-           This event is triggered when the player starts loading the media file (ad creative) for the corresponding ad.
-              - here you have to pass an id, that is the instanceId from AdData
-        */
+        /**
+         *  This event should be triggered when the player starts loading the media file (ad creative) for the corresponding ad.
+         *  Specifies the instanceId from AdData as the required id parameter.
+         */
         data class Loading(override val id: String): PlayerEvent(id)
 
-        /*
-            This event is triggered when the player finishes loading the media file (ad creative) for the corresponding ad.
-              - here you have to pass an id, that is the instanceId from AdData
-        */
+        /**
+         *  This event should be triggered when the player finishes loading the media file (ad creative) for the corresponding ad.
+         *  Specifies the instanceId from AdData as the required id parameter.
+         */
         data class LoadingFinished(override val id: String): PlayerEvent(id)
 
-        /*
-           This event is triggered when the media file (ad creative) for the corresponding ad failed to load or failed during playback.
-              - here you have to pass an id, that is the instanceId from AdData
-        */
+        /**
+         * This event should be triggered when the media file (ad creative) for the corresponding ad failed to load or failed during playback.
+         * Specifies the instanceId from AdData as the required id parameter.
+         */
         data class Failed(override val  id: String, val error: PlayerError): PlayerEvent(id)
 
-
-        /*
-          This event is triggered when the playback has paused when a buffering state occurred.
-          This event should be triggered only for current playing ad creative.
-               - here you have to pass an id, that is the instanceId from AdData
-        */
+        /**
+         *  This event should be triggered when the playback has paused when a buffering state occurred.
+         *  This event should be triggered only for current playing ad creative.
+         *  Specifies the instanceId from AdData as the required id parameter.
+         */
         data class Buffering(override val id: String): PlayerEvent(id)
 
-        /*
-          This event is triggered when a media item has resumed after buffering finishes.
-          This event should be triggered only for current media file (ad creative) during its playing phase
-            - here you have to pass an id, that is the instanceId from AdData
-        */
+        /**
+         * This event is triggered when a media item has resumed after buffering finishes.
+         * This event should be triggered only for current media file (ad creative) during its playing phase
+         * Specifies the instanceId from AdData as the required id parameter.
+         */
         data class BufferingFinished(override val id: String): PlayerEvent(id)
 
-        /*
-          This event should be triggered when your player will begin to play the media file (ad creative).
-            - here you have to pass an id, that is the instanceId from AdData
-        */
+        /**
+         *  This event should be triggered when the player will begin to play the media file (ad creative).
+         *  Specifies the instanceId from AdData as the required id parameter.
+         */
         data class StartPlaying(override val id: String): PlayerEvent(id)
 
-        /*
-          This event should be triggered when your player paused current the media file (ad creative).
-             - here you have to pass an id, that is the instanceId from AdData
-        */
+        /**
+         *  This event should be triggered when the player paused current the media file (ad creative).
+         *  Specifies the instanceId from AdData as the required id parameter.
+         */
         data class Pause(override val id: String): PlayerEvent(id)
 
-        /*
-          This event should be triggered when your player resumes the current media file (ad creative).
-             - here you have to pass an id, that is the instanceId from AdData
-        */
+        /**
+         *  This event should be triggered when the player resumes the current media file (ad creative).
+         *  Specifies the instanceId from AdData as the required id parameter.
+         */
         data class Resume(override val id: String): PlayerEvent(id)
 
-        /*
-          This event should be triggered when your player finishes playing the current media file (ad creative).
-              - here you have to pass an id, that is the instanceId from AdData
-        */
+        /**
+         *  This event should be triggered when the player finishes playing the current media file (ad creative).
+         *  hSpecifies the instanceId from AdData as the required id parameter.
+         */
         data class Finished(override val id: String): PlayerEvent(id)
 
-        /*
-           This event should be triggered when your player skipped the current media file (ad creative).
-              - here you have to pass an id, that is the instanceId from AdData and an Optional PlayerError.
-              - error: PlayerError should be passed when the skip action is done due to Playback Exceptions.
-        */
+        /**
+         *   This event should be triggered when the player skipped the current media file (ad creative).
+         *   Specifies the instanceId from AdData as the required id parameter and an optional PlayerError.
+         *   error: PlayerError should be passed when the skip action is done due to Playback Exceptions.
+         */
         data class SkipAd(override val id: String, val error: PlayerError? = null): PlayerEvent(id)
     }
 }

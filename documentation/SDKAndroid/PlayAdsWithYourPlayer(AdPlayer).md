@@ -95,16 +95,25 @@ interface AdPlayer {
 
     // region VAST Related
 
-    // Player name
+    /**
+     * Name of the player, e.g. MyExternalImplementationOfAdPlayer
+     *
+     */
     val name: String
 
-    // Player version.
+    /**
+     * Player version, e.g. 1.0.0
+     */
     val version: String
 
-    // Player capabilities as described in VAST document
+    /**
+     * Player capabilities as described in the VAST 4.0 document
+     */
     val playerCapabilities: List<PlayerCapabilities>
 
-    // Player state as described in VAST document
+    /**
+     * Player state as described in the VAST  4.+ document
+     */
     val playerState: List<PlayerState>
 
     // endregion
@@ -112,51 +121,94 @@ interface AdPlayer {
 
     // region Player Options
 
-    // The cache assets hint; the AdPlayer may or may not implement this AdManager hint
+    /**
+     * Indicates whether assets should be cached.
+     * This flag mirrors the value passed through [AdManagerSettings].
+     * Your [AdPlayer] implementation does not need to handle this property unless
+     * your player requires custom logic for asset caching.
+     * @since 7.2.0
+     */
     var cacheAssetsHint: Boolean
 
-    // The enqueue functionality hint; the AdPlayer may or may not implement this AdManager hint
+    /**
+     * Indicates whether enqueue mode is enabled.
+     * This flag mirrors the value passed through [AdManagerSettings].
+     * Your [AdPlayer] implementation may ignore this hint unless it requires
+     * custom logic for handling enqueue behavior.
+     * @since 7.2.0
+     */
     var enqueueEnabledHint: Boolean
 
     /**
-     * This val only counts for server side playback (streams)
-     *
-     * @returns true if the player buffers the content while paused and starts from that same point when it resumes
-     * @returns false if the player does not buffer while paused, and when it resumes the playback starts from the live frame of the stream
+     * Is buffering while paused. Returns:</br>
+     * **true** if the player buffers the content while paused and starts from that same point when it resumes;</br>
+     * **false** if the player does not buffer while paused, and when it resumes the playback starts from the live frame of the stream
      */
     val isBufferingWhilePaused: Boolean
 
     // endregion
 
-
     // region Player Controls
 
+    /**
+     * Loads a creative into the player for the current media file.
+     * [creativeUrlString] - The URL of the creative to load.
+     */
     fun load(creativeUrlString: String)
 
+    /**
+     * Plays the current ad.
+     */
     fun play()
 
+    /**
+     * Pauses the current ad.
+     */
     fun pause()
 
+    /**
+     * Resets the player. Should be able to rerun ads from the beginning.
+     */
     fun reset()
 
+    /**
+     * This method will be called when any instance of: AdManager, AdswizzAdStreamManager, AdswizzAdPodcastManager wants to free up the resources used is their lifecycle.
+     */
     fun release() = Unit
 
+    /**
+     *  Skips the current ad.
+     */
     fun seekToTrackEnd()
 
+
     /**
-     * @since 7.7.0
+     * Skips to a certain position.</br>
+     * [position]: where to jump player playhead
      */
-    fun seekTo(position: Double)
+    fun seekTo(position: Duration)
 
     // endregion
 
 
     // region Enqueue Related
 
+    /**
+     * Enqueues a creative URL into the player for an ad pod.
+     * This method is invoked once for each media file in the pod.
+     * [creativeUrlString] - The URL of the creative to enqueue.
+     * [index] - The position in the playlist at which to enqueue the creative.
+     * @since 7.2.0
+     */
     fun enqueue(creativeUrlString: String, index: Int) {
         /* does nothing */
     }
 
+    /**
+     * Dequeue - removes a creative from the playlist.</br>
+     * [index] - the position from which we want to remove the creative
+     * @since 7.2.0
+     */
     fun dequeue(index: Int) {
         /* does nothing */
     }
@@ -166,16 +218,28 @@ interface AdPlayer {
 
     // region Current Values
 
-    // Current player volume. The value will be between 0.0f and 1.0f
+    /**
+     * Current player volume. The value should be between 0.0f ( silence ) and 1.0f ( maximum volume )
+     */
     var volume: Float
 
-    // the current playback time in seconds
-    fun getCurrentTime(): Double
+    /**
+     * Returns the current playhead of the current track.
+     * Note: Implementations must preserve the value with at least millisecond precision.
+     * @return The track duration as a [Duration]
+     */
+    fun getCurrentTime(): Duration
 
-    // the current track duration in seconds
-    fun getDuration(): Double?
+    /**
+     * Returns the total duration of the current track.
+     * Note: Implementations must preserve the value with at least millisecond precision.
+     * @return The track duration as a [Duration?]
+     */
+    fun getDuration(): Duration?
 
-    // the current status for a player. The enum with all possible values is defined below
+    /**
+     * `return` the current status for a player. The enum with all possible values is defined here: [Status]
+     */
     fun status(): Status
 
     // endregion
@@ -183,10 +247,8 @@ interface AdPlayer {
     // region Video
 
     /**
-     * Sets a surface to render the video content
-     *
-     * @param surface - the surface to be used to render the video content
-     *
+     * Sets a surface to render the video content.</br>
+     *[surface] - the surface to be used to render the video content
      * @since 7.3.0
      */
     fun setVideoSurface(surface: Surface) {
@@ -194,10 +256,8 @@ interface AdPlayer {
     }
 
     /**
-     * Removes a surface previously set to render the video content
-     *
-     * @param surface - the surface that was used to render the video content
-     *
+     * Removes a surface previously set to render the video content.</br>
+     * [surface] - the surface that was used to render the video content
      * @since 7.3.0
      */
     fun clearVideoSurface(surface: Surface) {
@@ -205,10 +265,8 @@ interface AdPlayer {
     }
 
     /**
-     * Sets the video view state for viewability purposes
-     *
-     * @param videoState - the state of the video view. Possible values: MINIMIZED, COLLAPSED, NORMAL, EXPANDED, FULLSCREEN
-     *
+     * Sets the video view state for viewability purposes.</br>
+     * [videoState] - the state of the video view. Possible values: MINIMIZED, COLLAPSED, NORMAL, EXPANDED, FULLSCREEN
      * @since 7.3.0
      */
     fun setVideoState(videoState: AdVideoState?) {
@@ -218,115 +276,27 @@ interface AdPlayer {
     // endregion
 
     // region Listener
-
+    /**
+     * Adds an AdPlayer.Listener callback.</br>
+     *[listener]: AdPlayer.Listener callback to be add
+     */
     fun addListener(listener: Listener)
+
+    /**
+     * Removes an AdPlayer.Listener callback.</br>
+     * [listener]: AdPlayer.Listener callback to be removed
+     */
     fun removeListener(listener: Listener)
 
-    interface Listener {
-
-        /**
-         * @param index: if enqueue is used then index should represent the loading item index. If enqueue is not used then index should always be null
-         */
-        fun onLoading(index: Int?)
-
-        /**
-         * @param index: if enqueue is used then index should represent the loading item index. If enqueue is not used then index should always be null
-         */
-        fun onLoadingFinished(index: Int?)
-
-        fun onBuffering()
-
-        fun onBufferingFinished()
-
-        fun onPlay()
-
-        fun onPause()
-
-        fun onResume()
-
-        fun onEnded()
-
-        /**
-         * @param currentTrackIndex: index of the current track
-         */
-        fun onSeekToTrackEnd(currentTrackIndex: Int)
-
-        /**
-         * @param newTrackIndex: index of the new track
-         */
-        fun onTrackChanged(newTrackIndex: Int) {
-            // default implementation does nothing. This is only needed for enqueue functionality
-        }
-
-        /**
-         * Fire this callback on error
-         */
-        fun onError(error: String)
-        
-        /**
-         * Fire this when you want to skip with an error
-         * this function will not fire skip tracking but error tracking with vast code 400
-         *
-         * @param error - error which is the reason for this skipAd call
-         */
-        fun onSkipAd(error: Error){
-            // default implementation does nothing.
-        }
-
-        fun onMetadata(metadataList: List<MetadataItem>) {
-            // default implementation does nothing. This is only needed for server side insertion
-        }
-
-        fun onVolumeChanged(volume: Float) {
-            // default implementation does nothing
-        }
-
-        /**
-         * Called when video size changes and also when it starts with the initial values
-         *
-         * @param player - this player
-         * @param width - the video width
-         * @param height - the video height
-         *
-         * @since 7.3.0
-         */
-        fun onVideoSizeChanged(player: AdPlayer, width: Int, height: Int) {
-            // default implementation does nothing
-        }
-    }
-
-    // endregion
 
 
-    // region Helpers
-
+    /**
+     * MetadataItem encapsulates one key-value item used in the onMetadata callback
+     *  @property key metadata key
+     *  @property value metadata value. All values are encoded as String type
+     *
+     */
     data class MetadataItem(val key: String, val value: String)
-
-    enum class Status {
-        // The player is initialized but not playing and does not have an item to play. This should be the default state
-        INITIALIZED,
-
-        // The player failed to load the item
-        FAILED,
-
-        // The player is about to begin buffering
-        BUFFERING,
-
-        // The player has finished buffering
-        BUFFERING_FINISHED,
-
-        // The player is playing the item
-        PLAYING,
-
-        // The player has been paused
-        PAUSED,
-
-        // The player has finished the whole item. This would be the last state for an item
-        FINISHED,
-
-        // The player state is unknown.
-        UNKNOWN;
-    }
 
 }
 ```
@@ -450,8 +420,8 @@ The ```volume``` variable can be used to get the player's current volume or to s
 
 ### getCurrentTime and getDuration
 
-The ```fun getDuration(): Double?``` function should return the duration of the track in seconds when it can be obtained from the media resource; otherwise, null.
-The ```fun getCurrentTime(): Double``` function should return the current position of the playhead in the current track in seconds. If no media resource exists, then 0.0 should be returned. The value returned by this function should be between 0.0 and the duration returned by ```getDuration()```. When the playing finishes at the end of the track, the value returned should be equal to ```getDuration()```.
+The ```fun getDuration(): Duration?``` function should return the duration of the track when it can be obtained from the media resource; otherwise, null.
+The ```fun getCurrentTime(): Duration``` function should return the current position of the playhead in the current track. If no media resource exists, then 0.0 should be returned. The value returned by this function should be between 0.0 and the duration returned by ```getDuration()```. When the playing finishes at the end of the track, the value returned should be equal to ```getDuration()```.
 
 ### status function
 
@@ -460,29 +430,57 @@ The current status for a player is obtained by the AdManager using the ```fun st
 The enum with all possible values is defined below:
 
 ```kotlin
+   /**
+ * Represents the possible states of the player.
+ * This enum reports the player's playback state to the SDK whenever the status() function is called by the SDK.
+ */
 enum class Status {
-    // The player is initialized but not playing and does not have an item to play. This should be the default state
+    /**
+     * I n i t i a l i z e d </br>
+     * The player is initialized but not playing and does not have an item to play. This should be the default state
+     */
     INITIALIZED,
 
-    // The player failed to load the item or failed to play the item
+    /**
+     * F a i l e d </br>
+     *  The player failed to load the item or failed to play the item
+     */
     FAILED,
 
-    // The player is about to begin buffering
+    /**
+     * B u f f e r i n g </br>
+     * The player is about to begin buffering
+     */
     BUFFERING,
 
-    // The player has finished buffering
+    /**
+     * B u f f e r i n g_F i n i s h e d </br>
+     * The player has finished buffering
+     */
     BUFFERING_FINISHED,
 
-    // The player is playing the item
+    /**
+     * P l a y i n g </br>
+     * The player is playing the item
+     */
     PLAYING,
 
-    // The player has been paused
+    /**
+     * P a u s e d </br>
+     * The player has been paused
+     */
     PAUSED,
 
-    // The player has finished the whole item. This would be the last state for an item
+    /**
+     * F i n i s h e d </br>
+     * The player has finished the whole item. This would be the last state for an item
+     */
     FINISHED,
 
-    // The player state is unknown
+    /**
+     * U n k n o w n </br>
+     *  The player state is unknown. We should not see this state.
+     */
     UNKNOWN;
 }
 ```
@@ -528,99 +526,104 @@ Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)```
 ## AdPlayer.Listener Interface
 
 ```kotlin
-   interface Listener {
+     interface Listener {
 
-        /**
-         * @param index: if enqueue is used then index should represent the loading item index.
-         * If enqueue is not used then index should always be null
-         */
-        fun onLoading(index: Int?)
+    /**
+     * Param [index]: if enqueue is used then index should represent the loading item index.
+     * If enqueue is not used then index should always be null
+     */
+    fun onLoading(index: Int?)
 
-        /**
-         * @param index: if enqueue is used then index should represent the loading item index.
-         * If enqueue is not used then index should always be null
-         */
-        fun onLoadingFinished(index: Int?)
+    /**
+     * Param [index]: if enqueue is used then index should represent the loading item index.
+     * If enqueue is not used then index should always be null
+     */
+    fun onLoadingFinished(index: Int?)
 
-        /**
-         * Fire this callback when the buffering has started
-         */
-        fun onBuffering()
+    /**
+     * Fire this callback when the buffering has started
+     */
+    fun onBuffering()
 
-        /**
-         * Fire this callback when the buffering has finished
-         */
-        fun onBufferingFinished()
+    /**
+     * Fire this callback when the buffering has finished
+     */
+    fun onBufferingFinished()
 
-        /**
-         * Fire this callback when the play starts
-         */
-        fun onPlay()
+    /**
+     * Fire this callback when the play starts
+     */
+    fun onPlay()
 
-        /**
-         * Fire this callback when the player has paused
-         */
-        fun onPause()
+    /**
+     * Fire this callback when the player has paused
+     */
+    fun onPause()
 
-        /**
-         * Fire this callback when the player resumed
-         */
-        fun onResume()
+    /**
+     * Fire this callback when the player resumed
+     */
+    fun onResume()
 
-        /**
-         * Fire this callback when the player has finished playing
-         */
-        fun onEnded()
+    /**
+     * Fire this callback when the player has finished playing
+     */
+    fun onEnded()
 
-        /**
-         *
-         * @param currentTrackIndex: index of the current track
-         */
-        fun onSeekToTrackEnd(currentTrackIndex: Int)
+    /**
+     * Param [currentTrackIndex]: index of the current track
+     */
+    fun onSeekToTrackEnd(currentTrackIndex: Int)
 
-        /**
-         * On track changed.
-         *
-         * @param newTrackIndex - index of the new track
-         */
-        fun onTrackChanged(newTrackIndex: Int) {
-            // default implementation does nothing. This is only needed for enqueue functionality
-        }
-
-        /**
-         * Fire this callback on error
-         */
-        fun onError(error: String)
-
-        /**
-         * Fire this callback when metadata is received in streaming
-         * It is fired only on server side insertion
-         * @param metadataList: list of metadata items received in stream
-         */
-        fun onMetadata(metadataList: List<MetadataItem>) {
-            // default implementation does nothing. This is only needed for server side insertion or podcasting
-        }
-
-        /**
-         * Fire this callback when player volume has changed
-         */
-        fun onVolumeChanged(volume: Float) {
-            // default implementation does nothing
-        }
-
-        /**
-         * Called when video size changes and also when it starts with the initial values
-         *
-         * @param player - this player
-         * @param width - the video width
-         * @param height - the video height
-         *
-         * @since 7.3.0
-         */
-        fun onVideoSizeChanged(player: AdPlayer, width: Int, height: Int) {
-            // default implementation does nothing
-        }
+    /**
+     * On track changed.
+     * Param [newTrackIndex] - index of the new track
+     */
+    fun onTrackChanged(newTrackIndex: Int) {
+        // default implementation does nothing. This is only needed for enqueue functionality
     }
+
+    /**
+     * Fire this callback on error
+     */
+    fun onError(error: String)
+
+    /**
+     * Fire this when you want to skip with an error
+     * this function will not fire skip tracking but error tracking with vast code 400 </br>
+     * [error] - error which is the reason for this skipAd call
+     */
+    fun onSkipAd(error: Error){
+        // default implementation does nothing.
+    }
+
+    /**
+     * Fire this callback when metadata is received in streaming
+     * It is fired only on server side insertion </br>
+     * [metadataList]: list of metadata items received in stream
+     */
+    fun onMetadata(metadataList: List<MetadataItem>) {
+        // default implementation does nothing. This is only needed for server side insertion
+    }
+
+    /**
+     * Fire this callback when player volume has changed
+     */
+    fun onVolumeChanged(volume: Float) {
+        // default implementation does nothing
+    }
+
+    /**
+     * Called when video size changes and also when it starts with the initial values </br>
+     * [player] - this player </br>
+     * [width] - the video width </br>
+     * [height] - the video height
+     * @since 7.3.0
+     */
+    fun onVideoSizeChanged(player: AdPlayer, width: Int, height: Int) {
+        // default implementation does nothing
+    }
+}
 ```
 
 
@@ -833,10 +836,10 @@ Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)```
         }
     }
 
-    override fun seekTo(position: Double) {
+    override fun seekTo(position: Duration) {
         try {
             seekInProgress = true
-            player.seekTo(player.currentMediaItemIndex , (position * 1000.0).toLong())
+            player.seekTo(player.currentMediaItemIndex , position.inWholeMilliseconds)
         } catch (e: Exception) {
             seekInProgress = false
         }
@@ -899,17 +902,17 @@ Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)```
 
 
     /**
-     * @return the current play head from the player in seconds
+     * @return the current play head from the player in milliseconds precision
      */
-    override fun getCurrentTime(): Double {
-        return player.currentPosition.toDouble() / 1000
+    override fun getCurrentTime(): Duration {
+        return player.currentPosition.toDuration(DurationUnit.MILLISECONDS)
     }
 
     /**
-     * @return the track duration from the player in seconds
+     * @return the track duration from the player in milliseconds precision
      */
-    override fun getDuration(): Double? {
-        return duration
+    override fun getDuration(): Duration? {
+        return duration?.toDuration(DurationUnit.SECONDS)
     }
 
     /**

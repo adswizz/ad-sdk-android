@@ -99,7 +99,7 @@ Calling this method will stop a podcast that is played by the SDK’s internal p
 
 ### seekTo
 
-Calling `fun seekTo(position: Double)` will trigger a seek by setting the current playback time to the specified `position` parameter, measured in seconds.
+Calling `fun seekTo(position: Duration)` will trigger a seek by setting the current playback time to the specified `position` parameter.
 
 Take note that the **_AdPodcastManager.Listener_** also notifies you when an ad break starts and ends; there is also a callback that provides you with the play head information(elapsed time in seconds and duration of podcast, also in seconds).
 

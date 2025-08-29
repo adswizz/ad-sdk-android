@@ -71,8 +71,8 @@ We have tested the above dependencies using the following version numbers:<br>
 ```groovy
 //Library
 androidMinSdkVersion = 23
-androidTargetSdkVersion = 35
-androidCompileSdkVersion = 35
+androidTargetSdkVersion = 36
+androidCompileSdkVersion = 36
 
 kotlin_version = '1.8.22'
 coreKtxVersion = '1.12.0'
