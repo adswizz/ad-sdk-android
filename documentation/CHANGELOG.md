@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [8.0.0] - 2025-08-Undefined
+## [8.0.0] - 2025-08-29
 
 ### Changed
 - All API functions with time or period parameters now use Kotlin's [`Duration`](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.time/-duration/) instead of the less intuitive `Double` or `Long` types. For more details, please refer to the [How to migrate to AdswizzSDK v8.0.0+](Android/Migrations/v8_0_0) page.
