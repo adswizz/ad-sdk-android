@@ -29,6 +29,8 @@ import com.adswizz.core.adFetcher.AdswizzAdZone
 import com.adswizz.sdk.AdswizzSDK
 import java.text.SimpleDateFormat
 import java.util.Date
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 // Basic app shows minimal client side functionality
 
@@ -280,7 +282,7 @@ class MainActivity : AppCompatActivity() {
             this.adManager = adManager
             binding.appLogs.addEntry("Starting the adManager with adCount=${adManager.ads.size}")
             val builder = AdManagerSettings.Builder()
-                .timeoutIntervalForResource(2.5)
+                .timeoutIntervalForResource(2.5.toDuration(DurationUnit.SECONDS))
             adManager.adManagerSettings = builder.build()
             adManager.setListener(listener)
             adManager.setAdapter(adapter)

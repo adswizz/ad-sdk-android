@@ -23,6 +23,8 @@ import com.adswizz.sdk.AdswizzSDK
 import java.io.File
 import java.net.CookieManager
 import java.net.CookiePolicy
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 class MainActivity : AppCompatActivity() {
 
@@ -228,7 +230,7 @@ class MainActivity : AppCompatActivity() {
         }
         binding.podcastSlider.addOnChangeListener { _, value, fromUser ->
             if (fromUser) {
-                podcastManager?.seekTo(value.toDouble())
+                podcastManager?.seekTo(value.toDouble().toDuration(DurationUnit.SECONDS))
             }
         }
 
