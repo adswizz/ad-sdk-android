@@ -43,6 +43,7 @@ import com.adswizz.universalplayer.models.MediaData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.time.DurationUnit
 
 
 private const val MEDIA_ROOT_ID = "root_id"
@@ -366,7 +367,7 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
                 AdswizzAdRequest.Builder() //Build the Ad Request with the needed parameters
                     .withServer("demo.deliveryengine.adswizz.com")
                     .withHttpProtocol(AdswizzAdRequest.HttpProtocol.HTTPS)
-                    .withZones(setOf(AdswizzAdZone(zoneId)))
+                    .withZones(listOf(AdswizzAdZone(zoneId)))
             adRequestBuilder.build {
                 println("Url: ${it.uri}")
                 val adRequestConnection = AdRequestConnection(it)
@@ -417,28 +418,28 @@ class AdswizzMediaBrowserService: MediaBrowserServiceCompat() {
                 AdEvent.Type.State.DidStartPlaying -> {
                     stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, 0, 1.0f)
                     val bundle = Bundle()
-                    bundle.putDouble("duration", adManager.ads.sumOf { it.duration ?: 0.0 } )
+                    bundle.putDouble("duration", adManager.ads.sumOf { it.duration?.toDouble(DurationUnit.SECONDS) ?: 0.0 } )
                     stateBuilder.setExtras(bundle)
                     mediaSession?.setPlaybackState(stateBuilder.build())
                 }
                 AdEvent.Type.State.AllAdsCompleted -> playNext("client")
                 AdEvent.Type.Position.FirstQuartile -> {
-                    val position = adManager.ads.sumOf { it.duration ?: 0.0 } * 0.25
+                    val position = adManager.ads.sumOf { it.duration?.toDouble(DurationUnit.SECONDS) ?: 0.0 } * 0.25
                     stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, position.toLong(), 1.0f)
                     mediaSession?.setPlaybackState(stateBuilder.build())
                 }
                 AdEvent.Type.Position.Midpoint -> {
-                    val position = adManager.ads.sumOf { it.duration ?: 0.0 } * 0.5
+                    val position = adManager.ads.sumOf { it.duration?.toDouble(DurationUnit.SECONDS) ?: 0.0 } * 0.5
                     stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, position.toLong(), 1.0f)
                     mediaSession?.setPlaybackState(stateBuilder.build())
                 }
                 AdEvent.Type.Position.ThirdQuartile -> {
-                    val position = adManager.ads.sumOf { it.duration ?: 0.0 } * 0.75
+                    val position = adManager.ads.sumOf { it.duration?.toDouble(DurationUnit.SECONDS) ?: 0.0 } * 0.75
                     stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, position.toLong(), 1.0f)
                     mediaSession?.setPlaybackState(stateBuilder.build())
                 }
                 AdEvent.Type.Position.Complete -> {
-                    val position = adManager.ads.sumOf { it.duration ?: 0.0 }
+                    val position = adManager.ads.sumOf { it.duration?.toDouble(DurationUnit.SECONDS) ?: 0.0 }
                     stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, position.toLong(), 1.0f)
                     mediaSession?.setPlaybackState(stateBuilder.build())
                 }

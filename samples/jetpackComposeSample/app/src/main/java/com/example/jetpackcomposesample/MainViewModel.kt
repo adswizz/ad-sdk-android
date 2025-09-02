@@ -2,6 +2,7 @@ package com.example.jetpackcomposesample
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.media3.datasource.DataSpec.HttpMethod
 import com.ad.core.adBaseManager.AdData
 import com.ad.core.adBaseManager.AdEvent
 import com.ad.core.adFetcher.AdRequestConnection
@@ -82,8 +83,10 @@ class MainViewModel : ViewModel() {
         AdswizzAdRequest.Builder()
             .withZones(listOf(AdswizzAdZone(zoneId = zoneIdAndCompanion.first)))
             .withCompanionZoneIds(listOf(zoneIdAndCompanion.second))
+            .withHttpProtocol(AdswizzAdRequest.HttpProtocol.HTTPS)
             .withServer("demo.deliveryengine.adswizz.com").build {
-                AdRequestConnection(it).requestAds { adManager, _ ->
+                AdRequestConnection(it).requestAds { adManager, error ->
+                    println("Errror : $error")
                     adManager ?: return@requestAds
 
                     adManager.setListener(object : AdManagerListener {

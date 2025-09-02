@@ -11,20 +11,20 @@ object DB {
     )
 
     private val serverSideList = listOf(
-        "shakeDemo, HLS stream, http://sdk.mobile.streaming.adswizz.com:8500/shakeDemo/playlist.m3u8",
-        "shakeDemo, ICY stream, http://sdk.mobile.streaming.adswizz.com:8500/shakeDemo",
-        "kissFM, DVR stream, http://sdk.mobile.streaming.adswizz.com:8500/kissFM/playlist.m3u8",
-        "companion, SSI stream with companion banner, http://sdk.mobile.streaming.adswizz.com:8500/companionBannerRadio"
+        "shakeDemo, HLS stream, https://streaming.sdk.eks.devel.adswizz.com/shakeDemo/playlist.m3u8",
+        "shakeCoupon, ICY stream, https://streaming.sdk.eks.devel.adswizz.com/shakeCoupon",
+        "shakeCoupon, HLS stream, https://streaming.sdk.eks.devel.adswizz.com/shakeDemo/playlist.m3u8",
+        "voice ads, Shake calendar voice navigation, https://streaming.sdk.eks.devel.adswizz.com/voiceNavigation_shakeCalendar"
     )
 
     /*
           ad zones ?
      */
     private val clientSideList = mapOf<String, String>(
-        "13381" to "shake me, open link",
-        "13396" to "shake me, send email",
-        "13412" to "voice ads, get in calendar",
-        "13413" to "voice ads, place a call"
+        "17873" to "shake me, open link",
+        "17880" to "shake me, send email",
+        "17866" to "voice ads, get in calendar",
+        "17867" to "voice ads, place a call"
     )
 
     fun getPodcastList(): List<MediaData>{
