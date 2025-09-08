@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.Uri
 import android.view.Surface
 import com.adswizz.common.AdPlayer
-import com.adswizz.common.CommonContext
 import com.adswizz.common.Utils
 import com.adswizz.common.macro.PlayerCapabilities
 import com.adswizz.common.macro.PlayerState
@@ -32,6 +31,9 @@ import java.io.IOException
 import java.lang.ref.WeakReference
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.CopyOnWriteArrayList
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 /**
  * Based on exoplayer
@@ -87,7 +89,7 @@ class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener
 
 
     private var status: AdPlayer.Status = AdPlayer.Status.INITIALIZED
-    private var duration: Double? = null
+    private var duration: Duration? = null
     private var listenerList: ConcurrentLinkedQueue<WeakReference<AdPlayer.Listener>> = ConcurrentLinkedQueue()
 
     private val player: ExoPlayer = ExoPlayer.Builder(context).build()
@@ -147,7 +149,7 @@ class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener
         when {
             urlString.startsWith("rawresource://", true) -> {
                 val dataSourceFactory =
-                    DataSource.Factory { RawResourceDataSource(CommonContext.getContext()) }
+                    DataSource.Factory { RawResourceDataSource(context) }
                 val extractorsFactory: DefaultExtractorsFactory =
                     DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
                 return ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory)
@@ -161,7 +163,7 @@ class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener
                     .createMediaSource(mediaItem)
             }
             else -> {
-                val dataSourceFactory = DefaultHttpDataSource.Factory().setUserAgent(Utils.getDefaultUserAgent())
+                val dataSourceFactory = DefaultHttpDataSource.Factory()
 
                 when (Util.inferContentType(undecoratedUri)) {
                     C.TYPE_DASH -> {
@@ -229,10 +231,10 @@ class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener
         }
     }
 
-    override fun seekTo(position: Double) {
+    override fun seekTo(position: Duration) {
         try {
             seekInProgress = true
-            player.seekTo(player.currentMediaItemIndex, (position * 1000.0).toLong())
+            player.seekTo(player.currentMediaItemIndex, position.inWholeMilliseconds)
         } catch (e: Exception) {
             seekInProgress = false
         }
@@ -295,14 +297,14 @@ class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener
     /**
      * @return the current play head from the player in seconds
      */
-    override fun getCurrentTime(): Double {
-        return player.currentPosition.toDouble() / 1000
+    override fun getCurrentTime(): Duration {
+        return player.currentPosition.toDuration(DurationUnit.MILLISECONDS)
     }
 
     /**
      * @return the track duration from the player in seconds
      */
-    override fun getDuration(): Double? {
+    override fun getDuration(): Duration? {
         return duration
     }
 
@@ -380,7 +382,7 @@ class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener
             }
             Player.STATE_READY -> {
                 if (duration == null) {
-                    duration = player.duration.toDouble() / 1000
+                    duration = player.duration.toDuration(DurationUnit.MILLISECONDS)
                 }
                 if (status == AdPlayer.Status.BUFFERING) {
                     status = AdPlayer.Status.BUFFERING_FINISHED
@@ -438,13 +440,13 @@ class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener
         var posChanged = false
         if (reason == Player.DISCONTINUITY_REASON_AUTO_TRANSITION) {  // transition from one track to the next
             playingIndex++
-            duration = player.duration.toDouble() / 1000
+            duration = player.duration.toDuration(DurationUnit.MILLISECONDS)
             listenerList.forEach { it.get()?.onTrackChanged(playingIndex) }
             posChanged = true
         } else if (reason == Player.DISCONTINUITY_REASON_SEEK) {    // triggered by seek to end of track function
             listenerList.forEach { it.get()?.onSeekToTrackEnd(playingIndex) }
             playingIndex++
-            duration = player.duration.toDouble() / 1000
+            duration = player.duration.toDuration(DurationUnit.MILLISECONDS)
             posChanged = true
         }
 

@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.view.Surface
 import com.adswizz.common.AdPlayer
-import com.adswizz.common.CommonContext
+import com.adswizz.common.Utils
 import com.adswizz.common.macro.PlayerCapabilities
 import com.adswizz.common.macro.PlayerState
 import com.adswizz.common.video.AdVideoState
@@ -26,10 +26,11 @@ import com.google.android.exoplayer2.util.Util
 import com.google.android.exoplayer2.video.VideoSize
 import java.io.IOException
 import java.lang.ref.WeakReference
-import java.net.CookieManager
-import java.net.URI
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.CopyOnWriteArrayList
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 
 class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, AnalyticsListener,
@@ -95,7 +96,7 @@ class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, Analy
         ConcurrentLinkedQueue()
 
     val player: SimpleExoPlayer =
-        SimpleExoPlayer.Builder(CommonContext.getContext()).build()
+        SimpleExoPlayer.Builder(context).build()
     private val mediaSources = ConcatenatingMediaSource()
 
     private val playlist = CopyOnWriteArrayList<Asset>()
@@ -152,7 +153,7 @@ class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, Analy
         when {
             urlString.startsWith("rawresource://", true) -> {
                 val dataSourceFactory =
-                    DataSource.Factory { RawResourceDataSource(CommonContext.getContext()) }
+                    DataSource.Factory { RawResourceDataSource(context) }
                 val extractorsFactory: DefaultExtractorsFactory =
                     DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
                 return ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory)
@@ -167,7 +168,7 @@ class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, Analy
             }
             else -> {
                 val dataSourceFactory = DefaultHttpDataSource.Factory()
-                    .setUserAgent(com.adswizz.common.Utils.getDefaultUserAgent())
+//                    .setUserAgent(Utils)
                     //.setTransferListener(transferListener)
                 when (Util.inferContentType(undecoratedUri)) {
                     C.TYPE_DASH -> {
@@ -236,10 +237,10 @@ class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, Analy
         }
     }
 
-    override fun seekTo(position: Double) {
+    override fun seekTo(position: Duration) {
         try {
             seekInProgress = true
-            player.seekTo(player.currentMediaItemIndex, (position * 1000.0).toLong())
+            player.seekTo(player.currentMediaItemIndex, position.inWholeMilliseconds)
         } catch (e: Exception) {
             seekInProgress = false
         }
@@ -302,15 +303,15 @@ class ExternalExoPlayer(val context: Context) : AdPlayer, Player.Listener, Analy
     /**
      * @return the current play head from the player in seconds
      */
-    override fun getCurrentTime(): Double {
-        return player.currentPosition.toDouble() / 1000
+    override fun getCurrentTime(): Duration {
+        return player.currentPosition.toDuration(DurationUnit.MILLISECONDS)
     }
 
     /**
      * @return the track duration from the player in seconds
      */
-    override fun getDuration(): Double? {
-        return duration
+    override fun getDuration(): Duration? {
+        return duration?.toDuration(DurationUnit.SECONDS)
     }
 
     /**

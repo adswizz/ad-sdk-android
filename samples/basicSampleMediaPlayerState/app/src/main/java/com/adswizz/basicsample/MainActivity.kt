@@ -178,7 +178,7 @@ class MainActivity : AppCompatActivity() {
 
         //Build the Ad Request with the needed parameters
         player = ExoPlayer.Builder(this).build()
-        externalMediaPlayerState = ExternalMediaPlayerState(this, player)
+        externalMediaPlayerState = ExternalMediaPlayerState(player)
         AdswizzSDK.initialize(this) {
             AdswizzAdRequest.Builder()
                 .withServer(SERVER_URL)
@@ -247,7 +247,7 @@ class MainActivity : AppCompatActivity() {
         if (adManager != null) {
             this.adManager = adManager
             binding.appLogs.addEntry("Received ad manager")
-            adManager.adManagerSettings = AdManagerSettings.Builder().timeoutIntervalForResource(2.5).build()
+            adManager.adManagerSettings = AdManagerSettings.Builder().build()
             adManager.setListener(listener)
             adManager.adManagerSettings = AdManagerSettings.Builder().mediaPlayerStateInstance(externalMediaPlayerState).build()
             adManager.ads.forEachIndexed { idx, ad ->

@@ -36,7 +36,6 @@ import androidx.media3.extractor.metadata.id3.TextInformationFrame
 import androidx.media3.extractor.metadata.id3.UrlLinkFrame
 import androidx.media3.common.Metadata
 import com.adswizz.common.AdPlayer
-import com.adswizz.common.CommonContext
 import com.adswizz.common.macro.PlayerCapabilities
 import com.adswizz.common.macro.PlayerState
 import com.adswizz.common.video.AdVideoState
@@ -44,11 +43,14 @@ import com.adswizz.sdk.AdswizzSDK
 import java.io.IOException
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.CopyOnWriteArrayList
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 
 @UnstableApi
 @Suppress("DEPRECATION")
-class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsListener {
+class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener, AnalyticsListener {
 
     private enum class AssetState {
         INITIALIZED,
@@ -104,7 +106,7 @@ class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsL
 
 
     private var status: AdPlayer.Status = AdPlayer.Status.INITIALIZED
-    private var duration: Double? = null
+    private var duration: Duration? = null
     private var listenerList: ConcurrentLinkedQueue<AdPlayer.Listener> =
         ConcurrentLinkedQueue()
 
@@ -166,7 +168,7 @@ class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsL
         when {
             urlString.startsWith("rawresource://", true) -> {
                 val dataSourceFactory =
-                    DataSource.Factory { RawResourceDataSource(CommonContext.getContext()) }
+                    DataSource.Factory { RawResourceDataSource(context) }
                 val extractorsFactory: DefaultExtractorsFactory =
                     DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
                 return ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory)
@@ -181,7 +183,6 @@ class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsL
             }
             else -> {
                 val dataSourceFactory = DefaultHttpDataSource.Factory()
-                    .setUserAgent(com.adswizz.common.Utils.getDefaultUserAgent())
 
                 when (Util.inferContentType(undecoratedUri)) {
                     C.TYPE_DASH -> {
@@ -249,11 +250,11 @@ class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsL
         }
     }
 
-    override fun seekTo(position: Double) {
+    override fun seekTo(position: Duration) {
         try {
             seekInProgress = true
-            player.seekTo(player.currentMediaItemIndex, (position * 1000.0).toLong())
-        } catch (e: Exception) {
+            player.seekTo(player.currentMediaItemIndex, position.inWholeMilliseconds)
+        } catch (_: Exception) {
             seekInProgress = false
         }
     }
@@ -306,14 +307,14 @@ class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsL
     /**
      * @return the current play head from the player in seconds
      */
-    override fun getCurrentTime(): Double {
-        return player.currentPosition.toDouble() / 1000
+    override fun getCurrentTime(): Duration {
+        return player.currentPosition.toDuration(DurationUnit.MILLISECONDS)
     }
 
     /**
      * @return the track duration from the player in seconds
      */
-    override fun getDuration(): Double? {
+    override fun getDuration(): Duration? {
         return duration
     }
 
@@ -375,7 +376,7 @@ class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsL
             }
             Player.STATE_READY -> {
                 if (duration == null) {
-                    duration = player.duration.toDouble() / 1000
+                    duration = player.duration.toDuration(DurationUnit.MILLISECONDS)
                 }
                 if (status == AdPlayer.Status.BUFFERING) {
                     status = AdPlayer.Status.BUFFERING_FINISHED
@@ -435,12 +436,12 @@ class ExternalAdPlayer(context: Context) : AdPlayer, Player.Listener, AnalyticsL
     override fun onPositionDiscontinuity(reason: Int) {
         if (reason == Player.DISCONTINUITY_REASON_AUTO_TRANSITION) {  // transition from one track to the next
             playingIndex++
-            duration = player.duration.toDouble() / 1000
+            duration = player.duration.toDuration(DurationUnit.MILLISECONDS)
             listenerList.forEach { it.onTrackChanged(playingIndex) }
         } else if (reason == Player.DISCONTINUITY_REASON_SEEK) {    // triggered by seek to end of track function
             listenerList.forEach { it.onSeekToTrackEnd(playingIndex) }
             playingIndex++
-            duration = player.duration.toDouble() / 1000
+            duration = player.duration.toDuration(DurationUnit.MILLISECONDS)
         }
 
     }

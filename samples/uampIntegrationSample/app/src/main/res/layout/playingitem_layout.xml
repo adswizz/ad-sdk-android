@@ -25,8 +25,8 @@
 
     <ImageButton
         android:id="@+id/media_button"
-        android:layout_width="@dimen/exo_media_button_width"
-        android:layout_height="@dimen/exo_media_button_height"
+        android:layout_height="20dp"
+        android:layout_width="20dp"
         android:background="?attr/selectableItemBackground"
         android:scaleType="centerInside"
         app:layout_constraintLeft_toLeftOf="parent"

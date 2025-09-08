@@ -281,7 +281,6 @@ class MainActivity : AppCompatActivity() {
             externalPlayer = ExternalExoPlayer(applicationContext)
             binding.appLogs.addEntry("Starting the adManager with adCount=${adManager.ads.size}")
             val builder = AdManagerSettings.Builder()
-                .timeoutIntervalForResource(2.5)
             externalPlayer?.let {
                 builder.adPlayerInstance(it)
             }
