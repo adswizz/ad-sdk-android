@@ -99,5 +99,19 @@ interface AdData {
      * @since 7.8.5
      */
     val advertiser: Advertiser?
+
+    /**
+     * The ad title field from VAST response.
+     * `return` empty string if missing
+     * @since 8.0.1
+     */
+    val adTitle: String
+
+    /**
+     * The ad description field from VAST response.
+     * `return` null if missing
+     * @since 8.0.1
+     */
+    val adDescription: String?
 }
 ```
