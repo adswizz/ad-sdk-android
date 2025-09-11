@@ -50,7 +50,6 @@ dependencies {
     //SDK
     implementation "com.adswizz:adswizz-sdk:8.0.0"
     implementation "com.adswizz:exoplayer2x:8.0.0"
-//    implementation "com.adswizz:adswizz-sdk-mercury-analytics:8.0.0"
     implementation "com.google.android.exoplayer:exoplayer:2.18.1"
 
     testImplementation 'junit:junit:4.13.2'

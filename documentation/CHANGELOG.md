@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.0.1] - 2025-09-11
+
+### Added
+- Added new fields to the `AdData` interface
+  - `adTitle` The ad title field from VAST response.
+  - `adDescription` The ad description field from VAST response.
+- Added Kotlin sources for `adswizz.core.*` public interfaces, data classes & enums into the SDK library release.
+
 ## [8.0.0] - 2025-08-29
 
 ### Changed
