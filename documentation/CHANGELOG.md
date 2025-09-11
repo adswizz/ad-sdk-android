@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added new fields to the `AdData` interface
   - `adTitle` The ad title field from VAST response.
   - `adDescription` The ad description field from VAST response.
-- Added kotlin sources for `adswizz.core.*` public interfaces, data classes & enums into the SDK library release.
+- Added Kotlin sources for `adswizz.core.*` public interfaces, data classes & enums into the SDK library release.
 
 ## [8.0.0] - 2025-08-29
 
