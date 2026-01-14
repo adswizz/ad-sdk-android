@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.0.3] - 2026-01-14
+### Added
+- Open Measurement SDK:
+    - Support for `UniversalAdId` injection from VAST into OMSDK's **_AdSession_**. For more details please visit [UniversalAdId Support in OM SDK](https://iabtechlab.com/universaladid-support-in-om-sdk/)
+- VAST tracking URLs:
+    - Support for `creativeView` tracking URLs from VAST Inline\Creative\Linear and Wrapper(s)\Creative\Linear to be triggered alongside impressions for each loaded **_AdData_**
+
+### Changed
+- Open Measurement SDK:
+    - Service release that updates to the latest OM SDK v1.6.2 (certified by IAB). See what's new in Open Measurement SDK [here](https://iabtechlab.com/standards/open-measurement-sdk/)
+
 ## [8.0.2] - 2025-11-06
 
 ### Changed
