@@ -1,0 +1,131 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "adswizz-common",
+    "version": "8.0.3",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.13"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.8.22"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-common-8.0.3.aar",
+          "url": "adswizz-common-8.0.3.aar",
+          "size": 66238,
+          "sha512": "4d98a15a200de2bb2de119960fe124aa07c6cdd0f294888fcd1b097980b62d8cd5c5aefcdb08b53e046a2af5a65eae1ac211d8dab9ccef26313480c3cdfea0d8",
+          "sha256": "2efd7c83c2c388674c17e48bcc093267faf3251ebb9a2be405be0821042fc7da",
+          "sha1": "69e8d9e7c3362353163c13b124a92326f5b2b527",
+          "md5": "ad26fbd3cb2f9dd7ce9e11e14c9f75b7"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.annotation",
+          "module": "annotation",
+          "version": {
+            "requires": "1.5.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.7.3"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-android",
+          "version": {
+            "requires": "1.7.3"
+          }
+        },
+        {
+          "group": "com.squareup.moshi",
+          "module": "moshi",
+          "version": {
+            "requires": "1.14.0"
+          }
+        },
+        {
+          "group": "com.squareup.moshi",
+          "module": "moshi-adapters",
+          "version": {
+            "requires": "1.14.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.8.22"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-common-8.0.3.aar",
+          "url": "adswizz-common-8.0.3.aar",
+          "size": 66238,
+          "sha512": "4d98a15a200de2bb2de119960fe124aa07c6cdd0f294888fcd1b097980b62d8cd5c5aefcdb08b53e046a2af5a65eae1ac211d8dab9ccef26313480c3cdfea0d8",
+          "sha256": "2efd7c83c2c388674c17e48bcc093267faf3251ebb9a2be405be0821042fc7da",
+          "sha1": "69e8d9e7c3362353163c13b124a92326f5b2b527",
+          "md5": "ad26fbd3cb2f9dd7ce9e11e14c9f75b7"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseSourcePublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "adswizz-common-8.0.3-sources.jar",
+          "url": "adswizz-common-8.0.3-sources.jar",
+          "size": 14738,
+          "sha512": "3c6ecd259cb9a3a28c7b5ae329f461c673d8c9386ebb0dfa14c42cface5eb6be578bee75104f8d49ce06b0ee9438f59de398015dd95606c3b06a640c426e8246",
+          "sha256": "23b12d8e355a636c10db78e31ffd5221c1c39c89cfb24c8e7bb5d01383864c60",
+          "sha1": "70efa100805dc33913ac0dee5de0e773d05fb481",
+          "md5": "8709665e22878c0c72b632b1ae4064cd"
+        }
+      ]
+    }
+  ]
+}
