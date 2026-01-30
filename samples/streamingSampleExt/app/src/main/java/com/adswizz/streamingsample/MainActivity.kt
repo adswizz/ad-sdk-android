@@ -22,7 +22,7 @@ import com.ad.core.adBaseManager.AdEvent
 import com.ad.core.streaming.AdManagerStreamingSettings
 import com.ad.core.streaming.AdStreamManager
 import com.ad.core.streaming.DvrBufferInfo
-import com.adswizz.common.AdPlayer
+import com.adswizz.common.AdMetadataItem
 import com.adswizz.core.adFetcher.AdswizzAdRequest
 import com.adswizz.core.streaming.AdswizzAdStreamManager
 import com.adswizz.core.streaming.AfrConfig
@@ -200,7 +200,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onMetadataChanged(
-            adStreamManager: AdStreamManager, metadataItem: AdPlayer.MetadataItem
+            adStreamManager: AdStreamManager, metadataItem: AdMetadataItem
         ) {
             binding.appLogs.addEntry("Metadata received - adStreamManager: $adStreamManager - metadata count: ${metadataItem.value.count()}")
         }
