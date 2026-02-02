@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat
 import com.ad.core.adBaseManager.AdBaseManager
 import com.ad.core.streaming.AdStreamManager
 import com.ad.core.streaming.DvrBufferInfo
-import com.adswizz.common.AdPlayer
+import com.adswizz.common.AdMetadataItem
 import com.adswizz.core.streaming.AdswizzAdStreamManager
 import com.adswizz.sdk.AdswizzSDK
 import com.adswizz.sdk.BuildConfig
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onMetadataChanged(
-            adStreamManager: AdStreamManager, metadataItem: AdPlayer.MetadataItem
+            adStreamManager: AdStreamManager, metadataItem: AdMetadataItem
         ) {
             binding.appLogs.addEntry("Metadata received - adStreamManager: $adStreamManager - metadata count: ${metadataItem.value.count()}")
         }
