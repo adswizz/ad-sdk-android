@@ -13,6 +13,7 @@
     - [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md)
       - [AdPlayer Interface](Android/SDKAndroid/PlayAdsWithYourPlayer(AdPlayer).md)
       - [MediaPlayerState Interface](Android/SDKAndroid/PlayAdsWithYourPlayer(MediaPlayerState).md)
+      - [AdStreamPlayerAdapter Interface](Android/SDKAndroid/PlayAdsWithYourPlayer(AdStreamPlayerAdapter).md)
       - [Limitations](Android/SDKAndroid/Limitations.md)
     - [AdswizzSDK general settings](Android/SDKAndroid/AdswizzGeneralSettings.md)
     - [Open Measurement in AdswizzSDK](Android/SDKAndroid/OpenMeasurement.md)

@@ -289,15 +289,6 @@ interface AdPlayer {
     fun removeListener(listener: Listener)
 
 
-
-    /**
-     * MetadataItem encapsulates one key-value item used in the onMetadata callback
-     *  @property key metadata key
-     *  @property value metadata value. All values are encoded as String type
-     *
-     */
-    data class MetadataItem(val key: String, val value: String)
-
 }
 ```
 
@@ -602,7 +593,7 @@ Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)```
      * It is fired only on server side insertion </br>
      * [metadataList]: list of metadata items received in stream
      */
-    fun onMetadata(metadataList: List<MetadataItem>) {
+    fun onMetadata(metadataList: List<AdMetadataItem>) {
         // default implementation does nothing. This is only needed for server side insertion
     }
 
@@ -1058,24 +1049,24 @@ Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)```
 
     // region MetadataOutput
     override fun onMetadata(metadata: Metadata) {
-        val metadataList = mutableListOf<AdPlayer.MetadataItem>()
+        val metadataList = mutableListOf<AdMetadataItem>()
         for (i in 0 until metadata.length()) {
             when (val entry = metadata.get(i)) {
                 is IcyInfo -> {
                     if (entry.title != null) {
-                        metadataList.add(AdPlayer.MetadataItem("title", entry.title ?: ""))
+                        metadataList.add(AdMetadataItem("title", entry.title ?: ""))
                     }
                     if (entry.url != null) {
-                        metadataList.add(AdPlayer.MetadataItem("url", entry.url ?: ""))
+                        metadataList.add(AdMetadataItem("url", entry.url ?: ""))
                     }
                 }
                 is TextInformationFrame -> {
                     if (entry.values[0].isNotEmpty()) {
-                        metadataList.add(AdPlayer.MetadataItem("value", entry.values[0]))
+                        metadataList.add(AdMetadataItem("value", entry.values[0]))
                     }
                     if (!entry.description.isNullOrEmpty()) {
                         metadataList.add(
-                            AdPlayer.MetadataItem(
+                            AdMetadataItem(
                                 "description",
                                 entry.description.toString()
                             )
@@ -1094,7 +1085,7 @@ Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)```
                 is ApicFrame -> {
                     if (!entry.description.isNullOrEmpty()) {
                         metadataList.add(
-                            AdPlayer.MetadataItem(
+                            AdMetadataItem(
                                 "description",
                                 entry.description.toString()
                             )
@@ -1102,7 +1093,7 @@ Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)```
                     }
                     if (entry.mimeType.isNotEmpty()) {
                         metadataList.add(
-                            AdPlayer.MetadataItem(
+                            AdMetadataItem(
                                 "description",
                                 entry.mimeType
                             )
@@ -1111,7 +1102,7 @@ Whenever the player volume changes, the ```fun onVolumeChanged(volume: Float)```
                 }
                 is CommentFrame -> {
                     if (entry.text.isNotEmpty()) {
-                        metadataList.add(AdPlayer.MetadataItem("text", entry.text))
+                        metadataList.add(AdMetadataItem("text", entry.text))
                     }
                 }
                 is Id3Frame -> {

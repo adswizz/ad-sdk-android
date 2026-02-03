@@ -79,7 +79,7 @@ class YourClass {
             println("Error - ${error.message} for adStreamManager: $adStreamManager")
         }
 
-        override fun onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdPlayer.MetadataItem) {
+        override fun onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdMetadataItem) {
             println("Metadata received - adStreamManager: $adStreamManager - metadata count: ${metadataItem.value.count()}")
         }
 
@@ -214,7 +214,7 @@ The available callbacks that are called by the stream manager are described belo
         fun didResumePlayingUrl(adStreamManager: AdStreamManager, url: Uri)
         fun adBreakStarted(adStreamManager: AdStreamManager, adBaseManager: AdBaseManager)
         fun adBreakEnded(adStreamManager: AdStreamManager, adBaseManager: AdBaseManager)
-        fun onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdPlayer.MetadataItem)
+        fun onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdMetadataItem)
         fun onError(adStreamManager: AdStreamManager, error: Error)
     }
 ```
@@ -238,7 +238,7 @@ When you get this **_AdBaseManager_** object, the player will automatically play
 ### fun adBreakEnded(adStreamManager: AdStreamManager, adBaseManager: AdBaseManager)
 When the ad break from the stream has ended, you will get notified to clean up anything related to the provided **_AdBaseManager_**.
 
-### fun onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdPlayer.MetadataItem)
+### fun onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdMetadataItem)
 Whenever the metadata is changed on the stream played by the SDK, you will be notified with this callback.
 
 ### fun onError(adStreamManager: AdStreamManager, error: Error)

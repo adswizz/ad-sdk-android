@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed the signature of `AdPlayer.Listener.onMetadata(metadataList: List<MetadataItem>)` to `AdPlayer.Listener.onMetadata(metadataList: List<AdMetadataItem>)` in order to use the new top-level class.
 - Updated the existing sample projects to use the new `AdMetadataItem` data class.
 - Changed the `AdStreamManager.Listener`'s methods to have a default empty implementation permitting selectively overrides.
+- Changed the signature of `AdStreamManager.Listener.onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: MetadataItem)` to `AdStreamManager.Listener.onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdMetadataItem)` in order to use the new top-level class.
 
 ### Fixed
 - Fixed Interactive Ads behaviour for `InteractivityListener.shouldOverrideCouponPresenting` method call. This will be called every time once 'Download Coupon' action is triggered by a shake detection.
