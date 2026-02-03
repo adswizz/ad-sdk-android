@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.1.0] - 2026-02-11
+### Added
+- Added a new event-driven integration method for Server Side Insertion. You can now pass your `AdStreamPlayerAdapter` implementation to the `AdManagerStreamingSettings.Builder` object by calling the `adStreamPlayerAdapterInstanceInstance` method. For more details, please visit the [Playing Streams With Your Player using AdStreamPlayerAdapter](Android/SDKAndroid/PlayAdsWithYourPlayer(AdStreamPlayerAdapter).md) page.
+- Added a new sample project named **_BasicAdStreamPlayerAdapterSample_** to the [Sample Project section](Android/SDKAndroid/SampleProjects) showcasing the **_AdStreamPlayerAdapter_** integration in a Server Side Insertion scenario.
+- Added a new extension function `fun Metadata.toAdMetadataList(): List<AdMetadataItem>` used as convenience method for mapping the Exoplayer's Metadata to Adswizz Metadata. This extension function is present in both `com.adswizz.exoplayer2x` and `com.adswizz.exoplayer-media3` artifacts.
+
+### Changed
+- Changed `AdPlayer.MetadataItem` nested data class to new `AdMetadataItem`, this will introduce a breaking change that can be fixed importing the new `com.adswizz.common.AdMetadataItem`.
+- Changed the signature of `AdPlayer.Listener.onMetadata(metadataList: List<MetadataItem>)` to `AdPlayer.Listener.onMetadata(metadataList: List<AdMetadataItem>)` in order to use the new added class.
+- Updated the existing sample projects to use the new `AdMetadataItem` data class.
+- Changed the `AdStreamManager.Listener`'s methods to have a default empty implementation permitting selectively overrides.
+
+### Fixed
+- Fixed Interactive Ads behaviour for `InteractivityListener.shouldOverrideCouponPresenting` method call. This will be called every time once 'Download Coupon' action is triggered by a shake detection.
+
 ## [8.0.3] - 2026-01-14
 ### Added
 - Open Measurement SDK:
