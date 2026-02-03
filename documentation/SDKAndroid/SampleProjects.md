@@ -32,6 +32,10 @@ If the ad that comes from the stream is interactive, you can observe the interac
 
 This sample demonstrates a basic server-side insertion scenario similar to the above sample, with the only difference being the external player that has been used in this case.
 
+## Streaming Sample (with AdStreamPlayerAdapter)
+
+This sample demonstrates a basic server-side insertion scenario using a minimal implementation of _**AdStreamPlayerAdapter**_ interface in order to pass the incoming stream metadata to _**AdswizzSDK**_.
+
 ## DvrStreaming Sample
 
 This sample demonstrates a basic server-side insertion scenario that also contains the DVR time shifting capabilities of an AIS DVR enabled stream.
