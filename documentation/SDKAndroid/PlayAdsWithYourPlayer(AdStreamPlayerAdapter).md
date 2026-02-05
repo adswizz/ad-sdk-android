@@ -21,7 +21,7 @@ val streamManager = AdswizzAdStreamManager(settings)
 
 streamManager.addListener(adStreamListener)
 
-val decoratedUrl = AdswizzAdStreamManager.decorateUrl(it)
+val decoratedUrl = AdswizzAdStreamManager.decorateUrl("https://your.stream1.url")
 
 yourPlayerAdapter.loadStream(decoratedUrl)
 yourPlayerAdapter.prepare()
@@ -55,4 +55,29 @@ interface AdStreamPlayerAdapter {
     val metadataSharedFlow: SharedFlow<List<AdMetadataItem>>
 
 }
+```
+> **Note**
+> Sharing same instance of AdStreamPlayerAdapter to multiple AdswizzAdStreamManagers will lead to duplicate adBreak detection. In order to avoid that, you should call cleanup to the current AdswizzStreamManager or use the same AdswizzStreamManager instance when playing multiple streams.
+
+An example of how to use same AdswizzAdStreamManager instance while playing multiple streams:
+```kotlin
+
+val settings = AdManagerStreamingSettings.Builder()
+    .adStreamPlayerAdapterInstanceInstance(YOUR_AD_STREAM_PLAYER_ADAPTER_INSTANCE_GOES_HERE)
+    .build()
+
+val streamManager = AdswizzAdStreamManager(settings)
+
+    .... 
+val streamUrl1 = AdswizzAdStreamManager.decorateUrl("https://your.stream1.url")
+val streamUrl2 = AdswizzAdStreamManager.decorateUrl("https://your.stream2.url")
+
+
+// add the decorated stream urls to your player 
+yourPlayerAdapter.add(streamUrl1)
+yourPlayerAdapter.add(streamUrl2)
+yourPlayerAdapter.prepare()
+yourPlayerAdapter.play()
+
+
 ```
