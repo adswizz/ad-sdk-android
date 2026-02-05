@@ -1,4 +1,4 @@
-# Playing ads using your player using AdStreamPlayerAdapter interface
+# Playing ads using your player using AdStreamPlayerAdapter interface [Beta]
 
 Starting with 8.1.0 release, the **_AdswizzSDK_** introduces a new event-driven integration method for Server Side Insertions. The `AdStreamPlayerAdapter` interface now offers a more Kotlin-friendly approach to pass your player information to the `AdswizzAdStreamManager` object.
 
@@ -27,6 +27,9 @@ yourPlayerAdapter.loadStream(decoratedUrl)
 yourPlayerAdapter.prepare()
 yourPlayerAdapter.play()
 
+// ...
+// call cleanup when you want to decouple your adStreamPlayerAdapter instance to the attached streamManager and free the resources
+streamManager.cleanup()
 
 ```
 
@@ -35,6 +38,9 @@ yourPlayerAdapter.play()
 **AdStreamPlayerAdapter** aims to simplify communication by using `kotlinx.coroutines.SharedFlow` to emit the `List<AdMetadataItem>` during stream playback.
 
 ```kotlin
+/**
+ * AdStreamPlayerAdapter interface offers a more Kotlin-friendly approach to pass your player information to the [AdswizzAdStreamManager] object </br>
+ */
 interface AdStreamPlayerAdapter {
 
     /**
