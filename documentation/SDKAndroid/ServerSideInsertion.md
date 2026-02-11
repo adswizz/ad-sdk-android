@@ -79,7 +79,7 @@ class YourClass {
             println("Error - ${error.message} for adStreamManager: $adStreamManager")
         }
 
-        override fun onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdPlayer.MetadataItem) {
+        override fun onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdMetadataItem) {
             println("Metadata received - adStreamManager: $adStreamManager - metadata count: ${metadataItem.value.count()}")
         }
 
@@ -208,15 +208,15 @@ The available callbacks that are called by the stream manager are described belo
 
 ```kotlin
     interface Listener {
-        fun willStartPlayingUrl(adStreamManager: AdStreamManager, url: Uri)
-        fun didFinishPlayingUrl(adStreamManager: AdStreamManager, url: Uri)
-        fun didPausePlayingUrl(adStreamManager: AdStreamManager, url: Uri)
-        fun didResumePlayingUrl(adStreamManager: AdStreamManager, url: Uri)
-        fun adBreakStarted(adStreamManager: AdStreamManager, adBaseManager: AdBaseManager)
-        fun adBreakEnded(adStreamManager: AdStreamManager, adBaseManager: AdBaseManager)
-        fun onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdPlayer.MetadataItem)
-        fun onError(adStreamManager: AdStreamManager, error: Error)
-    }
+    fun willStartPlayingUrl(adStreamManager: AdStreamManager, url: Uri) = Unit
+    fun didFinishPlayingUrl(adStreamManager: AdStreamManager, url: Uri) = Unit
+    fun didPausePlayingUrl(adStreamManager: AdStreamManager, url: Uri) = Unit
+    fun didResumePlayingUrl(adStreamManager: AdStreamManager, url: Uri) = Unit
+    fun adBreakStarted(adStreamManager: AdStreamManager, adBaseManager: AdBaseManager) = Unit
+    fun adBreakEnded(adStreamManager: AdStreamManager, adBaseManager: AdBaseManager) = Unit
+    fun onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdMetadataItem) = Unit
+    fun onError(adStreamManager: AdStreamManager, error: Error) = Unit
+}
 ```
 
 ### fun willStartPlayingUrl(adStreamManager: AdStreamManager, url: Uri)
@@ -238,7 +238,7 @@ When you get this **_AdBaseManager_** object, the player will automatically play
 ### fun adBreakEnded(adStreamManager: AdStreamManager, adBaseManager: AdBaseManager)
 When the ad break from the stream has ended, you will get notified to clean up anything related to the provided **_AdBaseManager_**.
 
-### fun onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdPlayer.MetadataItem)
+### fun onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdMetadataItem)
 Whenever the metadata is changed on the stream played by the SDK, you will be notified with this callback.
 
 ### fun onError(adStreamManager: AdStreamManager, error: Error)

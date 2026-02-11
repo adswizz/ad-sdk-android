@@ -56,7 +56,7 @@ sealed class AdswizzStreamEvent {
     data class AdBreakStarted(val adManager: AdBaseManager) : AdswizzStreamEvent()
     data class AdBreakEnded(val adManager: AdBaseManager) : AdswizzStreamEvent()
     data class Error(val error: kotlin.Error): AdswizzStreamEvent()
-    data class OnMetadataChanged(val metadataItem: AdPlayer.MetadataItem): AdswizzStreamEvent()
+    data class OnMetadataChanged(val metadataItem: AdMetadataItem): AdswizzStreamEvent()
     data class OnDvrMetadataReceived(val dvrBufferInfo: DvrBufferInfo?): AdswizzStreamEvent()
 }
 ```

@@ -1,11 +1,9 @@
-# Playing ads using your player using MediaPlayerState interface [BETA]
+# Playing ads using your player using MediaPlayerState interface
 
 As of version 7.9.3, **_AdswizzSDK_** introduces a new event-driven integration method. The `MediaPlayerState` interface now offers a more Kotlin-friendly approach to pass your player events to the `AdManager`.
 
 > **Note**
-> 
-> The MediaPlayerState approach is currently in beta and may be modified in future releases based on your feedback. 
-> For now, MediaPlayerState is available only for Client-Side insertion scenarios without video ad capabilities.
+> MediaPlayerState is available only for Client-Side insertion scenarios without video ad capabilities.
 
 
 ## Client-side setup 

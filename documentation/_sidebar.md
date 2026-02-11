@@ -13,6 +13,7 @@
     - [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md)
       - [AdPlayer Interface](Android/SDKAndroid/PlayAdsWithYourPlayer(AdPlayer).md)
       - [MediaPlayerState Interface](Android/SDKAndroid/PlayAdsWithYourPlayer(MediaPlayerState).md)
+      - [AdStreamPlayerAdapter Interface](Android/SDKAndroid/PlayAdsWithYourPlayer(AdStreamPlayerAdapter).md)
       - [Limitations](Android/SDKAndroid/Limitations.md)
     - [AdswizzSDK general settings](Android/SDKAndroid/AdswizzGeneralSettings.md)
     - [Open Measurement in AdswizzSDK](Android/SDKAndroid/OpenMeasurement.md)
@@ -38,6 +39,7 @@
 	- [How to migrate to AdswizzSDK v7.8.2+](Android/Migrations/v7_8_2.md)
 	- [How to migrate to AdswizzSDK v7.12.0+](Android/Migrations/v7_12_0.md)
 	- [How to migrate to AdswizzSDK v8.0.0+](Android/Migrations/v8_0_0.md)
+	- [How to migrate to AdswizzSDK v8.1.0+](Android/Migrations/v8_1_0.md)
 
 
 - AdswizzSDK Extensions
@@ -50,10 +52,6 @@
 - Integrate into Wear OS apps
 
 	- [Integrate into Wear OS apps](Android/WearOS/WearOS.md)
-
-- Topics API support
-
-	- [Topics API](Android/TopicsAPI/AdswizzSDKTopicsAPI.md)
 
 - Changelog
     - [Changelog](Android/CHANGELOG.md)
