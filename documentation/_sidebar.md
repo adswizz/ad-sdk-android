@@ -52,10 +52,6 @@
 
 	- [Integrate into Wear OS apps](Android/WearOS/WearOS.md)
 
-- Topics API support
-
-	- [Topics API](Android/TopicsAPI/AdswizzSDKTopicsAPI.md)
-
 - Changelog
     - [Changelog](Android/CHANGELOG.md)
 

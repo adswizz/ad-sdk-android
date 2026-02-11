@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.1.0] - 2026-02-11
 ### Added
-- Added a new event-driven integration method for Server Side Insertion. You can now pass your `AdStreamPlayerAdapter` implementation to the `AdManagerStreamingSettings.Builder` object by calling the `adStreamPlayerAdapterInstanceInstance` method. For more details, please visit the [Playing Streams With Your Player using AdStreamPlayerAdapter](Android/SDKAndroid/PlayAdsWithYourPlayer(AdStreamPlayerAdapter).md) page.
+- Added a new event-driven integratioÏn method for Server Side Insertion. You can now pass your `AdStreamPlayerAdapter` implementation to the `AdManagerStreamingSettings.Builder` object by calling the `adStreamPlayerAdapterInstanceInstance` method. For more details, please visit the [Playing Streams With Your Player using AdStreamPlayerAdapter](Android/SDKAndroid/PlayAdsWithYourPlayer(AdStreamPlayerAdapter).md) page.
 - Added a new sample project named **_BasicAdStreamPlayerAdapterSample_** to the [Sample Project section](Android/SDKAndroid/SampleProjects) showcasing the **_AdStreamPlayerAdapter_** integration in a Server Side Insertion scenario.
 - Added a new extension function `fun Metadata.toAdMetadataList(): List<AdMetadataItem>` used as convenience method for mapping the Exoplayer's Metadata to Adswizz Metadata. This extension function is present in both `com.adswizz.exoplayer2x` and `com.adswizz.exoplayer-media3` artifacts.
 
@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated the existing sample projects to use the new `AdMetadataItem` data class.
 - Changed the `AdStreamManager.Listener`'s methods to have a default empty implementation permitting selectively overrides.
 - Changed the signature of `AdStreamManager.Listener.onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: MetadataItem)` to `AdStreamManager.Listener.onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdMetadataItem)` in order to use the new top-level class.
+- The support for `com.adswizz:adswizz-sdk-topics-api` artefact is discontinued due to Privacy Sandbox Deprecation on Android. For more details about deprecation and removal timeline, please visit the [Privacy Sandbox status](https://privacysandbox.google.com/overview/status) page.
 
 ### Fixed
 - Fixed Interactive Ads behaviour for `InteractivityListener.shouldOverrideCouponPresenting` method call. This will be called every time once 'Download Coupon' action is triggered by a shake detection.

@@ -48,9 +48,6 @@ media3ExoplayerSS = "androidx.media3:media3-exoplayer-smoothstreaming:$media3Ver
 // only needed in exoplayer2x flavor
 exoPlayer = "com.google.android.exoplayer:exoplayer:$exoPlayerVerison"
 
-// used only in "com.adswizz:adswizz-sdk-topics-api" artefact
-privacysandboxAdServices = "androidx.privacysandbox.ads:ads-adservices:$privacysandboxAdServicesVersion"
-
 ```
 
 For our Wear OS SDK we use:
@@ -187,11 +184,6 @@ The AdswizzSDK additional permissions are:
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
     <!-- Required for 29+. -->
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
-
-    <!--    permissions added since 7.8.4 version -->
-    <!-- Required for Topics API -->
-    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_TOPICS" />
-
 
 ....
 </manifest>
