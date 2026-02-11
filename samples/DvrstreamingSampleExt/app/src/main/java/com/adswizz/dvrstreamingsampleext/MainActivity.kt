@@ -15,7 +15,7 @@ import com.ad.core.streaming.AdManagerStreamingSettings
 import com.ad.core.streaming.AdStreamDVRMetadata
 import com.ad.core.streaming.AdStreamManager
 import com.ad.core.streaming.DvrBufferInfo
-import com.adswizz.common.AdPlayer
+import com.adswizz.common.AdMetadataItem
 import com.adswizz.core.streaming.AdswizzAdStreamManager
 import com.adswizz.dvrstreamingsampleext.databinding.ActivityMainBinding
 import com.adswizz.sdk.AdswizzSDK
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
             println("dvrstreamingsample::adBreakEnded")
         }
 
-        override fun onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdPlayer.MetadataItem) {
+        override fun onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdMetadataItem) {
             println("dvrstreamingsample::onMetadataChanged $metadataItem")
         }
 

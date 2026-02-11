@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">BasicAdStreamPlayerAdapterSample</string>
+    <string name="adswizz_version_prefix">AdsWizz SDK v</string>
+</resources>

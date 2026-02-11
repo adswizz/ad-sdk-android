@@ -4,19 +4,16 @@ import android.content.Context
 import android.net.Uri
 import android.view.Surface
 import com.adswizz.common.AdPlayer
-import com.adswizz.common.Utils
 import com.adswizz.common.macro.PlayerCapabilities
 import com.adswizz.common.macro.PlayerState
 import com.adswizz.common.video.AdVideoState
 import com.adswizz.player.CacheManager
+import com.adswizz.player.toAdMetadataList
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.metadata.Metadata
 import com.google.android.exoplayer2.metadata.MetadataOutput
-import com.google.android.exoplayer2.metadata.emsg.EventMessage
-import com.google.android.exoplayer2.metadata.icy.IcyInfo
-import com.google.android.exoplayer2.metadata.id3.*
 import com.google.android.exoplayer2.source.*
 import com.google.android.exoplayer2.source.dash.DashMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
@@ -464,71 +461,7 @@ class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener
     // region MetadataOutput
 
     override fun onMetadata(metadata: Metadata) {
-        val metadataList = mutableListOf<AdPlayer.MetadataItem>()
-        for (i in 0 until metadata.length()) {
-            when (val entry = metadata.get(i)) {
-                is IcyInfo -> {
-                    if (entry.title != null) {
-                        metadataList.add(AdPlayer.MetadataItem("title", entry.title ?: ""))
-                    }
-                    if (entry.url != null) {
-                        metadataList.add(AdPlayer.MetadataItem("url", entry.url ?: ""))
-                    }
-                }
-                is TextInformationFrame -> {
-                    if (entry.value.isNotEmpty()) {
-                        metadataList.add(AdPlayer.MetadataItem("value", entry.value))
-                    }
-                    if (!entry.description.isNullOrEmpty()) {
-                        metadataList.add(
-                                AdPlayer.MetadataItem(
-                                        "description",
-                                        entry.description.toString()
-                                )
-                        )
-                    }
-                }
-                is UrlLinkFrame -> {
-                    // do nothing
-                }
-                is PrivFrame -> {
-                    // do nothing
-                }
-                is GeobFrame -> {
-                    // do nothing
-                }
-                is ApicFrame -> {
-                    if (!entry.description.isNullOrEmpty()) {
-                        metadataList.add(
-                                AdPlayer.MetadataItem(
-                                        "description",
-                                        entry.description.toString()
-                                )
-                        )
-                    }
-                    if (entry.mimeType.isNotEmpty()) {
-                        metadataList.add(
-                                AdPlayer.MetadataItem(
-                                        "description",
-                                        entry.mimeType
-                                )
-                        )
-                    }
-                }
-                is CommentFrame -> {
-                    if (entry.text.isNotEmpty()) {
-                        metadataList.add(AdPlayer.MetadataItem("text", entry.text))
-                    }
-                }
-                is Id3Frame -> {
-                    // do nothing
-                }
-                is EventMessage -> {
-                    // do nothing
-                }
-            }
-        }
-        listenerList.forEach { it.get()?.onMetadata(metadataList) }
+        listenerList.forEach { it.get()?.onMetadata(metadata.toAdMetadataList()) }
     }
 
     //endregion

@@ -35,6 +35,7 @@ import androidx.media3.extractor.metadata.id3.PrivFrame
 import androidx.media3.extractor.metadata.id3.TextInformationFrame
 import androidx.media3.extractor.metadata.id3.UrlLinkFrame
 import androidx.media3.common.Metadata
+import com.adswizz.common.AdMetadataItem
 import com.adswizz.common.AdPlayer
 import com.adswizz.common.macro.PlayerCapabilities
 import com.adswizz.common.macro.PlayerState
@@ -452,24 +453,24 @@ class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener
     // region MetadataOutput
 
     override fun onMetadata(metadata: Metadata) {
-        val metadataList = mutableListOf<AdPlayer.MetadataItem>()
+        val metadataList = mutableListOf<AdMetadataItem>()
         for (i in 0 until metadata.length()) {
             when (val entry = metadata.get(i)) {
                 is IcyInfo -> {
                     if (entry.title != null) {
-                        metadataList.add(AdPlayer.MetadataItem("title", entry.title ?: ""))
+                        metadataList.add(AdMetadataItem("title", entry.title ?: ""))
                     }
                     if (entry.url != null) {
-                        metadataList.add(AdPlayer.MetadataItem("url", entry.url ?: ""))
+                        metadataList.add(AdMetadataItem("url", entry.url ?: ""))
                     }
                 }
                 is TextInformationFrame -> {
                     if (entry.value.isNotEmpty()) {
-                        metadataList.add(AdPlayer.MetadataItem("value", entry.value))
+                        metadataList.add(AdMetadataItem("value", entry.value))
                     }
                     if (!entry.description.isNullOrEmpty()) {
                         metadataList.add(
-                            AdPlayer.MetadataItem(
+                            AdMetadataItem(
                                 "description",
                                 entry.description.toString()
                             )
@@ -488,7 +489,7 @@ class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener
                 is ApicFrame -> {
                     if (!entry.description.isNullOrEmpty()) {
                         metadataList.add(
-                            AdPlayer.MetadataItem(
+                            AdMetadataItem(
                                 "description",
                                 entry.description.toString()
                             )
@@ -496,7 +497,7 @@ class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener
                     }
                     if (entry.mimeType.isNotEmpty()) {
                         metadataList.add(
-                            AdPlayer.MetadataItem(
+                            AdMetadataItem(
                                 "description",
                                 entry.mimeType
                             )
@@ -505,7 +506,7 @@ class ExternalAdPlayer(private val context: Context) : AdPlayer, Player.Listener
                 }
                 is CommentFrame -> {
                     if (entry.text.isNotEmpty()) {
-                        metadataList.add(AdPlayer.MetadataItem("text", entry.text))
+                        metadataList.add(AdMetadataItem("text", entry.text))
                     }
                 }
                 is Id3Frame -> {
