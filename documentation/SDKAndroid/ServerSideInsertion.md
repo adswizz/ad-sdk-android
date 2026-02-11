@@ -208,15 +208,15 @@ The available callbacks that are called by the stream manager are described belo
 
 ```kotlin
     interface Listener {
-        fun willStartPlayingUrl(adStreamManager: AdStreamManager, url: Uri)
-        fun didFinishPlayingUrl(adStreamManager: AdStreamManager, url: Uri)
-        fun didPausePlayingUrl(adStreamManager: AdStreamManager, url: Uri)
-        fun didResumePlayingUrl(adStreamManager: AdStreamManager, url: Uri)
-        fun adBreakStarted(adStreamManager: AdStreamManager, adBaseManager: AdBaseManager)
-        fun adBreakEnded(adStreamManager: AdStreamManager, adBaseManager: AdBaseManager)
-        fun onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdMetadataItem)
-        fun onError(adStreamManager: AdStreamManager, error: Error)
-    }
+    fun willStartPlayingUrl(adStreamManager: AdStreamManager, url: Uri) = Unit
+    fun didFinishPlayingUrl(adStreamManager: AdStreamManager, url: Uri) = Unit
+    fun didPausePlayingUrl(adStreamManager: AdStreamManager, url: Uri) = Unit
+    fun didResumePlayingUrl(adStreamManager: AdStreamManager, url: Uri) = Unit
+    fun adBreakStarted(adStreamManager: AdStreamManager, adBaseManager: AdBaseManager) = Unit
+    fun adBreakEnded(adStreamManager: AdStreamManager, adBaseManager: AdBaseManager) = Unit
+    fun onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdMetadataItem) = Unit
+    fun onError(adStreamManager: AdStreamManager, error: Error) = Unit
+}
 ```
 
 ### fun willStartPlayingUrl(adStreamManager: AdStreamManager, url: Uri)

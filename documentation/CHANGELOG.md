@@ -8,11 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [8.1.0] - 2026-02-11
 ### Added
 - Added a new event-driven integration method for Server Side Insertion. You can now pass your `AdStreamPlayerAdapter` implementation to the `AdManagerStreamingSettings.Builder` object by calling the `adStreamPlayerAdapterInstance` method. For more details, please visit the [Playing Streams With Your Player using AdStreamPlayerAdapter](Android/SDKAndroid/PlayAdsWithYourPlayer(AdStreamPlayerAdapter).md) page.
-- Added a new sample project named **_BasicAdStreamPlayerAdapterSample_** to the [Sample Project section](Android/SDKAndroid/SampleProjects) showcasing the **_AdStreamPlayerAdapter_** integration in a Server Side Insertion scenario.
+- Added a new sample project named **_BasicAdStreamPlayerAdapterSample_** to the [Sample Project section](Android/SDKAndroid/SampleProjects.md) showcasing the **_AdStreamPlayerAdapter_** integration in a Server Side Insertion scenario.
 - Added a new extension function `fun Metadata.toAdMetadataList(): List<AdMetadataItem>` used as convenience method for mapping the Exoplayer's Metadata to Adswizz Metadata. This extension function is present in both `com.adswizz.exoplayer2x` and `com.adswizz.exoplayer-media3` artifacts.
 
 ### Changed
-- Moved the `AdPlayer.MetadataItem` nested data class to new `AdMetadataItem` standalone class, this will introduce a breaking change that can be fixed importing the new `com.adswizz.common.AdMetadataItem`.
+- Moved the `AdPlayer.MetadataItem` nested data class to new `AdMetadataItem` standalone class, this will introduce a breaking change that can be fixed importing the new `com.adswizz.common.AdMetadataItem`. For more details, please refer to the [How to migrate to AdswizzSDK v8.1.0+](Android/Migrations/v8_1_0.md) page.
 - Changed the signature of `AdPlayer.Listener.onMetadata(metadataList: List<MetadataItem>)` to `AdPlayer.Listener.onMetadata(metadataList: List<AdMetadataItem>)` in order to use the new top-level class.
 - Updated the existing sample projects to use the new `AdMetadataItem` data class.
 - Changed the `AdStreamManager.Listener`'s methods to have a default empty implementation permitting selectively overrides.
