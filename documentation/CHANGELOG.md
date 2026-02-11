@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated the existing sample projects to use the new `AdMetadataItem` data class.
 - Changed the `AdStreamManager.Listener`'s methods to have a default empty implementation permitting selectively overrides.
 - Changed the signature of `AdStreamManager.Listener.onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: MetadataItem)` to `AdStreamManager.Listener.onMetadataChanged(adStreamManager: AdStreamManager, metadataItem: AdMetadataItem)` in order to use the new top-level class.
-- The support for `com.adswizz:adswizz-sdk-topics-api` artefact is discontinued due to Privacy Sandbox Deprecation on Android. For more details about deprecation and removal timeline, please visit the [Privacy Sandbox status](https://privacysandbox.google.com/overview/status) page.
+- Discontinued support for the `com.adswizz:adswizz-sdk-topics-api` artifact following the deprecation of the Android Privacy Sandbox Topics API. For more details about the deprecation and the removal timeline, please refer to the [Privacy Sandbox status](https://privacysandbox.google.com/overview/status) page.
 
 ### Fixed
 - Fixed an issue with 'Interactive Ads' behavior where `InteractivityListener.shouldOverrideCouponPresenting` was not consistently triggered. The method is now called every time the 'Download Coupon' action is initiated via shake detection.
