@@ -1,6 +1,6 @@
 # Vast Macros
 
-The AdsWizz SDK fully supports the following list of macros:
+The AdswizzSDK fully supports the following list of macros:
 - TIMESTAMP
 - CACHEBUSTING
 - CONTENTPLAYHEAD
