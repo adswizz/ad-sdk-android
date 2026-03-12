@@ -5,13 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [8.2.0] - 2026-02-25
+## [8.2.0] - 2026-03-Undefined
 ### Added
 - Added a new mechanism to support VAST macros that cannot be automatically filled by the AdswizzSDK. This is can be achieved using the new `AdMacroProvider` interface, for more details please visit the [Vast Macros](Android/SDKAndroid/VastMacros.md) page. 
 - Added a new methods in order to pass the `AdMacroProvider` instance:
   - using AdRequest.Builder's `fun withAdMacroProvider(adMacroProvider: AdMacroProvider)` new method
   - using AdswizzAdRequest.Builder's `fun withAdMacroProvider(adMacroProvider: AdMacroProvider)` new method
   - using the `AdManager.adMacroProvider` property
+- Added new xml attribute `ad_companion_render_type` for `AdCompanionWebView`. This feature enables to choose between `ImageView` or `WebView` to render companion resources. For more details, please visit the updated [AdCompanionView](Android/SDKAndroid/CompanionBanner.md) page.
+- Added a new mechanism to support generic XML objects defined within `CreativeExtension` and `Extension` VAST tags. The parsed XML objects are exposed through new `XmlNode` data class, accessible from `CreativeExtension` and `Extension` classes.
 
 ### Changed
 - The legacy `IntegratorContext` interface is now deprecated and replaced by the new added `AdMacroProvider`.

@@ -35,6 +35,43 @@ ad is playing. By default, an **_AdCompanionView_** instance is inactive, meanin
         yourContainer.addView(companionView, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
 ```
 
+### AdCompanionView render engine
+Starting with 8.2.0 SDK release, the **_AdCompanionView_** enables to choose the view type used to render the companion resources. 
+ - using WebView - this is the default option offers support for the entire VAST Companion resource options: StaticImage, IFrameResource, HTMLResource
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+    <com.ad.core.companion.AdCompanionView
+            android:id="@+id/companionView1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            <!-- not mandatory to be specified, it's the default option  -->
+            app:ad_companion_render_type="web_view" 
+/>
+```
+```kotlin
+val companionView = AdCompanionView(context = context, renderType = AdCompanionView.RenderType.WEB_VIEW) // not mandatory specify the renderType
+```
+- using ImageView - this option offers support for StaticImage VAST Companion resources only. This is suitable for restrictive environments in which the WebView has limited features or performance implications. E.g.: [Android Automotive](https://developer.android.com/training/cars/media/automotive-os#webview)
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+    <com.ad.core.companion.AdCompanionView
+            android:id="@+id/companionView1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:ad_companion_render_type="image_view" />
+```
+```kotlin
+val companionView = AdCompanionView(context = context, renderType = AdCompanionView.RenderType.IMAGE_VIEW)
+```
+
 ### AdCompanionView background color
 **_AdCompanionView_** will set by default its background color to `Color.WHITE` if the background attribute is not previously set.
 In order to change this behaviour you can set background attribute to transparent or any other color, as follows: 
