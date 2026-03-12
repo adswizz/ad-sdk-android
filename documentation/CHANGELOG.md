@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [8.2.0] - 2026-03-Undefined
+## [8.2.0] - 2026-03-TBD
 ### Added
 - Added a new mechanism to support VAST macros that cannot be automatically filled by the AdswizzSDK. This is can be achieved using the new `AdMacroProvider` interface, for more details please visit the [Vast Macros](Android/SDKAndroid/VastMacros.md) page. 
 - Added a new methods in order to pass the `AdMacroProvider` instance:

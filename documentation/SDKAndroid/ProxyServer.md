@@ -1,9 +1,9 @@
-# Using a proxy server to route all network connections
+# Using a Proxy Server to route all SDK network traffic
 
 ## Configuring `AdswizzSDK` to route all requests through a proxy endpoint
 
-When enabled by a publisher, all HTTP(S) requests initiated by the SDK are routed to a publisher-provided forward proxy endpoint. 
-The proxy then performs the original request on behalf of the SDK and returns the response to the SDK.
+When enabled by a publisher, all HTTP(S) requests initiated by the SDK are routed to a publisher-provided forward proxy endpoint.
+The proxy executes the original request on behalf of the SDK and forwards the response back to the SDK.
 
 This behavior is configured by setting the `proxyConfig` parameter in `AdswizzSDKConfig` during `AdswizzSDK` initialization.
 
@@ -29,8 +29,8 @@ data class AdswizzSDKConfig(
 
 ```
 
-The `ProxyConfig` object  defines how the SDK routes network requests through a forward proxy. Depending on sthe selected strategy, the SDK modify the original request
-bybadding specific headers or URI parameters to comply with the proxy server's routing strategy.
+The `ProxyConfig` object  defines how the SDK routes network requests through a forward proxy. Depending on the selected strategy, the SDK modify the original request
+by adding specific headers or URI parameters to comply with the proxy server's routing strategy.
 
 ```kotlin
 data class ProxyConfig(
@@ -73,7 +73,7 @@ data class ProxyConfig(
 )
 ```
 
-The `baseUrl` and `path` properties are used are used across all strategies to define the host and path for proxy requests.
+The `baseUrl` and `path` properties are used across all strategies to define the host and path for proxy requests.
 `additionalHeaders` are appended to HTTP headers already set internally by the SDK. Use custom, specific header names to avoid collisions with reserved headers from the original request.
 The header specified by `proxyRequestIdHeaderName` is automatically populated with a unique UUID to identify each proxied request
 The default value is `X-Adswizz-Proxy-Request-Id`
