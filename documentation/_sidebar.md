@@ -18,6 +18,7 @@
     - [AdswizzSDK general settings](Android/SDKAndroid/AdswizzGeneralSettings.md)
     - [Open Measurement in AdswizzSDK](Android/SDKAndroid/OpenMeasurement.md)
     - [Advanced targetability capabilities](Android/SDKAndroid/Prepare.md)
+    - [Using Proxy Server](Android/SDKAndroid/ProxyServer.md)
     - [Vast Macros](Android/SDKAndroid/VastMacros.md)
     - [AdData interface](Android/SDKAndroid/AdDataInterface.md)
     - [Ad Base Manager adapters](Android/SDKAndroid/AdBaseManagerAdapters.md)
