@@ -21,63 +21,84 @@ data class AdswizzSDKConfig(
      */
     val playerId: String? = null,
 
-    /**
-     * proxyConfig used to proxy requests (8.2.+)
-     */
+	/**
+	 * [ProxyConfig] provided to SDK in order to use a forward proxy pattern.</br>
+	 * When provided during SDK initialization, this configuration applies globally to all eligible SDK network requests
+	 */
     val proxyConfig: ProxyConfig? = null
 )
 
 ```
 
-The `ProxyConfig` object  defines how the SDK routes network requests through a forward proxy. Depending on the selected strategy, the SDK modify the original request
+The `ProxyConfig` object defines how the SDK routes network requests through a forward proxy. Depending on the selected strategy, the SDK modify the original request
 by adding specific headers or URI parameters to comply with the proxy server's routing strategy.
 
 ```kotlin
+
+/**
+ * Configuration object that defines how the SDK routes network requests
+ * through a forward proxy.
+ *
+ * When provided during SDK initialization, this configuration applies
+ * globally to all eligible SDK network requests
+ * (e.g., tracking pixels, media file downloads).
+ *
+ * The proxy behavior is determined by the selected [ProxyURLConfig.strategy]
+ * @param defaultProxyURLConfig - default [ProxyURLConfig] used for all network requests
+ * @param proxyURLMappings - a custom mapping that can configure proxy data for a specific domain.
+ */
+
 data class ProxyConfig(
+	val defaultProxyURLConfig: ProxyURLConfig,
+	val proxyURLMappings: List<ProxyURLMapping> = emptyList()
+)
+```
+
+The `ProxyURLMapping` defines a mapping between an original request domain and a proxy configuration.
+- `originalDomainMatch` parameter will be used to select any URL that matches the domain.
+- `proxyURLConfig` will be used to load the configuration for any URL that is matching the originalDomainMatch value.
+
+```kotlin
+data class ProxyURLMapping(
+	val originalDomainMatch: String,
+	val proxyURLConfig: ProxyURLConfig
+)
+```
+
+The `ProxyURLConfig` object defines the specific configuration for mapping network requests to a proxy server. It determines where the requests are sent and how the original destination is communicated to the proxy.
+```kotlin
+data class ProxyURLConfig(
     /**
      * Base url of the publisher proxy (e.g. https://proxy.com). Must be https in production builds
      * Must be a valid absolute URL. SHOULD use HTTPS in production environments.
      * May include a custom port (e.g., `https://proxy.com:8443`).
-     *
      */
     val baseURL: String,
     /**
      *   Optional path appended to [baseURL] to form the final proxy endpoint.
-    */
+     */
     val path: String = "",
-    
     /** Optional headers appended to every proxied request.
-    * - Typically used for proxy authentication or routing metadata.
-    * - Values in this map override existing request headers with the same name.
-    */
-    val additionalHeaders: Map<String, String>,
+     * - Typically used for proxy authentication or routing metadata.
+     * - Values in this map override existing request headers with the same name.
+     */
+    val additionalHeaders: Map<String, String> = emptyMap(),
 
     /** Determines how the original destination URL is embedded into the proxied request.*/
     val strategy: ProxyStrategy = ProxyStrategy.HEADER_ORIGINAL_URL,
 
     /** The header name used to transmit the original request URL when using [ProxyStrategy.HEADER_ORIGINAL_URL]*/
     val originalUrlHeaderName: String? = "X-Adswizz-Proxy-Original-URL",
-
     /**
      *  The query parameter name used to embed the original request URL when using
      * [ProxyStrategy.QUERY_PARAM_ORIGINAL_URL].
-    */
-    val originalUrlQueryParam: String? = "target_uri",
-
-    /** The HTTP header name used to attach a unique identifier to each proxied request.
-    *
-    * - Default: `"X-Adswizz-Proxy-Request-Id"`.
-    * - If null or empty, the request-id header is not included
-    */
-    val proxyRequestIdHeaderName: String? = "X-Adswizz-Proxy-Request-Id"
+     */
+    val originalUrlQueryParam: String? = "target_uri"
 )
 ```
 
 The `baseUrl` and `path` properties are used across all strategies to define the host and path for proxy requests.
 `additionalHeaders` are appended to HTTP headers already set internally by the SDK. Use custom, specific header names to avoid collisions with reserved headers from the original request.
-The header specified by `proxyRequestIdHeaderName` is automatically populated with a unique UUID to identify each proxied request
-The default value is `X-Adswizz-Proxy-Request-Id`
-
 
 
 ### `ProxyStrategy.HEADER_ORIGINAL_URL` strategy 
@@ -100,7 +121,7 @@ enum class ProxyMacros(val value: String) {
     HOSTNAME("{HOSTNAME}")
 }
 ```
-Ex.:
+E.g.:
 If the original URI is:
  `https://demo.deliveryengine.adswizz.com/.....`
 	If the path property is `/somepath/{SUBDOMAIN}`, the SDK expands the macro and rewrites the path to `/somepath/demo.deliveryengine`		
