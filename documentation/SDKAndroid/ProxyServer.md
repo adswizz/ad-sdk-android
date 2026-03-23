@@ -43,57 +43,98 @@ by adding specific headers or URI parameters to comply with the proxy server's r
  * globally to all eligible SDK network requests
  * (e.g., tracking pixels, media file downloads).
  *
- * The proxy behavior is determined by the selected [ProxyURLConfig.strategy]
- * @param defaultProxyURLConfig - default [ProxyURLConfig] used for all network requests
- * @param proxyURLMappings - a custom mapping that can configure proxy data for a specific domain.
+ * The proxy behavior is determined by the selected [ProxyUrlConfig.strategy]
+ * @param defaultProxyUrlConfig - default [ProxyUrlConfig] used for all network requests
+ * @param proxyUrlMappings - a custom mapping that can configure proxy data for a specific domain.
  */
 
 data class ProxyConfig(
-	val defaultProxyURLConfig: ProxyURLConfig,
-	val proxyURLMappings: List<ProxyURLMapping> = emptyList()
+	val defaultProxyUrlConfig: ProxyUrlConfig,
+	val proxyUrlMappings: List<ProxyUrlMapping> = emptyList()
 )
 ```
 
-The `ProxyURLMapping` defines a mapping between an original request domain and a proxy configuration.
+The `ProxyUrlMapping` defines a mapping between an original request domain and a proxy configuration.
 - `originalDomainMatch` parameter will be used to select any URL that matches the domain.
-- `proxyURLConfig` will be used to load the configuration for any URL that is matching the originalDomainMatch value.
+- `proxyUrlConfig` will be used to load the configuration for any URL that is matching the originalDomainMatch value.
 
 ```kotlin
-data class ProxyURLMapping(
+data class ProxyUrlMapping(
 	val originalDomainMatch: String,
-	val proxyURLConfig: ProxyURLConfig
+	val proxyUrlConfig: ProxyUrlConfig
 )
 ```
 
 The `ProxyURLConfig` object defines the specific configuration for mapping network requests to a proxy server. It determines where the requests are sent and how the original destination is communicated to the proxy.
 ```kotlin
-data class ProxyURLConfig(
-    /**
-     * Base url of the publisher proxy (e.g. https://proxy.com). Must be https in production builds
-     * Must be a valid absolute URL. SHOULD use HTTPS in production environments.
-     * May include a custom port (e.g., `https://proxy.com:8443`).
-     */
-    val baseURL: String,
-    /**
-     *   Optional path appended to [baseURL] to form the final proxy endpoint.
-     */
-    val path: String = "",
-    /** Optional headers appended to every proxied request.
-     * - Typically used for proxy authentication or routing metadata.
-     * - Values in this map override existing request headers with the same name.
-     */
-    val additionalHeaders: Map<String, String> = emptyMap(),
+/**
+ * Configuration object that defines how a network request should be mapped to a proxy.
+ * The proxy behavior is determined by the selected [strategy].
+ *
+ * @param baseUrl
+ * The base URL of the publisher forward proxy (e.g., `https://proxy.com`).
+ *
+ * - Must be a valid absolute URL. SHOULD use HTTPS in production environments.
+ * - May include a custom port (e.g., `https://proxy.com:8443`).
+ *
+ * @param path
+ * Optional path appended to [baseUrl] to form the final proxy endpoint.
+ *
+ * - Defaults to an empty string. If provided, SHOULD begin with `/`.
+ *
+ * Example:
+* baseUrl = "https://proxy.com"
+* path = "/adswizz/sdk-proxy/v1/forward"
+* Result:
+* https://proxy.com/adswizz/sdk-proxy/v1/forward
+*
+* @param additionalHeaders
+* Optional headers appended to every proxied request.
+* - Typically used for proxy authentication or routing metadata.
+* - Values in this map override existing request headers with the same name.
+*
+* @param strategy
+* Determines how the original destination URL is embedded into the proxied request.
+*
+* @param originalUrlHeaderName
+* Header name that can be used by all strategies to transmit the original request URL.
+* - [ProxyStrategy.HEADER_ORIGINAL_URL] - the value MUST be non-empty, if it is empty or null, an exception will be raised.
+* - [ProxyStrategy.REWRITE_DOMAIN_ONLY] - the header will not be present if the provided value is null or empty,
+* - [ProxyStrategy.QUERY_PARAM_ORIGINAL_URL] - the header will not be present if the provided value is null or empty,
+*
+* Default value: `"X-Adswizz-Proxy-Original-URL"`
+*
+* @param originalUrlQueryParam
+* The query parameter name used to embed the original request URL when using
+* [ProxyStrategy.QUERY_PARAM_ORIGINAL_URL].
+*
+* Request URL becomes:
+* baseURL + path + ?target_uri=<urlEncoded(originalUrl)>
+*
+* Ignored for other strategies.</br>
+* When using [ProxyStrategy.QUERY_PARAM_ORIGINAL_URL], this value MUST be non-empty;
+* if it is empty or null, an exception will be raised.</br>
+* Default value: `"target_uri"`.
+*
+* ### Validation Recommendations
+* Implementations SHOULD validate:
+* - [baseUrl] is a valid absolute URL.
+* - [path], if provided, starts with `/`.
+* - [originalUrlHeaderName] is non-empty when using
+*                           the HEADER_ORIGINAL_URL strategy.
+* - [originalUrlQueryParam] is non-empty when using
+*                          the QUERY_PARAM_ORIGINAL_URL strategy.
+*
+* Changes to this configuration require SDK reinitialization.
+  */
 
-    /** Determines how the original destination URL is embedded into the proxied request.*/
-    val strategy: ProxyStrategy = ProxyStrategy.HEADER_ORIGINAL_URL,
-
-    /** The header name used to transmit the original request URL when using [ProxyStrategy.HEADER_ORIGINAL_URL]*/
-    val originalUrlHeaderName: String? = "X-Adswizz-Proxy-Original-URL",
-    /**
-     *  The query parameter name used to embed the original request URL when using
-     * [ProxyStrategy.QUERY_PARAM_ORIGINAL_URL].
-     */
-    val originalUrlQueryParam: String? = "target_uri"
+data class ProxyUrlConfig(
+	val baseUrl: String,
+	val path: String = "",
+	val additionalHeaders: Map<String, String> = emptyMap(),
+	val strategy: ProxyStrategy = ProxyStrategy.HEADER_ORIGINAL_URL,
+	val originalUrlHeaderName: String? = "X-Adswizz-Proxy-Original-URL",
+	val originalUrlQueryParam: String? = "target_uri"
 )
 ```
 
