@@ -65,7 +65,7 @@ data class ProxyUrlMapping(
 )
 ```
 
-The `ProxyURLConfig` object defines the specific configuration for mapping network requests to a proxy server. It determines where the requests are sent and how the original destination is communicated to the proxy.
+The `ProxyUrlConfig` object defines the specific configuration for mapping network requests to a proxy server. It determines where the requests are sent and how the original destination is communicated to the proxy.
 ```kotlin
 /**
  * Configuration object that defines how a network request should be mapped to a proxy.
