@@ -1,0 +1,153 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "adswizz-sdk",
+    "version": "8.2.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.13"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-common",
+          "version": {
+            "requires": "8.2.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-core",
+          "version": {
+            "requires": "8.2.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-interactive-ad",
+          "version": {
+            "requires": "8.2.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-sdk-8.2.0.aar",
+          "url": "adswizz-sdk-8.2.0.aar",
+          "size": 23287,
+          "sha512": "4dd8145bd3fc950e37acb2092cd8b5f8bbf41c7b30a931555857e8454bc44139b85a6aa7ce4a9a17895d0ff9bba791097022789a80f06349a2b440dae975ba76",
+          "sha256": "bbda8be895fb763b6b25dc435bacd0fc762af3aa5f53c6b9a276ff77f0c164b7",
+          "sha1": "90b4459162ac7afbab58c1b6851f14fd7bc58a04",
+          "md5": "73929088c3a0099ce1129b05b407850a"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-common-internal",
+          "version": {
+            "requires": "8.2.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-interactive-ad-internal",
+          "version": {
+            "requires": "8.2.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-data-collector",
+          "version": {
+            "requires": "8.2.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-omsdk",
+          "version": {
+            "requires": "8.2.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk7",
+          "version": {
+            "requires": "1.8.22"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.7.3"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-android",
+          "version": {
+            "requires": "1.7.3"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-common",
+          "version": {
+            "requires": "8.2.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-core",
+          "version": {
+            "requires": "8.2.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-interactive-ad",
+          "version": {
+            "requires": "8.2.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-sdk-8.2.0.aar",
+          "url": "adswizz-sdk-8.2.0.aar",
+          "size": 23287,
+          "sha512": "4dd8145bd3fc950e37acb2092cd8b5f8bbf41c7b30a931555857e8454bc44139b85a6aa7ce4a9a17895d0ff9bba791097022789a80f06349a2b440dae975ba76",
+          "sha256": "bbda8be895fb763b6b25dc435bacd0fc762af3aa5f53c6b9a276ff77f0c164b7",
+          "sha1": "90b4459162ac7afbab58c1b6851f14fd7bc58a04",
+          "md5": "73929088c3a0099ce1129b05b407850a"
+        }
+      ]
+    }
+  ]
+}
