@@ -47,6 +47,8 @@ media3ExoplayerHLS = "androidx.media3:media3-exoplayer-hls:$media3Version"
 media3ExoplayerSS = "androidx.media3:media3-exoplayer-smoothstreaming:$media3Version"
 // only needed in exoplayer2x flavor
 exoPlayer = "com.google.android.exoplayer:exoplayer:$exoPlayerVerison"
+// needed by Open Measurement SDK device attestation
+webkit = "androidx.webkit:webkit:$webkitVersion"
 
 ```
 
@@ -85,6 +87,7 @@ gmsPlayServicesLocationVersion = '21.0.1'
 roomVersion = '2.6.1'
 privacysandboxAdServicesVersion = '1.1.0-beta03'
 kotlinCoroutinesPlayServicesVersion = '1.7.3'
+webkitVersion='1.3.0'
 
 //WearOS
 wearableSupportVersion = '2.9.0'
@@ -115,7 +118,10 @@ The AdswizzSDK uses the following permissions:
 <manifest>
 ....
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+    
+    // needed by Open Measurement SDK device attestation
+    <uses-permission android:name="com.amazon.privacypass.ATTEST" />
 ....
 </manifest>
 ```
@@ -163,10 +169,7 @@ The AdswizzSDK additional permissions are:
     <!-- Used for decoration. Used in sonar tracking endpoint for the gps location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- we use it in sonar to add the list of installed apps and bundleVersion to the profile endpoint -->
-
-    <!-- Required for 31+. -->
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
-
+    
     <!-- Required for 33+. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 

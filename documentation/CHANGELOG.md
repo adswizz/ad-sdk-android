@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Open Measurement SDK:
     - Service release that updates to the latest OM SDK v1.6.2 (certified by IAB). See what's new in Open Measurement SDK [here](https://iabtechlab.com/standards/open-measurement-sdk/)
+    - The OM SDK v1.6.2 added a new device attestation mechanism in order to prevent device spoofing. This feature is adding to the **_AdswizzSDK_** a new `privacypass.ATTEST` permission and `androidx.webkit` dependency, for more technical implementation details please visit [Device Attestation](https://iabtechlab.com/om-sdk-device-attestation-implementation-guidance/) page.
 
 ## [8.0.2] - 2025-11-06
 
