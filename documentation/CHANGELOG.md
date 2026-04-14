@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.2.1] - 2026-04-14
+### Added
+- Added a new method `fun withQueryParameters(parameters: Map<String, String>)` to the AdswizzAdRequest.Builder. This method accepts unencoded key value pairs used to append additional parameters to AdswizzAdRequest, for more details please visit the updated [Client side - Custom request parameters](Android/SDKAndroid/ClientSideInsertion.md) section.
+
 ## [8.2.0] - 2026-03-31
 ### Added
 - Added a new mechanism to support VAST macros that cannot be automatically filled by the AdswizzSDK. This is can be achieved using the new `AdMacroProvider` interface, for more details please visit the [Vast Macros](Android/SDKAndroid/VastMacros.md) page. 

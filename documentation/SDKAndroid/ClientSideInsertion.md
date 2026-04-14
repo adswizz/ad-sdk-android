@@ -73,12 +73,19 @@ Only one shim zone can be set in `AdswizzAdRequest`.
 
 **Custom request parameters**
 
-You may use custom parameters (key-value pairs) in your requests, in order to send various information, such as the TCF v2 consent string, the publisher-specific ID, first-party targeting data etc.
-Here is an example:
+You may use custom parameters (key-value pairs) in your requests, in order to send various information, such as the TCF v2 consent string, the publisher-specific ID, first-party targeting data etc. using the following methods:
 
+- `withCustomParameter` method. This appends your custom `URL encoded` data to the AdRequest.
 ```kotlin
 	AdswizzAdRequest.Builder()
 		.withCustomParameter("key1=URLEncodedValue1&key2=URLEncodedValue2")
+		...
+```
+
+- `withQueryParameters` method. This method accepts `unencoded` key value pairs used to append additional parameters to the AdRequest. The resulted request will contain unique query parameters, in case of collisions, all the existing keys will be overridden with the values from parameters map. Providing URL-encoded parameters (e.g. mapOf("myCustomKeyParam1" to "my%20custom%20value1")) will result in double encoding.
+```kotlin
+	AdswizzAdRequest.Builder()
+		.withQueryParameters(mapOf("myCustomKeyParam1" to "my custom value1"))
 		...
 ```
 
