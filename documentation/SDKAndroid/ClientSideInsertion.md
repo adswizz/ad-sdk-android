@@ -36,7 +36,7 @@ data class AdswizzShimZone @JvmOverloads constructor(
 )
 ```
 **Note**
-Since v8.0.0, `maxDuration` and `maxDeadAir` parameters are now of type Duration? instead of Long? which makes the time or period values representation more clear ( no need to know if is seconds or milliseconds or other time values).
+Since v8.0.0, `maxDuration` and `maxDeadAir` parameters are now of type `Duration?` instead of `Long?` which makes the time or period values representation more clear ( no need to know if is seconds or milliseconds or other time values).
 
 
 Each `AdswizzShimZone` object is defined by a mandatory `zoneId`/`zoneAlias` and an optional `maxDeadAir` field, where `zoneId` or `zoneAlias` is provided by the PIM.
