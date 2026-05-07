@@ -4,19 +4,14 @@
 
 You are now ready for your first ad request. You will need to create an AdswizzAdRequest object and configure it.
 
-**Minimal request parameters** The `AdswizzAdRequest` requires at minimum to set the server url and a set of one ore more `AdswizzAdZone` or an `AdswizzShimZone`.
+**Minimal request parameters** The `AdswizzAdRequest` requires at minimum to set the server url and a set of one or more `AdswizzAdZone` or an `AdswizzShimZone`.
 
 ```kotlin
-	data class AdswizzAdZone @JvmOverloads constructor(
-        @Json(name = "zoneId")
-        val zoneId: String,
-        @Json(name = "maxAds")
-        val maxAds: Int? = null,
-        @Json(name = "maxDuration")
-        val maxDuration: Duration? = null,
-        //starting with SDK 7.11.0
-    	@Json(name = "zoneAlias")
-    	val zoneAlias: String? = null
+data class AdswizzAdZone(
+  val zoneId: String? = null,
+  val maxAds: Int? = null,
+  val maxDuration: Duration? = null,
+  val zoneAlias: String? = null
 )
 ```
 Each `AdswizzAdZone` object is defined by a mandatory `zoneId` or `zoneAlias`, provided by the PIM/TAM, and optional `maxAds` and `maxDuration` fields. The optional fields are determined by the application logic and are not required.
@@ -26,21 +21,18 @@ Since v7.11.0, `zoneId` parameter is no longer mandatory if `zoneAlias` is prese
 
 ```kotlin
 //starting with SDK 7.11.0
-data class AdswizzShimZone @JvmOverloads constructor(
-    @Json(name = "zoneId")
-    val zoneId: String? = null,
-    @Json(name = "maxDeadAir")
-    val maxDeadAir: Long? = null,
-    @Json(name = "zoneAlias")
-    val zoneAlias: String? = null
+data class AdswizzShimZone(
+  val zoneId: String? = null,
+  val minExtraDuration: Duration? = null,
+  val zoneAlias: String? = null
 )
 ```
 **Note**
-Since v8.0.0, `maxDuration` and `maxDeadAir` parameters are now of type Duration? instead of Long? which makes the time or period values representation more clear ( no need to know if is seconds or milliseconds or other time values).
+Since v8.0.0, `maxDuration` and `minExtraDuration` parameters are now of type `Duration?` instead of `Long?` which makes the time or period values representation more clear ( no need to know if is seconds or milliseconds or other time values).
 
 
-Each `AdswizzShimZone` object is defined by a mandatory `zoneId`/`zoneAlias` and an optional `maxDeadAir` field, where `zoneId` or `zoneAlias` is provided by the PIM.
-The fields `zoneId` or `zoneAlias` checked in the same manner as AdswizzAdZone. The `maxDeadAir` parameter represents the minimal threshold time necessary to fill the remaining duration with shims ads.
+Each `AdswizzShimZone` object is defined by a mandatory `zoneId`/`zoneAlias` and an optional `minExtraDuration` field, where `zoneId` or `zoneAlias` is provided by the PIM.
+The fields `zoneId` or `zoneAlias` checked in the same manner as AdswizzAdZone. The `minExtraDuration` parameter specifies the minimum duration that the ad server is required to fill for the shim zone.
 
 The minimal request looks like the following: one or more zones and a server url 
 ```kotlin
