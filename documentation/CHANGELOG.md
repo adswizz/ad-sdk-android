@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [8.2.2] - 2026-05-06
+## [8.2.2] - 2026-05-07
 ### Added
 - Added new property `minExtraDuration` in `AdswizzShimZone` data class. This specifies the minimum duration that the ad server is required to fill for the shim zone.
 - Added new `DebugProxy` data class that can be set into `AdswizzSDKConfig` at SDK initialization. This class can be used for routing SDK HTTP requests through a local debug proxy (e.g. Charles, mitmproxy) only in debug builds.
