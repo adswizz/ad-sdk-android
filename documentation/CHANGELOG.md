@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.2.3] - 2026-06-15
+### Changed
+- Improved the `IN-CAR` detection mechanism for newer devices when connected to Android Auto or running directly in Android Automotive OS.
+- Changed the behavior when the all ads have failed in the ad break when using `MediaPlayerState`. Starting with 8.2.3 version, the **_AdswizzSDK_** will automatically advance the ad index and fire `AllAdsCompleted` event when the remaining ads have failed.
+- For each failed ad will be fired `AdEvent.Type.State.PlaybackError` in `AdManagerListener.onEventReceived` and  `AdManagerListener.onEventErrorReceived` callbacks.
+
 ## [8.2.2] - 2026-05-07
 ### Added
 - Added new property `minExtraDuration` in `AdswizzShimZone` data class. This specifies the minimum duration that the ad server is required to fill for the shim zone.
