@@ -1,0 +1,125 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "adswizz-wear-sdk",
+    "version": "8.2.3",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.13"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-wear-interactive-ad",
+          "version": {
+            "requires": "8.2.3"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-wear-sdk-8.2.3.aar",
+          "url": "adswizz-wear-sdk-8.2.3.aar",
+          "size": 25764,
+          "sha512": "ce0599280e8e7d10d92371d6ee6587fe056b61953ec5003bc9f1f8e8545a9aa9c64df7b037d88a18ffdbf8dc3800279c26ac873ad2b27b1548bd1dd0b36ac4c4",
+          "sha256": "d5d1ddd10beca5e1ddc6fbc37171a8e8bf7cf36a1ab48ac932584a3e18bffe36",
+          "sha1": "4dc6f8c5f9ac5946bff233ad5744d645e1a0c1e3",
+          "md5": "4cf2f61a95083e6778226b46e26df9d3"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk7",
+          "version": {
+            "requires": "1.8.22"
+          }
+        },
+        {
+          "group": "androidx.wear",
+          "module": "wear",
+          "version": {
+            "requires": "1.3.0"
+          }
+        },
+        {
+          "group": "com.google.android.support",
+          "module": "wearable",
+          "version": {
+            "requires": "2.9.0"
+          }
+        },
+        {
+          "group": "com.google.android.gms",
+          "module": "play-services-wearable",
+          "version": {
+            "requires": "18.1.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.7.3"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-android",
+          "version": {
+            "requires": "1.7.3"
+          }
+        },
+        {
+          "group": "androidx.lifecycle",
+          "module": "lifecycle-runtime-ktx",
+          "version": {
+            "requires": "2.5.1"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-wear-interactive-ad",
+          "version": {
+            "requires": "8.2.3"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-wear-sdk-8.2.3.aar",
+          "url": "adswizz-wear-sdk-8.2.3.aar",
+          "size": 25764,
+          "sha512": "ce0599280e8e7d10d92371d6ee6587fe056b61953ec5003bc9f1f8e8545a9aa9c64df7b037d88a18ffdbf8dc3800279c26ac873ad2b27b1548bd1dd0b36ac4c4",
+          "sha256": "d5d1ddd10beca5e1ddc6fbc37171a8e8bf7cf36a1ab48ac932584a3e18bffe36",
+          "sha1": "4dc6f8c5f9ac5946bff233ad5744d645e1a0c1e3",
+          "md5": "4cf2f61a95083e6778226b46e26df9d3"
+        }
+      ]
+    }
+  ]
+}
