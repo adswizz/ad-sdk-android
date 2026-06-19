@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [8.2.4] - 2026-06-19
 ### Changed
 - Improved the execution order between `AdEvent.Type.State.AllAdsCompleted` and the `AdPlayer.reset()` to be called one after another. Now, the SDK guarantees the `AdPlayer.reset()` is called after sending all `AdEvent.Type.State` events to the host app.
+- Changed `AdManagerListener.onEventReceived` to fire `AdEvent.Type.State.PlaybackError` event in every error scenario, replacing the `AdEvent.Type.Other.Error` used in a few cases. 
 
 ## [8.2.3] - 2026-06-15
 ### Changed
