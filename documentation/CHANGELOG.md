@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.2.5] - 2026-06-30
 ### Fixed
-- Fixed an `IllegalArgumentException` thrown by `AdswizzSDK.cleanup()` call only in Android Automotive OS environments.
+- Fixed an `IllegalArgumentException` that occurred when `AdswizzSDK.cleanup()` was called exclusively in Android Automotive OS environments.
 
 ## [8.2.4] - 2026-06-19
 ### Changed
