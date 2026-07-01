@@ -80,7 +80,7 @@ The `ProxyUrlConfig` object defines the specific configuration for mapping netwo
  * @param path
  * Optional path appended to [baseUrl] to form the final proxy endpoint.
  *
- * - Defaults to an empty string. If provided, SHOULD begin with `/`.
+ * - Defaults to an empty string.
  *
  * Example:
 * baseUrl = "https://proxy.com"
@@ -119,7 +119,7 @@ The `ProxyUrlConfig` object defines the specific configuration for mapping netwo
 * ### Validation Recommendations
 * Implementations SHOULD validate:
 * - [baseUrl] is a valid absolute URL.
-* - [path], if provided, starts with `/`.
+* - [path] a valid path to be appended with the baseUrl.
 * - [originalUrlHeaderName] is non-empty when using
 *                           the HEADER_ORIGINAL_URL strategy.
 * - [originalUrlQueryParam] is non-empty when using
