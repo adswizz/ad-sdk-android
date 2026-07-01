@@ -5,7 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [8.2.5] - 2026-06-30
+## [8.2.5] - 2026-07-01
+### Changed
+- Relaxed the `ProxyUrlConfig` behaviour to accept `path` and `baseUrl` parameters with or without trailing or ending slashes. For more details, please visit the updated [Using Proxy Server](Android/SDKAndroid/ProxyServer.md) page.
+
 ### Fixed
 - Fixed an `IllegalArgumentException` that occurred when `AdswizzSDK.cleanup()` was called exclusively in Android Automotive OS environments.
 
@@ -14,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved the execution order between `AdEvent.Type.State.AllAdsCompleted` and the `AdPlayer.reset()` to be called one after another. Now, the SDK guarantees the `AdPlayer.reset()` is called after sending all `AdEvent.Type.State` events to the host app.
 - Changed `AdManagerListener.onEventReceived` to fire `AdEvent.Type.State.PlaybackError` event in every error scenario, replacing the `AdEvent.Type.Other.Error` used in a few cases.
 > **Note**
-> Release not available due to `IllegalArgumentException` introduced in 8.2.3 version. Please update to version [8.2.5](Android/CHANGELOG#_825-2026-06-30) or later.
+> Release not available due to `IllegalArgumentException` introduced in 8.2.3 version. Please update to version [8.2.5](Android/CHANGELOG#_825-2026-07-01) or later.
 
 ## [8.2.3] - 2026-06-15
 ### Changed
@@ -22,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed the behavior when the all ads have failed in the ad break when using `MediaPlayerState`. Starting with 8.2.3 version, the **_AdswizzSDK_** will automatically advance the ad index and fire `AllAdsCompleted` event when the remaining ads have failed.
 - For each failed ad will be fired `AdEvent.Type.State.PlaybackError` in `AdManagerListener.onEventReceived` and  `AdManagerListener.onEventErrorReceived` callbacks.
 > **Note**
-> Release not available due to `IllegalArgumentException` introduced in this version. Please update to version [8.2.5](Android/CHANGELOG#_825-2026-06-30) or later.
+> Release not available due to `IllegalArgumentException` introduced in this version. Please update to version [8.2.5](Android/CHANGELOG#_825-2026-07-01) or later.
 
 ## [8.2.2] - 2026-05-07
 ### Added
