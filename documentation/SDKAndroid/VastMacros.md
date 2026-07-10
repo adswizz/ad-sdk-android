@@ -42,18 +42,6 @@ interface AdMacroProvider {
      */
     fun getMediaPlayhead(): Duration? = null
 
-    /**
-     * This method is used to provide values for the `LINEAR_MEDIAPLAYHEAD_UTC` macro.
-     * `LINEAR_MEDIAPLAYHEAD_UTC` is the absolute UTC playback position on a linear feed
-     * derived by the host app from the linear feed's ad-break
-     * play point. Unlike the standard VAST `MEDIAPLAYHEAD`, this value carries a full date
-     * and is emitted in ISO-8601 `YYYY-MM-DDTHH:MM:SS.mmmZ` (UTC).
-     * The value is provided as epoch milliseconds (UTC); the SDK is responsible for formatting.
-     * Applicable to all tracking pixels.
-     * Negative values are considered invalid.
-     * default value is `null`
-     */
-    fun getLinearMediaPlayheadEpochMillis(): Long? = null
 }
 ```
 ### AdMacroProvider usage
@@ -116,4 +104,3 @@ The following macros are supported:
 - CONTENTURI
 <br>and partially supports:
 - ERRORCODE - only some of the error codes are currently covered
-- LINEAR_MEDIAPLAYHEAD_UTC - CUSTOM VAST macro

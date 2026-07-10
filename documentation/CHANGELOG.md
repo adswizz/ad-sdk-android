@@ -5,9 +5,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [8.2.6] - 2026-07-10
-### Added
-- Added support for a custom Macro [LINEAR_MEDIAPLAYHEAD_UTC] which represents the absolute UTC playback position on a linear feed relative to the ad-break. The macro can be provided using `AdMacroProvider.getLinearMediaPlayheadEpochMillis()` new method, for more details please visit the [Vast Macros](Android/SDKAndroid/VastMacros.md) page.
 
 
 ## [8.2.5] - 2026-07-01
