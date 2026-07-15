@@ -16,13 +16,13 @@ val adswizzVersion = versionProperties["adswizzVersion"]
 android {
     namespace = "com.adswizz.basicadstreamplayeradaptersample"
     compileSdk {
-        version = release(36)
+        version = release(37)
     }
 
     defaultConfig {
         applicationId = "com.adswizz.basicadstreamplayeradaptersample"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
 

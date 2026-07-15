@@ -7,16 +7,15 @@ versionProperties.load(project.rootProject.file('../versions.properties').newDat
 def adswizzVersion = versionProperties["adswizzVersion"]
 
 android {
-    compileSdk 35
+    compileSdk 37
 
     namespace "com.adswizz.precachesample"
     defaultConfig {
         applicationId "com.adswizz.precachesample"
         minSdkVersion 24
-        targetSdkVersion 35
+        targetSdkVersion 37
         versionCode 1
         versionName "1.0"
-        ndkVersion '21.3.6528147'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -33,13 +32,16 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     buildFeatures {
         viewBinding true
     }
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.13.1'
     implementation 'androidx.appcompat:appcompat:1.7.0'
