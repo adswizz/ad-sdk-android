@@ -13,13 +13,13 @@ val adswizzVersion = properties["adswizzVersion"]
 
 android {
     namespace = "com.adswizz.dvrstreamingsampleext"
-    compileSdk = 35
+    compileSdk = 37
 
 
     defaultConfig {
         applicationId = "com.adswizz.dvrstreamingsampleext"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
 

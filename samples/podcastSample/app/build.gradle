@@ -8,13 +8,13 @@ versionProperties.load(project.rootProject.file('../versions.properties').newDat
 def adswizzVersion = versionProperties["adswizzVersion"]
 
 android {
-    compileSdk 35
+    compileSdk 37
     namespace "com.adswizz.podcastsample"
 
     defaultConfig {
         applicationId "com.adswizz.podcastsample"
         minSdkVersion 24
-        targetSdkVersion 35
+        targetSdkVersion 37
         versionCode 1
         versionName "1.0"
 
