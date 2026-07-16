@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.3.0] - 2026-07-20
+### Changed
+- Bumped Kotlin to 2.2.21, preserving backward compatibility with Kotlin 1.8.22 and AGP 8.6.0.
+- Increased Android `compileSdk` to API 37 (Android 17); binary compatibility is maintained down to API 35.
+- Aligned SDK library versions with the Kotlin upgrade. For more information, see the [Dependencies section](Android/SDKAndroid/GetStarted#dependencies).
+
 ## [8.2.6] - 2026-07-10
 ### Added
 - Added support for a custom Macro [LINEAR_MEDIAPLAYHEAD_UTC] which represents the absolute UTC playback position on a linear feed relative to the ad-break. The macro can be provided using `AdMacroProvider.getLinearMediaPlayheadEpochMillis()` new method, for more details please visit the [Vast Macros](Android/SDKAndroid/VastMacros.md) page.
