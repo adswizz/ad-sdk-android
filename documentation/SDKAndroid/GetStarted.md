@@ -9,8 +9,9 @@ In a server-side insertion scenario, it takes the pressure off your app by makin
 
 ## Prerequisites
 
-* Android Studio Giraffe | 2022.3.1 (or later)
-* (AGP) Gradle Build Tools 8.0.2 (or later)
+* Android Studio Meerkat | 2024.3.1 (or later)
+* (AGP) Gradle Build Tools 8.6.0 (or later)
+* Minimum Android Compile SDK version 35 (or later)
 
 ## Changelog
 
@@ -21,7 +22,7 @@ Please check [here](Android/CHANGELOG.md) the latest AdswizzSDK version and all 
  A list of external dependencies used in our phone and tablet SDK:
 
 ```groovy
-kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"
+kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"
 coreKtx = "androidx.core:core-ktx:${coreKtxVersion}"
 gmsPlayServicesAdsIdentifier = "com.google.android.gms:play-services-ads-identifier:$gmsPlayServicesAdsIdentifierVersion"
 processLifecycle = "androidx.lifecycle:lifecycle-process:$lifecycleRuntimeKtxVersion"
@@ -39,7 +40,7 @@ workManagerRuntime = "androidx.work:work-runtime-ktx:$workManagerRuntimeVersion"
 roomRuntime = "androidx.room:room-runtime:$roomVersion"
 roomCompiler = "androidx.room:room-compiler:$roomVersion"
 roomKtx = "androidx.room:room-ktx:$roomVersion"
-kotlinCoroutinesPlayServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$kotlinCoroutinesPlayServicesVersion"
+kotlinCoroutinesPlayServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$kotlinxCoroutinesVersion"
 // only needed in media3 flavor
 media3Exoplayer = "androidx.media3:media3-exoplayer:$media3Version"
 media3ExoplayerDash = "androidx.media3:media3-exoplayer-dash:$media3Version"
@@ -55,12 +56,12 @@ webkit = "androidx.webkit:webkit:$webkitVersion"
 For our Wear OS SDK we use:
 
 ```groovy
-kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"
+kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"
 androidXWear = "androidx.wear:wear:$androidXWearVersion"
 supportWearable = "com.google.android.support:wearable:$wearableSupportVersion"
 googleWearable = "com.google.android.wearable:wearable:$googleWearableVersion"
 playServicesWearable = "com.google.android.gms:play-services-wearable:$playServicesWearableVersion"
-kotlinxCoroutines= "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion"
+kotlinxCoroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion"
 kotlinxCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinxCoroutinesVersion"
 lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleRuntimeKtxVersion"
 ```
@@ -70,23 +71,21 @@ We have tested the above dependencies using the following version numbers:<br>
 ```groovy
 //Library
 androidMinSdkVersion = 23
-androidTargetSdkVersion = 36
-androidCompileSdkVersion = 36
+androidTargetSdkVersion = 37
+androidCompileSdkVersion = 37
 
-kotlin_version = '1.8.22'
-coreKtxVersion = '1.12.0'
+kotlin_version = '2.0.21'
+coreKtxVersion = '1.16.0'
 exoPlayerVerison = '2.16.0' // and others up to 2.19.1
 media3Version = '1.2.0' // and others up to 1.6.0
-gmsPlayServicesAdsIdentifierVersion = '18.0.1'
-moshiVersion = '1.14.0'
-lifecycleRuntimeKtxVersion = '2.5.1'
-kotlinxCoroutinesVersion = '1.7.3'
+gmsPlayServicesAdsIdentifierVersion = '18.2.0'
+moshiVersion = '1.15.2'
+lifecycleRuntimeKtxVersion = '2.9.4'
+kotlinxCoroutinesVersion = '1.9.0'
 workManagerRuntimeVersion = '2.8.1'
 protobufJavaLiteVersion = '3.23.3'
-gmsPlayServicesLocationVersion = '21.0.1'
+gmsPlayServicesLocationVersion = '21.3.0'
 roomVersion = '2.6.1'
-privacysandboxAdServicesVersion = '1.1.0-beta03'
-kotlinCoroutinesPlayServicesVersion = '1.7.3'
 webkitVersion='1.3.0'
 
 //WearOS
@@ -95,7 +94,7 @@ playServicesWearableVersion = '18.1.0'
 percentLayoutVersion = '1.0.0'
 legacySupportVersion = '1.0.0'
 recyclerViewVersion = '1.1.0'
-lifecycleRuntimeKtxVersion = '2.5.1'
+lifecycleRuntimeKtxVersion = '2.9.4'
 androidXWearVersion = '1.3.0'
 googleWearableVersion = '2.9.0'
 ```

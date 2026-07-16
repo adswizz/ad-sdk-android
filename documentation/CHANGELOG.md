@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.3.0] - 2026-07-20
 ### Changed
-- Bumped Kotlin to 2.2.21, preserving backward compatibility with Kotlin 1.8.22 and AGP 8.6.0.
+- Bumped Kotlin to 2.0.21, preserving backward compatibility with Kotlin 1.8.22 and AGP 8.6.0.
 - Increased Android `compileSdk` to API 37 (Android 17); binary compatibility is maintained down to API 35.
 - Aligned SDK library versions with the Kotlin upgrade. For more information, see the [Dependencies section](Android/SDKAndroid/GetStarted#dependencies).
 
