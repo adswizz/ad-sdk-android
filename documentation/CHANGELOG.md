@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.2.7] - 2026-07-27
 ### Added
-- Added a new optional parameter `withQueryParameters` to the static method `fun AdswizzAdStreamManager.decorateUrl(url: String, withQueryParameters: Map<String, String>? = null)`. This parameter accepts unencoded key-value pairs that the **_AdswizzSDK_** will append as additional parameters to the decorated URL. Note that it should only be used at the recommendation of AdsWizz.
+- Added a new optional parameter `withQueryParameters` to the static method `fun AdswizzAdStreamManager.decorateUrl(url: String, withQueryParameters: Map<String, String>? = null)`. This parameter accepts unencoded key-value pairs that the **_AdswizzSDK_** will append as additional parameters to the decorated URL, or replace an existing query parameter if one with the same name is already present. Note that it should only be used at the recommendation of AdsWizz.
 
 ## [8.2.6] - 2026-07-10
 ### Added
