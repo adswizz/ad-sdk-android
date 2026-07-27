@@ -5,10 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [8.2.7] - 2026-07-27
+### Added
+- Added a new optional parameter `withQueryParameters` to the static method `fun AdswizzAdStreamManager.decorateUrl(url: String, withQueryParameters: Map<String, String>? = null)`. This parameter accepts unencoded key-value pairs that the **_AdswizzSDK_** will append as additional parameters to the decorated URL, or replace an existing query parameter if one with the same name is already present. Note that it should only be used at the recommendation of AdsWizz.
+
 ## [8.2.6] - 2026-07-10
 ### Added
 - Added support for a custom Macro [LINEAR_MEDIAPLAYHEAD_UTC] which represents the absolute UTC playback position on a linear feed relative to the ad-break. The macro can be provided using `AdMacroProvider.getLinearMediaPlayheadEpochMillis()` new method, for more details please visit the [Vast Macros](Android/SDKAndroid/VastMacros.md) page.
-
 
 ## [8.2.5] - 2026-07-01
 ### Changed
