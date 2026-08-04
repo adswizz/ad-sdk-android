@@ -53,6 +53,10 @@
 - Integrate into Wear OS apps
 
 	- [Integrate into Wear OS apps](Android/WearOS/WearOS.md)
+  
+- Integrate into React Native apps
+
+	- [Integrate into React Native apps](Android/ReactNative/ReactNative.md)
 
 - Changelog
     - [Changelog](Android/CHANGELOG.md)

@@ -71,3 +71,7 @@ This sample demonstrates a basic client-side, server-side and podcast insertion 
 ## JetpackCompose Sample
 
 This sample demonstrates how to build your UI wrapper for **_AdCompanionView_** and **_AdVideoView_** using `AndroidView` component. In those composable functions are presented the steps required to properly use **_AdswizzSDK_** UI components in a compose screen or application and it showcases the main features/usa-cases such as : resizing, add/remove to view hierarchy, view listeners.
+
+## React Native Sample
+
+This sample demonstrates a client-side insertion scenario by showing how to set up the **_AdswizzSDK_** and wrap `AdswizzAdRequest`, `AdManager` & `AdCompanionView` components into native bridge using Expo framework.
