@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.2.8] - 2026-08-12
+### Changed
+- Opt-out the `com.google.android.gms.permission.AD_ID` permission used for advertising identifier access. Starting with this version, the **_AdswizzSDK_** will check the permission status set by `AdswizzSDK.setPermissionStatus()` method. If your integration needs to **remove** the AD_ID from the merged Manifest, you must explicitly add `<uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>`.
+- Improved quartile complete tolerance on coarse grained playhead updates.
 
 ## [8.2.7] - 2026-07-27
 ### Added
