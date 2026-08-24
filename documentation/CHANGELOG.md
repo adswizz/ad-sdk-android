@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.2.9] - 2026-08-28
+### Changed
+- Improved VAST parser flexibility by allowing non-standard syntax.
+
 ## [8.2.8] - 2026-08-12
 ### Changed
 - The SDK no longer reads the `Google advertising identifier` (no call to `AdvertisingIdClient`) unless `com.google.android.gms.permission.AD_ID` is available to your app. Ad requests then send a random per-session UUID. No action is required for most integrations: the permission is declared transitively by `play-services-ads-identifier`, which the SDK depends on, so it is already in your merged manifest and behavior is unchanged.
