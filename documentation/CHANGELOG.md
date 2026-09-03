@@ -5,9 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [8.2.9] - 2026-08-28
+## [8.2.9] - 2026-09-03
 ### Changed
-- Improved VAST parser flexibility by allowing non-standard syntax.
+- Improved VAST parser flexibility by allowing non-standard syntax and using a best-effort approach for VASTs with illegal characters.
 
 ## [8.2.8] - 2026-08-12
 ### Changed
