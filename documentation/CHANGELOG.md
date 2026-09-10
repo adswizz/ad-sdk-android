@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.2.10] - 2026-09-11
+### Changed
+- Improved VAST parser consistency when <Error> tag is blank or missing.
+- Improved VAST parser flexibility with best-effort approach for incomplete VAST that ends unexpectedly.
+
 ## [8.2.9] - 2026-09-03
 ### Changed
 - Improved VAST parser flexibility by allowing non-standard syntax and using a best-effort approach for VASTs with illegal characters.
