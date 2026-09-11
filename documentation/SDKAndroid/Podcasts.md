@@ -231,7 +231,7 @@ Disabling RAD data collection at the ZeroConfig level takes precedence over disa
 ### Handling RAD id3 metadata using your player
 
 Remote Audio Data measurement is based on reading specific `id3` metadata formats from the podcast being played. The SDK is able to read these specific metadata formats when playing with the internal player.
-However, when playing podcasts using your own player, you are responsible for passing the metadata items to the SDK. You can find more details in the [AdPlayer.Listener interface](Android/SDKAndroid/Playingyourplayer#adplayer-interface) and [MetadataItem](Android/SDKAndroid/Playingyourplayer#adplayer-interface) sections.
+However, when playing podcasts using your own player, you are responsible for passing the metadata items to the SDK. You can find more details in the [AdPlayer.Listener interface](Android/SDKAndroid/PlayAdsWithYourPlayer%28AdPlayer%29#adplayer-interface) and [MetadataItem](Android/SDKAndroid/PlayAdsWithYourPlayer%28AdPlayer%29#adplayer-interface) sections.
 
 
 ### fun didDownload(adPodcastManager: AdPodcastManager, bytesDownloaded: Long, bytesExpected:Long, asset: DownloadableAsset)
