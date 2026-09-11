@@ -213,7 +213,7 @@ Note that the interactivity component of an ad requires fetching data from a rem
 
 ## Remote Audio Data
 
-Podcasts come with _Remote Audio Data_ (RAD) support. Based on the industry standard by [NPR](https://rad.npr.org/), each podcast with RAD metadata will send events everytime its playhead crosses a certain point in time. 
+Podcasts come with _Remote Audio Data_ (RAD) support. Based on the industry standard by [NPR](https://www.npr.org/about/), each podcast with RAD metadata will send events everytime its playhead crosses a certain point in time. 
 To enable RAD measurement for your podcasts, additional ZeroConfig configuration is needed. Contact your AdsWizz partner integration manager to set up your app's AdswizzSDK ZeroConfig instance.
 Once this is in place, as best practice, you should present your users with the option to opt in to or opt out of RAD measurement when playing podcasts. 
 
