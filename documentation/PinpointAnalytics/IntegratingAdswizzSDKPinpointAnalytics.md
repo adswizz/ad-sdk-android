@@ -22,16 +22,10 @@ dependencies {
 **_AdswizzSDKPinpointAnalytics_** resides in the same GitHub repo as **_AdswizzSDK_** so the same repo url can be used to download the artifacts.
 
 ```gradle
-        maven {
-            url "https://raw.githubusercontent.com/adswizz/ad-sdk-android/master/releases"
-        }
+maven {
+    url "https://raw.githubusercontent.com/adswizz/ad-sdk-android/master/releases"
+}
 ```
-
-Replace **_ADSWIZZ_GITHUB_TOKEN_** with the token you received from AdsWizz. You can obtain a token from your AdsWizz partner integration manager. 
-
-> **Note**
-> You can safely use the same token you obtained for the **_AdswizzSDK_** installation. 
-
 
 ## AdswizzSDKPinpointAnalytics integration
 **_AdswizzSDKPinpointAnalytics_** doesn't need to be initialized. In order to pipe the Analytics events from **_AdswizzSDK_** to the AWS Pinpoint service, your application needs to create an **_AdswizzPinpointConnector_** object and add it to the **_AdswizzSDK_** list of connectors. 
