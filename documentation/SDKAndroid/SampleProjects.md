@@ -60,6 +60,10 @@ This app demonstrates a client-side insertion with video by showing how to add a
 
 This sample shows how your app can integrate the **_AdswizzSDK_** podcasting support by using an **_AdswizzAdPodcastManager_**. It demonstrates how to download a podcast locally, as well as playing it from disk.
 
+## Podcast Sample (with External AdPlayer)
+
+This sample shows how your app can integrate the **_AdswizzSDK_** podcasting support by using an **_AdswizzAdPodcastManager_**. It is similar with **_Podcast Sample_**, the only difference being the external player that has been used in this case.
+
 ## UAMP Integration Sample
 
 This sample demonstrates how your app can integrate with the **_AdswizzSDK_** on both the client side and server side, as well as for podcasting, using a UAMP-like architecture. It illustrates how to play podcasts from a playlist with **_AdswizzAdPodcastManager_**, how to play various ads from a selection of ad types using **_AdManager_**, and how to stream different streams from a list with **_AdswizzAdStream_**. The design is grounded in the UAMP architecture. For further details, please visit https://github.com/android/uamp/blob/main/docs/FullGuide.md.
@@ -71,3 +75,7 @@ This sample demonstrates a basic client-side, server-side and podcast insertion 
 ## JetpackCompose Sample
 
 This sample demonstrates how to build your UI wrapper for **_AdCompanionView_** and **_AdVideoView_** using `AndroidView` component. In those composable functions are presented the steps required to properly use **_AdswizzSDK_** UI components in a compose screen or application and it showcases the main features/usa-cases such as : resizing, add/remove to view hierarchy, view listeners.
+
+## React Native Sample
+
+This sample demonstrates a client-side insertion scenario by showing how to set up the **_AdswizzSDK_** and wrap `AdswizzAdRequest`, `AdManager` & `AdCompanionView` components into native bridge using Expo framework.

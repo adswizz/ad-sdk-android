@@ -255,7 +255,7 @@ Get the ads list in the ad manager. An empty ads list means the Ad Manager will 
 
 ### analyticsCustomData
 
-Set an **_AnalyticsCustomData_** data class to provide custom key-value attributes to all **_AnalyticsEvent_** instances triggered by the AdswizzSDK for Analytics purposes. Read more here: [AdswizzSDK Analytics](SDKAndroid/AdswizzSDKAnalytics).
+Set an **_AnalyticsCustomData_** data class to provide custom key-value attributes to all **_AnalyticsEvent_** instances triggered by the AdswizzSDK for Analytics purposes. Read more here: [AdswizzSDK Analytics](Android/SDKAndroid/AdswizzSDKAnalytics).
 
 
 ## AdManagerListener interface
