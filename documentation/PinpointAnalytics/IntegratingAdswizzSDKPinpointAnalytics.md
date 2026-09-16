@@ -2,7 +2,7 @@
 ## Prerequisites
 
 *   Android Studio ( latest version )
-*   Kotlin version 1.7.21 
+*   Minimum Kotlin version 1.8.22 
 
 ## Dependencies
 **_AdswizzSDKPinpointAnalytics** (com.adswizz:adswizz-sdk-pinpoint-analytics) depends on the following frameworks:
@@ -19,18 +19,11 @@ dependencies {
 }
 ```
 
-**_AdswizzSDKPinpointAnalytics_** resides in the same github repo as **_AdswizzSDK_** so the same token is used to download the artefacts.
+**_AdswizzSDKPinpointAnalytics_** resides in the same GitHub repo as **_AdswizzSDK_** so the same repo url can be used to download the artifacts.
 
 ```gradle
         maven {
             url "https://raw.githubusercontent.com/adswizz/ad-sdk-android/master/releases"
-            credentials(HttpHeaderCredentials) {
-                name = "Authorization"
-                value = "Bearer ADSWIZZ_GITHUB_TOKEN"
-            }
-            authentication {
-                header(HttpHeaderAuthentication)
-            }
         }
 ```
 

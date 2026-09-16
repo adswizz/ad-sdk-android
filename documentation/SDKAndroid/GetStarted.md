@@ -12,6 +12,7 @@ In a server-side insertion scenario, it takes the pressure off your app by makin
 * Android Studio Meerkat | 2024.3.1 (or later)
 * (AGP) Gradle Build Tools 8.6.0 (or later)
 * Minimum Android Compile SDK version 35 (or later)
+* Minimum Kotlin version 1.8.22 (or later)
 
 ## Changelog
 
@@ -284,13 +285,6 @@ You can easily integrate the AdswizzSDK into your project. There are 2 steps to 
 ```groovy
 maven {
     url "https://raw.githubusercontent.com/adswizz/ad-sdk-android/master/releases"
-        credentials(HttpHeaderCredentials) {
-            name = "Authorization"
-            value = "Bearer YOUR-AUTH-TOKEN-PROVIDED-BY-ADSWIZZ-PIM"
-        }
-    authentication {
-        header(HttpHeaderAuthentication)
-    }
 }
 ```
 
@@ -303,13 +297,6 @@ allprojects {
         jcenter()
         maven {
             url "https://raw.githubusercontent.com/adswizz/ad-sdk-android/master/releases"
-            credentials(HttpHeaderCredentials) {
-                name = "Authorization"
-                value = "Bearer YOUR-AUTH-TOKEN-PROVIDED-BY-ADSWIZZ-PIM"
-            }
-            authentication {
-                header(HttpHeaderAuthentication)
-            }
         }
     }
 }
@@ -323,16 +310,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-
         maven {
-            url "https://raw.githubusercontent.com/adswizz/ad-sdk-android/master/releases"
-            credentials(HttpHeaderCredentials) {
-                name = "Authorization"
-                value = "Bearer YOUR-AUTH-TOKEN-PROVIDED-BY-ADSWIZZ-PIM"
-            }
-            authentication {
-                header(HttpHeaderAuthentication)
-            }
+            url = URI("https://raw.githubusercontent.com/adswizz/ad-sdk-android/master/releases")
         }
     }
 }
