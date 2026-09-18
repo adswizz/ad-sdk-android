@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Increased Android `compileSdk` to API 37 (Android 17); binary compatibility is maintained down to API 35.
 - Aligned SDK library versions with the Kotlin upgrade. For more information, see the [Dependencies section](Android/SDKAndroid/GetStarted#dependencies).
 - Added new rule to keep `kotlin.jvm.internal.DefaultConstructorMarker` in `proguard-rules.pro` in order to prevent ProGuard from stripping AdswizzSDK's internal classes.
+### Fixed
+- Fixed internal formatting issues occurred on region changes.
 
 ## [8.2.10] - 2026-09-11
 ### Changed
