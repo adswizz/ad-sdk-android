@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.3.0] - 2026-09-18
+### Changed
+- Bumped Kotlin to 2.0.21, preserving backward compatibility with Kotlin 1.8.22 and AGP 8.6.0.
+- Increased Android `compileSdk` to API 37 (Android 17); binary compatibility is maintained down to API 35.
+- Aligned SDK library versions with the Kotlin upgrade. For more information, see the [Dependencies section](Android/SDKAndroid/GetStarted#dependencies).
+- Added new rule to keep `kotlin.jvm.internal.DefaultConstructorMarker` in `proguard-rules.pro` in order to prevent ProGuard from stripping AdswizzSDK's internal classes.
+### Fixed
+- Fixed internal formatting issues occurred on region changes.
+
 ## [8.2.10] - 2026-09-11
 ### Changed
 - Improved VAST parser consistency when <Error> tag is blank or missing.

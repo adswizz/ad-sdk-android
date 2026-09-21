@@ -25,13 +25,6 @@ allprojects {
 
     maven {
       url = uri("https://raw.githubusercontent.com/adswizz/ad-sdk-android/master/releases")
-      credentials(HttpHeaderCredentials) {
-        name = "Authorization"
-        value = "Bearer YOUR-AUTH-TOKEN-PROVIDED-BY-ADSWIZZ-PIM"
-      }
-      authentication {
-        header(HttpHeaderAuthentication)
-      }
     }
   }
 }
