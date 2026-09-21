@@ -1,0 +1,146 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "adswizz-sdk",
+    "version": "8.3.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.3.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-common",
+          "version": {
+            "requires": "8.3.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-core",
+          "version": {
+            "requires": "8.3.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-interactive-ad",
+          "version": {
+            "requires": "8.3.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-sdk-8.3.0.aar",
+          "url": "adswizz-sdk-8.3.0.aar",
+          "size": 22936,
+          "sha512": "b23d16c5c020bd9ba29d36c05bd2c7e8169418da624dc4631c63d6c08afadcc28bb2a4ddfe5ec96f237a1027208cf7ceff8aa0011508254d1901ca99d1bfba0f",
+          "sha256": "7710573c2b29733341694d79d88a23195974694010b937116ff9d457032a5936",
+          "sha1": "e5222c91a582ba7b1c9d298ec26faaefa890b40a",
+          "md5": "c09c73073519fa75bfae93243418be23"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-common-internal",
+          "version": {
+            "requires": "8.3.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-interactive-ad-internal",
+          "version": {
+            "requires": "8.3.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-data-collector",
+          "version": {
+            "requires": "8.3.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-omsdk",
+          "version": {
+            "requires": "8.3.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-android",
+          "version": {
+            "requires": "1.9.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-common",
+          "version": {
+            "requires": "8.3.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-core",
+          "version": {
+            "requires": "8.3.0"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-interactive-ad",
+          "version": {
+            "requires": "8.3.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-sdk-8.3.0.aar",
+          "url": "adswizz-sdk-8.3.0.aar",
+          "size": 22936,
+          "sha512": "b23d16c5c020bd9ba29d36c05bd2c7e8169418da624dc4631c63d6c08afadcc28bb2a4ddfe5ec96f237a1027208cf7ceff8aa0011508254d1901ca99d1bfba0f",
+          "sha256": "7710573c2b29733341694d79d88a23195974694010b937116ff9d457032a5936",
+          "sha1": "e5222c91a582ba7b1c9d298ec26faaefa890b40a",
+          "md5": "c09c73073519fa75bfae93243418be23"
+        }
+      ]
+    }
+  ]
+}
