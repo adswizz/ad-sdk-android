@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.3.1] - 2026-10-01
+### Changed
+- Increased timeouts for **_AdswizzAdPodcastManager_** when establishing connections with the AIS server.
+
 ## [8.3.0] - 2026-09-18
 ### Changed
 - Bumped Kotlin to 2.0.21, preserving backward compatibility with Kotlin 1.8.22 and AGP 8.6.0.
