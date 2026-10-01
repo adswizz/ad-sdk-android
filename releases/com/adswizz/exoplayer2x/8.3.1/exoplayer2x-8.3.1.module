@@ -1,0 +1,67 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "exoplayer2x",
+    "version": "8.3.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.3.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "exoplayer2x-8.3.1.aar",
+          "url": "exoplayer2x-8.3.1.aar",
+          "size": 39320,
+          "sha512": "34fbfeee4b134ada56d108fd52584d1868b8691f769bc2de02c85931cd688115d88e7f87dba248bbe4fcb9210650404689a23970fb4eb67670bd62e5fd7d9ed4",
+          "sha256": "bfce1fb161f2a1f394388a381b2b1437d40d961d93c37f87e3978dadce478668",
+          "sha1": "66e34238d01fa9b6d45da24d11adc15eb73e2fd3",
+          "md5": "2fc08debc4ee4f52ad5c3bcef9e8e39f"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.annotation",
+          "module": "annotation",
+          "version": {
+            "requires": "1.8.2"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "exoplayer2x-8.3.1.aar",
+          "url": "exoplayer2x-8.3.1.aar",
+          "size": 39320,
+          "sha512": "34fbfeee4b134ada56d108fd52584d1868b8691f769bc2de02c85931cd688115d88e7f87dba248bbe4fcb9210650404689a23970fb4eb67670bd62e5fd7d9ed4",
+          "sha256": "bfce1fb161f2a1f394388a381b2b1437d40d961d93c37f87e3978dadce478668",
+          "sha1": "66e34238d01fa9b6d45da24d11adc15eb73e2fd3",
+          "md5": "2fc08debc4ee4f52ad5c3bcef9e8e39f"
+        }
+      ]
+    }
+  ]
+}
