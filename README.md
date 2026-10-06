@@ -1,6 +1,24 @@
 # AdswizzSDK - Android
 The only audio-centric SDK to Drive Innovation & Differentiation in Audio monetization
 
+## Requirements
+* Android Studio Meerkat | 2024.3.1 (or later)
+* (AGP) Gradle Build Tools 8.6.0 (or later)
+* Minimum Android Compile SDK version 35 (or later)
+* Minimum Kotlin version 1.8.22 (or later)
+
+## Documentation
+
+Full documentation is available at [docs.sdk.adswizz.com](https://docs.sdk.adswizz.com/#/Main/AndroidAdswizzSDK):
+
+* [Documentation home](https://docs.sdk.adswizz.com/#/Android/README)
+* [Before you start](https://docs.sdk.adswizz.com/#/Android/SDKAndroid/BeforeYouStart)
+* [Get started](https://docs.sdk.adswizz.com/#/Android/SDKAndroid/GetStarted)
+* [Sample projects](https://docs.sdk.adswizz.com/#/Android/SDKAndroid/SampleProjects)
+* [Changelog](https://docs.sdk.adswizz.com/#/Android/CHANGELOG)
+
+Runnable examples live in the [`Samples`](Samples) folder of this repository. Open `Samples/Examples.xcworkspace` after running `pod install`.
+
 ## Verifying releases
 
 Every AdsWizz SDK release is signed with the AdsWizz SDK GPG key:
