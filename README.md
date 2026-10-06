@@ -7,6 +7,12 @@ The only audio-centric SDK to Drive Innovation & Differentiation in Audio moneti
 * Minimum Android Compile SDK version 35 (or later)
 * Minimum Kotlin version 1.8.22 (or later)
 
+
+## Releases and Samples
+
+- check out the [releases section](releases/com/adswizz) to browse the SDK binaries, and the [changelog](https://docs.sdk.adswizz.com/#/Android/CHANGELOG) for what changed in each version.
+- runnable examples live in the [`Samples`](samples) folder of this repository.
+
 ## Documentation
 
 Full documentation is available at [docs.sdk.adswizz.com](https://docs.sdk.adswizz.com/#/Main/AndroidAdswizzSDK)
@@ -16,8 +22,6 @@ Full documentation is available at [docs.sdk.adswizz.com](https://docs.sdk.adswi
 * [Get started](https://docs.sdk.adswizz.com/#/Android/SDKAndroid/GetStarted)
 * [Sample projects](https://docs.sdk.adswizz.com/#/Android/SDKAndroid/SampleProjects)
 * [Changelog](https://docs.sdk.adswizz.com/#/Android/CHANGELOG)
-
-Runnable examples live in the [`Samples`](samples) folder of this repository.
 
 ## Verifying releases
 
@@ -168,10 +172,6 @@ Use this to check one file without `sha256sums.txt`. Download the file and its `
 ```bash
 gpg --verify adswizz-core-8.3.0.aar.asc adswizz-core-8.3.0.aar
 ```
-
-## Releases
-
-Check out the [releases section](releases/com/adswizz) to browse the SDK binaries, and the [changelog](https://docs.sdk.adswizz.com/#/Android/CHANGELOG) for what changed in each version.
 
 ## License
 
