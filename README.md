@@ -10,7 +10,7 @@ The only audio-centric SDK to Drive Innovation & Differentiation in Audio moneti
 
 ## Releases and Samples
 
-- check out the [releases section](releases/com/adswizz) to browse the SDK binaries, and the [changelog](https://docs.sdk.adswizz.com/#/Android/CHANGELOG) for what changed in each version.
+- check out the [releases section](releases/com/adswizz) to browse the SDK binaries, and the [changelog](documentation/CHANGELOG.md) for what changed in each version.
 - runnable examples live in the [`Samples`](samples) folder of this repository.
 
 ## Documentation
