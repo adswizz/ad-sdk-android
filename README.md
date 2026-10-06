@@ -9,7 +9,7 @@ The only audio-centric SDK to Drive Innovation & Differentiation in Audio moneti
 
 ## Documentation
 
-Full documentation is available at [docs.sdk.adswizz.com](https://docs.sdk.adswizz.com/#/Main/AndroidAdswizzSDK):
+Full documentation is available at [docs.sdk.adswizz.com](https://docs.sdk.adswizz.com/#/Main/AndroidAdswizzSDK)
 
 * [Documentation home](https://docs.sdk.adswizz.com/#/Android/README)
 * [Before you start](https://docs.sdk.adswizz.com/#/Android/SDKAndroid/BeforeYouStart)
@@ -17,7 +17,7 @@ Full documentation is available at [docs.sdk.adswizz.com](https://docs.sdk.adswi
 * [Sample projects](https://docs.sdk.adswizz.com/#/Android/SDKAndroid/SampleProjects)
 * [Changelog](https://docs.sdk.adswizz.com/#/Android/CHANGELOG)
 
-Runnable examples live in the [`Samples`](Samples) folder of this repository. Open `Samples/Examples.xcworkspace` after running `pod install`.
+Runnable examples live in the [`Samples`](Samples) folder of this repository.
 
 ## Verifying releases
 
