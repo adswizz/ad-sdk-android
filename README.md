@@ -153,7 +153,7 @@ gpg --verify adswizz-core-8.3.0.aar.asc adswizz-core-8.3.0.aar
 
 ## Releases
 
-Check out the [releases section](https://github.com/adswizz/ad-sdk-android/releases) to browse the SDK binaries, and the [changelog](https://docs.sdk.adswizz.com/#/Android/CHANGELOG) for what changed in each version.
+Check out the [releases section](releases/com/adswizz) to browse the SDK binaries, and the [changelog](https://docs.sdk.adswizz.com/#/Android/CHANGELOG) for what changed in each version.
 
 ## License
 
