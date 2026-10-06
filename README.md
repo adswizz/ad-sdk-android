@@ -17,7 +17,7 @@ Full documentation is available at [docs.sdk.adswizz.com](https://docs.sdk.adswi
 * [Sample projects](https://docs.sdk.adswizz.com/#/Android/SDKAndroid/SampleProjects)
 * [Changelog](https://docs.sdk.adswizz.com/#/Android/CHANGELOG)
 
-Runnable examples live in the [`Samples`](Samples) folder of this repository.
+Runnable examples live in the [`Samples`](samples) folder of this repository.
 
 ## Verifying releases
 
