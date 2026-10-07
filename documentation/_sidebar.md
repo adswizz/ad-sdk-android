@@ -26,6 +26,7 @@
     - [Interoperability with PAL SDK](Android/SDKAndroid/PALSDK.md)
     - [AdswizzSDK for Fire OS](Android/SDKAndroid/AdswizzSDKFireOS.md)
     - [Debugging](Android/SDKAndroid/Debugging.md)
+    - [Code Signing](Android/SDKAndroid/CodeSigning.md)
     - [Sample projects](Android/SDKAndroid/SampleProjects.md)   
     
 - AdswizzSDK Pinpoint Analytics
