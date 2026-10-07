@@ -9,8 +9,8 @@ The only audio-centric SDK to Drive Innovation & Differentiation in Audio moneti
 
 ## Releases and Samples
 
-- check out the [releases section](releases/com/adswizz) to browse the SDK binaries, and the [changelog](documentation/CHANGELOG.md) for what changed in each version.
-- runnable examples live in the [`Samples`](samples) folder of this repository.
+- Check out the [releases section](releases/com/adswizz) to browse the SDK binaries, and the [changelog](documentation/CHANGELOG.md) for what changed in each version.
+- Runnable examples live in the [`Samples`](samples) folder of this repository.
 
 ## Documentation
 
@@ -35,8 +35,8 @@ Every AdsWizz SDK release is signed with the AdsWizz SDK GPG key:
 
 Full documentation available at:
 
-1. **[Automatic verification with Gradle](https://docs.sdk.adswizz.com/#/Android/SDKAndroid/CodeSigning?id=automatic-verification-with-gradle)** (recommended). Gradle checks the `.asc` signatures on every build.
-2. **[Manual verification](https://docs.sdk.adswizz.com/#/Android/SDKAndroid/CodeSigning?id=manual-verification)**. You check signatures and hashes yourself with `gpg` and `shasum` / `sha256sum`.
+- **[Automatic verification with Gradle](https://docs.sdk.adswizz.com/#/Android/SDKAndroid/CodeSigning?id=automatic-verification-with-gradle)** (recommended). Gradle checks the `.asc` signatures on every build.
+- **[Manual verification](https://docs.sdk.adswizz.com/#/Android/SDKAndroid/CodeSigning?id=manual-verification)**. You check signatures and hashes yourself with `gpg` and `shasum` / `sha256sum`.
 
 ## License
 
