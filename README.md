@@ -33,7 +33,7 @@ Every AdsWizz SDK release is signed with the AdsWizz SDK GPG key:
 
 > **Note:** This verification step is optional. You can integrate and use the SDK without any of the steps below. They are an extra safeguard if you want to confirm that the artifacts in your build are the ones AdsWizz published and have not been modified.
 
-The AdsWizz signing key is uploaded to `keys.openpgp.org` and fetched directly by the gradle plugin. Also, you can download the GPG key from the [AdsWizz docs](https://docs.sdk.adswizz.com/resources/adswizz-sdk-gpg-key.asc) page.
+The AdsWizz signing key is uploaded to `keys.openpgp.org` and fetched directly by the gradle plugin. Also, you can download the GPG key from the [AdsWizz docs](https://docs.sdk.adswizz.com/resources/code-signing/adswizz-sdk-gpg-key.asc) page.
 
 Full documentation available at:
 
