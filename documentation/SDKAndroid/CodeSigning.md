@@ -15,7 +15,7 @@ You can verify a release in two ways:
 
 ### Signing key
 
-The AdsWizz signing key is uploaded to `keys.openpgp.org` and fetched directly by the gradle plugin. Also, you can download the GPG key from the [AdsWizz docs](https://docs.sdk.adswizz.com/adswizz-sdk-gpg-key.asc). 
+The AdsWizz signing key is uploaded to `keys.openpgp.org` and fetched directly by the gradle plugin. Also, you can download the GPG key from the [AdsWizz docs](https://docs.sdk.adswizz.com/resources/adswizz-sdk-gpg-key.asc). 
 
 | | |
 |---|---|
