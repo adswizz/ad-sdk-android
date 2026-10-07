@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.3.2] - 2026-10-08
 ### Changed
-- Signed binaries.
+- Signed SDK Binaries: Starting with this release, all **_AdswizzSDK_** published artifacts (`.aar`, `.jar`, `.pom`) are officially PGP-signed (`.asc` signature files included in the bundle release). For more details and verification steps please visit the [CodeSigning](Android/SDKAndroid/CodeSigning) page.
 
 ## [8.3.1] - 2026-10-01
 ### Changed
