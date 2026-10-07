@@ -15,6 +15,8 @@ You can verify a release in two ways:
 
 ### Signing key
 
+The AdsWizz signing key is uploaded to `keys.openpgp.org` and fetched directly by the gradle plugin. Also, you can download the GPG key from the [AdsWizz docs](https://docs.sdk.adswizz.com/adswizz-sdk-gpg-key.asc). 
+
 | | |
 |---|---|
 | **User ID** | `AdsWizz (AdsWizz SDK Key) <sdk.team@adswizz.com>` |
@@ -59,7 +61,6 @@ From then on, every build checks dependencies against that file. If an artifact'
 Things to know:
 
 - **All dependencies are covered.** Verification applies to every dependency in your build, not only the AdsWizz SDK. You will need to update `verification-metadata.xml` whenever you add or upgrade a dependency: run the command again, since it adds to the existing file, then review the changes.
-- **Some dependencies can be missed.** Dependencies that are only resolved while a task is running may not be included. If a later build fails with a verification error for one of them, run the command again with that task instead of `help`.
 - **Use `--refresh-keys` after a key update.** If we extend our key's expiry, Gradle may still be using its cached copy of the key. Pass `--refresh-keys` to download it again.
 
 ---
