@@ -3,8 +3,8 @@
   <groupId>com.adswizz</groupId>
   <artifactId>adswizz-common</artifactId>
   <versioning>
-    <latest>8.3.1</latest>
-    <release>8.3.1</release>
+    <latest>8.3.2</latest>
+    <release>8.3.2</release>
     <versions>
       <version>7.8.0</version>
       <version>7.8.1</version>
@@ -51,7 +51,8 @@
       <version>8.2.10</version>
       <version>8.3.0</version>
       <version>8.3.1</version>
+      <version>8.3.2</version>
     </versions>
-    <lastUpdated>20261001123034</lastUpdated>
+    <lastUpdated>20261008140011</lastUpdated>
   </versioning>
 </metadata>
