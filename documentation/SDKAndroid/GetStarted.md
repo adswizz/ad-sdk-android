@@ -16,7 +16,7 @@ In a server-side insertion scenario, it takes the pressure off your app by makin
 
 ## Changelog
 
-Please check [here](Android/CHANGELOG.md) the latest AdswizzSDK version and all the new changes & fixes it comes with.
+Please check [here](/Android/CHANGELOG.md) the latest AdswizzSDK version and all the new changes & fixes it comes with.
 
 ## Dependencies
 
@@ -350,7 +350,7 @@ implementation "com.adswizz:exoplayer-media3:7.12.0"
 - SDK version prior to 7.6.1 included the exoplayer dependency.
 - SDK version between [7.6.1; 7.9.3] the `com.adswizz:exoplayer2-*` or `com.adswizz:exoplayer-media3` dependency is separate and you must include it for the SDK to function correctly. There are 9 exoplayer artifacts available, based on the included exoplayer version (2.10, 2.12, 2.14, 2.15, 2.16, 2.17 and 2.18, 2.19 and media3).
 Using different artifact version from exoplayer used in the app may result in crashing the app, thus the app need to include corresponding versions for sdk artifact and exoplayer library (i.e. add `com.adswizz:exoplayer2-18:7.7.21` dependency when using `com.google.android.exoplayer:exoplayer:2.18.6` dependency)
-- SDK versions after 7.12.0 will have the <strong>player</strong> dependency as <strong>optional</strong> for integrations that doesn't use **_AdswizzSDK_** internal player. You can include only the `com.adswizz:adswizz-sdk` artefact if your are using your player to play the ad media. For more details, please visit [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md) section.
+- SDK versions after 7.12.0 will have the <strong>player</strong> dependency as <strong>optional</strong> for integrations that doesn't use **_AdswizzSDK_** internal player. You can include only the `com.adswizz:adswizz-sdk` artefact if your are using your player to play the ad media. For more details, please visit [Play ads with your player](/Android/SDKAndroid/PlayAdsWithYourPlayerMain.md) section.
 
 > **Note**
 > If you are using Adswizz InternalPlayer in order to play the ads content ( either com.adswizz:exoplayer-media3 or com.adswizz:exoplayer2x ) and  you are targeting `minSdkVersion 23` in your application build.gradle file, you need to add in your `gradle.properties` one of the following:

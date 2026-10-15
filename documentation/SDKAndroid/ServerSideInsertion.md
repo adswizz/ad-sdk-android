@@ -276,4 +276,4 @@ http://sdk.mobile.streaming.adswizz.com:8500/shakeDemo?companionAds=true&aw_0_1s
 
 Below is a diagram of the AdStreamManager states:
 
-<img src="../img/AdStreamManagerState.png" width="1000" />
+<img src="/img/AdStreamManagerState.png" width="1000" />

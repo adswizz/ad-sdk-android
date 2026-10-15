@@ -1,4 +1,4 @@
-[<img src="../img/adswizz_logo.png" alt="AdsWizz" style="width:30%;">](https://www.adswizz.com)
+[<img src="/img/adswizz_logo.png" alt="AdsWizz" style="width:30%;">](https://www.adswizz.com)
 # Changelog
 All notable changes to this project will be documented in this file.
 
@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.3.2] - 2026-10-08
 ### Changed
-- Signed SDK Binaries: Starting with this release, all **_AdswizzSDK_** published artifacts (`.aar`, `.jar`, `.pom`) are officially PGP-signed (`.asc` signature files included in the bundle release). For more details and verification steps please visit the [CodeSigning](Android/SDKAndroid/CodeSigning) page.
+- Signed SDK Binaries: Starting with this release, all **_AdswizzSDK_** published artifacts (`.aar`, `.jar`, `.pom`) are officially PGP-signed (`.asc` signature files included in the bundle release). For more details and verification steps please visit the [CodeSigning](/Android/SDKAndroid/CodeSigning) page.
 
 ## [8.3.1] - 2026-10-01
 ### Changed
@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Bumped Kotlin to 2.0.21, preserving backward compatibility with Kotlin 1.8.22 and AGP 8.6.0.
 - Increased Android `compileSdk` to API 37 (Android 17); binary compatibility is maintained down to API 35.
-- Aligned SDK library versions with the Kotlin upgrade. For more information, see the [Dependencies section](Android/SDKAndroid/GetStarted#dependencies).
+- Aligned SDK library versions with the Kotlin upgrade. For more information, see the [Dependencies section](/Android/SDKAndroid/GetStarted#dependencies).
 - Added new rule to keep `kotlin.jvm.internal.DefaultConstructorMarker` in `proguard-rules.pro` in order to prevent ProGuard from stripping AdswizzSDK's internal classes.
 ### Fixed
 - Fixed internal formatting issues occurred on region changes.
@@ -42,11 +42,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.2.6] - 2026-07-10
 ### Added
-- Added support for a custom Macro [LINEAR_MEDIAPLAYHEAD_UTC] which represents the absolute UTC playback position on a linear feed relative to the ad-break. The macro can be provided using `AdMacroProvider.getLinearMediaPlayheadEpochMillis()` new method, for more details please visit the [Vast Macros](Android/SDKAndroid/VastMacros.md) page.
+- Added support for a custom Macro [LINEAR_MEDIAPLAYHEAD_UTC] which represents the absolute UTC playback position on a linear feed relative to the ad-break. The macro can be provided using `AdMacroProvider.getLinearMediaPlayheadEpochMillis()` new method, for more details please visit the [Vast Macros](/Android/SDKAndroid/VastMacros.md) page.
 
 ## [8.2.5] - 2026-07-01
 ### Changed
-- Relaxed the `ProxyUrlConfig` behaviour to accept `path` and `baseUrl` parameters with or without trailing or ending slashes. For more details, please visit the updated [Using Proxy Server](Android/SDKAndroid/ProxyServer.md) page.
+- Relaxed the `ProxyUrlConfig` behaviour to accept `path` and `baseUrl` parameters with or without trailing or ending slashes. For more details, please visit the updated [Using Proxy Server](/Android/SDKAndroid/ProxyServer.md) page.
 
 ### Fixed
 - Fixed an `IllegalArgumentException` that occurred when `AdswizzSDK.cleanup()` was called exclusively in Android Automotive OS environments.
@@ -56,7 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved the execution order between `AdEvent.Type.State.AllAdsCompleted` and the `AdPlayer.reset()` to be called one after another. Now, the SDK guarantees the `AdPlayer.reset()` is called after sending all `AdEvent.Type.State` events to the host app.
 - Changed `AdManagerListener.onEventReceived` to fire `AdEvent.Type.State.PlaybackError` event in every error scenario, replacing the `AdEvent.Type.Other.Error` used in a few cases.
 > **Note**
-> Release not available due to `IllegalArgumentException` introduced in 8.2.3 version. Please update to version [8.2.5](Android/CHANGELOG#_825-2026-07-01) or later.
+> Release not available due to `IllegalArgumentException` introduced in 8.2.3 version. Please update to version [8.2.5](/Android/CHANGELOG#_825---2026-07-01) or later.
 
 ## [8.2.3] - 2026-06-15
 ### Changed
@@ -64,7 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed the behavior when the all ads have failed in the ad break when using `MediaPlayerState`. Starting with 8.2.3 version, the **_AdswizzSDK_** will automatically advance the ad index and fire `AllAdsCompleted` event when the remaining ads have failed.
 - For each failed ad will be fired `AdEvent.Type.State.PlaybackError` in `AdManagerListener.onEventReceived` and  `AdManagerListener.onEventErrorReceived` callbacks.
 > **Note**
-> Release not available due to `IllegalArgumentException` introduced in this version. Please update to version [8.2.5](Android/CHANGELOG#_825-2026-07-01) or later.
+> Release not available due to `IllegalArgumentException` introduced in this version. Please update to version [8.2.5](/Android/CHANGELOG#_825---2026-07-01) or later.
 
 ## [8.2.2] - 2026-05-07
 ### Added
@@ -81,18 +81,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.2.1] - 2026-04-14
 ### Added
-- Added a new method `fun withQueryParameters(parameters: Map<String, String>)` to the AdswizzAdRequest.Builder. This method accepts unencoded key value pairs used to append additional parameters to AdswizzAdRequest, for more details please visit the updated [Client side - Custom request parameters](Android/SDKAndroid/ClientSideInsertion.md) section.
+- Added a new method `fun withQueryParameters(parameters: Map<String, String>)` to the AdswizzAdRequest.Builder. This method accepts unencoded key value pairs used to append additional parameters to AdswizzAdRequest, for more details please visit the updated [Client side - Custom request parameters](/Android/SDKAndroid/ClientSideInsertion.md) section.
 
 ## [8.2.0] - 2026-03-31
 ### Added
-- Added a new mechanism to support VAST macros that cannot be automatically filled by the AdswizzSDK. This can be achieved using the new `AdMacroProvider` interface, for more details please visit the [Vast Macros](Android/SDKAndroid/VastMacros.md) page. 
+- Added a new mechanism to support VAST macros that cannot be automatically filled by the AdswizzSDK. This can be achieved using the new `AdMacroProvider` interface, for more details please visit the [Vast Macros](/Android/SDKAndroid/VastMacros.md) page. 
 - Added a new methods in order to pass the `AdMacroProvider` instance:
   - using AdRequest.Builder's `fun withAdMacroProvider(adMacroProvider: AdMacroProvider)` new method
   - using AdswizzAdRequest.Builder's `fun withAdMacroProvider(adMacroProvider: AdMacroProvider)` new method
   - using the `AdManager.adMacroProvider` property
-- Added new XML attribute `ad_companion_render_type` for `AdCompanionWebView`. This feature enables to choose between `ImageView` or `WebView` to render companion resources. For more details, please visit the updated [AdCompanionView](Android/SDKAndroid/CompanionBanner.md) page.
+- Added new XML attribute `ad_companion_render_type` for `AdCompanionWebView`. This feature enables to choose between `ImageView` or `WebView` to render companion resources. For more details, please visit the updated [AdCompanionView](/Android/SDKAndroid/CompanionBanner.md) page.
 - Added a new mechanism to support generic XML objects defined within `CreativeExtension` and `Extension` VAST tags. The parsed XML objects are exposed through new `XmlNode` data class, accessible from `CreativeExtension` and `Extension` classes.
-- Added a new parameter `proxyConfig` of type `ProxyConfig` in `AdswizzSDKConfig`. This parameter is used during SDK initialization to route all SDK requests through a specified proxy server. For more details, please visit the updated [Using Proxy Server](Android/SDKAndroid/ProxyServer.md) page.
+- Added a new parameter `proxyConfig` of type `ProxyConfig` in `AdswizzSDKConfig`. This parameter is used during SDK initialization to route all SDK requests through a specified proxy server. For more details, please visit the updated [Using Proxy Server](/Android/SDKAndroid/ProxyServer.md) page.
 
 
 ### Changed
@@ -100,12 +100,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.1.0] - 2026-02-11
 ### Added
-- Added a new event-driven integration method for Server Side Insertion. You can now pass your `AdStreamPlayerAdapter` implementation to the `AdManagerStreamingSettings.Builder` object by calling the `adStreamPlayerAdapterInstance` method. For more details, please visit the [Playing Streams With Your Player using AdStreamPlayerAdapter](Android/SDKAndroid/PlayAdsWithYourPlayer(AdStreamPlayerAdapter).md) page.
-- Added a new sample project named **_BasicAdStreamPlayerAdapterSample_** to the [Sample Project section](Android/SDKAndroid/SampleProjects.md) showcasing the **_AdStreamPlayerAdapter_** integration in a Server Side Insertion scenario.
+- Added a new event-driven integration method for Server Side Insertion. You can now pass your `AdStreamPlayerAdapter` implementation to the `AdManagerStreamingSettings.Builder` object by calling the `adStreamPlayerAdapterInstance` method. For more details, please visit the [Playing Streams With Your Player using AdStreamPlayerAdapter](/Android/SDKAndroid/PlayAdsWithYourPlayer(AdStreamPlayerAdapter).md) page.
+- Added a new sample project named **_BasicAdStreamPlayerAdapterSample_** to the [Sample Project section](/Android/SDKAndroid/SampleProjects.md) showcasing the **_AdStreamPlayerAdapter_** integration in a Server Side Insertion scenario.
 - Added a new extension function `fun Metadata.toAdMetadataList(): List<AdMetadataItem>` used as convenience method for mapping the Exoplayer's Metadata to Adswizz Metadata. This extension function is present in both `com.adswizz.exoplayer2x` and `com.adswizz.exoplayer-media3` artifacts.
 
 ### Changed
-- Moved the `AdPlayer.MetadataItem` nested data class to new `AdMetadataItem` standalone class, this will introduce a breaking change that can be fixed importing the new `com.adswizz.common.AdMetadataItem`. For more details, please refer to the [How to migrate to AdswizzSDK v8.1.0+](Android/Migrations/v8_1_0.md) page.
+- Moved the `AdPlayer.MetadataItem` nested data class to new `AdMetadataItem` standalone class, this will introduce a breaking change that can be fixed importing the new `com.adswizz.common.AdMetadataItem`. For more details, please refer to the [How to migrate to AdswizzSDK v8.1.0+](/Android/Migrations/v8_1_0.md) page.
 - Changed the signature of `AdPlayer.Listener.onMetadata(metadataList: List<MetadataItem>)` to `AdPlayer.Listener.onMetadata(metadataList: List<AdMetadataItem>)` in order to use the new top-level class.
 - Updated the existing sample projects to use the new `AdMetadataItem` data class.
 - Changed the `AdStreamManager.Listener`'s methods to have a default empty implementation permitting selectively overrides.
@@ -143,7 +143,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [8.0.0] - 2025-08-29
 
 ### Changed
-- All API functions with time or period parameters now use Kotlin's [`Duration`](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.time/-duration/) instead of the less intuitive `Double` or `Long` types. For more details, please refer to the [How to migrate to AdswizzSDK v8.0.0+](Android/Migrations/v8_0_0) page.
+- All API functions with time or period parameters now use Kotlin's [`Duration`](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.time/-duration/) instead of the less intuitive `Double` or `Long` types. For more details, please refer to the [How to migrate to AdswizzSDK v8.0.0+](/Android/Migrations/v8_0_0) page.
   - `AdPlayer` interface functions changed `Double` return type or parameter to `Duration` type:
       - `abstract fun getCurrentTime(): Duration`
       - `abstract fun getDuration(): Duration?`
@@ -168,10 +168,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `AdRequestConnection` class
       - `var timeout: Duration?`
 
-- Optimized the **_AdswizzSDK_**'s consumer `proguard-rules.pro` to help reduce the final APK size. For more details, please refer to the [How to migrate to AdswizzSDK v8.0.0+](Android/Migrations/v8_0_0) page.
+- Optimized the **_AdswizzSDK_**'s consumer `proguard-rules.pro` to help reduce the final APK size. For more details, please refer to the [How to migrate to AdswizzSDK v8.0.0+](/Android/Migrations/v8_0_0) page.
 
 ### Added
-- Starting with 8.0.0 version, the `AdCompanionView.Listener` interface includes a new `didReceivedError(adCompanionView: AdCompanionView, error: Error)` method called when some error occurred after companion has loaded. For more details, please refer to the updated [Companion Banner](Android/SDKAndroid/CompanionBanner.md) page.
+- Starting with 8.0.0 version, the `AdCompanionView.Listener` interface includes a new `didReceivedError(adCompanionView: AdCompanionView, error: Error)` method called when some error occurred after companion has loaded. For more details, please refer to the updated [Companion Banner](/Android/SDKAndroid/CompanionBanner.md) page.
 
 ## [7.12.5] - 2025-08-08
 
@@ -183,7 +183,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.12.4] - 2025-07-28
 
 ### Added
-- Starting with 7.12.4 version, the `AdData` interface includes a new `selectedCompanion` property. This can be used to resize content based on the companion’s VAST aspect ratio once it has loaded. For more details, please refer to the updated [Companion Banner](Android/SDKAndroid/CompanionBanner.md) page.
+- Starting with 7.12.4 version, the `AdData` interface includes a new `selectedCompanion` property. This can be used to resize content based on the companion’s VAST aspect ratio once it has loaded. For more details, please refer to the updated [Companion Banner](/Android/SDKAndroid/CompanionBanner.md) page.
 
 ### Changed
 - Increased the `Complete` quartile tolerance dynamically based on the ad duration.
@@ -215,9 +215,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.12.1] - 2025-04-17
 
 ### Changed
-- Removed the `currentDuration` field from the `MediaPlayerState` interface. Starting with 7.12.1 version, the `MediaPlayerState` integrations will rely on the duration provided in the `VAST` response. For more details, please refer to the updated [Playing Ads With Your Player using MediaPlayerState](Android/SDKAndroid/PlayAdsWithYourPlayer(MediaPlayerState).md) page.
+- Removed the `currentDuration` field from the `MediaPlayerState` interface. Starting with 7.12.1 version, the `MediaPlayerState` integrations will rely on the duration provided in the `VAST` response. For more details, please refer to the updated [Playing Ads With Your Player using MediaPlayerState](/Android/SDKAndroid/PlayAdsWithYourPlayer(MediaPlayerState).md) page.
 - The `com.adswizz:exoplayer-media3` artefact is now compatible up to `androidx.media3:media3-exoplayer:1.6.0`.
-- Updated the [Playing Ads With Your Player using MediaPlayerState](Android/SDKAndroid/PlayAdsWithYourPlayer(MediaPlayerState).md) page based on the new features.
+- Updated the [Playing Ads With Your Player using MediaPlayerState](/Android/SDKAndroid/PlayAdsWithYourPlayer(MediaPlayerState).md) page based on the new features.
 
 ### Fixed
 - Fixed **_AdswizzSDK_**'s internal `AdPlayer` compatibility when `com.google.android.exoplayer:exoplayer:2.18.2` artefact is used in the dependency tree.
@@ -228,24 +228,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New public methods in `AdswizzAdRequest.Builder`:
     - `withCompanionZoneIds(companionZones: List<Int>)`
     - `withCompanionZoneAliases(companionZoneAliases: List<String>)`
-- Added new artifact `com.adswizz:exoplayer2x` to the SDK. This library provides compatibility with `com.google.android.exoplayer` versions 2.16.0 to 2.19.1. For more information, refer to the updated [Get Started](Android/SDKAndroid/GetStarted) section.
-- Added a new [How to migrate to AdswizzSDK v7.12.0+](Android/Migrations/v7_12_0) section to help address breaking changes introduced in v7.12.0.
+- Added new artifact `com.adswizz:exoplayer2x` to the SDK. This library provides compatibility with `com.google.android.exoplayer` versions 2.16.0 to 2.19.1. For more information, refer to the updated [Get Started](/Android/SDKAndroid/GetStarted) section.
+- Added a new [How to migrate to AdswizzSDK v7.12.0+](/Android/Migrations/v7_12_0) section to help address breaking changes introduced in v7.12.0.
 
 ### Changed
 - Changed the default `VastVersion` to VAST 4.1 protocol in the `AdswizzAdRequest`. Starting with 7.12.0 version, the `AdswizzAdRequest.Builder.withVastVersion(vastVersion: VastVersion)` method will only accept `VastVersion.V40` and `VastVersion.V41` values.
 - Improved **_AdswizzSDK_** listeners to ensure callbacks are invoked exclusively on the `MainThread`.
 - The support for `com.adswizz:exoplayer2-14` and `com.adswizz:exoplayer2-15` artefacts is discontinued. The old versions are still available in `adswizz` github repository up to 7.11.1 versions.
-- Change the `AdswizzAdRequest.Builder.withZones(zones: Set<AdswizzAdZone>)` method signature to `AdswizzAdRequest.Builder.withZones(zones: List<AdswizzAdZone>)`. For more details, please refer to the [How to migrate to AdswizzSDK v7.12.0+](Android/Migrations/v7_12_0) page.
-- The legacy `AdswizzAdRequest.Builder.withCompanionZones(companionZones: String?)` method is deprecated and replaced with `AdswizzAdRequest.Builder.withCompanionZoneIds()`. For more details, please refer to the [How to migrate to AdswizzSDK v7.12.0+](Android/Migrations/v7_12_0) page.
-- The `com.adswizz:exoplayer-media3` artefact is now compatible up to `androidx.media3:media3-exoplayer:1.5.1`. The **_AdswizzSDK_** library will not be bundled anymore with `androidx.media3:media3-exoplayer` as transitive dependency. For more details, please refer to the [How to migrate to AdswizzSDK v7.12.0+](Android/Migrations/v7_12_0) page.
-- Updated the [Get Started](Android/SDKAndroid/GetStarted), [Client Side Insertion](Android/SDKAndroid/ClientSideInsertion) and [Companion Banner](Android/SDKAndroid/CompanionBanner) pages based on the new features.
+- Change the `AdswizzAdRequest.Builder.withZones(zones: Set<AdswizzAdZone>)` method signature to `AdswizzAdRequest.Builder.withZones(zones: List<AdswizzAdZone>)`. For more details, please refer to the [How to migrate to AdswizzSDK v7.12.0+](/Android/Migrations/v7_12_0) page.
+- The legacy `AdswizzAdRequest.Builder.withCompanionZones(companionZones: String?)` method is deprecated and replaced with `AdswizzAdRequest.Builder.withCompanionZoneIds()`. For more details, please refer to the [How to migrate to AdswizzSDK v7.12.0+](/Android/Migrations/v7_12_0) page.
+- The `com.adswizz:exoplayer-media3` artefact is now compatible up to `androidx.media3:media3-exoplayer:1.5.1`. The **_AdswizzSDK_** library will not be bundled anymore with `androidx.media3:media3-exoplayer` as transitive dependency. For more details, please refer to the [How to migrate to AdswizzSDK v7.12.0+](/Android/Migrations/v7_12_0) page.
+- Updated the [Get Started](/Android/SDKAndroid/GetStarted), [Client Side Insertion](/Android/SDKAndroid/ClientSideInsertion) and [Companion Banner](/Android/SDKAndroid/CompanionBanner) pages based on the new features.
 
 ## [7.11.1] - 2025-03-11
 
 ### Changed
 - Adjusted the VAST parser to be more flexible when handling the `MediaFiles` tag.
 - Improved **_AdswizzSDK_**'s internal `AdPlayer` error handling.
-- Updated the [Playing ads using your player](Android/SDKAndroid/PlayAdsWithYourPlayer(AdPlayer).md) section based on **_AdswizzSDK_**'s internal AdPlayer changes.
+- Updated the [Playing ads using your player](/Android/SDKAndroid/PlayAdsWithYourPlayer(AdPlayer).md) section based on **_AdswizzSDK_**'s internal AdPlayer changes.
 
 ### Fixed
 - Fixed URL decoration to improve targeting in scenarios where `android.permission.ACCESS_COARSE_LOCATION` is granted to the **_AdswizzSDK_**, but `android.permission.ACCESS_FINE_LOCATION` is not.
@@ -254,14 +254,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.11.0] - 2025-02-21
 ### Added
-- Added a new class **_AdswizzShimZone_** that can be used in a `AdswizzAdRequest` in order to receive shim ad(s). For more details, please visit [AdswizzShimZone](Android/SDKAndroid/ClientSideInsertion#your-first-ad-request) section.
+- Added a new class **_AdswizzShimZone_** that can be used in a `AdswizzAdRequest` in order to receive shim ad(s). For more details, please visit [AdswizzShimZone](/Android/SDKAndroid/ClientSideInsertion#your-first-ad-request) section.
 
 ### Changed
 - The **_AdswizzAdZone_** can be configured using either `zoneAlias` or `zoneId`, but not both, as they are mutually exclusive. These changes remain backward compatible.
 - The `AdswizzAdRequest.Builder` now includes a new method, `withShimZone`, allowing you to pass an `AdswizzShimZone` object to request shim ad fillers for the current request.
 - Adjusted the VAST parser to be more flexible when handling the `MediaFile` tag.
 - Loosened `AdswizzAdPodcastManager` response validation when Client Side Reporting is disabled.
-- Improved the Server Side Insertion section in [Integration Guide](Android/SDKAndroid/ServerSideInsertion)
+- Improved the Server Side Insertion section in [Integration Guide](/Android/SDKAndroid/ServerSideInsertion)
 
 ### Fixed
 - Fixed some Class Verification warnings that occurred on lower AndroidOS versions.
@@ -269,14 +269,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.10.2] - 2025-01-17
 ### Fixed
-- Fixed the `Complete` quartile issue introduced in version [7.10.1](Android/CHANGELOG#_7101-2024-12-10), which in certain scenarios failed to trigger as expected.
+- Fixed the `Complete` quartile issue introduced in version [7.10.1](/Android/CHANGELOG#_7101---2024-12-10), which in certain scenarios failed to trigger as expected.
 
 ## [7.10.1] - 2024-12-10
 > **Note**
-> Usage is not recommended due to the `Complete` quartile issue introduced in this version. Please update to version [7.10.2](Android/CHANGELOG#_7102-2025-01-17) or later.
+> Usage is not recommended due to the `Complete` quartile issue introduced in this version. Please update to version [7.10.2](/Android/CHANGELOG#_7102---2025-01-17) or later.
 
 ### Changed
-- The **_AdswizzSDK_** TopicsAPI module is now an optional dependency in the SDK library release, published as `com.adswizz:adswizz-sdk-topics-api`. For more details, please visit [Topics API](Android/TopicsAPI/AdswizzSDKTopicsAPI.md) section.
+- The **_AdswizzSDK_** TopicsAPI module is now an optional dependency in the SDK library release, published as `com.adswizz:adswizz-sdk-topics-api`. For more details, please visit [Topics API](/Android/TopicsAPI/AdswizzSDKTopicsAPI.md) section.
 - OMSDK library updates. Now, **_AdswizzSDK_** uses 1.5.2 version. See what's new in Open Measurement SDK [here](https://iabtechlab.com/wp-content/uploads/2024/08/OMSDK_What-is-new-in-1.5_master.docx.pdf).
 
 ### Fixed
@@ -285,10 +285,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.10.0] - 2024-10-18
 ### Changed
-- The **_AdswizzSDK_** player dependency (`com.adswizz:exoplayer2-*` and `com.adswizz:exoplayer-media3`) is now optional for integrations that don't use **_AdswizzSDK_** internal player. Starting with version 7.10.0, if you’re using your own player to handle ad media, you only need to include the `com.adswizz:adswizz-sdk` artifact. For more details, please visit [Play ads with your player](Android/SDKAndroid/PlayAdsWithYourPlayerMain.md) section.
+- The **_AdswizzSDK_** player dependency (`com.adswizz:exoplayer2-*` and `com.adswizz:exoplayer-media3`) is now optional for integrations that don't use **_AdswizzSDK_** internal player. Starting with version 7.10.0, if you’re using your own player to handle ad media, you only need to include the `com.adswizz:adswizz-sdk` artifact. For more details, please visit [Play ads with your player](/Android/SDKAndroid/PlayAdsWithYourPlayerMain.md) section.
 - Updated Android targetSdkVersion to API version 35 (Android 15).
 - Updated Kotlin version to 1.8.22
-- Updated SDK libraries to match the Kotlin version. For additional information, refer to [Dependencies section](Android/SDKAndroid/GetStarted#dependencies)
+- Updated SDK libraries to match the Kotlin version. For additional information, refer to [Dependencies section](/Android/SDKAndroid/GetStarted#dependencies)
 - Removed `androidx.appcompat:appcompat` library from the **_AdswizzSDK_** dependency tree.
 
 ### Fixed
@@ -296,10 +296,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.9.3] - 2024-09-17
 ### Added
-- Added a new event-driven integration method for Client Side Insertion. You can now pass your `MediaPlayerState` implementation to the `AdManagerSettings.Builder` object by calling the `mediaPlayerStateInstance` method. For more details, please visit the [Playing Ads With Your Player using MediaPlayerState](Android/SDKAndroid/PlayAdsWithYourPlayer(MediaPlayerState).md) page.
+- Added a new event-driven integration method for Client Side Insertion. You can now pass your `MediaPlayerState` implementation to the `AdManagerSettings.Builder` object by calling the `mediaPlayerStateInstance` method. For more details, please visit the [Playing Ads With Your Player using MediaPlayerState](/Android/SDKAndroid/PlayAdsWithYourPlayer(MediaPlayerState).md) page.
 - Added new field to the `AdData` interface named `intanceId: String`. This enables you to avoid collisions and uniquely identify each ad in the AdManager's list.
-- Added a new sample project named **_JetpackComposeSample_** to the [Sample Project section](Android/SDKAndroid/SampleProjects) showcasing the interoperability of **_AdCompanionView_** and **_AdVideoView_** with `jetpack compose` UI components.
-- Added a new sample project named **_BasicMediaPlayerStateSample_** to the [Sample Project section](Android/SDKAndroid/SampleProjects) showcasing the **_MediaPlayerState_** integration in a ClientSideInsertion scenario.
+- Added a new sample project named **_JetpackComposeSample_** to the [Sample Project section](/Android/SDKAndroid/SampleProjects) showcasing the interoperability of **_AdCompanionView_** and **_AdVideoView_** with `jetpack compose` UI components.
+- Added a new sample project named **_BasicMediaPlayerStateSample_** to the [Sample Project section](/Android/SDKAndroid/SampleProjects) showcasing the **_MediaPlayerState_** integration in a ClientSideInsertion scenario.
 
 ### Changed
 - Removed `org.jetbrains.kotlin:kotlin-reflect`, `org.apache.commons:commons-math3` and `androidx.databinding:viewbinding` libraries from the **_AdswizzSDK_** dependency tree.
@@ -333,16 +333,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.9.0] - 2024-04-16
 ### Added
 - Added a new method `timeoutIntervalForResources(timeout: Double)` to the `AdManagerSettings.Builder`. This method is utilized by internal players to manage network connection timeouts for media files (ad creatives). If not set, the default ExoPlayer timeout of 8 seconds is used.
-- Added a new coroutine-friendly artifact in the SDK library release with the ID `com.adswizz:adswizz-sdk-extensions` as an optional dependency. It needs to be explicitly declared in `build.gradle` files. This includes helpers for the main functionalities in **_AdswizzSDK_**. For more details, visit the [AdswizzSDK-Extensions](Android/AdswizzSDKExtensions/ClientSideInsertion) section.
-- Added a new sample project named **_AdswizzSDK Extensions_** to the [Sample Project section](Android/SDKAndroid/SampleProjects) showcasing the new artifact **_com.adswizz.adswizz-sdk-extension_**
+- Added a new coroutine-friendly artifact in the SDK library release with the ID `com.adswizz:adswizz-sdk-extensions` as an optional dependency. It needs to be explicitly declared in `build.gradle` files. This includes helpers for the main functionalities in **_AdswizzSDK_**. For more details, visit the [AdswizzSDK-Extensions](/Android/AdswizzSDKExtensions/ClientSideInsertion) section.
+- Added a new sample project named **_AdswizzSDK Extensions_** to the [Sample Project section](/Android/SDKAndroid/SampleProjects) showcasing the new artifact **_com.adswizz.adswizz-sdk-extension_**
 ### Changed
 - Removed `androidx.constraintlayout` and `com.google.android.material` transitive dependencies from **_AdswizzSDK_** artifacts.
 - The **_AdswizzSDK_** Profile Collector will be triggered upon each SDK initialization.
-- Improved the [Integration Guide](Android)
+- Improved the [Integration Guide](/Android/)
 
 ## [7.8.9] - 2024-04-10
 ### Added
-- New default method `release` in **_AdPlayer_** interface with empty implementation. This method will be called when any instance of: `AdManager`, `AdswizzAdStreamManager`,`AdswizzAdPodcastManager` wants to free up the resources used is their lifecycle. For more details visit [AdPlayer Interface Implementation](Android/SDKAndroid/Playingyourplayer#sample-adplayer-interface-implementation) section.
+- New default method `release` in **_AdPlayer_** interface with empty implementation. This method will be called when any instance of: `AdManager`, `AdswizzAdStreamManager`,`AdswizzAdPodcastManager` wants to free up the resources used is their lifecycle. For more details visit [AdPlayer Interface Implementation](/Android/SDKAndroid/PlayAdsWithYourPlayer%28AdPlayer%29#sample-adplayer-interface-implementation) section.
 > This new method won’t affect you if you’re using the SDK’s internal player. Moreover, if you’re using an external player, this new method may have no impact on you, depending on how you’ve implemented the **_AdPlayer_** interface.
 
 ### Fixed
@@ -350,10 +350,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.8.8] - 2024-03-13
 ### Added
-- Update **_AdswizzSDK_** initialisation process in [GetStarted](Android/SDKAndroid/GetStarted) page with code snippets that covers media service playback.
-- Added [Ad events explained](Android/SDKAndroid/ClientSideInsertion#Ad-events-explained) new section, which brings better overview for the `AdEvent`'s received after an ad request was created.
-- Added [Enqueue](Android/SDKAndroid/ClientSideInsertion#Enqueue-enabled-false) new section, with additional information and diagrams for both `enqueue=enabled/disabled` use cases.
-- Update [CompanionBanner](Android/SDKAndroid/CompanionBanner) page with code snippets that covers following scenarios:
+- Update **_AdswizzSDK_** initialisation process in [GetStarted](/Android/SDKAndroid/GetStarted) page with code snippets that covers media service playback.
+- Added [Ad events explained](/Android/SDKAndroid/ClientSideInsertion#ad-events-explained) new section, which brings better overview for the `AdEvent`'s received after an ad request was created.
+- Added [Enqueue](/Android/SDKAndroid/ClientSideInsertion#enqueue-enabled-false) new section, with additional information and diagrams for both `enqueue=enabled/disabled` use cases.
+- Update [CompanionBanner](/Android/SDKAndroid/CompanionBanner) page with code snippets that covers following scenarios:
     - adding `AdCompanionView` programmatically
     - adding `AdCompanionView` in XML
     - `AdCompanionView` background color usages
@@ -388,7 +388,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 > Usage not recommended, due to some issues introduced in `7.8.3`. Update to at least version `7.8.7`.
 
 ### Added
- - Added early support for [Topics API](https://developer.android.com/design-for-safety/privacy-sandbox/topics). For more details visit [AdswizzSDK Topics API](Android/TopicsAPI/AdswizzSDKTopicsAPI) page.
+ - Added early support for [Topics API](https://developer.android.com/design-for-safety/privacy-sandbox/topics). For more details visit [AdswizzSDK Topics API](/Android/TopicsAPI/AdswizzSDKTopicsAPI) page.
 
 ### Changed
  - OMSDK library updates. Now, **_AdswizzSDK_** will use 1.4+ version. See what's new in Open Measurement SDK [here](https://iabtechlab.com/wp-content/uploads/2022/08/OMSDK_What-is-new-in-1.4_master.pdf).
@@ -415,7 +415,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
  - Updated Android targetSdkVersion to API version 34 (Android 14).
- - Removed `WeakReference` internal wrapper from public listeners due to some inconsistencies that may occur. **_AdswizzSDK_** keeps now strong references for the given listeners. These changes include the following classes/interfaces: `AdBaseManager`, `AdManager`, `AdStreamManager`, `AdPodcastManager`, `AdVideoView`. Visit [7.8.2 Migration](Android/Migrations/v7_8_2) page for details on how to adapt to these updates.
+ - Removed `WeakReference` internal wrapper from public listeners due to some inconsistencies that may occur. **_AdswizzSDK_** keeps now strong references for the given listeners. These changes include the following classes/interfaces: `AdBaseManager`, `AdManager`, `AdStreamManager`, `AdPodcastManager`, `AdVideoView`. Visit [7.8.2 Migration](/Android/Migrations/v7_8_2) page for details on how to adapt to these updates.
 
 ## [7.8.1] - 2023-09-06
 ### Changed
@@ -426,8 +426,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.8.0] - 2023-08-30
 ### Changed
  - Updated Kotlin version to 1.7.21 
- - Updated SDK libraries. For additional information, refer to [Library dependencies updates](Android/Migrations/v7_8_0#prerequisites)
- - Updated Android targetSdkVersion to API version 33, see also [7.8.0 Migration](Android/Migrations/v7_8_0)
+ - Updated SDK libraries. For additional information, refer to [Library dependencies updates](/Android/Migrations/v7_8_0#prerequisites)
+ - Updated Android targetSdkVersion to API version 33, see also [7.8.0 Migration](/Android/Migrations/v7_8_0)
  - The **_Integration Guide_** has been revised to incorporate new sections dedicated to PinpointAnalytics and Migrations.
  - Breaking changes described in PinpointAnalytics and Migrations sections
 
@@ -444,7 +444,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Added an interface called `Logger`. This enables consumers of the AdswizzSDK to receive log messages by utilizing the `log` callback. It is primarily intended for debugging purposes.
  
 ### Changed
- - The **_Integration Guide_** has been revised to incorporate a new section dedicated to debugging. [This section](Android/SDKAndroid/Debugging.md) provides detailed information on the logger mechanism.
+ - The **_Integration Guide_** has been revised to incorporate a new section dedicated to debugging. [This section](/Android/SDKAndroid/Debugging.md) provides detailed information on the logger mechanism.
 
 ## [7.7.23] - 2023-06-21
 
@@ -547,7 +547,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 	property of the **_AadswizzAdZone_** object.
 
 ### Changed:
-- The [Integration Guide](Android/SDKAndroid/ClientSideInsertion#(Advanced)-Enable-expected-ads-reporting) was updated to explain how to use the new **_AdswizzAdRequest.Builder_**'s public method named `withExpectedAdsReporting(enable: Boolean)`
+- The [Integration Guide](/Android/SDKAndroid/ClientSideInsertion#advanced-handling-admanager-reporting-for-expected-ads) was updated to explain how to use the new **_AdswizzAdRequest.Builder_**'s public method named `withExpectedAdsReporting(enable: Boolean)`
 
 ## [7.7.12] - 2022-09-21
 ### Changed:
@@ -563,7 +563,7 @@ Podcasting:
 - fixes afrRequest where a banner mismatch occurs. When this happens, the `didFailToDisplayAd` method of `AdCompanionClient.Listener` is called
 
 ### Changed:
-- The [Integration Guide](Android/SDKAndroid/AdswizzGeneralSettings#preferredMaxBitrate) was modified to explain how to use the new **_AdManagerSettings_**'s public function named `preferredMaxBitrate(bitrate: Int)`
+- The [Integration Guide](/Android/SDKAndroid/AdswizzGeneralSettings#preferredmaxbitrate) was modified to explain how to use the new **_AdManagerSettings_**'s public function named `preferredMaxBitrate(bitrate: Int)`
 
 ## [7.7.9-7.7.10]
 ### Fixed
@@ -582,7 +582,7 @@ Podcasting:
 	- `activityOnDestroy()` to be called when parent container (Activity or Fragment) is destroyed
 
 ### Changed:
-- The [Integration Guide](Android/SDKAndroid/VideoAds#Video-View-Cleanup) was modified to explain how to use the new **_AdVideoView_**'s public function named `activityOnDestroy()`
+- The [Integration Guide](/Android/SDKAndroid/VideoAds#video-view-cleanup) was modified to explain how to use the new **_AdVideoView_**'s public function named `activityOnDestroy()`
 
 ## [7.7.6] - 2022-06-16
 ### Added:
@@ -593,7 +593,7 @@ Podcasting:
 - AdCompanion Banner sends `didFail` event correctly when the static resource fails to load
 
 ### Changed:
-- The [Integration Guide](Android/SDKAndroid/CompanionBanner) was modified to better explain the AdCompanion integration in a server-side insertion scenario
+- The [Integration Guide](/Android/SDKAndroid/CompanionBanner) was modified to better explain the AdCompanion integration in a server-side insertion scenario
 
 ## [7.7.5] - 2022-05-16
 ### Fixed:
@@ -715,7 +715,7 @@ Podcasting:
 - Generic intents (e.g generic skip action) specified at ZeroConfig level to be attached to Voice Ads interactivity
 
 ### Changed
-- The Adswizz SDK has been separated into 2 modules: one contains our core functionalities, the other one contains logic related to the internal `AdPlayer`, which relies on **ExoPlayer**. This enables us to be compatible with multiple **ExoPlayer** versions. For more details, consult our [Integration Guide](Android/SDKAndroid/GetStarted).
+- The Adswizz SDK has been separated into 2 modules: one contains our core functionalities, the other one contains logic related to the internal `AdPlayer`, which relies on **ExoPlayer**. This enables us to be compatible with multiple **ExoPlayer** versions. For more details, consult our [Integration Guide](/Android/SDKAndroid/GetStarted).
 - We've changed the host package for some classes:
     - `import com.ad.core.adBaseManager.AdPlayer` has changed to `import com.adswizz.common.AdPlayer`
     - `import com.ad.core.utils.phone.SDKError` has changed to `com.adswizz.common.SDKError`

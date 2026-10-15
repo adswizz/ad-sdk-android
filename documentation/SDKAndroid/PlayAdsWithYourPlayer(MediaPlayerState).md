@@ -220,4 +220,4 @@ This pair of events should be sent each time the player is paused and resumed.
 
 Here is a diagram showcasing the order of events that should be triggered by your `MediaPlayerState` implementation:
 
-<img src="../img/MediaPlayerState-events-order.png" width="1000" />
+<img src="/img/MediaPlayerState-events-order.png" width="1000" />

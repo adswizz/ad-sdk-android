@@ -59,7 +59,7 @@ dependencies {
 }
 ```
 
-For additional version information and available SDK modules, refer to the [Android SDK integration guide](Android/SDKAndroid/GetStarted.md).
+For additional version information and available SDK modules, refer to the [Android SDK integration guide](/Android/SDKAndroid/GetStarted.md).
 
 ## 2. Initialize the SDK in `Application`
 
@@ -89,7 +89,7 @@ class MainApplication : Application(), ReactApplication {
 ## 3. Bridge the native companion view to RN
 
 Companion ads render through a native `AdCompanionView`, which needs to be wrapped in an Expo Module `View` so it can be placed in the React tree like any other component.</br>
-For more AdCompanionView information, please visit the [Companion Banner](Android/SDKAndroid/CompanionBanner.md) documentation.
+For more AdCompanionView information, please visit the [Companion Banner](/Android/SDKAndroid/CompanionBanner.md) documentation.
 
 ```kotlin
 // modules/<your-bridge-module>/android/src/main/java/.../YourBridgeView.kt
@@ -280,6 +280,6 @@ function AdScreen() {
 
 ### Sample project
 
-A fully working example that wires together all the steps above is available in the samples folder: [ReactNativeSample](Android/SDKAndroid/SampleProjects).
+A fully working example that wires together all the steps above is available in the samples folder: [ReactNativeSample](/Android/SDKAndroid/SampleProjects).
 
 

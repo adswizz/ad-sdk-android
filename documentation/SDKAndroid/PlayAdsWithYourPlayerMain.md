@@ -7,9 +7,9 @@ Your player (referenced as External Player in some places) can be any player ins
 Using this integration method will add an abstraction layer between **_AdswizzSDK_** and your application playback allowing you to use any player type you want. (**_AdswizzSDK_** uses Exoplayer instances for its internal players)<br/>
 
 You can choose between the following communication methods that fit your needs better
-* using `AdPlayer` interface. For more details, please visit this [section](Android/SDKAndroid/PlayAdsWithYourPlayer(AdPlayer).md)
-* using `MediaPlayerState` interface added in **_AdswizzSDK_** 7.9.3 version. For more details, please visit this [section](Android/SDKAndroid/PlayAdsWithYourPlayer(MediaPlayerState).md)
-* using `AdStreamPlayerAdapter` interface added in **_AdswizzSDK_** 8.1.0 version. For more details, please visit this [section](Android/SDKAndroid/PlayAdsWithYourPlayer(AdStreamPlayerAdapter).md)
+* using `AdPlayer` interface. For more details, please visit this [section](/Android/SDKAndroid/PlayAdsWithYourPlayer(AdPlayer).md)
+* using `MediaPlayerState` interface added in **_AdswizzSDK_** 7.9.3 version. For more details, please visit this [section](/Android/SDKAndroid/PlayAdsWithYourPlayer(MediaPlayerState).md)
+* using `AdStreamPlayerAdapter` interface added in **_AdswizzSDK_** 8.1.0 version. For more details, please visit this [section](/Android/SDKAndroid/PlayAdsWithYourPlayer(AdStreamPlayerAdapter).md)
 
 <br/>Since **_AdswizzSDK_** 7.10.0 release, the player dependencies (com.adswizz:exoplayer2-* and com.adswizz:exoplayer-media3) are now optional for integrations that don't use AdswizzSDK's internal player. So, if you are using your player in order to play the ad content, you should **only** add the sdk module dependency in your `build.gradle` as follows: <br/>
 

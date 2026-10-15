@@ -8,7 +8,7 @@
 **_AdswizzSDKPinpointAnalytics** (com.adswizz:adswizz-sdk-pinpoint-analytics) depends on the following frameworks:
 * com.amazonaws:aws-android-sdk-core
 
-The **_AdswizzSDKPinpointAnalytics_** for Android depends on *Amazon’s AWSCore* as an external library in order to implement the AWS Pinpoint service used by the [AdswizzSDK Analytics](/Android/SDKAndroid/AdswizzAnalytics).<br>
+The **_AdswizzSDKPinpointAnalytics_** for Android depends on *Amazon’s AWSCore* as an external library in order to implement the AWS Pinpoint service used by the [AdswizzSDK Analytics](/Android/SDKAndroid/AdswizzSDKAnalytics).<br>
 
 ### From Maven 
 The recommended version for aws library is 2.72.0 or later

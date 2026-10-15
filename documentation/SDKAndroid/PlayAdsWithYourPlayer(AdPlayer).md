@@ -507,7 +507,7 @@ Whenever an error occurs, the ```fun onError(error: String)``` callback should b
 
 When doing server-side insertion (streams), the ```fun onMetadata(metadataList: List<AdMetadataItem>)``` function should be called whenever there is metadata in the stream. This is very important for streams. 
 
-It is also required if your player is used in a podcast context for reporting any ID3 metadata formats to enable [Remote Audio Data](#remote-audio-data) measurement. The MetadataItem should have a "RAD" key
+It is also required if your player is used in a podcast context for reporting any ID3 metadata formats to enable Remote Audio Data measurement. The MetadataItem should have a "RAD" key
 and the corresponding RAD json string as value.
 For client-side insertion, this callback is not used.
 
