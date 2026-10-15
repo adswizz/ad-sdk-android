@@ -39,5 +39,5 @@ Here is the list of requirements when integrating **_AdswizzSDKPinpointAnalytics
 	 implementation "com.adswizz:adswizz-sdk-pinpoint-analytics:${adswizzSdkDevVersion}"
 ```
 
-For more details on how to integrate **_AdswizzSDKPinpointAnalytics_**, please visit the [Integrating AdswizzSDK Pinpoint Analytics](Android/PinpointAnalytics/IntegratingAdswizzSDKPinpointAnalytics) section.
+For more details on how to integrate **_AdswizzSDKPinpointAnalytics_**, please visit the [Integrating AdswizzSDK Pinpoint Analytics](/Android/PinpointAnalytics/IntegratingAdswizzSDKPinpointAnalytics) section.
 

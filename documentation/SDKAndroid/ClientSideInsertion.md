@@ -255,7 +255,7 @@ Get the ads list in the ad manager. An empty ads list means the Ad Manager will 
 
 ### analyticsCustomData
 
-Set an **_AnalyticsCustomData_** data class to provide custom key-value attributes to all **_AnalyticsEvent_** instances triggered by the AdswizzSDK for Analytics purposes. Read more here: [AdswizzSDK Analytics](Android/SDKAndroid/AdswizzSDKAnalytics).
+Set an **_AnalyticsCustomData_** data class to provide custom key-value attributes to all **_AnalyticsEvent_** instances triggered by the AdswizzSDK for Analytics purposes. Read more here: [AdswizzSDK Analytics](/Android/SDKAndroid/AdswizzSDKAnalytics).
 
 
 ## AdManagerListener interface
@@ -340,7 +340,7 @@ The **_Completed_** event signals that the current ad has finished. It is sent a
 
 ##### AllAdsCompleted
 
-The **_AllAdsCompleted_** event signals that the **_AdManager_** has finished all the ads. After **_AllAdsCompleted_** event is received, the **_AdManager_** is no longer able to play any ad. To reuse the **_AdManager_** after this point (although not recommended), you would need to first call the [reset()](#reset) method described in the [AdManager protocol](#admanager-protocol) section, and call `prepare()` again.
+The **_AllAdsCompleted_** event signals that the **_AdManager_** has finished all the ads. After **_AllAdsCompleted_** event is received, the **_AdManager_** is no longer able to play any ad. To reuse the **_AdManager_** after this point (although not recommended), you would need to first call the [reset()](#reset) method described in the [AdManager interface](#admanager-interface) section, and call `prepare()` again.
 
 ##### DidSkip
 
@@ -405,7 +405,7 @@ The **_Progress_** event signals that the current ad reached the progress value 
 Note that **_AllAdsCompleted_** event signals that the **_AdManager_** has finished all the ads either by playing them or skiping them due to errors or other unknown events.
 In the following example AllAdsCompleted is sent after two failed to play ads. 
 
-<img src="../img/edge-cases-events.jpg" width="1000" />
+<img src="/img/edge-cases-events.jpg" width="1000" />
 
 
 ## AdBaseManagerAdapter interface
@@ -548,10 +548,10 @@ Based on enqueEnabled properties there are two different AdManager lifecycle and
 ### Enqueue enabled false. 
 Ads are not queued in a playlist and preparing/buffering of ads are done sequentially. PreparingForPlaying and ReadyToPlay for each ad are sent after previous ad has completed.
 
-<img src="../img/AdManagerState.png" width="1000" />
+<img src="/img/AdManagerState.png" width="1000" />
 
 ### Enqueue enabled true. 
 Ads are queued in a playlist and the preparing/buffering is done in parallel with playing. PreparingForPlaying and ReadyToPlay for each ad are sent after previous ad has been prepared and PreparingForPlaying and ReadyToPlay for previous ad has been sent but before it has completed.
 In this case PreparingForPlaying and ReadyToPlay for second ad can be triggered anywhere in the timeline of previous ad.
 
-<img src="../img/AdManager-state-enqueue-on.jpg" width="1000" />
+<img src="/img/AdManager-state-enqueue-on.jpg" width="1000" />

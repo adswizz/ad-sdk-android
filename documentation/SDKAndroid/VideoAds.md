@@ -4,7 +4,7 @@ The AdswizzSDK is capable of handling video content when an ad server delivers v
 
 ## Adding an AdVideoView
 
-**_AdVideoView_** is an instance of **_View_** responsible for rendering video content during video ad playback. Just like companion views (see [Companion Banner](Android/SDKAndroid/CompanionBanner)) section, a video view can be created either programmatically or by adding it in a layout xml file.
+**_AdVideoView_** is an instance of **_View_** responsible for rendering video content during video ad playback. Just like companion views (see [Companion Banner](/Android/SDKAndroid/CompanionBanner)) section, a video view can be created either programmatically or by adding it in a layout xml file.
 
 Once created, you have ownership over this view and you can add it to your hierarchy like any other UI component.
 
@@ -140,7 +140,7 @@ fun setPlayStateListener(listener: PlayStateListener?) {}
 
 ## Viewability
 
-Viewability enables the AdswizzSDK to allow third party verification measurement for both audio and video ads. See [Open Measurement in AdswizzSDK](Android/SDKAndroid/OpenMeasurement) for more details.
+Viewability enables the AdswizzSDK to allow third party verification measurement for both audio and video ads. See [Open Measurement in AdswizzSDK](/Android/SDKAndroid/OpenMeasurement) for more details.
 
 ### Friendly obstructions
 

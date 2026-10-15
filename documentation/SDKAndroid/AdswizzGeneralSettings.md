@@ -46,7 +46,7 @@ To get the current permission status in the SDK, use the `AdswizzSDK's` `getPerm
 ### Disable permissions programmatically
 You can instruct the `AdswizzSDK` whether it can use the data exposed by any permission set in AndroidManifest by calling the `fun setPermissionStatus(permission: String, value: Boolean)` method. Pass true for the status parameter if the `AdswizzSDK` is allowed to use the permission or false if the AdswizzSDK is denied access.
 
-This is the list of permissions you can programmatically set using the methods above. See also the [Permissions](Android/SDKAndroid/GetStarted#permissions)) section in the Get started chapter
+This is the list of permissions you can programmatically set using the methods above. See also the [Permissions](/Android/SDKAndroid/GetStarted#permissions) section in the Get started chapter
 
 ```kotlin
 		permission.INTERNET,
