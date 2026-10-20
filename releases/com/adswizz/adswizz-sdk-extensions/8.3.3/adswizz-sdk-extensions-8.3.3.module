@@ -1,0 +1,101 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "adswizz-sdk-extensions",
+    "version": "8.3.3",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.3.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "adswizz-sdk-extensions-8.3.3.aar",
+          "url": "adswizz-sdk-extensions-8.3.3.aar",
+          "size": 135867,
+          "sha512": "b7d89540d2b665c7cbc417adb8965ff8a61b96b9c5667d92661ab92c58b2ffad80276a2c234533f12c93de895a2d05e00ba0a01d26cc4140fca6d98dba095b93",
+          "sha256": "4575a489a772dac21b3371c0d20876d82f74b4d6d778f8edb0073e5548a04bb7",
+          "sha1": "06ad3f9b2797fc57823c8de19c0f4d5108f09c0c",
+          "md5": "bbd1852456d2b5575f9b4ae006577618"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.16.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-android",
+          "version": {
+            "requires": "1.9.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-sdk-extensions-8.3.3.aar",
+          "url": "adswizz-sdk-extensions-8.3.3.aar",
+          "size": 135867,
+          "sha512": "b7d89540d2b665c7cbc417adb8965ff8a61b96b9c5667d92661ab92c58b2ffad80276a2c234533f12c93de895a2d05e00ba0a01d26cc4140fca6d98dba095b93",
+          "sha256": "4575a489a772dac21b3371c0d20876d82f74b4d6d778f8edb0073e5548a04bb7",
+          "sha1": "06ad3f9b2797fc57823c8de19c0f4d5108f09c0c",
+          "md5": "bbd1852456d2b5575f9b4ae006577618"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseSourcePublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "adswizz-sdk-extensions-8.3.3-sources.jar",
+          "url": "adswizz-sdk-extensions-8.3.3-sources.jar",
+          "size": 12656,
+          "sha512": "25ac0eae954280fc7323123f14ed0daf14c8b55b3a1676166e7ec1d752e4eccc12d12caaad755340afb733e893a43bd739b15d0f6982e47fcac0c72a2b71a77f",
+          "sha256": "44e363fadfe89fffeca3e47af4caf2cc8ad3cae511ba6f26c3b8262f0a6a8cd5",
+          "sha1": "d0aa0a243a49da08546ab5ecb441723d83ecbd9d",
+          "md5": "b3077925c5ded30eeb99fa57c177af06"
+        }
+      ]
+    }
+  ]
+}

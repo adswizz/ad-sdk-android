@@ -1,0 +1,67 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "exoplayer-media3",
+    "version": "8.3.3",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.3.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "exoplayer-media3-8.3.3.aar",
+          "url": "exoplayer-media3-8.3.3.aar",
+          "size": 35290,
+          "sha512": "11379e7871c7cb08ccd53617a66da8619666e27a182f92b70af3b3c84b5c534bceca36c4c8b7a7f154239660515cbb50172fc7e673e42671ae04d12b39e3c20f",
+          "sha256": "3f8bc6f826df35454d055252e67b12168e9c0bbdb4b526e43dd06c03e3a5bd04",
+          "sha1": "80ef1067c4eec7c05b1959e712c63de32e77a555",
+          "md5": "4978c254852e2b14f6163dbdf000d62b"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.annotation",
+          "module": "annotation",
+          "version": {
+            "requires": "1.8.2"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "exoplayer-media3-8.3.3.aar",
+          "url": "exoplayer-media3-8.3.3.aar",
+          "size": 35290,
+          "sha512": "11379e7871c7cb08ccd53617a66da8619666e27a182f92b70af3b3c84b5c534bceca36c4c8b7a7f154239660515cbb50172fc7e673e42671ae04d12b39e3c20f",
+          "sha256": "3f8bc6f826df35454d055252e67b12168e9c0bbdb4b526e43dd06c03e3a5bd04",
+          "sha1": "80ef1067c4eec7c05b1959e712c63de32e77a555",
+          "md5": "4978c254852e2b14f6163dbdf000d62b"
+        }
+      ]
+    }
+  ]
+}

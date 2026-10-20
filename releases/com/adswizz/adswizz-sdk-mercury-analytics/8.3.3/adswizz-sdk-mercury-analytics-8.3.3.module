@@ -1,0 +1,130 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "adswizz-sdk-mercury-analytics",
+    "version": "8.3.3",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.3.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "adswizz-sdk-mercury-analytics-8.3.3.aar",
+          "url": "adswizz-sdk-mercury-analytics-8.3.3.aar",
+          "size": 223189,
+          "sha512": "a6658ae445682aa0015f45fefd0a6d73923ee892e2433587685475b96710108bfb3f173aed636286c16f762b47b96a3d9ee4cf5d43fea01885cc99c2097d60d3",
+          "sha256": "45e8d5f6d142603a71404366d0db745d0b5e5d7c5b0a8d0ded667d01ddad17df",
+          "sha1": "9ad00b470d4a7346fb3d517f2ef45137d810bfc0",
+          "md5": "6a69e2e00451dfad12b72d170f7e5016"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-core",
+          "version": {
+            "requires": "8.3.3"
+          }
+        },
+        {
+          "group": "com.adswizz",
+          "module": "adswizz-common-internal",
+          "version": {
+            "requires": "8.3.3"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-android",
+          "version": {
+            "requires": "1.9.0"
+          }
+        },
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.16.0"
+          }
+        },
+        {
+          "group": "androidx.annotation",
+          "module": "annotation",
+          "version": {
+            "requires": "1.8.2"
+          }
+        },
+        {
+          "group": "com.google.protobuf",
+          "module": "protobuf-javalite",
+          "version": {
+            "requires": "3.25.5"
+          }
+        },
+        {
+          "group": "androidx.work",
+          "module": "work-runtime-ktx",
+          "version": {
+            "requires": "2.8.1"
+          }
+        },
+        {
+          "group": "androidx.room",
+          "module": "room-runtime",
+          "version": {
+            "requires": "2.6.1"
+          }
+        },
+        {
+          "group": "androidx.room",
+          "module": "room-ktx",
+          "version": {
+            "requires": "2.6.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-sdk-mercury-analytics-8.3.3.aar",
+          "url": "adswizz-sdk-mercury-analytics-8.3.3.aar",
+          "size": 223189,
+          "sha512": "a6658ae445682aa0015f45fefd0a6d73923ee892e2433587685475b96710108bfb3f173aed636286c16f762b47b96a3d9ee4cf5d43fea01885cc99c2097d60d3",
+          "sha256": "45e8d5f6d142603a71404366d0db745d0b5e5d7c5b0a8d0ded667d01ddad17df",
+          "sha1": "9ad00b470d4a7346fb3d517f2ef45137d810bfc0",
+          "md5": "6a69e2e00451dfad12b72d170f7e5016"
+        }
+      ]
+    }
+  ]
+}
