@@ -1,0 +1,130 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.adswizz",
+    "module": "adswizz-sdk-pinpoint-analytics",
+    "version": "8.3.4",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.3.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "adswizz-sdk-pinpoint-analytics-8.3.4.aar",
+          "url": "adswizz-sdk-pinpoint-analytics-8.3.4.aar",
+          "size": 83885,
+          "sha512": "7911ffae0b6bc444607b601b8dcb21108f31cf3c351d14ae8185d617c99d3d72c5b07fe6769820c60c9882af722c7e52e10d8f9dc8e4084013e2b397c42217d3",
+          "sha256": "1d061eec9604e1c0b1b19a5b8b676e22b5cadff68a2f2bc9811f54411bc93822",
+          "sha1": "bc330a81506e347c84892e2e114025047f6f2374",
+          "md5": "d5b2c23d03085e3ad284330cfee199cb"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.16.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-android",
+          "version": {
+            "requires": "1.9.0"
+          }
+        },
+        {
+          "group": "com.squareup.moshi",
+          "module": "moshi",
+          "version": {
+            "requires": "1.15.2"
+          }
+        },
+        {
+          "group": "com.squareup.moshi",
+          "module": "moshi-adapters",
+          "version": {
+            "requires": "1.15.2"
+          }
+        },
+        {
+          "group": "androidx.work",
+          "module": "work-runtime-ktx",
+          "version": {
+            "requires": "2.8.1"
+          }
+        },
+        {
+          "group": "androidx.work",
+          "module": "work-multiprocess",
+          "version": {
+            "requires": "2.8.1"
+          }
+        },
+        {
+          "group": "androidx.room",
+          "module": "room-runtime",
+          "version": {
+            "requires": "2.6.1"
+          }
+        },
+        {
+          "group": "androidx.room",
+          "module": "room-ktx",
+          "version": {
+            "requires": "2.6.1"
+          }
+        },
+        {
+          "group": "com.amazonaws",
+          "module": "aws-android-sdk-core",
+          "version": {
+            "requires": "2.72.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "adswizz-sdk-pinpoint-analytics-8.3.4.aar",
+          "url": "adswizz-sdk-pinpoint-analytics-8.3.4.aar",
+          "size": 83885,
+          "sha512": "7911ffae0b6bc444607b601b8dcb21108f31cf3c351d14ae8185d617c99d3d72c5b07fe6769820c60c9882af722c7e52e10d8f9dc8e4084013e2b397c42217d3",
+          "sha256": "1d061eec9604e1c0b1b19a5b8b676e22b5cadff68a2f2bc9811f54411bc93822",
+          "sha1": "bc330a81506e347c84892e2e114025047f6f2374",
+          "md5": "d5b2c23d03085e3ad284330cfee199cb"
+        }
+      ]
+    }
+  ]
+}

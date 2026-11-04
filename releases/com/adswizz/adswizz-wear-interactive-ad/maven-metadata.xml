@@ -3,8 +3,8 @@
   <groupId>com.adswizz</groupId>
   <artifactId>adswizz-wear-interactive-ad</artifactId>
   <versioning>
-    <latest>8.3.3</latest>
-    <release>8.3.3</release>
+    <latest>8.3.4</latest>
+    <release>8.3.4</release>
     <versions>
       <version>7.8.2</version>
       <version>7.8.3</version>
@@ -51,7 +51,8 @@
       <version>8.3.1</version>
       <version>8.3.2</version>
       <version>8.3.3</version>
+      <version>8.3.4</version>
     </versions>
-    <lastUpdated>20261020115010</lastUpdated>
+    <lastUpdated>20261104145554</lastUpdated>
   </versioning>
 </metadata>
