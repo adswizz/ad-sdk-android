@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.3.4] - 2026-11-04
+### Fixed
+- Fixed VAST parser `no-fill` behavior when the response without any `<Ad>` or `<Error>` element, received directly or at the end of a wrapper chain, was being handled as an invalid VAST response instead of an empty ads.
+- Fixed the `no-ad-manager` Analytics event to be logged once per `requestAds()` call whenever an **_AdManager_** could not be created
+- Prevent the `AdManager.reset()` to override the ad error state and emit the corresponding `AdEvents` for each Ad.
+
 ## [8.3.3] - 2026-10-20
 ### Changed
 - Truncate GPS coordinates in URL decoration based on dynamic configuration.
